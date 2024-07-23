@@ -1,24 +1,27 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const EventRoutes = require('./routes/eventRoutes');  // Corrected import path
 
-//http server
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = 5000;
+const MONGO_URI = 'mongodb+srv://BCMS:BCMS@cluster0.tewri0m.mongodb.net/?retryWrites=true&w=majority';  // Replace with your MongoDB URI
 
-//Middleware
-app.use(express.json());
+// Middleware
 app.use(cors());
+app.use(bodyParser.json());
 
-//Database Connection
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("DB Connected"))
-  .catch((err) => console.error("DB Connection Error:", err));
+// Routes
+app.use('/events', EventRoutes);
 
-
-//start server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Connect to MongoDB and start the server
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('Error connecting to the database', err);
+    });
