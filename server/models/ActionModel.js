@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const MeetingEvidenceSchema = new Schema(
+const MeetingActionSchema = new Schema(
     {
         meetingId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -13,10 +13,6 @@ const MeetingEvidenceSchema = new Schema(
             ref: 'Employee',
             required: true,
           },
-          reason: {
-            type: String,
-            required: false,
-          },
           actionNo: {
             type: Number,
             required: false,
@@ -25,17 +21,21 @@ const MeetingEvidenceSchema = new Schema(
             type: String,
             required: false,
           },
+          discription: {
+            type: String,
+            required: false,
+          },
           targetDate: {
             type: String,
             required: false,
           },
-          attended: {
-            type: Boolean,
-            required: true,
-          },
           status: {
-            type: Boolean,
-            required: true,
+            type: String,
+            enum: ["Pending", "Completed", "Opened"],
+          },
+          comment: {
+            type: String,
+            required: false,
           },
     },
     {
@@ -43,6 +43,6 @@ const MeetingEvidenceSchema = new Schema(
     }
 );
 
-const MeetingEvidence = mongoose.model("MeetingEvidence", MeetingEvidenceSchema);
+const MeetingAction = mongoose.model("MeetingAction", MeetingActionSchema);
 
-module.exports = MeetingEvidence;
+module.exports = MeetingAction;

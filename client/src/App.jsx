@@ -11,6 +11,11 @@ import Roles from "./pages/Roles_Responsibilities/Roles";
 import CreateMeeting from "./pages/meetings/CreateMeeting";
 import UpdateMeetings from "./pages/meetings/UpdateMeetings";
 import ViewMeeting from "./pages/meetings/ViewMeeting";
+import AboutmeForm from "./components/AboutmeForm";
+import EditMeeting from "./pages/meetings/EditMeeting";
+import AboutmeView from "./components/AboutmeView";
+import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
+import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 
 function App() {
   return (
@@ -29,9 +34,14 @@ function App() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/meeting" element={<Meeting />} />
           <Route path="/roles" element={<Roles />} />
+          <Route path="/roles/createRoles" element={<CreateRoles />} />
+          <Route path="/roles/editRoles" element={<EditRoles />} />
+          <Route path="/AboutmeView/AboutmeForm" element={<AboutmeForm />} />
+          <Route path="/AboutmeView" element={<AboutmeView />} />
           <Route path="/meeting/createMeeting" element={<CreateMeeting />} />
           <Route path="/meeting/updateMeetings/:id" element={<UpdateMeetings />} />
           <Route path="/meeting/viewMeetings/:id" element={<ViewMeeting />} />
+          <Route path="/meeting/viewMeetings/:id/editmeeting" element={<EditMeeting />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const ViewMeeting = () => {
   const { id } = useParams();
@@ -9,70 +9,77 @@ const ViewMeeting = () => {
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [attendeesData, setAttendeesData] = useState([]);
-  const [meetingEvidence, setMeetingEvidence] = useState([]);
+  const [chairedBy, setChairedBy] = useState("");
+  const [chairedByDes, setChairedByDes] = useState("");
+  const [presentAttendees, setPresentAttendees] = useState([]);
+  const [absentAttendees, setAbsentAttendees] = useState([]);
+  const [excusedAttendees, setExcusedAttendees] = useState([]);
+  const [actions, setActions] = useState([]);
 
+  //fetch a single meeting data
   useEffect(() => {
     fetch(`http://localhost:5000/meeting/getSingleMeeting/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Meeting data:", data); // Debugging log
-        setMeeting(data);
-        setPurpose(data.purpose);
-        setLocation(data.location);
-        setDate(data.date);
-        setStartTime(data.startTime);
-        setEndTime(data.endTime);
-        fetchAttendeesData(data);
+        if (data) {
+          setMeeting(data);
+          setPurpose(data.purpose || "");
+          setLocation(data.location || "");
+          setDate(data.date || "");
+          setStartTime(data.startTime || "");
+          setEndTime(data.endTime || "");
+          fetchChairedByName(data.chairedBy || "");
+          fetchAttendeesData(data._id);
+          fetchActionData(data._id);
+
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Error fetching meeting:", err));
   }, [id]);
 
-  const fetchAttendeesData = async (meeting) => {
-    if (meeting) {
-      try {
-        const response = await fetch(
-          "http://localhost:5000/employees/getEmployees"
-        );
-        const data = await response.json();
-        console.log("Attendees data:", data); // Debugging log
-        const mappedAttendees = meeting.attendees.map((attendeeId) => {
-          return data.find((employee) => employee._id === attendeeId);
-        });
-        setAttendeesData(mappedAttendees.filter(attendee => attendee)); // Ensure no undefined attendees
-      } catch (error) {
-        console.error("Error fetching attendees data:", error);
-      }
+  // Get chaired by person name and designation
+  const fetchChairedByName = async (chairedById) => {
+    try {
+      const res = await fetch(`http://localhost:5000/employees/getEmployeesById/${chairedById}`);
+      const employeeData = await res.json();
+      setChairedBy(employeeData.name); 
+      setChairedByDes(employeeData.designation);
+    } catch (err) {
+      console.log("Error fetching employee name:", err);
     }
   };
 
-  useEffect(() => {
-    fetch(
-      `http://localhost:5000/meetingEvidence/getSingleMeetingEvidence/${id}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Meeting evidence:", data); // Debugging log
-        setMeetingEvidence(Array.isArray(data) ? data : []); // Ensure data is an array
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
+  // fetch attendees data
+  const fetchAttendeesData = async (meetingId) => {
+    try {
+      const res = await fetch(`http://localhost:5000/attendees/getSingleAttendee/${meetingId}`);
+      const attendees = await res.json();
+      const present = attendees.filter(att => att.attended === "Present").map(att => att.attendeeId.name);
+      const absent = attendees.filter(att => att.attended === "Absent").map(att => att.attendeeId.name);
+      const excused = attendees.filter(att => att.attended === "Excused").map(att => att.attendeeId.name);
 
-  const presentAttendees = meetingEvidence
-    .filter((evidence) => evidence.attended)
-    .map((evidence) =>
-      attendeesData.find((attendee) => attendee._id === evidence.attendeeId)
-    )
-    .filter((attendee) => attendee)
-    .map((attendee) => attendee.name);
+      setPresentAttendees(present);
+      setAbsentAttendees(absent);
+      setExcusedAttendees(excused);
+    } catch (err) {
+      console.log("Error fetching attendees:", err);
+    }
+  };
 
-  const absentAttendees = meetingEvidence
-    .filter((evidence) => !evidence.attended)
-    .map((evidence) =>
-      attendeesData.find((attendee) => attendee._id === evidence.attendeeId)
-    )
-    .filter((attendee) => attendee)
-    .map((attendee) => attendee.name);
+  // fetch action data
+  const fetchActionData = async (meetingId) => {
+    try {
+      const res = await fetch(`http://localhost:5000/actions/getsingleActionData/${meetingId}`);
+      const actionData = await res.json();
+      setActions(actionData);
+    } catch (err) {
+      console.error("Error fetching action data:", err);
+    }
+  };
+
+  if (!meeting) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="border-2 w-full p-5 rounded-2xl mr-5 ml-96 mt-20">
@@ -129,11 +136,12 @@ const ViewMeeting = () => {
                   >
                     Chaired by
                   </th>
-                  <td className="px-6 py-2"></td>
+                  <td className="px-6 py-2">{chairedBy} - {chairedByDes}</td>
                 </tr>
               </tbody>
             </table>
           </div>
+
           <div className="mt-5 px-5">
             <div className="relative overflow-x-auto justify-center items-center flex">
               <table className="text-sm text-center rtl:text-right text-[#003E81] dark:text-gray-400 border border-[#52B14A]">
@@ -151,7 +159,7 @@ const ViewMeeting = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                <tr>
                     <td className="px-6 py-4">
                       {presentAttendees.map((name, index) => (
                         <div key={index}>{name}</div>
@@ -162,22 +170,27 @@ const ViewMeeting = () => {
                         <div key={index}>{name}</div>
                       ))}
                     </td>
-                    <td className="px-6 py-4"></td>
+                    <td className="px-6 py-4">
+                      {excusedAttendees.map((name, index) => (
+                        <div key={index}>{name}</div>
+                      ))}
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+
           <div className="mt-5 px-5 mb-5">
             <div className="relative overflow-x-auto">
               <table className="w-full text-sm text-center rtl:text-right text-[#003E81] dark:text-gray-400 border border-[#52B14A]">
                 <thead className="bg-cyan-300 text-[#003E81] text-sm uppercase dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3">
-                      Item No
+                      Action No
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Description
+                      Action
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Responsible Person
@@ -186,40 +199,27 @@ const ViewMeeting = () => {
                       Target Date
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Updates
+                     Status
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Status
+                     Updates
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {meetingEvidence.map((evidence, index) => (
                     <tr
-                      key={index}
                       className="border border-[#52B14A] dark:bg-gray-800 dark:border-gray-700"
                     >
                       <th
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {evidence.actionNo}
-                      </th>
-                      <td className="px-6 py-4">{evidence.action}</td>
-                      <td className="px-6 py-4">
-                        {
-                          attendeesData.find(
-                            (attendee) => attendee._id === evidence.attendeeId
-                          )?.name
-                        }
-                      </td>
-                      <td className="px-6 py-4">{evidence.targetDate}</td>
-                      <td className="px-6 py-4">{evidence.updates}</td>
-                      <td className="px-6 py-4">
-                        {evidence.status ? "Completed" : "Pending"}
-                      </td>
+                      ></th>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
+                      <td className="px-6 py-4"></td>
                     </tr>
-                  ))}
                 </tbody>
               </table>
             </div>
@@ -239,6 +239,8 @@ const ViewMeeting = () => {
             </div>
           </div>
         </div>
+
+        
       </div>
     </div>
   );

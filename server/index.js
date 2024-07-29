@@ -1,35 +1,46 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
+const bodyParser = require("body-parser");
 
-//http server
+// http server
 const app = express();
 const port = process.env.PORT || 5000;
 
-//Middleware
+// Middleware
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); 
 
-//Database Connection
+// Database Connection
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => console.log("DB Connected"))
   .catch((err) => console.error("DB Connection Error:", err));
 
-// routes
-
-const NewMeetingRoute = require("./routes/NewMeetingRoute.js")
+// Routes
+const NewMeetingRoute = require("./routes/NewMeetingRoute");
 app.use("/meeting", NewMeetingRoute);
 
-const EmployeeRoute = require("./routes/EmployeeRoute.js")
+const EmployeeRoute = require("./routes/EmployeeRoute");
 app.use("/employees", EmployeeRoute);
 
-const MeetingEvidenceRoute = require("./routes/MeetingEvidenceRoute.js")
-app.use("/meetingEvidence", MeetingEvidenceRoute);
+const AboutMeRoute = require("./routes/AboutMeRoute");
+app.use("/aboutMe", AboutMeRoute);
 
+const RoleRoute = require("./routes/RoleRoute");
+app.use("/roles", RoleRoute);
 
-//start server
+const AttendeeRoute = require("./routes/AttendeeRoute")
+app.use("/attendees", AttendeeRoute);
+
+const ActionRoute = require("./routes/ActionRoute")
+app.use("/actions", ActionRoute);
+
+// Start server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
