@@ -1,0 +1,17 @@
+.relative-container {
+  position: relative;
+
+  height: 1vh;
+}
+
+.login-button {
+  position: absolute;
+  background-color: rgb(105, 105, 211);
+  font-weight: bolder;
+  border-radius: 10px;
+  text-align: center;
+  height: 30px;
+  width: 70px;
+  top: 0;
+  right: 0;
+}
