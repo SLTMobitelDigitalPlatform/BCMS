@@ -1,7 +1,7 @@
 import React from "react";
-import Title from "../../../../components/Title";
-import ContextNavigation from "../../../../components/ContextNavigation";
-import Sidebar from "../../../../components/Sidebar";
+import Title from "../../../components/Title";
+import ContextNavigation from "../../../components/ContextNavigation";
+import Sidebar from "../../../components/Sidebar";
 
 const Objectives = () => {
   return (
