@@ -22,7 +22,7 @@ export default function Calendar() {
       <Navbar />
       <div className="flex gap-x-4">
         <Sidebar />
-        <div className="relative min-h-screen mr-6 ml-1">
+        <div className="relative min-h-screen mr-6 ml-10">
           {!showAddEvent && (
             <button
               onClick={handleAddEventClick}
