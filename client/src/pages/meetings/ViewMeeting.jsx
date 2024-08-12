@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
 
 const ViewMeeting = () => {
   const { id } = useParams();
@@ -82,6 +81,7 @@ const ViewMeeting = () => {
         `http://localhost:5000/getsingleActionData/${meetingId}`
       );
       const actionData = await res.json();
+      console.log(actionData);
       setActions(actionData);
     } catch (err) {
       console.error("Error fetching action data:", err);
@@ -93,23 +93,32 @@ const ViewMeeting = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Navbar />
-      <div className="flex gap-x-4">
+    <div className="container mx-auto py-8">
+      <div className="flex gap-x-10">
         <Sidebar />
-        <div className="border-2 w-full p-5 rounded-2xl mr-10 ml-5 mt-1">
+        <div className="border-2 w-full p-5 rounded-2xl mr-5 ml-5 mt-1">
           <div className="flex flex-col">
             <h2 className="font-bold text-[#52B14A] text-4xl text-center mt-3">
               View Meeting
             </h2>
             <div className="border mt-5 bg-cyan-50 rounded-2xl mx-5">
+              <div className="flex justify-end">
+                <Link to={`/meeting/viewMeetings/${meeting._id}/editmeeting`}>
+                  <button
+                    type="submit"
+                    className=" mt-5 mr-5 inline-flex justify-center rounded-md bg-[#52B14A] py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-[#45913e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  >
+                    Update Evidences
+                  </button>
+                </Link>
+              </div>
               <div className="relative overflow-x-auto justify-center items-center flex">
                 <table className="text-lg text-left rtl:text-right text-black dark:text-gray-400">
                   <tbody>
                     <tr>
                       <th
                         scope="row"
-                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap"
                       >
                         Meeting
                       </th>
@@ -118,7 +127,7 @@ const ViewMeeting = () => {
                     <tr>
                       <th
                         scope="row"
-                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap"
                       >
                         Location
                       </th>
@@ -127,7 +136,7 @@ const ViewMeeting = () => {
                     <tr>
                       <th
                         scope="row"
-                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap"
                       >
                         Date
                       </th>
@@ -136,7 +145,7 @@ const ViewMeeting = () => {
                     <tr>
                       <th
                         scope="row"
-                        className="px-6 py-4 font-bold text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-6 py-4 font-bold text-gray-900 whitespace-nowrap"
                       >
                         Time
                       </th>
@@ -147,7 +156,7 @@ const ViewMeeting = () => {
                     <tr>
                       <th
                         scope="row"
-                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-6 py-2 font-bold text-gray-900 whitespace-nowrap"
                       >
                         Chaired by
                       </th>
@@ -210,6 +219,9 @@ const ViewMeeting = () => {
                           Action
                         </th>
                         <th scope="col" className="px-6 py-3">
+                          Description
+                        </th>
+                        <th scope="col" className="px-6 py-3">
                           Responsible Person
                         </th>
                         <th scope="col" className="px-6 py-3">
@@ -224,17 +236,25 @@ const ViewMeeting = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="border border-[#52B14A] dark:bg-gray-800 dark:border-gray-700">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        ></th>
-                        <td className="px-6 py-4"></td>
-                        <td className="px-6 py-4"></td>
-                        <td className="px-6 py-4"></td>
-                        <td className="px-6 py-4"></td>
-                        <td className="px-6 py-4"></td>
-                      </tr>
+                      {actions.map((action, index) => (
+                        <tr
+                          key={index}
+                          className="border border-[#52B14A] dark:bg-gray-800 dark:border-gray-700"
+                        >
+                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {action.actionNo}
+                          </td>
+
+                          <td className="px-6 py-4">{action.action}</td>
+                          <td className="px-6 py-4">{action.description}</td>
+                          <td className="px-6 py-4">
+                            {action.attendeeId.name}
+                          </td>
+                          <td className="px-6 py-4">{action.targetDate}</td>
+                          <td className="px-6 py-4">{action.status}</td>
+                          <td className="px-6 py-4">{action.comment}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
