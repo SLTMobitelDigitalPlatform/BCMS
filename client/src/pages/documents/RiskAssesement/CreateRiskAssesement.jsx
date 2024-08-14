@@ -28,9 +28,30 @@ const CreateRiskAssesement = () => {
 
   // Auto increment ID
   useEffect(() => {
-    const currentIndex = localStorage.getItem("currentIndex");
-    const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
-    setRid(`2024RAS${newIndex}`);
+    const fetchLastRecord = async () => {
+      try {
+        // Assuming your endpoint is correct and returns the last record
+        const response = await axios.get(
+          "http://localhost:5000/api/risks/last"
+        );
+        const lastRecord = response.data;
+
+        const currentYear = new Date().getFullYear();
+        let newIndex = 1;
+
+        if (lastRecord && lastRecord.rid) {
+          const lastIndex = parseInt(lastRecord.rid.slice(7), 10);
+          newIndex = lastIndex + 1;
+        }
+        console.log(lastRecord);
+
+        setRid(`${currentYear}RAS${newIndex}`);
+      } catch (error) {
+        console.error("Error fetching the last record:", error);
+      }
+    };
+
+    fetchLastRecord();
   }, []);
 
   // Calculate Impact Rating

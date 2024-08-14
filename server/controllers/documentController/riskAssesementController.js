@@ -58,9 +58,19 @@ const deleteRisk = async (req, res) => {
   }
 };
 
+const getLastRisk = async (req, res) => {
+  try {
+    const lastRisk = await RiskAssessment.findOne().sort({ _id: -1 });
+    res.status(200).json(lastRisk);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createRisk,
   getRisks,
+  getLastRisk,
   getRiskById,
   updateRisk,
   deleteRisk,
