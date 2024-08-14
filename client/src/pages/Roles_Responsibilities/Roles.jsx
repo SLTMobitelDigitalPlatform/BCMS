@@ -1,20 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
+import axios from "axios";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/getRole`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched role data:", data);
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get("http://localhost:5000/currentuser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    const fetchRoles = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getRole");
+        const data = await response.json();
+        // console.log("Fetched role data:", data);
         setRoles(data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching role data:", error);
-      });
+      }
+    };
+
+    fetchUserDetails();
+    fetchRoles();
   }, []);
 
   return (
@@ -27,24 +49,30 @@ const Roles = () => {
             <h1 className="mt-5 text-[#52B14A] font-bold text-3xl">
               Roles & Responsibilities
             </h1>
-            <div>
-              <Link to="/roles/createRoles">
-                <button
-                  type="button"
-                  className="text-white bg-[#003E81] focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-                >
-                  Add
-                </button>
-              </Link>
-              <Link to="/roles/editRoles">
-                <button
-                  type="button"
-                  className="text-white bg-red-700 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-                >
-                  Update
-                </button>
-              </Link>
-            </div>
+            {user &&
+            (user.role === "superadmin" ||
+              user.role === "secretariatcoordinator ") ? (
+              <div>
+                <Link to="/roles/createRoles">
+                  <button
+                    type="button"
+                    className="text-white bg-[#003E81] focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  >
+                    Add
+                  </button>
+                </Link>
+                <Link to="/roles/editRoles">
+                  <button
+                    type="button"
+                    className="text-white bg-red-700 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  >
+                    Update
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              " "
+            )}
           </div>
           <div className="bg-cyan-50 p-3 mt-5 rounded-2xl px-5 border">
             <div className="relative overflow-x-auto">

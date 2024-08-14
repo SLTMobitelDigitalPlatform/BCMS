@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
+import axios from "axios";
 
 const ViewMeeting = () => {
   const { id } = useParams();
@@ -16,9 +17,26 @@ const ViewMeeting = () => {
   const [absentAttendees, setAbsentAttendees] = useState([]);
   const [excusedAttendees, setExcusedAttendees] = useState([]);
   const [actions, setActions] = useState([]);
+  const [user, setUser] = useState(null);
 
   //fetch a single meeting data
   useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get("http://localhost:5000/currentuser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
     fetch(`http://localhost:5000/getSingleMeeting/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -35,6 +53,7 @@ const ViewMeeting = () => {
         }
       })
       .catch((err) => console.log("Error fetching meeting:", err));
+    fetchUserDetails();
   }, [id]);
 
   // Get chaired by person name and designation
@@ -103,14 +122,21 @@ const ViewMeeting = () => {
             </h2>
             <div className="border mt-5 bg-cyan-50 rounded-2xl mx-5">
               <div className="flex justify-end">
-                <Link to={`/meeting/viewMeetings/${meeting._id}/editmeeting`}>
-                  <button
-                    type="submit"
-                    className=" mt-5 mr-5 inline-flex justify-center rounded-md bg-[#52B14A] py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-[#45913e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                  >
-                    Update Evidences
-                  </button>
-                </Link>
+                {user &&
+                (user.role === "superadmin" ||
+                  user.role === "secretariatcoordinator " ||
+                  user.role === "coordinators") ? (
+                  <Link to={`/meeting/viewMeetings/${meeting._id}/editmeeting`}>
+                    <button
+                      type="submit"
+                      className=" mt-5 mr-5 inline-flex justify-center rounded-md bg-[#52B14A] py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-[#45913e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    >
+                      Update Evidences
+                    </button>
+                  </Link>
+                ) : (
+                  " "
+                )}
               </div>
               <div className="relative overflow-x-auto justify-center items-center flex">
                 <table className="text-lg text-left rtl:text-right text-black dark:text-gray-400">
