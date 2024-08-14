@@ -21,6 +21,12 @@ router.get(
   userControllers.getusers
 );
 
+router.get(
+  "/currentuser",
+  authControllers.protect,
+  userControllers.getLoggedInUser
+);
+
 router.put("/user/update/:id", userControllers.updateUser);
 router.delete("/user/delete/:id", userControllers.deleteUser);
 

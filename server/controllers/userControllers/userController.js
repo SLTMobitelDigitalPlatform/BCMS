@@ -104,3 +104,18 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json({ error: "Something Went Wrong", error });
   }
 };
+
+exports.getLoggedInUser = async (req, res) => {
+  try {
+    // req.user is set by the protect middleware
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found!" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
