@@ -108,7 +108,7 @@ exports.deleteUser = async (req, res) => {
 exports.getLoggedInUser = async (req, res) => {
   try {
     // req.user is set by the protect middleware
-    console.log(req.user);
+
     const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
