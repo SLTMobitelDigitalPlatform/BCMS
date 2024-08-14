@@ -2,19 +2,45 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
+import axios from "axios";
 
 const Meeting = () => {
   const [meetings, setMeetings] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [meetingToDelete, setMeetingToDelete] = useState(null);
+  const [user, setUser] = useState(null);
 
   // Fetch all meetings
   useEffect(() => {
-    fetch("http://localhost:5000/getMeetings")
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get("http://localhost:5000/currentuser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    const fetchMeetings = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getMeetings");
+        const data = await response.json();
         setMeetings(data);
-      });
+      } catch (error) {
+        console.error("Error fetching meetings data:", error);
+      }
+    };
+
+    fetchUserDetails();
+    // console.log(user.role);
+    fetchMeetings();
   }, []);
 
   // Delete a meeting
@@ -50,14 +76,20 @@ const Meeting = () => {
           <div className="flex justify-between">
             <h1 className="mt-5 text-[#52B14A] font-bold text-3xl">Meeting</h1>
 
-            <Link to={"createMeeting"}>
-              <button
-                type="button"
-                className="mt-5 focus:outline-none text-white bg-[#32a3a9] hover:bg-[#26777b] focus:ring-2 focus:ring-emerald-500 font-medium rounded-3xl text-m px-5 py-2.5"
-              >
-                Create a Meeting
-              </button>
-            </Link>
+            {user &&
+            (user.role === "superadmin" ||
+              user.role === "secretariatcoordinator ") ? (
+              <Link to={"createMeeting"}>
+                <button
+                  type="button"
+                  className="mt-5 focus:outline-none text-white bg-[#32a3a9] hover:bg-[#26777b] focus:ring-2 focus:ring-emerald-500 font-medium rounded-3xl text-m px-5 py-2.5"
+                >
+                  Create a Meeting
+                </button>
+              </Link>
+            ) : (
+              " "
+            )}
           </div>
           <div className="bg-cyan-50 p-3 mt-5 rounded-2xl px-5 border">
             {showConfirmation && (
@@ -130,22 +162,34 @@ const Meeting = () => {
                             View
                           </button>
                         </Link>
-                        <Link to={`/meeting/updateMeetings/${meeting._id}`}>
+                        {user &&
+                        (user.role === "superadmin" ||
+                          user.role === "secretariatcoordinator ") ? (
+                          <Link to={`/meeting/updateMeetings/${meeting._id}`}>
+                            <button
+                              type="button"
+                              className="text-white bg-green-500 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-4 py-2"
+                            >
+                              {/* [#52B14A] */}
+                              Update
+                            </button>
+                          </Link>
+                        ) : (
+                          " "
+                        )}{" "}
+                        {user &&
+                        (user.role === "superadmin" ||
+                          user.role === "secretariatcoordinator ") ? (
                           <button
                             type="button"
-                            className="text-white bg-green-500 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-4 py-2"
+                            className="text-white bg-red-600 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-4 py-2"
+                            onClick={() => showDeleteConfirmation(meeting._id)}
                           >
-                            {/* [#52B14A] */}
-                            Update
+                            Delete
                           </button>
-                        </Link>
-                        <button
-                          type="button"
-                          className="text-white bg-red-600 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-4 py-2"
-                          onClick={() => showDeleteConfirmation(meeting._id)}
-                        >
-                          Delete
-                        </button>
+                        ) : (
+                          " "
+                        )}{" "}
                         {/* [#B83C31] */}
                       </td>
                     </tr>

@@ -7,6 +7,17 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const handleLogout = async () => {
+  try {
+    localStorage.removeItem("token");
+
+    window.location.href = "/login";
+  } catch (error) {
+    console.error("Error logging out:", error);
+    alert("Failed to log out. Please try again.");
+  }
+};
+
 const Sidebar = () => {
   return (
     <div>
@@ -51,7 +62,7 @@ const Sidebar = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white font-medium shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-md bg-white font-medium shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none opacity-90">
                   <div className="py-1">
                     <Menu.Item>
                       {({ active }) => (
@@ -94,7 +105,22 @@ const Sidebar = () => {
                             "block px-4 py-2 text-[17px]"
                           )}
                         >
-                          Document 03
+                          BIA
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          to="/documents"
+                          className={classNames(
+                            active
+                              ? "bg-gray-100 text-gray-900 "
+                              : "text-gray-700 ",
+                            "block px-4 py-2 text-[17px]"
+                          )}
+                        >
+                          BCP
                         </Link>
                       )}
                     </Menu.Item>
@@ -126,7 +152,10 @@ const Sidebar = () => {
           </ul>
         </div>
         <div className="flex gap-3 mt-10">
-          <button className="px-8 py-1 bg-[#00BBF6] text-black font-semibold rounded-2xl">
+          <button
+            className="px-8 py-1 bg-[#00BBF6] text-black font-semibold rounded-2xl"
+            onClick={handleLogout}
+          >
             Logout
           </button>
           <button className="px-8 py-1 bg-[#C8ECFE] text-black font-semibold rounded-2xl">

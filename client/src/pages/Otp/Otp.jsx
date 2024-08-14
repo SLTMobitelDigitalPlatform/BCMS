@@ -36,11 +36,12 @@ const Otp = () => {
           localStorage.setItem("token", response.data.token);
           toast.success(response.data.message);
           const role = response.data.role;
+          console.log(role);
           switch (role) {
             case "superadmin":
               navigate("/admin");
               break;
-            case "secretariatcoordinator":
+            case "secretariatcoordinator ":
               navigate("/secrecoordinator");
               break;
             case "coordinators":
@@ -49,7 +50,7 @@ const Otp = () => {
             case "personsgivingapprovals":
               navigate("/personsgivingapprovals");
               break;
-            case "bcmteams":
+            case "bcmteams ":
               navigate("/team");
               break;
             case "employee":
