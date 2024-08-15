@@ -5,6 +5,7 @@ const authControllers = require("../../controllers/userControllers/authControlle
 
 router.post("/api/risks/add", riskAssesmentControllers.createRisk);
 router.get("/api/risks/", riskAssesmentControllers.getRisks);
+router.get("/api/risks/last", riskAssesmentControllers.getLastRisk);
 router.get("/api/risks/:id", riskAssesmentControllers.getRiskById);
 router.put("/api/risks/edit/:id", riskAssesmentControllers.updateRisk);
 router.delete("/api/risks/delete/:id", riskAssesmentControllers.deleteRisk);

@@ -257,14 +257,14 @@ const Formtable = ({ handleSubmit, handleOnChange, handleclose, rest }) => {
             >
               <option value="">Select Role</option>
               <option value="superadmin">Super admin</option>
-              <option value="secretariatcoordinator ">
+              <option value="secretariat coordinator">
                 BCM secretariat coordinator{" "}
               </option>
               <option value="coordinators">BCM coordinators </option>
-              <option value="personsgivingapprovals">
+              <option value="persons giving approvals">
                 Persons giving approvals (DGM, GM, CO){" "}
               </option>
-              <option value="bcmteams ">BCM teams </option>
+              <option value="bcmteams">BCM teams </option>
               <option value="employee">Employee </option>
               <option value="customer">Customer </option>
             </select>

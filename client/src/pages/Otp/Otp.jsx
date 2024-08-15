@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import backgroundImage from "../../assets/bgblue.png";
@@ -9,10 +9,34 @@ const Otp = () => {
   const [otp, setOtp] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
+  const [isResending, setIsResending] = useState(false);
+
+  const resendOtp = async () => {
+    setIsResending(true);
+    const { email, serviceNumber } = location.state;
+
+    try {
+      const response = await axios.post("http://localhost:5000/user/sendotp", {
+        email,
+        serviceNumber, // Include serviceNumber in the request
+      });
+
+      if (response.status === 200) {
+        toast.success("OTP has been resent to your email.");
+      } else {
+        toast.error(response.response.data.error);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Failed to resend OTP.");
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   const LoginUser = async (e) => {
     e.preventDefault();
     console.log(location.state);
+    const email = localStorage.getItem("email");
 
     if (otp === "") {
       toast.error("Enter Your OTP");
@@ -21,7 +45,7 @@ const Otp = () => {
     } else {
       const data = {
         otp,
-        email: location.state,
+        email,
       };
 
       try {
@@ -33,20 +57,23 @@ const Otp = () => {
         console.log(response);
 
         if (response.status === 200) {
+          localStorage.removeItem("email");
+          localStorage.removeItem("serviceNumber");
           localStorage.setItem("token", response.data.token);
           toast.success(response.data.message);
           const role = response.data.role;
+          console.log(role);
           switch (role) {
             case "superadmin":
               navigate("/admin");
               break;
-            case "secretariatcoordinator":
+            case "secretariat coordinator":
               navigate("/secrecoordinator");
               break;
             case "coordinators":
               navigate("/coordinator");
               break;
-            case "personsgivingapprovals":
+            case "persons giving approvals":
               navigate("/personsgivingapprovals");
               break;
             case "bcmteams":
@@ -114,20 +141,20 @@ const Otp = () => {
             <p className="flex items-center justify-center p-1">
               Didnt Recieve OTP code?
             </p>
-            <a
-              href="#"
+            <Link
+              onClick={resendOtp}
               //   onClick={handleResendCode}
               className="flex items-center justify-center text-blue-700 underline cursor-pointer p-2"
             >
               Resend Code
-            </a>
+            </Link>
             <div className="text-center">
-              <button
+              <Link
                 className="bg-gradient-to-r from-blue-900 to-green-500 text-white px-8 py-3 rounded-full font-bold w-64"
                 onClick={LoginUser}
               >
                 Verify & Continue
-              </button>
+              </Link>
             </div>
           </form>
         </div>

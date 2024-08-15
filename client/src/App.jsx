@@ -104,12 +104,10 @@ function App() {
         <Route path="/event/:id/update" element={<UpdateEvent />} />
         <Route path="/add-event" element={<AddEvents />} />
 
-        {/* Documents - Risk Assesement */}
         <Route path="/riskAssesements" element={<RiskAssesement />} />
         <Route path="/createRisk" element={<CreateRiskAssesement />} />
         <Route path="/editRisk/:id" element={<EditRiskAssesement />} />
 
-        {/* Documents - Context of the organization */}
         <Route path="/versionControls" element={<VersionControls />} />
         <Route path="/createVersion" element={<CreateVersionControl />} />
         <Route path="/editVersion/:id" element={<EditVersionControl />} />

@@ -12,13 +12,14 @@ router.get("/user/:id", userControllers.getUserById);
 router.get(
   "/users",
   authControllers.protect,
-  authControllers.restrict(
-    "superadmin",
-    "secretariatcoordinator ",
-    "bcmteams ",
-    "coordinators"
-  ),
+  authControllers.restrict("superadmin", "secretariat coordinator"),
   userControllers.getusers
+);
+
+router.get(
+  "/currentuser",
+  authControllers.protect,
+  userControllers.getLoggedInUser
 );
 
 router.put("/user/update/:id", userControllers.updateUser);
