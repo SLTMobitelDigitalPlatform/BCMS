@@ -94,12 +94,10 @@ function App() {
         <Route path="/event/:id/update" element={<UpdateEvent />} />
         <Route path="/add-event" element={<AddEvents />} />
 
-        {/* Documents - Risk Assesement */}
         <Route path="/riskAssesements" element={<RiskAssesement />} />
         <Route path="/createRisk" element={<CreateRiskAssesement />} />
         <Route path="/editRisk/:id" element={<EditRiskAssesement />} />
-        {/* Documents End - Risk Assesement */}
-        {/* Documents - Context of the organization */}
+
         <Route path="/versionControls" element={<VersionControls />} />
         <Route path="/createVersion" element={<CreateVersionControl />} />
         <Route path="/editVersion/:id" element={<EditVersionControl />} />
@@ -109,7 +107,6 @@ function App() {
         <Route path="/masterProcedures" element={<MasterProcedures />} />
         <Route path="/internalIssues" element={<InternalIssues />} />
         <Route path="/externalIssues" element={<ExternalIssues />} />
-        {/* Documents End - Context of the organization */}
       </Routes>
     </Router>
   );

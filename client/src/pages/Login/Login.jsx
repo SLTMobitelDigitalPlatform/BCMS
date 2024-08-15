@@ -33,7 +33,9 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        navigate("/otp", { state: email });
+        localStorage.setItem("email", email);
+        localStorage.setItem("serviceNumber", serviceNumber);
+        navigate("/otp", { state: { email, serviceNumber } });
       } else {
         toast.error(response.response.data.error);
       }

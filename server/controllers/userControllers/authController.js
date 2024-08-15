@@ -102,9 +102,22 @@ exports.userLogin = async (req, res) => {
   }
 
   try {
-    const otpverification = await UserOtp.findOne({ email: email });
+    const otpVerification = await UserOtp.findOne({ email: email });
 
-    if (otpverification.otp === otp) {
+    if (!otpVerification) {
+      return res.status(400).json({ error: "Invalid OTP or email" });
+    }
+    // Check if OTP has expired
+    const currentTime = Date.now();
+    // adding 5 min to created time
+    const otpExpirationTime =
+      new Date(otpVerification.createdAt).getTime() + 300000; // 300000ms = 5 minutes
+
+    if (currentTime > otpExpirationTime) {
+      return res.status(400).json({ error: "OTP has expired" });
+    }
+
+    if (otpVerification.otp === otp) {
       const preuser = await User.findOne({ email: email });
 
       // token generate
