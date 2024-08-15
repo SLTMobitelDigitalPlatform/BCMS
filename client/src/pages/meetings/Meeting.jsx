@@ -78,7 +78,7 @@ const Meeting = () => {
 
             {user &&
             (user.role === "superadmin" ||
-              user.role === "secretariatcoordinator ") ? (
+              user.role === "secretariat coordinator") ? (
               <Link to={"createMeeting"}>
                 <button
                   type="button"
@@ -164,7 +164,7 @@ const Meeting = () => {
                         </Link>
                         {user &&
                         (user.role === "superadmin" ||
-                          user.role === "secretariatcoordinator ") ? (
+                          user.role === "secretariat coordinator") ? (
                           <Link to={`/meeting/updateMeetings/${meeting._id}`}>
                             <button
                               type="button"
@@ -179,7 +179,7 @@ const Meeting = () => {
                         )}{" "}
                         {user &&
                         (user.role === "superadmin" ||
-                          user.role === "secretariatcoordinator ") ? (
+                          user.role === "secretariat coordinator") ? (
                           <button
                             type="button"
                             className="text-white bg-red-600 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-4 py-2"

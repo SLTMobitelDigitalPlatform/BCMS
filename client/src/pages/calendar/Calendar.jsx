@@ -47,7 +47,7 @@ export default function Calendar() {
         <div className="relative min-h-screen mr-6 ml-10">
           {user &&
           (user.role === "superadmin" ||
-            user.role === "secretariatcoordinator " ||
+            user.role === "secretariat coordinator" ||
             user.role === "coordinators") &&
           !showAddEvent ? (
             <button
