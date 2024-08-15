@@ -51,7 +51,7 @@ const Roles = () => {
             </h1>
             {user &&
             (user.role === "superadmin" ||
-              user.role === "secretariatcoordinator ") ? (
+              user.role === "secretariat coordinator") ? (
               <div>
                 <Link to="/roles/createRoles">
                   <button

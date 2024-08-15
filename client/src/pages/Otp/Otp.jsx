@@ -67,16 +67,16 @@ const Otp = () => {
             case "superadmin":
               navigate("/admin");
               break;
-            case "secretariatcoordinator ":
+            case "secretariat coordinator":
               navigate("/secrecoordinator");
               break;
             case "coordinators":
               navigate("/coordinator");
               break;
-            case "personsgivingapprovals":
+            case "persons giving approvals":
               navigate("/personsgivingapprovals");
               break;
-            case "bcmteams ":
+            case "bcmteams":
               navigate("/team");
               break;
             case "employee":

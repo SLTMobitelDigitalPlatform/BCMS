@@ -34,10 +34,10 @@ const userSchema = new mongoose.Schema(
       required: false,
       enum: [
         "superadmin",
-        "secretariatcoordinator ",
+        "secretariat coordinator",
         "coordinators",
-        "personsgivingapprovals",
-        "bcmteams ",
+        "persons giving approvals",
+        "bcmteams",
         "employee",
         "customer",
       ],
@@ -57,6 +57,7 @@ const userSchema = new mongoose.Schema(
         token: {
           type: String,
           required: true,
+          select: false,
         },
       },
     ],

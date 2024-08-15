@@ -7,11 +7,15 @@ import intranet from "../assets/intranet.png";
 import group from "../assets/group.png";
 import policy from "../assets/policy.png";
 import org from "../assets/org.png";
+import { Link } from "react-router-dom";
 
 const SecreCoordinatorDashboard = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full lg:w-auto">
-      <Card title="View User roles & Responsibilities" icon={userRole} />
+      <Link to="/employee">
+        <Card title="View User roles & Responsibilities" icon={userRole} />
+      </Link>
+
       <Card title="View Documents" icon={docu} />
       <Card title="Calendar" icon={calendar} />
       <Card title="Intranet" icon={intranet} />
