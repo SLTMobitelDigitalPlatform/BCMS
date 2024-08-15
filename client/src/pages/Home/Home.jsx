@@ -1,97 +1,161 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "./home.css";
-// import Swal from "sweetalert2";
+import React, { useEffect, useState } from "react";
+import { FaUsers } from "react-icons/fa";
+import { RxExclamationTriangle } from "react-icons/rx";
+import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
+import { TfiHeadphoneAlt } from "react-icons/tfi";
+import { VscFeedback } from "react-icons/vsc";
+import { Link } from "react-router-dom";
+import image1 from "../../assets/header/1.jpg";
+import image2 from "../../assets/header/2.jpg";
+import image3 from "../../assets/header/3.jpg";
+import logo from "../../assets/logo.png";
+
+const coverImages = [image1, image2, image3];
 
 const Home = () => {
-  const [descriptions, setDescriptions] = useState([]);
-  const [coverImages, setCoverImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchDescriptions();
-    fetchCoverImages();
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % coverImages.length);
-    }, 3000);
-
+    }, 5000); // Change image every 5 seconds
     return () => clearInterval(interval);
-  }, [coverImages.length]);
-
-  const fetchDescriptions = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/getDescriptions");
-      setDescriptions(response.data);
-    } catch (error) {
-      console.error("Error fetching descriptions:", error);
-      alert("Error fetching descriptions");
-    }
-  };
-
-  const fetchCoverImages = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/getCoverImages");
-      console.log(response.data);
-      setCoverImages(response.data);
-    } catch (error) {
-      console.error("Error fetching cover images:", error);
-    }
-  };
+  }, []);
 
   return (
-    <div>
-      <div className="relative-container m-3">
-        <Link to="/login">
-          <div className="btn align-top login-button">Login</div>
-        </Link>
-      </div>
-
-      <header className="relative flex justify-center mt-5">
+    <div className="relative w-screen h-screen overflow-x-hidden bg-black">
+      <header className="relative w-full h-screen overflow-x-hidden">
         {coverImages.length > 0 ? (
           <img
-            src={`http://localhost:5000${coverImages[currentImageIndex]}`}
+            src={coverImages[currentImageIndex]}
             alt="Cover"
-            className="w-full h-[600px] object-cover rounded-3xl " // Set fixed height and maintain aspect ratio
-            style={{ maxWidth: "90%", marginTop: "2rem" }}
+            className="w-full h-full object-cover opacity-50 transition-opacity duration-1000"
           />
         ) : (
-          <p>No cover images available</p>
+          <p className="text-white">No cover images available</p>
         )}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {/* Left Arrow */}
+        <button
+          onClick={() =>
+            setCurrentImageIndex(
+              (prevIndex) =>
+                (prevIndex - 1 + coverImages.length) % coverImages.length
+            )
+          }
+          className="absolute left-4 top-1/2 bg-black bg-opacity-60 p-3 rounded-full hover:bg-opacity-30 hover:bg-white"
+        >
+          <TbChevronLeft className="text-white text-3xl" />
+        </button>
+
+        {/* Right Arrow */}
+        <button
+          onClick={() =>
+            setCurrentImageIndex(
+              (prevIndex) => (prevIndex + 1) % coverImages.length
+            )
+          }
+          className="absolute right-4 top-1/2 bg-black bg-opacity-60 p-3 rounded-full hover:bg-opacity-30 hover:bg-white"
+        >
+          <TbChevronRight className="text-white text-3xl" />
+        </button>
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
           {coverImages.map((_, index) => (
             <div
               key={index}
               className={`w-4 h-4 rounded-full ${
-                index === currentImageIndex ? "bg-blue-500" : "bg-gray-400"
+                index === currentImageIndex ? "bg-blue-500" : "bg-gray-400" // color of dots
               }`}
             ></div>
           ))}
         </div>
       </header>
-      <main className="p-8 bg-white">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {descriptions.map((item) => (
-            <div
-              key={item._id}
-              className="text-center max-w-xs mx-auto relative"
+
+      <div className="absolute top-0 left-0 w-full p-4">
+        <div className="flex justify-between items-center">
+          <img src={logo} className="w-32 h-auto" alt="Logo" />
+          <div className="flex space-x-4">
+            <Link
+              to="/login"
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer"
             >
-              <img
-                src={`http://localhost:5000/${item.imageUrl}`}
-                alt={item.description}
-                className="h-32 mb-4 mx-auto cursor-pointer"
-                onClick={() => navigate(`/description/${item._id}`)}
-              />
-              <h2 className="text-xl font-bold">{item.header}</h2>
-              <p className="mt-2 text-gray-600">{item.description}</p>
-            </div>
-          ))}
+              Login
+            </Link>
+            <Link
+              to="/subscribe"
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 cursor-pointer"
+            >
+              Subscribe
+            </Link>
+          </div>
         </div>
-      </main>
+      </div>
+
+      <div className="relative p-8 bg-white">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-6">
+          {/* Risk Management */}
+          <Link
+            to="/risk-management"
+            className="text-center p-6 max-w-xs mx-auto border-blue-500 border-2 rounded-lg relative hover:shadow-xl"
+          >
+            <div className="bg-blue-800 rounded-full w-28 h-28 flex items-center justify-center mx-auto mb-4">
+              <RxExclamationTriangle className="text-white text-6xl cursor-pointer" />
+            </div>
+            <h2 className="text-lg font-bold">Risk Management</h2>
+            <p className="text-sm mt-2">
+              Risk management is intended to manage financial and other losses
+              associated with risks to your assets or business.
+            </p>
+          </Link>
+
+          {/* About Us */}
+          <Link
+            to="/about-us"
+            className="text-center p-6 max-w-xs mx-auto border-blue-500 border-2 rounded-lg relative  hover:shadow-xl"
+          >
+            <div className="bg-blue-800 rounded-full w-28 h-28 flex items-center justify-center mx-auto mb-4">
+              <FaUsers className="text-white text-6xl cursor-pointer" />
+            </div>
+            <h2 className="text-lg font-bold">About Us</h2>
+            <p className="text-sm mt-2">
+              Through rapid development, depth of knowledge, innovative
+              thinking, and commitment to diversity, we help save time, money,
+              and lives.
+            </p>
+          </Link>
+
+          {/* Contact Us */}
+          <Link
+            to="/contact-us"
+            className="text-center p-6 max-w-xs mx-auto border-blue-500 border-2 rounded-lg relative  hover:shadow-xl"
+          >
+            <div className="bg-blue-800 rounded-full w-28 h-28 flex items-center justify-center mx-auto mb-4">
+              <TfiHeadphoneAlt className="text-white text-6xl cursor-pointer" />
+            </div>
+
+            <h2 className="text-lg font-bold">Contact Us</h2>
+            <p className="text-sm mt-2">
+              Get in touch with us for any inquiries, support, or assistance.
+              We're here to help!
+            </p>
+          </Link>
+
+          {/* Feedback */}
+          <Link
+            to="/feedback"
+            className="text-center p-6 max-w-xs mx-auto border-blue-500 border-2 rounded-lg relative  hover:shadow-xl"
+          >
+            <div className="bg-blue-800 rounded-full w-28 h-28 flex items-center justify-center mx-auto mb-4">
+              <VscFeedback className="text-white text-6xl cursor-pointer" />
+            </div>
+
+            <h2 className="text-lg font-bold">Feedback</h2>
+            <p className="text-sm mt-2">
+              Your opinion matters! Share your thoughts and help us improve your
+              experience.
+            </p>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
