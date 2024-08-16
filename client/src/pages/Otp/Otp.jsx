@@ -7,8 +7,8 @@ import logo from "../../assets/SLTLogo.png";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
-  const [minutes, setMinutes] = useState(1);
-  const [seconds, setSeconds] = useState(59);
+  const [minutes, setMinutes] = useState(5);
+  const [seconds, setSeconds] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const [isResending, setIsResending] = useState(false);
@@ -16,7 +16,6 @@ const Otp = () => {
   const resendOtp = async () => {
     setIsResending(true);
     const { email, serviceNumber } = location.state;
-
     try {
       const response = await axios.post("http://localhost:5000/user/sendotp", {
         email,
@@ -28,6 +27,8 @@ const Otp = () => {
       } else {
         toast.error(response.response.data.error);
       }
+      setMinutes(5);
+      setSeconds(0);
     } catch (error) {
       toast.error(error.response?.data?.error || "Failed to resend OTP.");
     } finally {
@@ -35,13 +36,22 @@ const Otp = () => {
     }
   };
 
-  // useEffect(() => {
-  //   first
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      } else if (minutes > 0 && seconds === 0) {
+        setSeconds(59);
+        setMinutes(minutes - 1);
+      } else {
+        clearInterval(interval); // Stop the countdown when both minutes and seconds reach 0
+      }
+    }, 1000);
 
-  //   return () => {
-  //     second
-  //   }
-  // }, [third])
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds, minutes]);
 
   const LoginUser = async (e) => {
     e.preventDefault();
@@ -123,68 +133,65 @@ const Otp = () => {
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="p-8 rounded-lg shadow-lg overflow-hidden w-1/2 bg-white">
-        <div className="w-full p-8">
-          <div className="mb-6 text-center">
-            <div className="flex items-center justify-center">
-              <img src={logo} alt="Logo" className="h-16" />
-            </div>
-            <h1 className="text-4xl font-bold text-blue-900 p-5">
-              SLT Mobitel Awaiting You
-            </h1>
-            <hr className="border-t-4 border-green-500 p-2" />
+        {/* Logo and Header */}
+        <div className="text-center">
+          <img src={logo} alt="Logo" className="h-16 mx-auto" />
 
-            <p className="text-blue-900 p-2">
-              Your OTP code was sent to you via Email
-            </p>
-          </div>
-          <div>
-            <p>
-              Time Remaining:{" "}
-              <span>{minutes < 10 ? `0${minutes}` : minutes}</span>
-              <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-            </p>
-          </div>
+          <h1 className="text-4xl font-bold text-blue-900 p-5">
+            SLT Mobitel Awaiting You
+          </h1>
+          <hr className="border-t-4 border-green-500 p-2" />
+          <p className="text-blue-900 p-2">
+            Your OTP code was sent to you via Email
+          </p>
+        </div>
 
-          {/* Button to resend OTP */}
-          <button
-            disabled={seconds > 0 || minutes > 0}
-            style={{ color: seconds > 0 || minutes > 0 ? "red" : "green" }}
-            onClick={resendOtp}
-          >
-            Resend OTP
-          </button>
+        {/* Countdown Timer */}
+        <p className="text-center mb-6">
+          Time Remaining: <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:
+          <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
+        </p>
 
-          <form>
-            <div className="mb-3 flex items-center justify-center">
-              <input
-                type="text"
-                name="otp"
-                id="otp"
-                onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter Your OTP"
-                className="mt-1 p-2 w-80 border rounded-2xl border-black "
-              />
-            </div>
-            <p className="flex items-center justify-center p-1">
-              Didnt Recieve OTP code?
-            </p>
-            <Link
+        <form className="space-y-4">
+          <input
+            type="text"
+            name="otp"
+            id="otp"
+            onChange={(e) => setOtp(e.target.value)}
+            placeholder="Enter Your OTP"
+            className="block mx-auto p-2 w-80 border rounded-2xl border-black"
+          />
+
+          <p className="text-center">Didnt Recieve OTP code?</p>
+
+          {/* <Link
               onClick={resendOtp}
               //   onClick={handleResendCode}
               className="flex items-center justify-center text-blue-700 underline cursor-pointer p-2"
             >
               Resend Code
-            </Link>
-            <div className="text-center">
-              <Link
-                className="bg-gradient-to-r from-blue-900 to-green-500 text-white px-8 py-3 rounded-full font-bold w-64"
-                onClick={LoginUser}
-              >
-                Verify & Continue
-              </Link>
-            </div>
-          </form>
-        </div>
+            </Link> */}
+
+          {/* Button to resend OTP */}
+          <button
+            disabled={isResending || seconds > 0 || minutes > 0}
+            className={`block mx-auto text-center ${
+              isResending || seconds > 0 || minutes > 0
+                ? "text-gray-700 opacity-60"
+                : "text-blue-700 cursor-pointer hover:underline"
+            }`}
+            onClick={resendOtp}
+          >
+            {isResending ? "Resending..." : "Resend OTP"}
+          </button>
+
+          <Link
+            className="block mx-auto w-64 bg-gradient-to-r from-blue-900 to-green-500 text-white px-8 py-3 rounded-full font-bold text-center"
+            onClick={LoginUser}
+          >
+            Verify & Continue
+          </Link>
+        </form>
       </div>
       <ToastContainer />
     </div>
