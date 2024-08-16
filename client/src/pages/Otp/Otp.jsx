@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
@@ -7,6 +7,8 @@ import logo from "../../assets/SLTLogo.png";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
+  const [minutes, setMinutes] = useState(1);
+  const [seconds, setSeconds] = useState(59);
   const location = useLocation();
   const navigate = useNavigate();
   const [isResending, setIsResending] = useState(false);
@@ -32,6 +34,14 @@ const Otp = () => {
       setIsResending(false);
     }
   };
+
+  // useEffect(() => {
+  //   first
+
+  //   return () => {
+  //     second
+  //   }
+  // }, [third])
 
   const LoginUser = async (e) => {
     e.preventDefault();
@@ -127,6 +137,23 @@ const Otp = () => {
               Your OTP code was sent to you via Email
             </p>
           </div>
+          <div>
+            <p>
+              Time Remaining:{" "}
+              <span>{minutes < 10 ? `0${minutes}` : minutes}</span>
+              <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
+            </p>
+          </div>
+
+          {/* Button to resend OTP */}
+          <button
+            disabled={seconds > 0 || minutes > 0}
+            style={{ color: seconds > 0 || minutes > 0 ? "red" : "green" }}
+            onClick={resendOtp}
+          >
+            Resend OTP
+          </button>
+
           <form>
             <div className="mb-3 flex items-center justify-center">
               <input
