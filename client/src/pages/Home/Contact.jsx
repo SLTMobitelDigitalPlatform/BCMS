@@ -120,7 +120,7 @@ const Contact = () => {
             Contact Us
           </h1>
           <form onSubmit={handleSubmit}>
-            {/* Full Name */}
+            {/* Name */}
             <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg">
               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
               <input
