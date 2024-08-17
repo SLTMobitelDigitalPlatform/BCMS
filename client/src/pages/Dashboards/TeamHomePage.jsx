@@ -1,4 +1,3 @@
-import React from "react";
 import Welcome from "../../components/Welcome";
 import Navbar from "../../components/Navbar";
 import TeamDashboard from "../../components/TeamDashboard";

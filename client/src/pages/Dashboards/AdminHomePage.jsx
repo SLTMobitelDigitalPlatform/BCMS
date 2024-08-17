@@ -1,6 +1,4 @@
-import React from "react";
 import Welcome from "../../components/Welcome";
-import Navbar from "../../components/Navbar";
 import AdminDashboard from "../../components/AdminDashboard";
 
 const AdminHomePage = () => {

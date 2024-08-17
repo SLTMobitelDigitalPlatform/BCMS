@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import backgroundImage from "../../../src/assets/editHome/background.jpg"; // Ensure this path is correct

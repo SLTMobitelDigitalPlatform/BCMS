@@ -1,5 +1,4 @@
-import React from "react";
-import { FaSearch, FaUserCircle } from "react-icons/fa"; // Ensure you have react-icons installed
+import { FaUserCircle } from "react-icons/fa"; // Ensure you have react-icons installed
 import logo from "../assets/SLTLogo.png";
 
 const Navbar = () => {

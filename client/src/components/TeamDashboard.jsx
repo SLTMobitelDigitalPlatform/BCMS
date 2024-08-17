@@ -1,12 +1,11 @@
-import React from "react";
-import Card from "./Card";
-import userRole from "../assets/user.png";
-import docu from "../assets/docu.png";
 import calendar from "../assets/calendar.png";
-import intranet from "../assets/intranet.png";
+import docu from "../assets/docu.png";
 import group from "../assets/group.png";
-import policy from "../assets/policy.png";
+import intranet from "../assets/intranet.png";
 import org from "../assets/org.png";
+import policy from "../assets/policy.png";
+import userRole from "../assets/user.png";
+import Card from "./Card";
 
 const TeamDashboard = () => {
   return (
