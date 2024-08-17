@@ -105,14 +105,12 @@
 // };
 
 // export default Formtable;
-import React, { useState } from "react";
+import { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { validateFormData } from "./FormValidations";
-import { useNavigate } from "react-router-dom";
 
 const Formtable = ({ handleSubmit, handleOnChange, handleclose, rest }) => {
   const [errors, setErrors] = useState({}); // State to store form errors
-  const navigate = useNavigate();
 
   // Function to handle form submission
   const handleFormSubmit = (e) => {

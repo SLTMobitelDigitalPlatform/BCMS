@@ -1,16 +1,14 @@
-import React, { useState } from "react";
 import axios from "axios";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../../assets/logo.png";
-import google from "../../assets/google.png";
-import microsoft from "../../assets/microsoft.png";
 import "../../index.css";
-import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
+  // const [otp, setOtp] = useState("");
   const [serviceNumber, setServiceNumber] = useState("");
   const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);

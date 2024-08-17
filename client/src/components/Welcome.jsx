@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import userAcc from "../assets/Vector.png";
 
@@ -37,10 +37,22 @@ const Welcome = () => {
             <>
               <h2 className="font-bold text-blue-900 text-xl">{user.name}</h2>
               <p className="text-blue-900 text-md">{user.email}</p>
-              <p className="text-blue-900 text-md">{user.role}</p>
-              <p className="text-blue-900 text-md">{user.section}</p>
               <p className="text-blue-900 text-md">
-                Service NO: {user.serviceNumber}
+                {user.role === "superadmin"
+                  ? "Super Admin"
+                  : user.role === "secretariat coordinator"
+                  ? "Secretariat Coordinator"
+                  : user.role === "coordinators"
+                  ? "Coordinators"
+                  : user.role === "persons giving approvals"
+                  ? "Persons Giving Approvals"
+                  : user.role === "bcmteams"
+                  ? "BCM Teams"
+                  : "Employee"}
+              </p>
+              <p className="text-blue-900 text-md capitalize">{user.section}</p>
+              <p className="text-blue-900 text-md">
+                Service No: {user.serviceNumber}
               </p>
             </>
           ) : (
