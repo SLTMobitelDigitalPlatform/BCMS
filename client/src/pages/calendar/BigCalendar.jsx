@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import axios from "axios";
 import format from "date-fns/format";
-import parse from "date-fns/parse";
-import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
+import React, { useEffect, useRef, useState } from "react";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./custom.css"; // Make sure this imports Tailwind CSS styles properly
 import Popping from "./Popping";
-import axios from "axios";
 
 const locales = {
   "en-US": enUS,

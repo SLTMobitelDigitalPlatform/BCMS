@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import AboutmeForm from "./components/AboutmeForm";
 import AboutmeView from "./components/AboutmeView";
@@ -41,6 +40,7 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
+import FeedbackList from "./pages/Home/FeedbackList";
 
 function App() {
   return (
@@ -52,6 +52,7 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/feedback" element={<Feedback />} />
+        <Route path="/feedbacks" element={<FeedbackList />} />
 
         {/* <Route path="/edit" element={<EditPage />} /> */}
         <Route path="/description/:id" element={<DescriptionPage />} />

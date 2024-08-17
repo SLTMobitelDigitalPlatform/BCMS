@@ -10,9 +10,31 @@ import { useNavigate } from "react-router-dom";
 const Feedback = () => {
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setFeedbackSubmitted(true);
+
+    const feedbackData = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      subject: e.target.subject.value,
+      message: e.target.message.value,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(feedbackData),
+      });
+
+      const data = await response.json();
+      console.log(data.message);
+      setFeedbackSubmitted(true);
+    } catch (err) {
+      console.error("Error submitting feedback:", err);
+    }
   };
 
   const closeModal = () => {
