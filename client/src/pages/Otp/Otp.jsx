@@ -96,7 +96,7 @@ const Otp = () => {
             case "Person Giving Approvals":
               navigate("/personsgivingapprovals");
               break;
-            case "BCM teams":
+            case "BCM Teams":
               navigate("/team");
               break;
             case "Employee":
