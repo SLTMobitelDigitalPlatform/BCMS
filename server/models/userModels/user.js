@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    serviceNumber: { type: String, required: false },
+    serviceNumber: { type: String, required: true },
     designation: { type: String, required: false },
     email: {
       type: String,
@@ -23,30 +23,23 @@ const userSchema = new mongoose.Schema(
         }
       },
     },
-    password: {
-      type: String,
-      required: false,
-      minlength: 6,
-      // select: false,
-    },
     role: {
       type: String,
-      required: false,
+      required: true,
       enum: [
-        "superadmin",
-        "secretariat coordinator",
-        "coordinators",
-        "persons giving approvals",
-        "bcmteams",
-        "employee",
+        "Super Admin",
+        "Secretariat Coordinator",
+        "BCM Coordinator",
+        "Person Giving Approvals",
+        "BCM teams",
+        "Employee",
         "customer",
       ],
       default: "customer",
     },
     section: { type: String, required: false },
-    province: { type: String, required: false },
-    company: { type: String, required: false },
-    subPreference: {
+
+    callTree: {
       type: [String], // Define as an array of strings
       required: false,
     },

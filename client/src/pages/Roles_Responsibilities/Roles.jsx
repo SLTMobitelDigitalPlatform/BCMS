@@ -50,8 +50,8 @@ const Roles = () => {
               Roles & Responsibilities
             </h1>
             {user &&
-            (user.role === "superadmin" ||
-              user.role === "secretariat coordinator") ? (
+            (user.role === "Super Admin" ||
+              user.role === "Secretariat Coordinator") ? (
               <div>
                 <Link to="/roles/createRoles">
                   <button

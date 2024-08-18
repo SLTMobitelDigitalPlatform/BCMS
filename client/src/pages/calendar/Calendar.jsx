@@ -46,9 +46,9 @@ export default function Calendar() {
         <Sidebar />
         <div className="relative min-h-screen mr-6 ml-10">
           {user &&
-          (user.role === "superadmin" ||
-            user.role === "secretariat coordinator" ||
-            user.role === "coordinators") &&
+          (user.role === "Super Admin" ||
+            user.role === "Secretariat Coordinator" ||
+            user.role === "BCM Coordinator") &&
           !showAddEvent ? (
             <button
               onClick={handleAddEventClick}
