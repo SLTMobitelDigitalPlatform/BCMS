@@ -24,6 +24,8 @@ const AddEvents = ({ onAddEvent }) => {
   const [dbError, setDbError] = useState(null);
   const [dropdownValue, setDropdownValue] = useState("");
   const [firstRender, setFirstRender] = useState(true);
+  const [employees, setEmployees] = useState([]);
+  const [attendees, setAttendees] = useState([]);
 
   const {
     register,
@@ -40,8 +42,22 @@ const AddEvents = ({ onAddEvent }) => {
     }
   }, [dbError]);
 
+  useEffect(() => {
+    fetch("http://localhost:5000/users", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setEmployees(data);
+      });
+  }, []);
+
   const onSubmit = async (values) => {
     setFirstRender(false);
+    console.log("Start Date:", values.start);
+    console.log("End Date:", values.end);
     try {
       const newEvent = {
         title: values.title,
@@ -49,6 +65,7 @@ const AddEvents = ({ onAddEvent }) => {
         end: values.end,
         describe: values.describe,
         section: dropdownValue,
+        attendees: attendees.map((attendee) => attendee._id),
       };
       const response = await axios.post(
         "http://localhost:5000/events",
@@ -60,6 +77,18 @@ const AddEvents = ({ onAddEvent }) => {
     } catch (error) {
       setDbError(error.response.data);
     }
+  };
+
+  const handleAttendeeClick = (employee) => {
+    setAttendees((prevAttendees) => {
+      if (prevAttendees.some((attendee) => attendee._id === employee._id)) {
+        console.warn(
+          `Employee with ID ${employee._id} already added as an attendee.`
+        );
+        return prevAttendees;
+      }
+      return [...prevAttendees, employee];
+    });
   };
 
   const dropdownOptions = [
@@ -200,6 +229,31 @@ const AddEvents = ({ onAddEvent }) => {
             className="form-input w-full rounded-xl border border-gray-400 p-3 focus:ring-2 focus:ring-green-400 focus:border-blue-500"
             id="describe"
           />
+        </div>
+
+        <div className="mb-6">
+          <label
+            htmlFor="attendees"
+            className="block text-gray-700 font-bold mb-2"
+          >
+            Select Attendees
+          </label>
+          <div className="flex flex-wrap gap-4">
+            {employees.map((employee) => (
+              <button
+                type="button"
+                key={employee._id}
+                onClick={() => handleAttendeeClick(employee)}
+                className={`p-2 border rounded-lg ${
+                  attendees.some((attendee) => attendee._id === employee._id)
+                    ? "bg-green-200"
+                    : "bg-gray-200"
+                }`}
+              >
+                {employee.name}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="mb-9 flex justify-center">
