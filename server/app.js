@@ -18,6 +18,7 @@ const routerEvent = require("./routes/eventRoutes/EventRoutes");
 const routerRisk = require("./routes/documentRoutes/riskAssesemetRoutes");
 const routerVersion = require("./routes/documentRoutes/versionControlRoutes");
 const routerFeedback = require("./routes/homeRoutes/feedbackRoutes");
+const routerCustomer = require("./routes/customerRoutes/customerRoutes");
 
 const PORT = 5000;
 
@@ -35,7 +36,8 @@ app.use(
   routerEvent,
   routerRisk,
   routerVersion,
-  routerFeedback
+  routerFeedback,
+  routerCustomer
 );
 
 // Create uploads directory if it doesn't exist

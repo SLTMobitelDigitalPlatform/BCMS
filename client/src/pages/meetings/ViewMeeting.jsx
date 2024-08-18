@@ -123,9 +123,9 @@ const ViewMeeting = () => {
             <div className="border mt-5 bg-cyan-50 rounded-2xl mx-5">
               <div className="flex justify-end">
                 {user &&
-                (user.role === "superadmin" ||
-                  user.role === "secretariatcoordinator " ||
-                  user.role === "coordinators") ? (
+                (user.role === "Super Admin" ||
+                  user.role === "Secretariat Coordinator" ||
+                  user.role === "BCM Coordinator") ? (
                   <Link to={`/meeting/viewMeetings/${meeting._id}/editmeeting`}>
                     <button
                       type="submit"

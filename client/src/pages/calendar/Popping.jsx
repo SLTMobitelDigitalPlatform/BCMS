@@ -72,8 +72,8 @@ const Popping = ({ open, handleClose, event, fetchEvents }) => {
           Close
         </Button>
         {user &&
-        (user.role === "superadmin" ||
-          user.role === "secretariat coordinator") ? (
+        (user.role === "Super Admin" ||
+          user.role === "Secretariat Coordinator") ? (
           <>
             <Button
               className="bg-green-600 text-white hover:bg-green-500 border-0 rounded-md py-2 px-4 mr-2"

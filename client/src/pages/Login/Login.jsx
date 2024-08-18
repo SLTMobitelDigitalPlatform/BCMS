@@ -58,19 +58,19 @@ const Login = () => {
   //     }
 
   //     switch (role) {
-  //       case "superadmin":
+  //       case "Super Admin":
   //         window.location.href = "/admin";
   //         break;
   //       case "secretariatcoordinator":
   //         window.location.href = "/secrecoordinator";
   //         break;
-  //       case "coordinators":
+  //       case "BCM Coordinator":
   //         window.location.href = "/coordinator";
   //         break;
   //       case "personsgivingapprovals":
   //         window.location.href = "/personsgivingapprovals";
   //         break;
-  //       case "bcmteams":
+  //       case "BCM teams":
   //         window.location.href = "/team";
   //         break;
   //       case "employee":

@@ -37,16 +37,14 @@ exports.userRegister = async (req, res) => {
     serviceNumber,
     contactNumber,
     role,
-    province,
-    company,
-    subPreference,
+    callTree,
   } = req.body;
 
-  if (!name || !email || !contactNumber) {
-    res.status(400).json({ error: "Please Enter All Input Data" });
-  }
-
   try {
+    if (!name || !email || !contactNumber) {
+      res.status(400).json({ error: "Please Enter All Input Data" });
+    }
+
     const presuer = await User.findOne({ email: email });
 
     if (presuer) {
@@ -60,9 +58,7 @@ exports.userRegister = async (req, res) => {
         section,
         contactNumber,
         role,
-        province,
-        company,
-        subPreference,
+        callTree,
       });
 
       // here password hasing

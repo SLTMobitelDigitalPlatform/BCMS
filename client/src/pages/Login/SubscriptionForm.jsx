@@ -30,14 +30,17 @@ const SubscriptionForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/user/register", {
-        name,
-        email,
-        contactNumber,
-        province,
-        company,
-        subPreference,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/customer/register",
+        {
+          name,
+          email,
+          contactNumber,
+          province,
+          company,
+          subPreference,
+        }
+      );
       console.log(response);
 
       // toast.success("Subscription successful!");

@@ -77,8 +77,8 @@ const Meeting = () => {
             <h1 className="mt-5 text-[#52B14A] font-bold text-3xl">Meeting</h1>
 
             {user &&
-            (user.role === "superadmin" ||
-              user.role === "secretariat coordinator") ? (
+            (user.role === "Super Admin" ||
+              user.role === "Secretariat Coordinator") ? (
               <Link to={"createMeeting"}>
                 <button
                   type="button"
@@ -163,8 +163,8 @@ const Meeting = () => {
                           </button>
                         </Link>
                         {user &&
-                        (user.role === "superadmin" ||
-                          user.role === "secretariat coordinator") ? (
+                        (user.role === "Super Admin" ||
+                          user.role === "Secretariat Coordinator") ? (
                           <Link to={`/meeting/updateMeetings/${meeting._id}`}>
                             <button
                               type="button"
@@ -178,8 +178,8 @@ const Meeting = () => {
                           " "
                         )}{" "}
                         {user &&
-                        (user.role === "superadmin" ||
-                          user.role === "secretariat coordinator") ? (
+                        (user.role === "Super Admin" ||
+                          user.role === "Secretariat Coordinator") ? (
                           <button
                             type="button"
                             className="text-white bg-red-600 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-4 py-2"

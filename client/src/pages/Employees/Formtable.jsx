@@ -254,16 +254,16 @@ const Formtable = ({ handleSubmit, handleOnChange, handleclose, rest }) => {
               className="input-field border border-gray-300 px-3 py-2 rounded focus:outline-none focus:border-blue-500 text-xs"
             >
               <option value="">Select Role</option>
-              <option value="superadmin">Super admin</option>
-              <option value="secretariat coordinator">
+              <option value="Super Admin">Super admin</option>
+              <option value="Secretariat Coordinator">
                 BCM secretariat coordinator{" "}
               </option>
-              <option value="coordinators">BCM coordinators </option>
-              <option value="persons giving approvals">
-                Persons giving approvals (DGM, GM, CO){" "}
+              <option value="BCM Coordinator">BCM Coordinator </option>
+              <option value="Person Giving Approvals">
+                Person Giving Approvals (DGM, GM, CO){" "}
               </option>
-              <option value="bcmteams">BCM teams </option>
-              <option value="employee">Employee </option>
+              <option value="BCM teams">BCM teams </option>
+              <option value="Employee">Employee </option>
               <option value="customer">Customer </option>
             </select>
             {errors.role && (

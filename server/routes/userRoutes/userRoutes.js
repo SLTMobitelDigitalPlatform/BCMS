@@ -12,7 +12,7 @@ router.get("/user/:id", userControllers.getUserById);
 router.get(
   "/users",
   authControllers.protect,
-  authControllers.restrict("superadmin", "secretariat coordinator"),
+  authControllers.restrict("Super Admin", "Secretariat Coordinator"),
   userControllers.getusers
 );
 

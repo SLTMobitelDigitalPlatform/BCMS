@@ -84,22 +84,22 @@ const Otp = () => {
           const role = response.data.role;
           console.log(role);
           switch (role) {
-            case "superadmin":
+            case "Super Admin":
               navigate("/admin");
               break;
-            case "secretariat coordinator":
+            case "Secretariat Coordinator":
               navigate("/secrecoordinator");
               break;
-            case "coordinators":
+            case "BCM Coordinator":
               navigate("/coordinator");
               break;
-            case "persons giving approvals":
+            case "Person Giving Approvals":
               navigate("/personsgivingapprovals");
               break;
-            case "bcmteams":
+            case "BCM teams":
               navigate("/team");
               break;
-            case "employee":
+            case "Employee":
               navigate("/employeedash");
               break;
             case "customer":
