@@ -262,7 +262,7 @@ const Formtable = ({ handleSubmit, handleOnChange, handleclose, rest }) => {
               <option value="Person Giving Approvals">
                 Person Giving Approvals (DGM, GM, CO){" "}
               </option>
-              <option value="BCM teams">BCM teams </option>
+              <option value="BCM Teams">BCM Teams </option>
               <option value="Employee">Employee </option>
               <option value="customer">Customer </option>
             </select>

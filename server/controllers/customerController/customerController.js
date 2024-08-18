@@ -32,7 +32,7 @@ exports.createCustomer = async (req, res) => {
       req.body;
 
     if (!name || !email || !contactNumber) {
-      res.status(400).json({ error: "Please Enter Mandetory Data!" });
+      res.status(400).json({ error: "Please Enter Mandatory Data!" });
     }
 
     const customerExist = await Customer.findOne({ email });

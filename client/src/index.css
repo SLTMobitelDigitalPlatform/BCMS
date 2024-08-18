@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.gradient-border {
+  display: inline-block;
+  padding: 1px; /* Adjust based on desired border width */
+  background-image: linear-gradient(to right, #2acf1c, #003e81);
+  border-radius: 4px; /* Optional: Matches the input's border-radius */
+}
+
+.input-with-gradient-border {
+  width: 100%;
+  border: none;
+  background-color: white; /* Or whatever your page's background color is */
+  padding: 8px 12px; /* Adjust as needed */
+  border-radius: 4px; /* Should match the container's border-radius */
+}

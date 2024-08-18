@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
         "Secretariat Coordinator",
         "BCM Coordinator",
         "Person Giving Approvals",
-        "BCM teams",
+        "BCM Teams",
         "Employee",
         "customer",
       ],
