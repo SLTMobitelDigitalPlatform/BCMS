@@ -2,17 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-.gradient-border {
-  display: inline-block;
-  padding: 1px; /* Adjust based on desired border width */
-  background-image: linear-gradient(to right, #2acf1c, #003e81);
-  border-radius: 4px; /* Optional: Matches the input's border-radius */
-}
+@layer components {
+  .icon {
+    @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600;
+  }
+  .input-field {
+    @apply rounded-md w-full h-full py-1 pl-10 border-2 focus:outline-none transition duration-200;
+  }
 
-.input-with-gradient-border {
-  width: 100%;
-  border: none;
-  background-color: white; /* Or whatever your page's background color is */
-  padding: 8px 12px; /* Adjust as needed */
-  border-radius: 4px; /* Should match the container's border-radius */
+  .input-field-error {
+    @apply border-red-500 ring ring-red-200;
+  }
+
+  .input-field-border {
+    @apply border-blue-500 focus:ring focus:border-green-500 focus:ring-green-200;
+  }
+
+  .checkbox {
+    @apply h-4 w-4 cursor-pointer accent-green-500;
+  }
 }
