@@ -45,6 +45,7 @@ const userSchema = new mongoose.Schema(
     },
     contactNumber: { type: String, required: false },
     passwordChangedAt: { type: Date, default: "" },
+    profileImg: String,
     tokens: [
       {
         token: {

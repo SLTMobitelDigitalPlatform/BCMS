@@ -1,4 +1,6 @@
 const User = require("../../models/userModels/user");
+const multer = require("multer");
+const path = require("path");
 
 exports.getusers = async (req, res) => {
   try {
@@ -114,4 +116,72 @@ exports.getLoggedInUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+// Set up multer storage configuration
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../../userImages");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(
+      null,
+      file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname)
+    );
+  },
+});
+
+// Filter to accept only image files
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = /jpeg|jpg|png/;
+  const mimeType = allowedTypes.test(file.mimetype);
+  const extname = allowedTypes.test(
+    path.extname(file.originalname).toLowerCase()
+  );
+
+  if (mimeType && extname) {
+    return cb(null, true);
+  } else {
+    cb("Error: Images Only!"); // Reject if file is not an image
+  }
+};
+
+// Initialize multer with storage configuration and file filter
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 1024 * 1024 * 5 }, // Limit file size to 5MB
+}).single("profileImg"); // Single image upload under 'profileImg' field
+
+// Controller to handle profile image upload
+exports.uploadProfileImage = async (req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: err });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Please upload an image file" });
+    }
+
+    try {
+      const userId = req.params.id;
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found!" });
+      }
+
+      // Update user profile image path in the database
+      user.profileImg = req.file.path;
+      await user.save();
+
+      res
+        .status(200)
+        .json({ message: "Profile image uploaded successfully!", user });
+    } catch (error) {
+      return res.status(500).json({ message: "Failed to upload image", error });
+    }
+  });
 };
