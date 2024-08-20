@@ -42,6 +42,8 @@ import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import FeedbackList from "./pages/Home/FeedbackList";
 import SubscriptionForm1 from "./pages/Login/SubscriptionForm1";
+import { AuthProvider } from "./auth/AuthContext";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 function App() {
   return (
@@ -73,7 +75,14 @@ function App() {
           path="/secrecoordinator"
           element={<SecreCoordinatorHomePage />}
         />
-        <Route path="/admin" element={<AdminHomePage />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminHomePage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/coordinator" element={<CoordinatorHomePage />} />
         <Route path="/team" element={<TeamHomePage />} />
 

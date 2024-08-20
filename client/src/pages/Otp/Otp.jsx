@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import backgroundImage from "../../assets/bgblue.png";
 import logo from "../../assets/SLTLogo.png";
+import { useAuth } from "../../auth/AuthContext";
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
@@ -12,6 +13,7 @@ const Otp = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isResending, setIsResending] = useState(false);
+  const { login } = useAuth();
 
   const resendOtp = async () => {
     setIsResending(true);
@@ -55,7 +57,7 @@ const Otp = () => {
 
   const LoginUser = async (e) => {
     e.preventDefault();
-    console.log(location.state);
+    // console.log(location.state);
     const email = localStorage.getItem("email");
 
     if (otp === "") {
@@ -69,12 +71,12 @@ const Otp = () => {
       };
 
       try {
-        console.log(data);
+        // console.log(data);
         const response = await axios.post("http://localhost:5000/user/login", {
           data,
         });
 
-        console.log(response);
+        // console.log(response);
 
         if (response.status === 200) {
           localStorage.removeItem("email");
@@ -82,7 +84,8 @@ const Otp = () => {
           localStorage.setItem("token", response.data.token);
           toast.success(response.data.message);
           const role = response.data.role;
-          console.log(role);
+          login();
+          // console.log(role);
           switch (role) {
             case "Super Admin":
               navigate("/admin");
