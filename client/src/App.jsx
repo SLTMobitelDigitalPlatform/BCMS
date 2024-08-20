@@ -41,6 +41,7 @@ import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import FeedbackList from "./pages/Home/FeedbackList";
+import SubscriptionForm1 from "./pages/Login/SubscriptionForm1";
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
         {/* Subscribe */}
         <Route path="/subscribe" element={<SubscriptionPage />} />
         <Route path="/subscribeForm" element={<SubscriptionForm />} />
+        <Route path="/subscribeForm1" element={<SubscriptionForm1 />} />
 
         {/* Dashboards */}
         <Route path="/employeedash" element={<EmployeeHomePage />} />

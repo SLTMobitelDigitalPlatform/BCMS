@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import bg from "../../assets/bgblue.png";
-import bgInside from "../../assets/bg-subscriptionFormInside.png";
+import bgInside from "../../assets/Ellipse2.png";
 
 const SubscriptionForm = () => {
   const [subscribed, setSubscribed] = useState(false);
@@ -38,37 +38,44 @@ const SubscriptionForm = () => {
     e.preventDefault();
 
     if (!name.trim()) {
-      setError("Please enter your name.");
+      toast.error("Please enter your name.");
+      // setError("Please enter your name.");
       return;
     }
 
     if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.");
       setError("Please enter a valid email address.");
       return;
     }
 
     if (!validateContactNumber(contactNumber)) {
-      setError("Please enter a valid contact number.");
+      toast.error("Please enter a valid contact number.");
+      // setError("Please enter a valid contact number.");
       return;
     }
 
     if (!province || province === "Select Province") {
-      setError("Please select a province.");
+      toast.error("Please select a province.");
+      // setError("Please select a province.");
       return;
     }
 
     if (!company.trim()) {
-      setError("Please enter your company.");
+      toast.error("Please enter your company name.");
+      // setError("Please enter your company name.");
       return;
     }
 
-    if (subPreference.length === 0 && subPreference.trim() === "") {
-      setError("Please select at least one subscription preference.");
+    if (subPreference.length === 0) {
+      toast.error("Please select at least one subscription preference.");
+      // setError("Please select at least one subscription preference.");
       return;
     }
 
     if (!isPrivacyPolicyChecked) {
-      setError("Please agree to the Privacy Policy.");
+      toast.error("Please agree to the Privacy Policy and Terms of Service.");
+      // setError("Please agree to the Privacy Policy and Terms of Service.");
       return;
     }
 
@@ -85,9 +92,11 @@ const SubscriptionForm = () => {
         }
       );
       console.log(response);
+      toast.success(response);
       setSubscribed(true);
       setError("");
     } catch (error) {
+      toast.error(error);
       console.log(error);
       setError("There was an error with your subscription");
     }
@@ -172,10 +181,11 @@ const SubscriptionForm = () => {
         <div className="mb-5 border-2 rounded-xl p-0.5 bg-gradient-to-r from-[#2ACF1C] to-[#003E81]">
           <form
             onSubmit={handleSubmit}
-            className="w-full rounded-lg p-10 "
+            className="w-full rounded-lg p-10 bg-white"
             style={{
               backgroundImage: `url(${bgInside})`,
-              backgroundSize: "cover",
+              backgroundSize: "90%",
+              backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
             }}
           >
@@ -184,10 +194,11 @@ const SubscriptionForm = () => {
             </h1>
 
             {/* Full Name */}
-            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg">
-              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
+            {/* <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] p-0.5 rounded-lg shadow-lg"> */}
+            <div className="relative mb-7 rounded-lg">
+              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
-                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
+                className="shadow appearance-none rounded-md w-full h-full py-2 px-10 border-2 border-blue-500 leading-tight focus:outline-green-500"
                 id="fullName"
                 type="text"
                 placeholder="Full Name"
@@ -195,12 +206,13 @@ const SubscriptionForm = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
+            {/* </div> */}
 
             {/* Email */}
-            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg">
-              <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
+            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] p-0.5 rounded-lg shadow-lg">
+              <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
-                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
+                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 leading-tight focus:outline-white"
                 id="email"
                 type="email"
                 placeholder="Email"
@@ -210,10 +222,10 @@ const SubscriptionForm = () => {
             </div>
 
             {/*phone*/}
-            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg">
-              <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
+            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] p-0.5 rounded-lg shadow-lg">
+              <FaPhone className="absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
-                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
+                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 leading-tight focus:outline-white"
                 id="phone"
                 type="tel"
                 placeholder="Mobile Number"
@@ -224,10 +236,10 @@ const SubscriptionForm = () => {
             </div>
 
             {/* Province */}
-            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg">
-              <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
+            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] p-0.5 rounded-lg shadow-lg">
+              <FaMapMarkerAlt className="absolute left-3 top-1/2 transform -translate-y-1/2" />
               {/* <input
-                  className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
+                  className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 leading-tight focus:outline-white"
                   id="province"
                   type="text"
                   placeholder="Province"
@@ -235,7 +247,7 @@ const SubscriptionForm = () => {
                   onChange={(e) => setProvince(e.target.value)}
                 /> */}
               <select
-                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
+                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 leading-tight focus:outline-white"
                 id="province"
                 value={province}
                 onChange={(e) => setProvince(e.target.value)}
@@ -256,10 +268,10 @@ const SubscriptionForm = () => {
             </div>
 
             {/* Company */}
-            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg">
-              <FaBuilding className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700" />
+            <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] p-0.5 rounded-lg shadow-lg">
+              <FaBuilding className="absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
-                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
+                className="shadow appearance-none border rounded-md w-full h-full py-2 px-10 leading-tight focus:outline-white"
                 id="company"
                 type="text"
                 placeholder="Company"
@@ -270,7 +282,7 @@ const SubscriptionForm = () => {
 
             {/* Subscription Preference */}
             <div className="mb-7">
-              <label className="block text-gray-700 font-bold mb-5">
+              <label className="block font-bold mb-5">
                 Subscription Preference:
               </label>
 
@@ -282,9 +294,9 @@ const SubscriptionForm = () => {
                   name="subscriptionPreference"
                   value="generalUpdates"
                   className="mr-2 leading-tight h-6 w-6"
-                  style={{
-                    accentColor: "#003E81",
-                  }}
+                  // style={{
+                  //   accentColor: "#003E81",
+                  // }}
                   onChange={(e) => {
                     const value = e.target.value;
                     setSubPreference((prev) =>
@@ -294,9 +306,7 @@ const SubscriptionForm = () => {
                     );
                   }}
                 />
-                <label htmlFor="generalUpdates" className="text-gray-700">
-                  General Updates
-                </label>
+                <label htmlFor="generalUpdates">General Updates</label>
               </div>
 
               {/* Emergency Notification */}
@@ -307,9 +317,9 @@ const SubscriptionForm = () => {
                   name="subscriptionPreference"
                   value="emergencyNotification"
                   className="mr-2 leading-tight  h-6 w-6"
-                  style={{
-                    accentColor: "#003E81",
-                  }}
+                  // style={{
+                  //   accentColor: "#003E81",
+                  // }}
                   onChange={(e) => {
                     const value = e.target.value;
                     setSubPreference((prev) =>
@@ -319,19 +329,16 @@ const SubscriptionForm = () => {
                     );
                   }}
                 />
-                <label
-                  htmlFor="emergencyNotification"
-                  className="text-gray-700"
-                >
+                <label htmlFor="emergencyNotification">
                   Emergency Notification
                 </label>
               </div>
 
               {/* Other */}
 
-              <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg ml-7 w-4/5">
+              <div className="relative mb-7 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] p-0.5 rounded-lg shadow-lg ml-7 w-4/5">
                 <input
-                  className="shadow appearance-none border rounded-md w-full h-full p-2 text-gray-700 leading-tight focus:outline-white"
+                  className="shadow appearance-none border rounded-md w-full h-full p-2 leading-tight focus:outline-white"
                   id="otherPreference"
                   type="text"
                   placeholder="Specify other preference..."
@@ -359,7 +366,7 @@ const SubscriptionForm = () => {
                     );
                   }}
                 />
-                <label htmlFor="other" className="text-gray-700">
+                <label htmlFor="other" className=">
                   Other
                 </label>
               </div> */}
@@ -367,7 +374,7 @@ const SubscriptionForm = () => {
 
             {/* Privacy Policy*/}
             <div className="mb-8">
-              <label className="block text-gray-700 font-bold mb-5">
+              <label className="block font-bold mb-5">
                 Consent and Privacy Information:
               </label>
 
@@ -380,9 +387,9 @@ const SubscriptionForm = () => {
                   className="mr-2 leading-tight h-6 w-6"
                   onChange={(e) => setIsPrivacyPolicyChecked(e.target.checked)}
                   // required
-                  style={{
-                    accentColor: "#003E81",
-                  }}
+                  // style={{
+                  //   accentColor: "#003E81",
+                  // }}
                   // onChange={(e) => {
                   //   const value = e.target.value;
                   //   setSubPreference((prev) =>
@@ -393,11 +400,11 @@ const SubscriptionForm = () => {
                   // }}
                 />
 
-                <label htmlFor="privacyPolicy" className="text-gray-700">
+                <label htmlFor="privacyPolicy">
                   I agree to the
                   <a
                     href="/privacy-policy"
-                    className="text-blue-700 hover:text-[#2ACF1C]"
+                    className="text-blue-700 hover:text-green-500"
                   >
                     {" "}
                     Privacy Policy
@@ -405,7 +412,7 @@ const SubscriptionForm = () => {
                   and
                   <a
                     href="/terms-of-service"
-                    className="text-blue-700 hover:text-[#2ACF1C]"
+                    className="text-blue-700 hover:text-green-500"
                   >
                     {" "}
                     Terms of Service
@@ -415,7 +422,7 @@ const SubscriptionForm = () => {
               </div>
             </div>
 
-            {error && <p className="text-red-500 text-center pb-2">{error}</p>}
+            {/* {error && <p className="text-red-500 text-center pb-2">{error}</p>} */}
 
             {/* Subscribe Button */}
             <div className="mb-1 flex justify-center">
