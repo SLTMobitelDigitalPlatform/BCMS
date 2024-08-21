@@ -7,6 +7,7 @@ import backgroundImage from "../../assets/bgblue.png";
 import logo from "../../assets/SLTLogo.png";
 
 import { validateOTP } from "../../utilities/helper";
+import { useAuth } from "../../auth/AuthContext";
 
 // Renderer for the countdown
 const renderer = ({ minutes, seconds, completed }) => {
@@ -27,7 +28,6 @@ const renderer = ({ minutes, seconds, completed }) => {
 // Helper to get local storage value
 const getLocalStorageValue = (key) => localStorage.getItem(key);
 
-
 const Otp = () => {
   const [otp, setOtp] = useState("");
   const location = useLocation();
@@ -39,7 +39,7 @@ const Otp = () => {
   const wantedDelay = 10000;
   const [countdownCompleted, setCountdownCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
-
+  const { login } = useAuth();
 
   // Resend OTP function
   const resendOtp = async () => {
