@@ -4,25 +4,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../../assets/logo.png";
-import "../../index.css";
+import { FaSpinner } from "react-icons/fa";
+// import "../../index.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  // const [otp, setOtp] = useState("");
   const [serviceNumber, setServiceNumber] = useState("");
   const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const sendOtp = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (email === "") {
+      setLoading(false);
       toast.error("Enter Your Email!");
     } else if (!email.includes("@")) {
+      setLoading(false);
       toast.error("Enter a Valid Email!");
     } else if (serviceNumber === "") {
+      setLoading(false);
       toast.error("Enter Your Service Number!");
     } else {
       const response = await axios.post("http://localhost:5000/user/sendotp", {
@@ -33,9 +38,11 @@ const Login = () => {
       if (response.status === 200) {
         localStorage.setItem("email", email);
         localStorage.setItem("serviceNumber", serviceNumber);
+        setLoading(false);
         navigate("/otp", { state: { email, serviceNumber } });
       } else {
-        toast.error(response.response.data.error);
+        setLoading(false);
+        toast.error(response.data.error);
       }
     }
   };
@@ -90,8 +97,8 @@ const Login = () => {
   // };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-sky-50">
-      <div className="w-8/12 bg-white flex rounded-lg shadow-lg overflow-hidden w-3/4 h-5/6">
+    <section className="min-h-screen flex items-center justify-center bg-sky-100">
+      <div className="bg-white flex rounded-lg shadow-lg overflow-hidden w-2/3 h-5/6">
         {/*SLT logo*/}
         <div
           className="w-1/2 bg-[#001A3E] text-white p-8 flex flex-col items-center justify-center relative"
@@ -161,15 +168,20 @@ const Login = () => {
 
             {error && <p className="text-red-500 text-xs italic"></p>}
 
-            {/*sign in button*/}
+            {/*login in button*/}
             <div className="mb-5 flex items-center justify-between">
               <button
                 className="bg-gradient-to-r from-[#003E81] to-[#2ACF1C] 
                            hover:from-[#2ACF1C] hover:to-[#003E81] transition duration-1000 ease-in-out
-                           w-full text-white font-semibold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+                           w-full text-white font-semibold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline flex items-center justify-center"
                 type="submit"
+                disabled={loading}
               >
-                Log In
+                {loading ? (
+                  <FaSpinner className="animate-spin mr-2" /> // Spinner
+                ) : (
+                  "Log In"
+                )}
               </button>
             </div>
           </form>

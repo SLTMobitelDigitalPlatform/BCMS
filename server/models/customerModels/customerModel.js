@@ -17,7 +17,7 @@ const customerSchema = new mongoose.Schema({
       }
     },
   },
-  contactNumber: {
+  mobileNumber: {
     type: Number,
     required: true,
     unique: true,

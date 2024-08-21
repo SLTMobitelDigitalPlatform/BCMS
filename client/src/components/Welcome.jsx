@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import userAcc from "../assets/Vector.png";
+import { getInitials } from "../utilities/helper";
 
 const Welcome = () => {
   const [user, setUser] = useState(null);
@@ -30,9 +31,17 @@ const Welcome = () => {
       <div className="flex flex-col items-center justify-center bg-white p-20 rounded-lg w-full h-full">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-blue-900">Welcome!</h2>
+
           <div className="flex justify-center m-4">
-            <img src={userAcc} alt="user profile" className="w-16 h-16" />
+            <div className="w-32 h-32 flex items-center justify-center rounded-full text-blue-900 text-5xl font-medium bg-slate-100">
+              {getInitials(user?.name)}
+            </div>
           </div>
+
+          {/* <div className="flex justify-center m-4">
+            <img src={userAcc} alt="user profile" className="w-16 h-16" />
+          </div> */}
+
           {user ? (
             <>
               <h2 className="font-bold text-blue-900 text-xl">{user.name}</h2>

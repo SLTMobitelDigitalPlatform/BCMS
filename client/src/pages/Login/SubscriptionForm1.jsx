@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import bg from "../../assets/bgblue.png";
 import ellipse from "../../assets/Ellipse2.png";
+import { validateEmail, validateMobileNumber } from "../../utilities/helper";
 
 const SubscriptionForm1 = () => {
   const [subscribed, setSubscribed] = useState(false);
@@ -24,7 +25,7 @@ const SubscriptionForm1 = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [province, setProvince] = useState("");
   const [company, setCompany] = useState("");
   const [subPreference, setSubPreference] = useState("");
@@ -54,9 +55,9 @@ const SubscriptionForm1 = () => {
     }
     setHasError(false);
 
-    if (!validateContactNumber(contactNumber)) {
+    if (!validateMobileNumber(mobileNumber)) {
       setHasError(true);
-      toast.error("Please enter a valid contact number.");
+      toast.error("Please enter a valid mobile number.");
       return;
     }
     setHasError(false);
@@ -91,7 +92,7 @@ const SubscriptionForm1 = () => {
         {
           name,
           email,
-          contactNumber,
+          mobileNumber,
           province,
           company,
           subPreference,
@@ -108,15 +109,15 @@ const SubscriptionForm1 = () => {
     }
   };
 
-  const validateEmail = (email) => {
-    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    return regex.test(email);
-  };
+  // const validateEmail = (email) => {
+  //   const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+  //   return regex.test(email);
+  // };
 
-  const validateContactNumber = (contactNumber) => {
-    const regex = /^(\+94|0)?7\d{8}$/;
-    return regex.test(contactNumber);
-  };
+  // const validateMobileNumber = (mobileNumber) => {
+  //   const regex = /^(\+94|0)?7\d{8}$/;
+  //   return regex.test(mobileNumber);
+  // };
 
   const handleUnsubscribe = async (e) => {
     e.preventDefault();
@@ -226,20 +227,20 @@ const SubscriptionForm1 = () => {
             />
           </div>
 
-          {/*phone*/}
+          {/*Mobile Phone*/}
           <div className="relative">
             <FaPhone className="icon" />
             <input
               className={`input-field ${
-                hasError && !validateContactNumber(contactNumber)
+                hasError && !validateMobileNumber(mobileNumber)
                   ? "input-field-error"
                   : "input-field-border"
               } `}
               id="phone"
               type="tel"
               placeholder="Mobile Number"
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
+              value={mobileNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
               onFocus={() => setHasError(false)}
             />
           </div>

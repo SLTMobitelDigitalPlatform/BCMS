@@ -1,34 +1,62 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import Countdown from "react-countdown";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import backgroundImage from "../../assets/bgblue.png";
 import logo from "../../assets/SLTLogo.png";
+import { validateOTP } from "../../utilities/helper";
+
+// Renderer for the countdown
+const renderer = ({ minutes, seconds, completed }) => {
+  if (completed) {
+    // When countdown is complete, show this message
+    return <span className="text-red-500">OTP expired. Please resend.</span>;
+  } else {
+    // Render countdown
+    return (
+      <span>
+        {minutes < 10 ? `0${minutes}` : minutes}:
+        {seconds < 10 ? `0${seconds}` : seconds}
+      </span>
+    );
+  }
+};
+
+// Helper to get local storage value
+const getLocalStorageValue = (key) => localStorage.getItem(key);
 
 const Otp = () => {
   const [otp, setOtp] = useState("");
-  const [minutes, setMinutes] = useState(5);
-  const [seconds, setSeconds] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
   const [isResending, setIsResending] = useState(false);
+  const [data, setData] = useState({ date: Date.now(), delay: 10000 });
+  const [key, setKey] = useState(Date.now());
+  const wantedDelay = 10000;
+  const [countdownCompleted, setCountdownCompleted] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
+  // Resend OTP function
   const resendOtp = async () => {
     setIsResending(true);
     const { email, serviceNumber } = location.state;
     try {
       const response = await axios.post("http://localhost:5000/user/sendotp", {
         email,
-        serviceNumber, // Include serviceNumber in the request
+        serviceNumber,
       });
 
       if (response.status === 200) {
         toast.success("OTP has been resent to your email.");
+        const newExpirationTime = Date.now() + wantedDelay;
+        localStorage.setItem("end_date", JSON.stringify(newExpirationTime)); // Set new expiration time
+        setData({ date: Date.now(), delay: wantedDelay }); // Restart the countdown
+        setCountdownCompleted(false); // Reset countdown state
+        setKey(Date.now());
       } else {
         toast.error(response.response.data.error);
       }
-      setMinutes(5);
-      setSeconds(0);
     } catch (error) {
       toast.error(error.response?.data?.error || "Failed to resend OTP.");
     } finally {
@@ -36,22 +64,23 @@ const Otp = () => {
     }
   };
 
+  // Effect to check for existing countdown on page load
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      } else if (minutes > 0 && seconds === 0) {
-        setSeconds(59);
-        setMinutes(minutes - 1);
-      } else {
-        clearInterval(interval); // Stop the countdown when both minutes and seconds reach 0
-      }
-    }, 1000);
+    const savedDate = getLocalStorageValue("end_date");
+    if (savedDate != null && !isNaN(savedDate)) {
+      const currentTime = Date.now();
+      const delta = parseInt(savedDate, 10) - currentTime;
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [seconds, minutes]);
+      if (delta > 0) {
+        // Timer still valid, update countdown
+        setData({ date: currentTime, delay: delta });
+        setKey(Date.now());
+      } else {
+        // Timer expired, clear saved date
+        localStorage.removeItem("end_date");
+      }
+    }
+  }, []);
 
   const LoginUser = async (e) => {
     e.preventDefault();
@@ -59,10 +88,13 @@ const Otp = () => {
     const email = localStorage.getItem("email");
 
     if (otp === "") {
+      setHasError(true);
       toast.error("Enter Your OTP");
-    } else if (!/^\d{6}$/.test(otp)) {
+    } else if (!validateOTP(otp)) {
+      setHasError(true);
       toast.error("Enter a Valid OTP");
     } else {
+      setHasError(false);
       const data = {
         otp,
         email,
@@ -113,70 +145,75 @@ const Otp = () => {
       } catch (error) {
         toast.error(error.response?.data?.error || "Failed to verify OTP");
       }
-
-      //   const response = await userVerify(data);
-      //   if (response.status === 200) {
-      //     localStorage.setItem("userdbtoken", response.data.userToken);
-      //     toast.success(response.data.message);
-      //     setTimeout(() => {
-      //       navigate("/dashboard");
-      //     }, 5000);
-      //   } else {
-      //     toast.error(response.response.data.error);
-      //   }
     }
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center"
+      className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="p-8 rounded-lg shadow-lg overflow-hidden w-1/2 bg-white">
+      <div className="p-8 rounded-lg shadow-lg overflow-hidden w-full max-w-xl bg-white">
         {/* Logo and Header */}
         <div className="text-center">
-          <img src={logo} alt="Logo" className="h-16 mx-auto" />
+          <img src={logo} alt="Logo" className="h-16 mx-auto mb-4" />
 
-          <h1 className="text-4xl font-bold text-blue-900 p-5">
+          <h1 className="text-3xl sm:text-4xl font-bold text-indigo-800 p-4">
             SLT Mobitel Awaiting You
           </h1>
-          <hr className="border-t-4 border-green-500 p-2" />
-          <p className="text-blue-900 p-2">
+          {/* <hr className="border-t-4 border-green-500 p-2" /> */}
+          <p className="text-indigo-800 mb-6 font-semibold">
             Your OTP code was sent to you via Email
           </p>
         </div>
 
         {/* Countdown Timer */}
-        <p className="text-center mb-6">
-          Time Remaining: <span>{minutes < 10 ? `0${minutes}` : minutes}</span>:
-          <span>{seconds < 10 ? `0${seconds}` : seconds}</span>
-        </p>
+        <div className="text-center mb-6">
+          <Countdown
+            key={key}
+            date={data.date + data.delay}
+            renderer={renderer}
+            onStart={() => {
+              // Save expiration time on start
+              if (!localStorage.getItem("end_date")) {
+                localStorage.setItem(
+                  "end_date",
+                  JSON.stringify(data.date + data.delay)
+                );
+              }
+            }}
+            onComplete={() => {
+              setCountdownCompleted(true);
+              // Clear local storage when countdown completes
+              localStorage.removeItem("end_date");
+            }}
+          />
+        </div>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={LoginUser}>
           <input
             type="text"
             name="otp"
             id="otp"
             onChange={(e) => setOtp(e.target.value)}
+            onFocus={() => setHasError(false)}
             placeholder="Enter Your OTP"
-            className="block mx-auto p-2 w-80 border rounded-2xl border-black"
+            className={`shadow appearance-none border-2 block mx-auto rounded-md text-center w-full py-1 px-4 focus:outline-none ${
+              hasError && !otp.trim() && !validateOTP(otp)
+                ? "input-field-error"
+                : "input-field-border"
+            } `}
           />
 
-          <p className="text-center">Didnt Recieve OTP code?</p>
-
-          {/* <Link
-              onClick={resendOtp}
-              //   onClick={handleResendCode}
-              className="flex items-center justify-center text-blue-700 underline cursor-pointer p-2"
-            >
-              Resend Code
-            </Link> */}
+          <p className="text-center text-sm text-gray-600">
+            Didnt recieve OTP code?
+          </p>
 
           {/* Button to resend OTP */}
           <button
-            disabled={isResending || seconds > 0 || minutes > 0}
+            disabled={!countdownCompleted || isResending}
             className={`block mx-auto text-center ${
-              isResending || seconds > 0 || minutes > 0
+              !countdownCompleted || isResending
                 ? "text-gray-700 opacity-60"
                 : "text-blue-700 cursor-pointer hover:underline"
             }`}
@@ -185,12 +222,13 @@ const Otp = () => {
             {isResending ? "Resending..." : "Resend OTP"}
           </button>
 
-          <Link
-            className="block mx-auto w-64 bg-gradient-to-r from-blue-900 to-green-500 text-white px-8 py-3 rounded-full font-bold text-center"
-            onClick={LoginUser}
+          <button
+            className="block mx-auto w-full btn-primary px-8 py-2 rounded-full font-bold"
+            // onClick={LoginUser}
+            type="submit"
           >
             Verify & Continue
-          </Link>
+          </button>
         </form>
       </div>
       <ToastContainer />

@@ -42,6 +42,7 @@ import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import FeedbackList from "./pages/Home/FeedbackList";
 import SubscriptionForm1 from "./pages/Login/SubscriptionForm1";
+import Login1 from "./pages/Login/Login1";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
 
         {/* Login */}
         <Route path="/login" element={<Login />} />
+        <Route path="/login1" element={<Login1 />} />
         <Route path="/otp" element={<Otp />} />
 
         {/* Subscribe */}
