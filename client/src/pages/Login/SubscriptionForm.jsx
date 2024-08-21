@@ -435,6 +435,14 @@ const SubscriptionForm = () => {
                 Submit
               </button>
             </div>
+            {/* <div className="flex justify-center">
+              <button
+                className="hover:text-blue-500"
+                onClick={openUnsubscriptionModal}
+              >
+                Need to Unsubscribe?
+              </button>
+            </div> */}
           </form>
 
           {/* Modal for subscribing */}

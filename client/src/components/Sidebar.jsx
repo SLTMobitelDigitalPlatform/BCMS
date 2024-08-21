@@ -1,24 +1,25 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 // import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const handleLogout = async () => {
-  try {
-    localStorage.removeItem("token");
-
-    window.location.href = "/login";
-  } catch (error) {
-    console.error("Error logging out:", error);
-    alert("Failed to log out. Please try again.");
-  }
-};
-
 const Sidebar = () => {
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    try {
+      // localStorage.removeItem("token");
+      logout();
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error logging out:", error);
+      alert("Failed to log out. Please try again.");
+    }
+  };
   return (
     <div>
       <div className="ml-5 rounded-2xl w-full bg-indigo-950 text-center p-5 flex flex-col justify-between">

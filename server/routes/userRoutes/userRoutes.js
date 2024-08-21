@@ -25,4 +25,10 @@ router.get(
 router.put("/user/update/:id", userControllers.updateUser);
 router.delete("/user/delete/:id", userControllers.deleteUser);
 
+router.post(
+  "/user/uploadProfileImage/:id",
+  authControllers.protect,
+  userControllers.uploadProfileImage
+);
+
 module.exports = router;

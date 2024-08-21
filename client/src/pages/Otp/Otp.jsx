@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import backgroundImage from "../../assets/bgblue.png";
 import logo from "../../assets/SLTLogo.png";
+
 import { validateOTP } from "../../utilities/helper";
 
 // Renderer for the countdown
@@ -26,16 +27,19 @@ const renderer = ({ minutes, seconds, completed }) => {
 // Helper to get local storage value
 const getLocalStorageValue = (key) => localStorage.getItem(key);
 
+
 const Otp = () => {
   const [otp, setOtp] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const [isResending, setIsResending] = useState(false);
+
   const [data, setData] = useState({ date: Date.now(), delay: 10000 });
   const [key, setKey] = useState(Date.now());
   const wantedDelay = 10000;
   const [countdownCompleted, setCountdownCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
+
 
   // Resend OTP function
   const resendOtp = async () => {
@@ -84,7 +88,7 @@ const Otp = () => {
 
   const LoginUser = async (e) => {
     e.preventDefault();
-    console.log(location.state);
+    // console.log(location.state);
     const email = localStorage.getItem("email");
 
     if (otp === "") {
@@ -101,12 +105,12 @@ const Otp = () => {
       };
 
       try {
-        console.log(data);
+        // console.log(data);
         const response = await axios.post("http://localhost:5000/user/login", {
           data,
         });
 
-        console.log(response);
+        // console.log(response);
 
         if (response.status === 200) {
           localStorage.removeItem("email");
@@ -114,7 +118,8 @@ const Otp = () => {
           localStorage.setItem("token", response.data.token);
           toast.success(response.data.message);
           const role = response.data.role;
-          console.log(role);
+          login();
+          // console.log(role);
           switch (role) {
             case "Super Admin":
               navigate("/admin");

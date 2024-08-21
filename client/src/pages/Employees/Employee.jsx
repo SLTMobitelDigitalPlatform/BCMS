@@ -178,22 +178,23 @@ function User() {
           </div>
 
           <div className="flex justify-between items-center mb-4">
-            <input
-              type="text"
-              placeholder="Search to filter..."
-              className="border rounded-md px-2 py-2"
-              value={searchTerm}
-              onChange={(e) => {
-                const value = e.target.value;
-                // Regular expression to allow only letters and numbers
-                const regex = /^[a-zA-Z0-9]*$/;
+  <input
+    type="text"
+    placeholder="Search to filter..."
+    className="border rounded-md px-2 py-2"
+    value={searchTerm}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Regular expression to allow only letters, numbers, and spaces
+      const regex = /^[a-zA-Z0-9 ]*$/;
 
-                if (regex.test(value)) {
-                  setSearchTerm(value);
-                }
-              }}
-            />
-          </div>
+      if (regex.test(value)) {
+        setSearchTerm(value);
+      }
+    }}
+  />
+</div>
+
 
           {addSection && (
             <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
