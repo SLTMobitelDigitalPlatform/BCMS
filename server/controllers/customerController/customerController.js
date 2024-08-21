@@ -28,10 +28,10 @@ exports.getCustomerById = async (req, res) => {
 
 exports.createCustomer = async (req, res) => {
   try {
-    const { name, email, contactNumber, province, company, subPreference } =
+    const { name, email, mobileNumber, province, company, subPreference } =
       req.body;
 
-    if (!name || !email || !contactNumber) {
+    if (!name || !email || !mobileNumber) {
       res.status(400).json({ error: "Please Enter Mandatory Data!" });
     }
 
@@ -42,7 +42,7 @@ exports.createCustomer = async (req, res) => {
       const customerRegister = new Customer({
         name,
         email,
-        contactNumber,
+        mobileNumber,
         province,
         company,
         subPreference,

@@ -22,15 +22,19 @@ const Sidebar = () => {
   };
   return (
     <div>
-      <div className="ml-5 rounded-2xl w-full bg-[#001A3E] text-center p-5 flex flex-col justify-between">
+      <div className="ml-5 rounded-2xl w-full bg-indigo-950 text-center p-5 flex flex-col justify-between">
         <div>
           <Link to="">
             <h1 className="text-[40px] font-bold text-[#00BBF6]">BCMS</h1>
           </Link>
-          <h1 className="text-md text-[#C8ECFE] font-semibold">Dashboard</h1>
+          {/* <h1 className="text-md text-[#C8ECFE] font-semibold">Dashboard</h1> */}
         </div>
         <div className="px-7 text-center">
-          <ul className="text-white text-lg flex flex-col gap-7 text-left mt-10">
+          <ul className="text-white text-lg flex flex-col gap-4 text-left">
+            <Link>
+              <li>Customers</li>
+            </Link>
+            <hr className="opacity-50" />
             <Link to="/employee">
               <li className="flex gap-4 items-center hover:underline">
                 Employees
@@ -150,18 +154,26 @@ const Sidebar = () => {
                 Roles & Responsibilities
               </li>
             </Link>
+            <hr className="opacity-50" />
+            <Link>
+              <li>Call Tree</li>
+            </Link>
+            <hr className="opacity-50" />
+            <Link>
+              <li>Policies</li>
+            </Link>
           </ul>
         </div>
-        <div className="flex gap-3 mt-10">
+        <div className="flex gap-3 mt-10 justify-center">
           <button
             className="px-8 py-1 bg-[#00BBF6] text-black font-semibold rounded-2xl"
             onClick={handleLogout}
           >
             Logout
           </button>
-          <button className="px-8 py-1 bg-[#C8ECFE] text-black font-semibold rounded-2xl">
+          {/* <button className="px-8 py-1 bg-[#C8ECFE] text-black font-semibold rounded-2xl">
             Intranet
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
