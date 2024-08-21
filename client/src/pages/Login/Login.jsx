@@ -1,184 +1,159 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../../assets/logo.png";
 import { FaSpinner } from "react-icons/fa";
-// import "../../index.css";
+import { validateEmail } from "../../utilities/helper";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [serviceNumber, setServiceNumber] = useState("");
-  const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedServiceNumber = localStorage.getItem("serviceNumber");
+
+    if (savedEmail && savedServiceNumber) {
+      setEmail(savedEmail);
+      setServiceNumber(savedServiceNumber);
+      setRememberMe(true);
+    }
+  }, []);
 
   const sendOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    if (email === "") {
+    if (!validateEmail(email)) {
+      setHasError(true);
       setLoading(false);
-      toast.error("Enter Your Email!");
-    } else if (!email.includes("@")) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    setHasError(false);
+
+    if (!serviceNumber.trim()) {
+      setHasError(true);
       setLoading(false);
-      toast.error("Enter a Valid Email!");
-    } else if (serviceNumber === "") {
-      setLoading(false);
-      toast.error("Enter Your Service Number!");
-    } else {
+      toast.error("Please enter your service number.");
+      return;
+    }
+    setHasError(false);
+
+    try {
       const response = await axios.post("http://localhost:5000/user/sendotp", {
         email,
         serviceNumber,
       });
 
       if (response.status === 200) {
-        localStorage.setItem("email", email);
-        localStorage.setItem("serviceNumber", serviceNumber);
+        // Store login info if "Remember Me" is checked
+        if (rememberMe) {
+          localStorage.setItem("email", email);
+          localStorage.setItem("serviceNumber", serviceNumber);
+        } else {
+          // Clear local storage if "Remember Me" is unchecked
+          localStorage.removeItem("email");
+          localStorage.removeItem("serviceNumber");
+        }
+
         setLoading(false);
         navigate("/otp", { state: { email, serviceNumber } });
       } else {
         setLoading(false);
         toast.error(response.data.error);
       }
+    } catch (error) {
+      setLoading(false);
+      toast.error("Error during authentication. Please try again.");
     }
   };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://localhost:5000/user/sendotp", {
-  //       email,
-  //       serviceNumber,
-  //     });
-  //     const { token, role } = response.data;
-  //     localStorage.setItem("token", token);
-  //     toast.success("Login successful!");
-
-  //     if (rememberMe) {
-  //       localStorage.setItem("email", email);
-  //     } else {
-  //       localStorage.removeItem("email");
-  //     }
-
-  //     switch (role) {
-  //       case "Super Admin":
-  //         window.location.href = "/admin";
-  //         break;
-  //       case "secretariatcoordinator":
-  //         window.location.href = "/secrecoordinator";
-  //         break;
-  //       case "BCM Coordinator":
-  //         window.location.href = "/coordinator";
-  //         break;
-  //       case "personsgivingapprovals":
-  //         window.location.href = "/personsgivingapprovals";
-  //         break;
-  //       case "BCM teams":
-  //         window.location.href = "/team";
-  //         break;
-  //       case "employee":
-  //         window.location.href = "/employeedash";
-  //         break;
-  //       case "customer":
-  //         window.location.href = "/customer";
-  //         break;
-  //       default:
-  //         setError("Invalid role");
-  //         break;
-  //     }
-  //   } catch (error) {
-  //     setError("Invalid email or OTP");
-  //     toast.error("Invalid email or OTP");
-  //   }
-  // };
-
   return (
-    <section className="min-h-screen flex items-center justify-center bg-sky-100">
-      <div className="bg-white flex rounded-lg shadow-lg overflow-hidden w-2/3 h-5/6">
+    <div className="min-h-screen flex items-center justify-center bg-sky-100 p-5">
+      <div className="bg-white flex flex-col lg:flex-row rounded-lg shadow-lg w-full max-w-5xl">
         {/*SLT logo*/}
-        <div
-          className="w-1/2 bg-[#001A3E] text-white p-8 flex flex-col items-center justify-center relative"
-          style={{ borderBottomRightRadius: "5rem" }}
-        >
-          <div className="absolute bottom-0 right-0 w-0 h-0 bg-white rounded-tl-full"></div>
-          <div className="z-10 text-center">
-            <img
-              src={logo}
-              alt="SLTMobitel Logo"
-              className="mb-20 mx-auto w-76 h-24"
-            />
-            <p className="text-3xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
-              Business Continuity Management System
-            </p>
-          </div>
+        <div className="lg:w-1/2 bg-indigo-950 text-white p-10 flex flex-col items-center justify-center relative rounded-t-lg lg:rounded-l-lg lg:rounded-tr-none lg:rounded-br-[5rem]">
+          <img src={logo} alt="SLTMobitel Logo" className="mb-10 w-96 h-auto" />
+          <p className="text-4xl leading-normal tracking-wide font-bold text-center">
+            Business Continuity Management System
+          </p>
         </div>
 
         {/*Form*/}
-        <div className="w-1/2 bg-transparent p-10 rounded-lg px-16">
-          <h1 className="text-2xl font-bold mb-1 text-center text-[#003E81] ">
+        <div className="lg:w-1/2 bg-transparent p-10">
+          <h1 className="text-3xl font-bold mb-8 text-center">
             Welcome Back !
           </h1>
-          <p className="text-xs font-semibold mb-14 text-center text-[#003E81]">
-            Please fill your login details below.
-          </p>
 
-          <form onSubmit={sendOtp}>
-            {/*email*/}
-            <div className="mb-5 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg">
+          <form onSubmit={sendOtp} className="space-y-8">
+            {/*Email*/}
+            <div className="relative">
               <input
-                className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight"
+                // className=" text-gray-700 "
+                className={`shadow appearance-none border-2 rounded-md w-full h-full py-2 px-4 focus:outline-none ${
+                  hasError && !validateEmail(email)
+                    ? "input-field-error"
+                    : "input-field-border"
+                } `}
                 id="email"
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onFocus={() => setHasError(false)}
               />
             </div>
 
-            {/*service number*/}
-            <div className="mb-4 bg-gradient-to-r from-[#2ACF1C] to-[#003E81] opacity-70 p-0.5 rounded-lg shadow-lg ">
+            {/*Service Number*/}
+            <div className="relative">
               <input
-                className="shadow appearance-none border rounded-md w-full py-2 px-3 text-gray-700 leading-tight "
+                className={`shadow appearance-none border-2 rounded-md w-full h-full py-2 px-4 focus:outline-none ${
+                  hasError && !serviceNumber.trim()
+                    ? "input-field-error"
+                    : "input-field-border"
+                } `}
                 id="serviceNumber"
                 type="text"
                 placeholder="Service Number"
                 value={serviceNumber}
                 onChange={(e) => setServiceNumber(e.target.value)}
+                onFocus={() => setHasError(false)}
               />
             </div>
 
             {/* Remember Me Checkbox */}
-            <div className="mb-10 flex items-center">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                className="mr-2"
-                style={{ accentColor: "#003E81" }}
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-              <label htmlFor="rememberMe" className="text-[#003E81] text-sm ">
-                Remember Me
-              </label>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  className="mr-3 accent-green-500 h-4 w-4"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                <label htmlFor="rememberMe" className="text-sm">
+                  Remember Me
+                </label>
+              </div>
             </div>
 
-            {error && <p className="text-red-500 text-xs italic"></p>}
-
-            {/*login in button*/}
-            <div className="mb-5 flex items-center justify-between">
+            {/*Login button*/}
+            <div>
               <button
-                className="bg-gradient-to-r from-[#003E81] to-[#2ACF1C] 
-                           hover:from-[#2ACF1C] hover:to-[#003E81] transition duration-1000 ease-in-out
-                           w-full text-white font-semibold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline flex items-center justify-center"
+                className="btn-primary font-semibold w-full py-2 rounded-full  "
                 type="submit"
                 disabled={loading}
               >
                 {loading ? (
-                  <FaSpinner className="animate-spin mr-2" /> // Spinner
+                  <FaSpinner className="animate-spin inline text-xl mr-2" />
                 ) : (
                   "Log In"
                 )}
@@ -186,41 +161,25 @@ const Login = () => {
             </div>
           </form>
 
-          {/*separator*/}
-          <div className="mb-10 flex items-center my-4">
+          {/* <div className="mb-10 flex items-center my-4">
             <div className="flex-grow h-px bg-gradient-to-r from-[#2ACF1C] to-[#003E81]"></div>
             <span className="flex-shrink text-sm text-[#003E81] px-4">OR</span>
             <div className="flex-grow h-px bg-gradient-to-r from-[#2ACF1C] to-[#003E81]"></div>
-          </div>
-
-          {/* google & microsoft buttons
-          <div className="flex items-center justify-center space-x-4">
-            <button className="px-2">
-              <img src={google} alt="Sign in with Google" className="w-8 h-8" />
-            </button>
-            <button className="px-2">
-              <img
-                src={microsoft}
-                alt="Sign in with Microsoft"
-                className="w-8 h-8"
-              />
-            </button>
           </div> */}
 
-          <p className="mb-16 text-center text-[#003E81] mt-4">
-            Don’t Have an Account?
-            <a href="/subscribe" className="text-[#2ACF1C] hover:underline">
-              {" "}
-              Join Today!
-            </a>
-          </p>
+          <div className="mt-8 flex items-center justify-center space-x-4">
+            <span className="h-px w-full bg-gradient-to-r from-[#2ACF1C] to-[#003E81]"></span>
+            <p className="text-sm text-[#003E81]">OR</p>
+            <span className="h-px w-full bg-gradient-to-r from-[#2ACF1C] to-[#003E81]"></span>
+          </div>
 
-          <div className="mt-10 text-center">
+          <div className="mt-8">
+            <p className="text-center mb-8">
+              Don’t Have an Account? Join Today!
+            </p>
             <Link to="/subscribe">
               <button
-                className="bg-gradient-to-r from-[#003E81] to-[#2ACF1C] 
-                           hover:from-[#2ACF1C] hover:to-[#003E81] transition duration-1000 ease-in-out
-                           w-full text-white font-semibold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+                className="btn-secondary rounded-full w-full font-semibold py-2 px-4"
                 type="button"
               >
                 Join with Us as a Visitor
@@ -230,7 +189,7 @@ const Login = () => {
         </div>
       </div>
       <ToastContainer />
-    </section>
+    </div>
   );
 };
 
