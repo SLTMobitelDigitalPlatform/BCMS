@@ -42,7 +42,6 @@ import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import FeedbackList from "./pages/Home/FeedbackList";
 import SubscriptionForm1 from "./pages/Login/SubscriptionForm1";
-import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 function App() {
