@@ -9,11 +9,13 @@ import image1 from "../../assets/header/1.jpg";
 import image2 from "../../assets/header/2.jpg";
 import image3 from "../../assets/header/3.jpg";
 import logo from "../../assets/logo.png";
+import { useAuth } from "../../auth/AuthContext";
 
 const coverImages = [image1, image2, image3];
 
 const Home = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -73,19 +75,31 @@ const Home = () => {
       <div className="absolute top-0 left-0 w-full p-4">
         <div className="flex justify-between items-center">
           <img src={logo} className="w-32 h-auto" alt="Logo" />
+
           <div className="flex space-x-4">
-            <Link
-              to="/login"
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer"
-            >
-              Login
-            </Link>
-            <Link
-              to="/subscribe"
-              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 cursor-pointer"
-            >
-              Subscribe
-            </Link>
+            {isAuthenticated ? (
+              <button
+                onClick={logout}
+                className="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 cursor-pointer"
+              >
+                LOGOUT
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/subscribe"
+                  className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 cursor-pointer"
+                >
+                  Subscribe
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
