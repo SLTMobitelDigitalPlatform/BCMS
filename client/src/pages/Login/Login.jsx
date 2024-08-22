@@ -98,7 +98,7 @@ const Login = () => {
             <div className="relative">
               <input
                 // className=" text-gray-700 "
-                className={`shadow appearance-none border-2 rounded-md w-full h-full py-2 px-4 focus:outline-none ${
+                className={`shadow appearance-none border-2 rounded-xl w-full h-full py-2 px-4 focus:outline-none ${
                   hasError && !validateEmail(email)
                     ? "input-field-error"
                     : "input-field-border"
@@ -115,7 +115,7 @@ const Login = () => {
             {/*Service Number*/}
             <div className="relative">
               <input
-                className={`shadow appearance-none border-2 rounded-md w-full h-full py-2 px-4 focus:outline-none ${
+                className={`shadow appearance-none border-2 rounded-xl w-full h-full py-2 px-4 focus:outline-none ${
                   hasError && !serviceNumber.trim()
                     ? "input-field-error"
                     : "input-field-border"
@@ -148,7 +148,7 @@ const Login = () => {
             {/*Login button*/}
             <div>
               <button
-                className="btn-primary font-semibold w-full py-2 rounded-full  "
+                className="btn-primary font-semibold w-full py-2 rounded-xl"
                 type="submit"
                 disabled={loading}
               >
@@ -179,7 +179,7 @@ const Login = () => {
             </p>
             <Link to="/subscribe">
               <button
-                className="btn-secondary rounded-full w-full font-semibold py-2 px-4"
+                className="btn-secondary rounded-xl w-full font-semibold py-2 px-4"
                 type="button"
               >
                 Join with Us as a Visitor

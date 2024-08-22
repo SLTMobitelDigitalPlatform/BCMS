@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
-import Navbar from "../Navbar";
 import AddEvents from "./AddEvents";
 import MyCalendar from "./BigCalendar";
+import Navbar from "../../components/Navbar";
 
 export default function Calendar() {
   const [showAddEvent, setShowAddEvent] = useState(false);

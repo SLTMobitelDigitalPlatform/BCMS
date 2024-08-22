@@ -5,8 +5,8 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between p-2 bg-white ">
       {/* Logo */}
-      <div className="flex items-center space-x-2 ml-4 mt-2">
-        <img src={logo} alt="Logo" className="h-16" />
+      <div className="flex items-center space-x-2 ml-4">
+        <img src={logo} alt="Logo" className="w-32 h-auto" />
       </div>
 
       {/* Navigation Links */}

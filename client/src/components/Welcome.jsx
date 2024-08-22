@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import userAcc from "../assets/Vector.png";
 import { getInitials } from "../utilities/helper";
 
 const Welcome = () => {
@@ -37,10 +36,6 @@ const Welcome = () => {
               {getInitials(user?.name)}
             </div>
           </div>
-
-          {/* <div className="flex justify-center m-4">
-            <img src={userAcc} alt="user profile" className="w-16 h-16" />
-          </div> */}
 
           {user ? (
             <>
