@@ -1,11 +1,14 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import ProtectedRoute from "./auth/ProtectedRoute";
 import AboutmeForm from "./components/AboutmeForm";
 import AboutmeView from "./components/AboutmeView";
+import Profile from "./components/Profile";
 import AddEvents from "./pages/calendar/AddEvents";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
 import AdminHomePage from "./pages/Dashboards/AdminHomePage";
 import CoordinatorHomePage from "./pages/Dashboards/CoordinatorHomePage";
+import Dashboard from "./pages/Dashboards/Dashboard";
 import EmployeeHomePage from "./pages/Dashboards/EmployeeHomePage";
 import SecreCoordinatorHomePage from "./pages/Dashboards/SecreCoordinatorHomePage";
 import TeamHomePage from "./pages/Dashboards/TeamHomePage";
@@ -21,13 +24,15 @@ import CreateRiskAssesement from "./pages/documents/RiskAssesement/CreateRiskAss
 import EditRiskAssesement from "./pages/documents/RiskAssesement/EditRiskAssesement";
 import RiskAssesement from "./pages/documents/RiskAssesement/RiskAssesement";
 import Employee from "./pages/Employees/Employee";
+import ErrorPage from "./pages/ErrorPage";
 import AboutUs from "./pages/Home/AboutUs";
 import Contact from "./pages/Home/Contact";
 import DescriptionPage from "./pages/Home/description";
 import Feedback from "./pages/Home/Feedback";
+import FeedbackList from "./pages/Home/FeedbackList";
 import Home from "./pages/Home/Home";
-// import EditPage from "./pages/Home/HomeEdit";
 import RiskManagement from "./pages/Home/RiskManagement";
+import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
 import SubscriptionForm from "./pages/Login/SubscriptionForm";
 import SubscriptionPage from "./pages/Login/SubscriptionPage";
@@ -40,14 +45,19 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
-import FeedbackList from "./pages/Home/FeedbackList";
-import SubscriptionForm1 from "./pages/Login/SubscriptionForm1";
-import ProtectedRoute from "./auth/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Error Page */}
+        <Route path="*" element={<ErrorPage />} />
+
+        <Route element={<Layout />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/dash" element={<Dashboard />} />
+        </Route>
+
         {/* Home & Customer Pages */}
         <Route path="/" element={<Home />} />
         <Route path="/risk-management" element={<RiskManagement />} />
@@ -66,9 +76,9 @@ function App() {
         {/* Subscribe */}
         <Route path="/subscribe" element={<SubscriptionPage />} />
         <Route path="/subscribeForm" element={<SubscriptionForm />} />
-        <Route path="/subscribeForm1" element={<SubscriptionForm1 />} />
 
         {/* Dashboards */}
+
         <Route path="/employeedash" element={<EmployeeHomePage />} />
         <Route
           path="/secrecoordinator"

@@ -105,12 +105,9 @@ const Otp = () => {
       };
 
       try {
-        // console.log(data);
         const response = await axios.post("http://localhost:5000/user/login", {
           data,
         });
-
-        // console.log(response);
 
         if (response.status === 200) {
           localStorage.removeItem("email");
@@ -119,7 +116,6 @@ const Otp = () => {
           toast.success(response.data.message);
           const role = response.data.role;
           login();
-          // console.log(role);
           switch (role) {
             case "Super Admin":
               navigate("/admin");
