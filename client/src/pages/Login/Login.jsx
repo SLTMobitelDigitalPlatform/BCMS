@@ -17,7 +17,7 @@ const Login = () => {
 
   const sendOtp = async (e) => {
     e.preventDefault();
-
+    localStorage.removeItem("token");
     if (email === "") {
       toast.error("Enter Your Email!");
     } else if (!email.includes("@")) {
