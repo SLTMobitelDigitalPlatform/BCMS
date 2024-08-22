@@ -110,7 +110,6 @@ const router = createBrowserRouter([
     children: [
       { path: "profile", element: <Profile /> },
       { path: "dash", element: <Dashboard /> },
-      { path: "/meeting", element: <Meeting /> },
       {
         path: "/admin",
         element: (
@@ -119,15 +118,23 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      //
+      // Employees
+      { path: "/employee", element: <Employee /> },
+
+      // Meetings
+      { path: "/meeting", element: <Meeting /> },
+      { path: "/meeting/createMeeting", element: <CreateMeeting /> },
+
       { path: "/meeting/viewMeetings/:id", element: <ViewMeeting /> },
+      { path: "/meeting/updateMeetings/:id", element: <UpdateMeeting /> },
+      {
+        path: "/meeting/viewMeetings/:id/editmeeting",
+        element: <EditMeeting />,
+      },
     ],
   },
-  {
-    path: "/employeedash",
-    element: <EmployeeHomePage />,
-    errorElement: <ErrorPage />,
-  },
+  { path: "/employeedash", element: <EmployeeHomePage /> },
+
   {
     path: "/secrecoordinator",
     element: <SecreCoordinatorHomePage />,
@@ -143,32 +150,7 @@ const router = createBrowserRouter([
     element: <TeamHomePage />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/employee",
-    element: <Employee />,
-    errorElement: <ErrorPage />,
-  },
 
-  {
-    path: "/meeting/createMeeting",
-    element: <CreateMeeting />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/meeting/updateMeetings/:id",
-    element: <UpdateMeeting />,
-    errorElement: <ErrorPage />,
-  },
-  // {
-  //   path: "/meeting/viewMeetings/:id",
-  //   element: <ViewMeeting />,
-  //   errorElement: <ErrorPage />,
-  // },
-  {
-    path: "/meeting/viewMeetings/:id/editmeeting",
-    element: <EditMeeting />,
-    errorElement: <ErrorPage />,
-  },
   {
     path: "/roles/createRoles",
     element: <CreateRoles />,

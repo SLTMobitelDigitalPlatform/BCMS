@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import Formtable from "./Formtable";
 import Pagination from "./Pagination";
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
 
 axios.defaults.baseURL = "http://localhost:5000";
 
@@ -35,7 +33,7 @@ function Employee() {
   const [dataList, setDataList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
@@ -158,74 +156,67 @@ function Employee() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Navbar />
-      {/* <div className="container mx-auto py-8"> */}
-      <div className="flex gap-x-8">
-        {/* Sidebar */}
-        <Sidebar />
+    <div>
+      {/* Main Content */}
+      <div className="flex-grow  bg-red-500">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-green-500">Employee</h1>
 
-        {/* Main Content */}
-        <div className="flex-grow mr-4">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-3xl font-bold text-green-500">Employee</h1>
-            <button
-              className="bg-gradient-to-r from-blue-900 to-green-500 px-6 py-2 rounded-md text-white"
-              onClick={() => setAddSection(true)}
-            >
-              Add Employee
-            </button>
-          </div>
+          <input
+            type="text"
+            placeholder="Search"
+            className="border rounded-xl w-96 px-2 py-2"
+            value={searchTerm}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Regular expression to allow only letters, numbers, and spaces
+              const regex = /^[a-zA-Z0-9 ]*$/;
 
-          <div className="flex justify-between items-center mb-4">
-            <input
-              type="text"
-              placeholder="Search to filter..."
-              className="border rounded-md px-2 py-2"
-              value={searchTerm}
-              onChange={(e) => {
-                const value = e.target.value;
-                // Regular expression to allow only letters, numbers, and spaces
-                const regex = /^[a-zA-Z0-9 ]*$/;
+              if (regex.test(value)) {
+                setSearchTerm(value);
+              }
+            }}
+          />
 
-                if (regex.test(value)) {
-                  setSearchTerm(value);
-                }
-              }}
-            />
-          </div>
+          <button
+            className="btn-primary px-6 py-2 rounded-xl text-white"
+            onClick={() => setAddSection(true)}
+          >
+            Add Employee
+          </button>
+        </div>
 
-          {addSection && (
-            <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8 w-full max-w-2xl z-50">
-                <Formtable
-                  handleSubmit={handleSubmit}
-                  handleOnChange={handleOnChange}
-                  handleclose={() => setAddSection(false)}
-                  rest={formData}
-                />
-              </div>
+        {addSection && (
+          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8 w-full max-w-2xl z-50">
+              <Formtable
+                handleSubmit={handleSubmit}
+                handleOnChange={handleOnChange}
+                handleclose={() => setAddSection(false)}
+                rest={formData}
+              />
             </div>
-          )}
+          </div>
+        )}
 
-          {editSection && (
-            <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
-              <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8 w-full max-w-2xl z-50">
-                <Formtable
-                  handleSubmit={handleUpdate}
-                  handleOnChange={handleEditOnChange}
-                  handleclose={() => setEditSection(false)}
-                  rest={formDataEdit}
-                />
-              </div>
+        {editSection && (
+          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8 w-full max-w-2xl z-50">
+              <Formtable
+                handleSubmit={handleUpdate}
+                handleOnChange={handleEditOnChange}
+                handleclose={() => setEditSection(false)}
+                rest={formDataEdit}
+              />
             </div>
-          )}
+          </div>
+        )}
 
-          <div className="tableContainer mt-8">
-            <table className="table-auto w-full bg-gray-100 border-collapse">
-              <thead>
-                <tr className="bg-blue-200 text-blue-900">
-                  {/* <th className="px-2 py-2 border">
+        <div className="tableContainer mt-5">
+          <table className="table-auto w-full bg-gray-100 border-collapse">
+            <thead>
+              <tr className="bg-blue-200 text-blue-900">
+                {/* <th className="px-2 py-2 border">
                     <input
                       type="checkbox"
                       onChange={handleSelectAll}
@@ -235,87 +226,86 @@ function Employee() {
                       }
                     />
                   </th> */}
-                  <th className="p-1 border">Name</th>
-                  <th className="p-1 border">Service Number</th>
-                  <th className="p-1 border">Designation</th>
-                  <th className="p-1 border">Email</th>
-                  <th className="p-1 border">Role</th>
-                  <th className="p-1 border">Section</th>
-                  <th className="p-1 border">Contact Number</th>
-                  <th className="p-1 border">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedDataList.length > 0 ? (
-                  paginatedDataList.map((el) => (
-                    <tr key={el._id} className="hover:bg-gray-200">
-                      {/* <td className="border p-1 text-blue-900">
+                <th className="p-1 border">Name</th>
+                <th className="p-1 border">Service Number</th>
+                <th className="p-1 border">Designation</th>
+                <th className="p-1 border">Email</th>
+                <th className="p-1 border">Role</th>
+                <th className="p-1 border">Section</th>
+                <th className="p-1 border">Contact Number</th>
+                <th className="p-1 border">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedDataList.length > 0 ? (
+                paginatedDataList.map((el) => (
+                  <tr key={el._id} className="hover:bg-gray-200">
+                    {/* <td className="border p-1 text-blue-900">
                         <input
                           type="checkbox"
                           checked={selectedIds.includes(el._id)}
                           onChange={(e) => handleSelect(e, el._id)}
                         />
                       </td> */}
-                      <td className="border p-1 text-blue-900 text-sm">
-                        {el.name}
-                      </td>
-                      <td className="border p-1 text-blue-900 text-sm">
-                        {el.serviceNumber}
-                      </td>
-                      <td className="border p-1 text-blue-900 text-sm">
-                        {el.designation}
-                      </td>
-                      <td className="border p-1 text-blue-900 text-sm">
-                        {el.email}
-                      </td>
-                      <td className="border p-1 text-blue-900 text-sm">
-                        {el.role}
-                      </td>
-                      <td className="border p-1 text-blue-900 text-sm">
-                        {el.section}
-                      </td>
-                      <td className="border p-1 text-blue-900 text-sm">
-                        {el.contactNumber}
-                      </td>
-                      <td className="border p-1">
-                        <div className="flex space-x-2">
-                          <button
-                            className="btn btn-edit bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-md text-sm"
-                            onClick={() => handleEdit(el)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn btn-delete bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md text-sm"
-                            onClick={() => handleDelete(el._id)}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      className="border p-1"
-                      colSpan="9"
-                      style={{ textAlign: "center" }}
-                    >
-                      No data
+                    <td className="border p-1 text-blue-900 text-sm">
+                      {el.name}
+                    </td>
+                    <td className="border p-1 text-blue-900 text-sm">
+                      {el.serviceNumber}
+                    </td>
+                    <td className="border p-1 text-blue-900 text-sm">
+                      {el.designation}
+                    </td>
+                    <td className="border p-1 text-blue-900 text-sm">
+                      {el.email}
+                    </td>
+                    <td className="border p-1 text-blue-900 text-sm">
+                      {el.role}
+                    </td>
+                    <td className="border p-1 text-blue-900 text-sm">
+                      {el.section}
+                    </td>
+                    <td className="border p-1 text-blue-900 text-sm">
+                      {el.contactNumber}
+                    </td>
+                    <td className="border p-1">
+                      <div className="flex space-x-2">
+                        <button
+                          className="btn btn-edit bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-xl text-sm"
+                          onClick={() => handleEdit(el)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn btn-delete bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-xl text-sm"
+                          onClick={() => handleDelete(el._id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+                ))
+              ) : (
+                <tr>
+                  <td
+                    className="border p-1"
+                    colSpan="9"
+                    style={{ textAlign: "center" }}
+                  >
+                    No data
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </div>
   );
