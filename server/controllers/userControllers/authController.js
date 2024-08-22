@@ -18,11 +18,11 @@ exports.userOtpSend = async (req, res) => {
   const { email, serviceNumber } = req.body;
 
   if (!email) {
-    res.status(400).json({ error: "Please Enter Your Email" });
+    return res.status(400).json({ error: "Please Enter Your Email" });
   }
 
   if (!serviceNumber) {
-    res.status(400).json({ error: "Please Enter Your Service Number" });
+    return res.status(400).json({ error: "Please Enter Your Service Number" });
   }
 
   try {
@@ -97,12 +97,11 @@ exports.userOtpSend = async (req, res) => {
 exports.userLogin = async (req, res) => {
   const { email, otp } = req.body.data;
 
-  if (!otp || !email) {
-    res.status(400).json({ error: "Please Enter Your OTP and email" });
-  }
-
   try {
     const otpVerification = await UserOtp.findOne({ email: email });
+    if (!otp || !email) {
+      return res.status(400).json({ error: "Please Enter Your OTP and email" });
+    }
 
     if (!otpVerification) {
       return res.status(400).json({ error: "Invalid OTP or email" });
