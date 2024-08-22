@@ -1,7 +1,10 @@
+import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+
+// This is necessary to set the root element for the modal
+Modal.setAppElement("#root");
 
 const Popping = ({ open, handleClose, event, fetchEvents }) => {
   const navigate = useNavigate();
@@ -43,55 +46,60 @@ const Popping = ({ open, handleClose, event, fetchEvents }) => {
   };
 
   return (
-    <Modal show={open} onHide={handleClose} className="rounded-lg shadow-lg">
-      <Modal.Header closeButton className="border-b border-gray-200">
-        <Modal.Title className="text-xl font-semibold text-gray-800">
-          {title}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="p-6">
-        {describe ? (
-          <p className="text-gray-600">{describe}</p>
-        ) : (
-          <p className="text-gray-400">No Descriptions Yet</p>
-        )}
-        <div className="flex justify-between mt-4">
-          <p className="text-sm text-gray-500">
-            From: {new Date(start).toLocaleString()}
-          </p>
-          <p className="text-sm text-gray-500">
-            To: {new Date(end).toLocaleString()}
-          </p>
+    <Modal
+      isOpen={open}
+      onRequestClose={handleClose}
+      className="relative w-full max-w-lg mx-auto mt-24 bg-white rounded-lg p-6 "
+      overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center"
+    >
+      <div className="p-6">
+        <div className="flex justify-between items-center border-b-2 border-blue-700 pb-4">
+          <h2 className="text-xl font-semibold text-blue-800">{title}</h2>
+          <button
+            onClick={handleClose}
+            className="absolute top-2 right-2 text-gray-700 text-3xl font-bold"
+          >
+            &times;
+          </button>
         </div>
-      </Modal.Body>
-      <Modal.Footer className="border-t border-gray-200">
-        <Button
+        <div className="mt-4">
+          {describe ? (
+            <p className="text-black">{describe}</p>
+          ) : (
+            <p className="text-gray-400">No Descriptions Yet</p>
+          )}
+        </div>
+        <div className="flex justify-between mt-4 text-sm text-black">
+          <p>From: {new Date(start).toLocaleString()}</p>
+          <p>To: {new Date(end).toLocaleString()}</p>
+        </div>
+      </div>
+      <div className="border-t-2 border-blue-700 pt-4 mt-4 mx-6 flex justify-center space-x-4">
+        <button
           className="bg-gray-700 text-white hover:bg-gray-600 border-0 rounded-md py-2 px-4 mr-2"
           onClick={handleClose}
         >
           Close
-        </Button>
+        </button>
         {user &&
         (user.role === "Super Admin" ||
           user.role === "Secretariat Coordinator") ? (
           <>
-            <Button
-              className="bg-green-600 text-white hover:bg-green-500 border-0 rounded-md py-2 px-4 mr-2"
+            <button
+              className="bg-green-500 text-white hover:bg-green-500 border-0 rounded-md py-2 px-4 mr-2"
               onClick={handleUpdate}
             >
               Update
-            </Button>
-            <Button
-              className="bg-blue-600 text-white hover:bg-blue-500 border-0 rounded-md py-2 px-4"
+            </button>
+            <button
+              className="bg-red-600 text-white hover:bg-blue-500 border-0 rounded-md py-2 px-4"
               onClick={handleDelete}
             >
               Delete
-            </Button>
+            </button>
           </>
-        ) : (
-          " "
-        )}
-      </Modal.Footer>
+        ) : null}
+      </div>
     </Modal>
   );
 };

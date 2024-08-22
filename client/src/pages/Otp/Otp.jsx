@@ -34,9 +34,9 @@ const Otp = () => {
   const navigate = useNavigate();
   const [isResending, setIsResending] = useState(false);
 
-  const [data, setData] = useState({ date: Date.now(), delay: 10000 });
+  const [data, setData] = useState({ date: Date.now(), delay: 180000 });
   const [key, setKey] = useState(Date.now());
-  const wantedDelay = 10000;
+  const wantedDelay = 180000;
   const [countdownCompleted, setCountdownCompleted] = useState(false);
   const [hasError, setHasError] = useState(false);
   const { login } = useAuth();

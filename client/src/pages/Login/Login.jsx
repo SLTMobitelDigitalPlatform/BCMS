@@ -30,7 +30,7 @@ const Login = () => {
   const sendOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    localStorage.removeItem("token");
     if (!validateEmail(email)) {
       setHasError(true);
       setLoading(false);
@@ -55,15 +55,16 @@ const Login = () => {
 
       if (response.status === 200) {
         // Store login info if "Remember Me" is checked
-        if (rememberMe) {
-          localStorage.setItem("email", email);
-          localStorage.setItem("serviceNumber", serviceNumber);
-        } else {
-          // Clear local storage if "Remember Me" is unchecked
-          localStorage.removeItem("email");
-          localStorage.removeItem("serviceNumber");
-        }
-
+        // if (rememberMe) {
+        //   localStorage.setItem("email", email);
+        //   localStorage.setItem("serviceNumber", serviceNumber);
+        // } else {
+        //   // Clear local storage if "Remember Me" is unchecked
+        //   localStorage.removeItem("email");
+        //   localStorage.removeItem("serviceNumber");
+        // }
+        localStorage.setItem("email", email);
+        localStorage.setItem("serviceNumber", serviceNumber);
         setLoading(false);
         navigate("/otp", { state: { email, serviceNumber } });
       } else {
@@ -132,7 +133,7 @@ const Login = () => {
             {/* Remember Me Checkbox */}
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <input
+                {/* <input
                   type="checkbox"
                   id="rememberMe"
                   className="mr-3 accent-green-500 h-4 w-4"
@@ -141,7 +142,7 @@ const Login = () => {
                 />
                 <label htmlFor="rememberMe" className="text-sm">
                   Remember Me
-                </label>
+                </label> */}
               </div>
             </div>
 
