@@ -1,1 +1,1 @@
-# BCMS
+# BCMS - Business Continuity Management System
