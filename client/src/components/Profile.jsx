@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getInitials } from "../utilities/helper";
+// import { getInitials } from "../utilities/helper";
+import UserProfile from "./UserProfile";
+import EventCard from "./EventCard";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -25,27 +27,13 @@ const Profile = () => {
     fetchUserDetails();
   }, []);
   return (
-    <div>
-      <h1 className="text-green-500 font-bold text-3xl">Profile</h1>
-      <div className="flex justify-center m-4">
-        <div className="w-32 h-32 flex items-center justify-center rounded-full text-blue-900 text-5xl font-medium bg-slate-100">
-          {getInitials(user?.name)}
-        </div>
+    <div className="h-full flex flex-col md:flex-row">
+      <div className="w-full md:w-3/4">
+        <UserProfile />
       </div>
-
-      {user ? (
-        <>
-          <h2 className="font-bold text-blue-900 text-xl">{user.name}</h2>
-          <p className="text-blue-900 text-md">{user.email}</p>
-          <p className="text-blue-900 text-md">{user.role}</p>
-          <p className="text-blue-900 text-md capitalize">{user.section}</p>
-          <p className="text-blue-900 text-md">
-            Service No: {user.serviceNumber}
-          </p>
-        </>
-      ) : (
-        <p className="text-blue-900 text-md">Loading user details...</p>
-      )}
+      <div className="w-full md:w-1/4">
+        <EventCard />
+      </div>
     </div>
   );
 };
