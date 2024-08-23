@@ -6,6 +6,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import AboutmeForm from "./components/AboutmeForm";
 import AboutmeView from "./components/AboutmeView";
 import Profile from "./components/Profile";
+import UserProfile from "./components/UserProfile";
 import AddEvents from "./pages/calendar/AddEvents";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
@@ -109,6 +110,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />, // Error page for layout routes
     children: [
       { path: "profile", element: <Profile /> },
+      { path: "UserProfile", element: <UserProfile /> },
       { path: "dash", element: <Dashboard /> },
       {
         path: "/admin",

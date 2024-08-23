@@ -3,6 +3,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import AboutmeForm from "./components/AboutmeForm";
 import AboutmeView from "./components/AboutmeView";
 import Profile from "./components/Profile";
+import UserProfile from "./components/UserProfile";
 import AddEvents from "./pages/calendar/AddEvents";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
@@ -55,6 +56,7 @@ function App() {
 
         <Route element={<Layout />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/Userprofile" element={<UserProfile />} />
           <Route path="/dash" element={<Dashboard />} />
         </Route>
 
