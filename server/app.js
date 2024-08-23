@@ -56,6 +56,7 @@ if (!fs.existsSync(uploadDirCover)) {
 
 app.use("/uploads", express.static(uploadDir)); // Serve the uploads directory as a static folder
 app.use("/covers", express.static(uploadDirCover));
+app.use("/userImages", express.static(path.join(__dirname, "userImages")));
 
 app.listen(PORT, () => {
   console.log(`Server start at Port No :${PORT}`);
