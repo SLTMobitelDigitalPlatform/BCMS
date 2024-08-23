@@ -46,7 +46,8 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
-
+import CreateObjective from "./pages/documents/ContextOrganization/Objectives/CreateObjective";
+import EditObjectives from "./pages/documents/ContextOrganization/Objectives/EditObjective";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -240,8 +241,18 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
+    path: "/editObjective/:id",
+    element: <EditObjectives />,
+    errorElement: <ErrorPage />,
+  },
+  {
     path: "/objectives",
     element: <Objectives />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/createObjective",
+    element: <CreateObjective />,
     errorElement: <ErrorPage />,
   },
   {
