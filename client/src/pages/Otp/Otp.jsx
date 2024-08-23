@@ -114,34 +114,35 @@ const Otp = () => {
           localStorage.removeItem("serviceNumber");
           localStorage.setItem("token", response.data.token);
           toast.success(response.data.message);
-          const role = response.data.role;
+          // const role = response.data.role;
           login();
-          switch (role) {
-            case "Super Admin":
-              navigate("/admin");
-              break;
-            case "Secretariat Coordinator":
-              navigate("/secrecoordinator");
-              break;
-            case "BCM Coordinator":
-              navigate("/coordinator");
-              break;
-            case "Person Giving Approvals":
-              navigate("/personsgivingapprovals");
-              break;
-            case "BCM Teams":
-              navigate("/team");
-              break;
-            case "Employee":
-              navigate("/employeedash");
-              break;
-            case "customer":
-              navigate("/customer");
-              break;
-            default:
-              navigate("/login");
-              break;
-          }
+          navigate("/profile");
+          // switch (role) {
+          //   case "Super Admin":
+          //     navigate("/admin");
+          //     break;
+          //   case "Secretariat Coordinator":
+          //     navigate("/secrecoordinator");
+          //     break;
+          //   case "BCM Coordinator":
+          //     navigate("/coordinator");
+          //     break;
+          //   case "Person Giving Approvals":
+          //     navigate("/personsgivingapprovals");
+          //     break;
+          //   case "BCM Teams":
+          //     navigate("/team");
+          //     break;
+          //   case "Employee":
+          //     navigate("/employeedash");
+          //     break;
+          //   case "customer":
+          //     navigate("/customer");
+          //     break;
+          //   default:
+          //     navigate("/login");
+          //     break;
+          // }
         }
       } catch (error) {
         toast.error(error.response?.data?.error || "Failed to verify OTP");

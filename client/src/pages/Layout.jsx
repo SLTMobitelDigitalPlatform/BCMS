@@ -4,11 +4,11 @@ import Sidebar from "../components/Sidebar";
 
 const Layout = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen h-screen flex flex-col">
       <Navbar />
-      <div className="flex gap-x-4">
+      <div className="flex flex-1overflow-hidden">
         <Sidebar />
-        <div className="flex-1 mr-6 ml-10">
+        <div className="flex-1 mr-6 ml-10 overflow-hidden">
           <Outlet />
         </div>
       </div>
