@@ -6,13 +6,11 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import AboutmeForm from "./components/AboutmeForm";
 import AboutmeView from "./components/AboutmeView";
 import Profile from "./components/Profile";
-import UserProfile from "./components/UserProfile";
 import AddEvents from "./pages/calendar/AddEvents";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
 import AdminHomePage from "./pages/Dashboards/AdminHomePage";
 import CoordinatorHomePage from "./pages/Dashboards/CoordinatorHomePage";
-import Dashboard from "./pages/Dashboards/Dashboard";
 import EmployeeHomePage from "./pages/Dashboards/EmployeeHomePage";
 import SecreCoordinatorHomePage from "./pages/Dashboards/SecreCoordinatorHomePage";
 import TeamHomePage from "./pages/Dashboards/TeamHomePage";
@@ -105,24 +103,25 @@ const router = createBrowserRouter([
     element: <SubscriptionForm />,
     errorElement: <ErrorPage />,
   },
+  // Dashboard
   {
     path: "/",
-    element: <Layout />, // Wraps with Navbar, Sidebar
-    errorElement: <ErrorPage />, // Error page for layout routes
+    element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       { path: "profile", element: <Profile /> },
-      { path: "UserProfile", element: <UserProfile /> },
-      { path: "dash", element: <Dashboard /> },
       {
-        path: "/admin",
+        path: "admin",
         element: (
           <ProtectedRoute>
             <AdminHomePage />
           </ProtectedRoute>
         ),
       },
-      // Employees
+      // Employee Table
       { path: "/employee", element: <Employee /> },
+
+      // Customer Table
 
       // Meetings
       { path: "/meeting", element: <Meeting /> },
@@ -134,6 +133,29 @@ const router = createBrowserRouter([
         path: "/meeting/viewMeetings/:id/editmeeting",
         element: <EditMeeting />,
       },
+
+      // Calendar
+      { path: "/calendar", element: <Calendar /> },
+      { path: "/event/:id/update", element: <UpdateEvent /> },
+      { path: "/add-event", element: <AddEvents /> },
+
+      // Documents
+      //  Risk Assessment
+
+      // Context of the Organization
+
+      // BIA
+
+      // BCP
+
+      // Roles
+      { path: "/roles", element: <Roles /> },
+      { path: "/roles/createRoles", element: <CreateRoles /> },
+      { path: "/roles/editRoles", element: <EditRoles /> },
+
+      // About Me -- Delete all related files if not needed
+      { path: "/AboutmeView/AboutmeForm", element: <AboutmeForm /> },
+      { path: "/AboutmeView", element: <AboutmeView /> },
     ],
   },
   { path: "/employeedash", element: <EmployeeHomePage /> },
@@ -154,46 +176,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
 
-  {
-    path: "/roles/createRoles",
-    element: <CreateRoles />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/roles/editRoles",
-    element: <EditRoles />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/roles",
-    element: <Roles />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/AboutmeView/AboutmeForm",
-    element: <AboutmeForm />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/AboutmeView",
-    element: <AboutmeView />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/calendar",
-    element: <Calendar />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/event/:id/update",
-    element: <UpdateEvent />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/add-event",
-    element: <AddEvents />,
-    errorElement: <ErrorPage />,
-  },
   {
     path: "/riskAssesements",
     element: <RiskAssesement />,

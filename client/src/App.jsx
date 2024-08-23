@@ -9,7 +9,7 @@ import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
 import AdminHomePage from "./pages/Dashboards/AdminHomePage";
 import CoordinatorHomePage from "./pages/Dashboards/CoordinatorHomePage";
-import Dashboard from "./pages/Dashboards/Dashboard";
+
 import EmployeeHomePage from "./pages/Dashboards/EmployeeHomePage";
 import SecreCoordinatorHomePage from "./pages/Dashboards/SecreCoordinatorHomePage";
 import TeamHomePage from "./pages/Dashboards/TeamHomePage";
@@ -57,7 +57,6 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/Userprofile" element={<UserProfile />} />
-          <Route path="/dash" element={<Dashboard />} />
         </Route>
 
         {/* Home & Customer Pages */}

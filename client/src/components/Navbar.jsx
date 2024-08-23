@@ -21,9 +21,10 @@ const Navbar = () => {
         setPreviewUrl(fullImageUrl); // Set the initial previewUrl
       } catch (error) {
         console.error("Error fetching user details:", error);
-      } finally {
-        setLoading(false);
       }
+      // } finally {
+      //   setLoading(false);
+      // }
     };
 
     fetchUserDetails();

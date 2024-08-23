@@ -28,7 +28,7 @@ const EventCard = () => {
   };
 
   return (
-    <div className="bg-cyan-100 h-full p-4 w-full rounded-2xl overflow-y-auto md:ml-2">
+    <div className="bg-cyan-100 p-4 w-full h-full rounded-2xl overflow-y-auto">
       <h1 className="text-2xl sm:text-3xl font-bold text-blue-500 text-center mb-8">
         Upcoming Events
       </h1>

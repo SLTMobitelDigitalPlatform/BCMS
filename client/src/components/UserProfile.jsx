@@ -164,7 +164,7 @@ const UserProfile = () => {
       </div>
 
       {/* Profile Picture and Edit Button */}
-      <div className="flex flex-col items-center justify-center rounded-lg shadow-md space-y-5 p-5">
+      <div className="flex flex-col items-center justify-center space-y-5 p-5">
         <div className="w-44 h-44 flex items-center justify-center rounded-full overflow-hidden bg-green-500">
           {previewUrl ? (
             <img
