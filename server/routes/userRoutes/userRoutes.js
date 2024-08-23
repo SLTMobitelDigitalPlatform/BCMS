@@ -31,4 +31,10 @@ router.post(
   userControllers.uploadProfileImage
 );
 
+router.delete(
+  "/user/deleteProfileImage/:id",
+  authControllers.protect,
+  userControllers.deleteProfileImage
+);
+
 module.exports = router;

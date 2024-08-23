@@ -23,7 +23,9 @@ const UserProfile = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        const fullImageUrl = `http://localhost:5000${response.data.profileImg}`;
         setUser(response.data);
+        setPreviewUrl(fullImageUrl); // Set the initial previewUrl
       } catch (error) {
         console.error("Error fetching user details:", error);
       } finally {
@@ -37,7 +39,6 @@ const UserProfile = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
-    // Validate file type and size before uploading
     const validTypes = ["image/jpeg", "image/jpg", "image/png"];
 
     if (!validTypes.includes(file.type)) {
@@ -46,7 +47,6 @@ const UserProfile = () => {
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      // 5MB size limit
       alert("File size exceeds the 5MB limit.");
       return;
     }
@@ -77,19 +77,23 @@ const UserProfile = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            // "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
-      console.log("Save response:", response.data);
+      // Construct the full URL for the profile image
+      const fullImageUrl = `http://localhost:5000${response.data.profileImg}`;
 
       // Update the user state with the new profile photo URL returned from the server
       setUser((prevUser) => ({
         ...prevUser,
-        profileImg: response.data.profileImg,
+        profileImg: fullImageUrl,
       }));
 
+      // Update the preview URL with the new profile image URL
+      setPreviewUrl(fullImageUrl);
+      console.log("Full profile image URL:", fullImageUrl);
       setEditing(false);
       setSaveSuccess(true);
     } catch (error) {
@@ -106,6 +110,38 @@ const UserProfile = () => {
   const handleEdit = () => {
     setEditing(true);
     fileInputRef.current.click(); // Trigger the file input click
+  };
+
+  const handleDelete = async () => {
+    if (!user || !user._id) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(
+        `http://localhost:5000/user/deleteProfileImage/${user._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Clear the profile image state
+      setUser((prevUser) => ({
+        ...prevUser,
+        profileImg: null,
+      }));
+
+      // Clear the preview URL
+      setPreviewUrl(null);
+
+      alert("Profile image deleted successfully!");
+    } catch (error) {
+      console.error(
+        "Error deleting profile photo:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   const handleCancel = () => {
@@ -132,18 +168,14 @@ const UserProfile = () => {
         <div className="w-44 h-44 flex items-center justify-center rounded-full overflow-hidden bg-green-500">
           {previewUrl ? (
             <img
-              src={previewUrl}
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
-          ) : user?.profileImg ? (
-            <img
-              src={user.profileImg}
+              src={previewUrl} // Directly use the base64 data URL
               alt="Profile"
               className="w-full h-full object-cover"
             />
           ) : (
-            getInitials(user?.name)
+            <span className="text-2xl font-bold text-white">
+              {getInitials(user?.name)}
+            </span>
           )}
         </div>
 
@@ -155,25 +187,26 @@ const UserProfile = () => {
           onChange={handleFileChange}
         />
 
-        {/* Input for editing profile picture */}
-        {/* {editing && !saveSuccess && (
-          <input
-            type="file"
-            accept="image/*"
-            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-            onChange={handleFileChange}
-          />
-        )} */}
-
         {/* Edit Button */}
-        {!editing && !saveSuccess && (
-          <button
-            className="btn-primary px-2 py-1 rounded"
-            onClick={handleEdit}
-          >
-            Edit
-          </button>
+        {!editing && (
+          <div className="flex space-x-2">
+            <button
+              className="btn-primary px-2 py-1 rounded"
+              onClick={handleEdit}
+            >
+              Edit
+            </button>
+            {user?.profileImg && (
+              <button
+                className="btn-primary px-2 py-1 rounded"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            )}
+          </div>
         )}
+        {/* <p>{user.profileImg}</p> */}
 
         {/* Save and Cancel Buttons */}
         {editing && !saveSuccess && (
@@ -223,78 +256,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-// <div>
-//   <div className="w-full text-center">
-//     <h1 className="text-green-500 font-bold text-3xl">Profile</h1>
-//   </div>
-
-//   <div className="flex justify-center m-4 relative">
-//     <div className="w-32 h-32 flex items-center justify-center rounded-full overflow-hidden">
-//       {previewUrl ? (
-//         <img
-//           src={previewUrl}
-//           alt="Profile"
-//           className="w-full h-full object-cover"
-//         />
-//       ) : user?.profileImg ? (
-//         <img
-//           src={user.profileImg}
-//           alt="Profile"
-//           className="w-full h-full object-cover"
-//         />
-//       ) : (
-//         getInitials(user?.name)
-//       )}
-//     </div>
-
-//     {editing && !saveSuccess && (
-//       <input
-//         type="file"
-//         accept="image/*"
-//         className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-//         onChange={handleFileChange}
-//       />
-//     )}
-
-//     {!editing && !saveSuccess && (
-//       <button
-//         className="absolute bottom-0 right-0 bg-blue-500 text-white px-2 py-1 rounded"
-//         onClick={() => setEditing(true)}
-//       >
-//         Edit
-//       </button>
-//     )}
-//   </div>
-
-//   {editing && !saveSuccess && (
-//     <div className="flex justify-center mt-4">
-//       <button
-//         className="bg-green-500 text-white px-4 py-2 rounded mr-2"
-//         onClick={handleSave}
-//       >
-//         Save
-//       </button>
-//       <button
-//         className="bg-red-500 text-white px-4 py-2 rounded"
-//         onClick={handleCancel}
-//       >
-//         Cancel
-//       </button>
-//     </div>
-//   )}
-
-//   {user ? (
-//     <>
-//       <h2 className="font-bold text-blue-900 text-xl">{user.name}</h2>
-//       <p className="text-blue-900 text-md">{user.email}</p>
-//       <p className="text-blue-900 text-md">{user.role}</p>
-//       <p className="text-blue-900 text-md capitalize">{user.section}</p>
-//       <p className="text-blue-900 text-md">
-//         Service No: {user.serviceNumber}
-//       </p>
-//     </>
-//   ) : (
-//     <p className="text-blue-900 text-md">No user details found.</p>
-//   )}
-// </div>

@@ -19,6 +19,7 @@ const routerRisk = require("./routes/documentRoutes/riskAssesemetRoutes");
 const routerVersion = require("./routes/documentRoutes/versionControlRoutes");
 const routerFeedback = require("./routes/homeRoutes/feedbackRoutes");
 const routerCustomer = require("./routes/customerRoutes/customerRoutes");
+const routerObjective = require("./routes/documentRoutes/objectiveRoutes");
 
 const PORT = 5000;
 
@@ -26,6 +27,7 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cors());
 app.use(
+  routerObjective,
   router,
   routerMeeting,
   routerRoles,
@@ -54,6 +56,7 @@ if (!fs.existsSync(uploadDirCover)) {
 
 app.use("/uploads", express.static(uploadDir)); // Serve the uploads directory as a static folder
 app.use("/covers", express.static(uploadDirCover));
+app.use("/userImages", express.static(path.join(__dirname, "userImages")));
 
 app.listen(PORT, () => {
   console.log(`Server start at Port No :${PORT}`);
