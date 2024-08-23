@@ -41,9 +41,7 @@ export default function Calendar() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Navbar />
       <div className="flex gap-x-4">
-        <Sidebar />
         <div className="relative min-h-screen mr-6 ml-10">
           {user &&
           (user.role === "Super Admin" ||

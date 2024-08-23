@@ -20,6 +20,8 @@ const routerVersion = require("./routes/documentRoutes/versionControlRoutes");
 const routerFeedback = require("./routes/homeRoutes/feedbackRoutes");
 const routerCustomer = require("./routes/customerRoutes/customerRoutes");
 const routerObjective = require("./routes/documentRoutes/objectiveRoutes");
+const routerExternalIssue = require("./routes/documentRoutes/externalIssueRoutes");
+const routerInternalIssue = require("./routes/documentRoutes/internalIssueRoutes");
 
 const PORT = 5000;
 
@@ -39,7 +41,9 @@ app.use(
   routerRisk,
   routerVersion,
   routerFeedback,
-  routerCustomer
+  routerCustomer,
+  routerExternalIssue,
+  routerInternalIssue
 );
 
 // Create uploads directory if it doesn't exist
