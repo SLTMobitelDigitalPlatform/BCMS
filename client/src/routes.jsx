@@ -50,6 +50,7 @@ import EditObjectives from "./pages/documents/ContextOrganization/Objectives/Edi
 import CreateInternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateInternalIssue";
 import CreateExternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateExternalIssue";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
+import CreateMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/CreateMasterProducers";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -247,6 +248,11 @@ const router = createBrowserRouter([
   {
     path: "/masterProcedures",
     element: <MasterProcedures />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/createMasterProducers",
+    element: <CreateMasterProducers />,
     errorElement: <ErrorPage />,
   },
   {
