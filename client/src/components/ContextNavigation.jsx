@@ -9,9 +9,11 @@ const ContextNavigation = () => {
             Version Control
           </button>
         </Link>
-        <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-          Interested Parties
-        </button>
+        <Link to="/externalIssues">
+          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
+            Interested Parties
+          </button>
+        </Link>
         <Link to="/internalIssues">
           <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
             Issue Register
