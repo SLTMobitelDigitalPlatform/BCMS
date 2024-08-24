@@ -49,6 +49,7 @@ import CreateObjective from "./pages/documents/ContextOrganization/Objectives/Cr
 import EditObjectives from "./pages/documents/ContextOrganization/Objectives/EditObjective";
 import CreateInternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateInternalIssue";
 import CreateExternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateExternalIssue";
+import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -236,6 +237,11 @@ const router = createBrowserRouter([
   {
     path: "/interfaces",
     element: <InterfacesDependencies />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/createInterfaceDependancy",
+    element: <CreateInterfaceDependancy />,
     errorElement: <ErrorPage />,
   },
   {

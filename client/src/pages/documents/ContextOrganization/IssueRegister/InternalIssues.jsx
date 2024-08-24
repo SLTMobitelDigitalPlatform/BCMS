@@ -12,7 +12,7 @@ const InternalIssues = () => {
     try {
       const response = await axios.get("http://localhost:5000/internalIssues");
       setInternalIssues(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log(error);
     }

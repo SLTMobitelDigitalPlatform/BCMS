@@ -1,8 +1,28 @@
 import ContextNavigation from "../../../../components/ContextNavigation";
 import Title from "../../../../components/Title";
 import Sidebar from "../../../../components/Sidebar";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const InterfacesDependencies = () => {
+  const [interfaceDependancy, setInterfaceDependancy] = useState([]);
+
+  const fetchInterfaceDependancies = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/interfaceDependancies"
+      );
+      setInterfaceDependancy(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchInterfaceDependancies();
+  }, []);
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex gap-x-10">
@@ -16,9 +36,11 @@ const InterfacesDependencies = () => {
                 <h1 className="text-2xl font-bold text-blue-900">
                   Interfaces and Dependencies
                 </h1>
-                <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
-                  Add Details
-                </button>
+                <Link to="/createInterfaceDependancy">
+                  <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
+                    Add Details
+                  </button>
+                </Link>
               </div>
               <div className="mt-8">
                 <table className="w-full border-2">
@@ -36,15 +58,29 @@ const InterfacesDependencies = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="border-2 p-3">a</td>
-                      <td className="border-2 p-3">b</td>
-                      <td className="border-2 p-3">c</td>
-                      <td className="border-2 p-3">d</td>
-                      <td className="border-2 p-3">e</td>
-                      <td className="border-2 p-3">f</td>
-                      <td className="border-2 p-3">g</td>
-                    </tr>
+                    {interfaceDependancy.map((interfaceDep) => (
+                      <tr key={interfaceDep._id}>
+                        <td className="border-2 p-3">
+                          {interfaceDep.processName}
+                        </td>
+                        <td className="border-2 p-3">
+                          {interfaceDep.externalEntityName}
+                        </td>
+                        <td className="border-2 p-3">
+                          {interfaceDep.informationExchanged}
+                        </td>
+                        <td className="border-2 p-3">
+                          {interfaceDep.inwardOutward}
+                        </td>
+                        <td className="border-2 p-3">{interfaceDep.medium}</td>
+                        <td className="border-2 p-3">
+                          {interfaceDep.exchangeMethod}
+                        </td>
+                        <td className="border-2 p-3">
+                          {interfaceDep.serviceProvidedObtained}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
