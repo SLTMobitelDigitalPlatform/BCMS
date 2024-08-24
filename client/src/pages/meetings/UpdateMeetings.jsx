@@ -230,7 +230,7 @@ const UpdateMeeting = () => {
   };
 
   return (
-    <div className="flex flex-col bg-red-500 w-full">
+    <div className="flex flex-col rounded-2xl bg-sky-100 w-full h-full overflow-y-auto">
       <h2 className="font-bold text-[#52B14A] text-4xl text-center mt-3">
         Update Meeting
       </h2>

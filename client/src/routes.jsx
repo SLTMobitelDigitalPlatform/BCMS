@@ -141,10 +141,13 @@ const router = createBrowserRouter([
       // Calendar
       { path: "/calendar", element: <Calendar /> },
       { path: "/event/:id/update", element: <UpdateEvent /> },
-      { path: "/add-event", element: <AddEvents /> },
+      // { path: "/add-event", element: <AddEvents /> },
 
       // Documents
       //  Risk Assessment
+      { path: "/riskAssesements", element: <RiskAssesement /> },
+      { path: "/createRisk", element: <CreateRiskAssesement /> },
+      { path: "/editRisk/:id", element: <EditRiskAssesement /> },
 
       // Context of the Organization
 
@@ -164,37 +167,22 @@ const router = createBrowserRouter([
   },
   { path: "/employeedash", element: <EmployeeHomePage /> },
 
-  {
-    path: "/secrecoordinator",
-    element: <SecreCoordinatorHomePage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/coordinator",
-    element: <CoordinatorHomePage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/team",
-    element: <TeamHomePage />,
-    errorElement: <ErrorPage />,
-  },
+  // {
+  //   path: "/secrecoordinator",
+  //   element: <SecreCoordinatorHomePage />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/coordinator",
+  //   element: <CoordinatorHomePage />,
+  //   errorElement: <ErrorPage />,
+  // },
+  // {
+  //   path: "/team",
+  //   element: <TeamHomePage />,
+  //   errorElement: <ErrorPage />,
+  // },
 
-  {
-    path: "/riskAssesements",
-    element: <RiskAssesement />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/createRisk",
-    element: <CreateRiskAssesement />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/editRisk/:id",
-    element: <EditRiskAssesement />,
-    errorElement: <ErrorPage />,
-  },
   {
     path: "/versionControls",
     element: <VersionControls />,

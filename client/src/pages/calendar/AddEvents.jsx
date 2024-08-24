@@ -7,6 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import "./custom.css";
+import { MdClose } from "react-icons/md";
 
 const schema = yup
   .object({
@@ -73,7 +74,7 @@ const AddEvents = ({ onAddEvent }) => {
       );
       onAddEvent(response.data);
       setDbError(null);
-      window.location.href = "http://localhost:5173/calendar";
+      // window.location.href = "http://localhost:5173/calendar";
     } catch (error) {
       setDbError(error.response.data);
     }
@@ -97,31 +98,20 @@ const AddEvents = ({ onAddEvent }) => {
     { value: "Marketing Department", label: "Marketing Department" },
   ];
 
-  const scrollToCalendar = () => {
-    window.location.href = "http://localhost:5173/calendar";
-  };
-
   return (
-    <div className="mb-9 ml-4" style={{ height: 400, width: 1000 }}>
-      <h1
-        className="cursor-pointer text-2xl font-bold mb-4"
-        onClick={scrollToCalendar}
-        style={{ color: "#52B14A" }}
-      >
-        Calendar
-      </h1>
-      <Link
-        to="/calendar"
-        className="text-3xl font-bold mb-4 block text-center text-gray-800 hover:underline"
-      ></Link>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-gray-100 p-8 rounded-lg shadow-lg border border-blue-800"
-      >
+    <div className="h-full overflow-y-auto">
+      <div className="flex justify-between">
         <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">
           Create New Event
         </h2>
 
+        <MdClose
+          className="text-2xl text-slate-950 hover:bg-red-400 rounded-full cursor-pointer"
+          onClick={() => {}}
+        />
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-6 flex items-center">
           <label
             htmlFor="title"

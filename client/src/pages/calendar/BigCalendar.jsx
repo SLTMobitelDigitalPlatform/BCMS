@@ -80,47 +80,35 @@ const MyCalendar = () => {
 
   return (
     <div>
-      <div className="">
-        <h1
-          className="cursor-pointer text-2xl font-bold mb-4 ml-1"
-          onClick={scrollToCalendar}
-          style={{ color: "#52B14A" }}
-        >
-          Calendar
-        </h1>
-      </div>
-      <div
-        className="flex justify-center items-center rounded-2xl mr-2 bg-blue-50 p-1"
-        ref={calendarRef}
-      >
+      <div className="flex justify-center items-center mt-5" ref={calendarRef}>
         <Popping
           open={open}
           handleClose={closeEventClick}
           event={selectedEvent}
           fetchEvents={fetchEvents}
         />
-        <div className="">
-          <div className="bg-white shadow-lg rounded-lg p-6 border-3 border-blue-300">
-            <Calendar
-              localizer={localizer}
-              events={events}
-              startAccessor="start"
-              endAccessor="end"
-              style={{
-                height: 500,
-                width: 950,
-                fontFamily: "sans-serif",
-                fontSize: "16px",
-              }}
-              onSelectEvent={openEventClick}
-              views={["month", "week", "day", "agenda"]}
-              components={{
-                prev: PrevButton,
-                next: NextButton,
-              }}
-            />
-          </div>
+        {/* <div className="bg-red-500"> */}
+        <div className="bg-white shadow-xl rounded-lg p-6 border-3 border-blue-300">
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{
+              height: 500,
+              width: 950,
+              fontFamily: "sans-serif",
+              fontSize: "16px",
+            }}
+            onSelectEvent={openEventClick}
+            views={["month", "week", "day", "agenda"]}
+            components={{
+              prev: PrevButton,
+              next: NextButton,
+            }}
+          />
         </div>
+        {/* </div> */}
       </div>
     </div>
   );

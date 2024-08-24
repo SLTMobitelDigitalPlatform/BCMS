@@ -139,19 +139,20 @@ const UpdateEvent = () => {
   };
 
   return event ? (
-    <div className="max- mx-auto my- p-5" style={{ height: 400, width: 1000 }}>
-      <h1
+    // style={{ height: 400, width: 1000 }}
+    <div className="h-full overflow-y-auto">
+      {/* <h1
         className="cursor-pointer text-2xl font-bold mb-4"
         onClick={scrollToCalendar}
         style={{ color: "#52B14A" }}
       >
         Calendar
-      </h1>
+      </h1> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-10 rounded-lg shadow-lg border border-gray-200"
+        className="bg-white p-5 rounded-lg shadow-lg border border-gray-200"
       >
-        <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">
+        <h2 className="text-2xl font-bold text-center text-gray-800">
           Update Event
         </h2>
 
