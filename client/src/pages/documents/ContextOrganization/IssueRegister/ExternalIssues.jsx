@@ -2,8 +2,25 @@ import Title from "../../../../components/Title";
 import ContextNavigation from "../../../../components/ContextNavigation";
 import { Link } from "react-router-dom";
 import Sidebar from "../../../../components/Sidebar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ExternalIssues = () => {
+  const [externalIssues, setExternalIssues] = useState([]);
+
+  const fetchExternalIssues = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/externalIssues");
+      setExternalIssues(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchExternalIssues();
+  }, []);
   return (
     <div className="container mx-auto py-8">
       <div className="flex gap-x-10">
@@ -29,9 +46,11 @@ const ExternalIssues = () => {
                     </button>
                   </Link>
                 </div>
-                <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
-                  Create Record
-                </button>
+                <Link to="/createExternalIssue">
+                  <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
+                    Create Record
+                  </button>{" "}
+                </Link>
               </div>
               <div className="mt-5">
                 <h1 className="text-center text-2xl font-bold mb-3">
@@ -40,21 +59,31 @@ const ExternalIssues = () => {
                 <table className="w-full border-2">
                   <thead>
                     <tr className="border-2">
-                      <th className="border-2">Serial Number</th>
-                      <th className="border-2">Version Number</th>
-                      <th className="border-2">Prepared By</th>
-                      <th className="border-2">Approved By</th>
-                      <th className="border-2">Reasons for new release</th>
+                      <th className="border-2">External Issues</th>
+                      <th className="border-2">Requirments</th>
+                      <th className="border-2">ISMS</th>
+                      <th className="border-2">QMS</th>
+                      <th className="border-2">BCMS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="border-2 p-3">a</td>
-                      <td className="border-2 p-3">b</td>
-                      <td className="border-2 p-3">c</td>
-                      <td className="border-2 p-3">d</td>
-                      <td className="border-2 p-3">e</td>
-                    </tr>
+                    {externalIssues.map((external) => (
+                      <tr key={external._id}>
+                        <td className="border-2 p-3">
+                          {external.externalIssues}
+                        </td>
+                        <td className="border-2 p-3">{external.requirments}</td>
+                        <td className="border-2 p-3">
+                          {external.isms ? "✓" : "✗"}
+                        </td>
+                        <td className="border-2 p-3">
+                          {external.qms ? "✓" : "✗"}
+                        </td>
+                        <td className="border-2 p-3">
+                          {external.bcms ? "✓" : "✗"}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

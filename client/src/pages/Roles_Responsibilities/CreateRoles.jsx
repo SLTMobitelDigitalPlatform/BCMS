@@ -25,12 +25,10 @@ const CreateRoles = () => {
   };
 
   return (
+
     // <div className="container mx-auto py-8">
     <div className="flex gap-x-10 rounded-2xl bg-sky-100 h-full overflow-y-auto">
       <div className="w-full p-5">
-        <h1 className="text-[#52B14A] font-bold text-3xl">
-          Roles & Responsibilities
-        </h1>
         <div className="bg-cyan-50 p-3 mt-5 rounded-2xl px-5 border">
           <h1 className=" text-center font-bold text-3xl text-[#003E81] mt-5">
             Add New Roles & Responsibilities
