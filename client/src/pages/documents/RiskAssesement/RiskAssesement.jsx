@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import Sidebar from "../../../components/Sidebar";
 
 const RiskAssesement = () => {
   const [risks, setRisks] = useState([]);
@@ -59,136 +58,122 @@ const RiskAssesement = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex gap-x-10">
-        <Sidebar />
-        <div className="ml-5 mr-20 mt-1">
-          <div className="border-2 rounded-2xl p-5 fixed w-[1130px] ">
-            <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold">Risk Assessments</h1>
-              <Link to="/createRisk">
-                <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
-                  Create Risk Assessment
-                </button>
-              </Link>
-            </div>
-          </div>
-          <div className="border-2 p-5 mt-20 overflow-y-auto h-[510px] w-[1130px]">
-            <table className="w-full border-2">
-              <thead>
-                <tr>
-                  <th className="border-2 px-2 py-2">Risk ID</th>
-                  <th className="border-2 px-2 py-2">Risk owner</th>
-                  <th className="border-2 px-2 py-2">Responsible Person</th>
-                  <th className="border-2 px-2 py-2">Description</th>
-                  <th className="border-2 px-2 py-2">Sources</th>
-                  <th className="border-2 px-2 py-2">Assets</th>
-                  <th className="border-2 px-2 py-2">Element</th>
-                  <th className="border-2 px-2 py-2">Objectives</th>
-                  <th className="border-2 px-2 py-2">Controls</th>
-                  <th className="border-2 px-2 py-2">Impact</th>
-                  <th className="border-2 px-2 py-2">Likelihood</th>
-                  <th className="border-2 px-2 py-2">Impact Rating</th>
-                  <th className="border-2 px-2 py-2">Treat Method</th>
-                  <th className="border-2 px-2 py-2">Date</th>
-                  <th className="border-2 px-2 py-2">New Controls</th>
-                  <th className="border-2 px-2 py-2">Residual Impact</th>
-                  <th className="border-2 px-2 py-2">Probability</th>
-                  <th className="border-2 px-2 py-2">Residual Impact Rating</th>
-                  <th className="border-2 px-2 py-2">Statement</th>
-                  <th className="border-2 px-2 py-2">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentRisks.map((r) => (
-                  <tr key={r._id}>
-                    <td className="border-2 text-normal px-2">{r.rid}</td>
-                    <td className="border-2 text-normal px-2">{r.owner}</td>
-                    <td className="border-2 text-normal px-2">
-                      {r.responsibility}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.description}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.sources}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.assets}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.element}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.objectives}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.controls}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.impact}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.likelihood}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.impactRating}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.treatMethod}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">{r.date}</td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.newControls}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.residualImpact}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.probability}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.residualImpactRating}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      {r.statement}
-                    </td>
-                    <td className="border-2 text-normal px-4 py-3">
-                      <div className="flex gap-3">
-                        <Link to={`/editRisk/${r._id}`}>
-                          <button className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold">
-                            Edit
-                          </button>
-                        </Link>
-                        <button
-                          onClick={() => deleteRisk(r._id)}
-                          className="px-4 py-1 rounded-lg bg-red-600 text-white font-semibold"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="flex justify-start mt-4">
-              {Array.from(
-                { length: Math.ceil(risks.length / risksPerPage) },
-                (_, i) => (
-                  <button
-                    key={i + 1}
-                    onClick={() => paginate(i + 1)}
-                    className={`px-3 py-1 mx-1 border ${
-                      currentPage === i + 1 ? "bg-gray-300" : "bg-white"
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                )
-              )}
-            </div>
-          </div>
+    <div className="flex flex-col h-full rounded-2xl bg-sky-100">
+      {/* Heading */}
+      <div className="flex items-center justify-between p-5 w-full">
+        <h1 className="text-2xl font-bold">Risk Assessments</h1>
+        <Link to="/createRisk">
+          <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
+            Create Risk Assessment
+          </button>
+        </Link>
+      </div>
+
+      {/* Table */}
+      <div className="p-5 overflow-y-auto h-full">
+        <table className="border-2 bg-cyan-50">
+          <thead>
+            <tr>
+              <th className="border-2 px-2 py-2">Risk ID</th>
+              <th className="border-2 px-2 py-2">Risk owner</th>
+              <th className="border-2 px-2 py-2">Responsible Person</th>
+              <th className="border-2 px-2 py-2">Description</th>
+              <th className="border-2 px-2 py-2">Sources</th>
+              <th className="border-2 px-2 py-2">Assets</th>
+              <th className="border-2 px-2 py-2">Element</th>
+              <th className="border-2 px-2 py-2">Objectives</th>
+              <th className="border-2 px-2 py-2">Controls</th>
+              <th className="border-2 px-2 py-2">Impact</th>
+              <th className="border-2 px-2 py-2">Likelihood</th>
+              <th className="border-2 px-2 py-2">Impact Rating</th>
+              <th className="border-2 px-2 py-2">Treat Method</th>
+              <th className="border-2 px-2 py-2">Date</th>
+              <th className="border-2 px-2 py-2">New Controls</th>
+              <th className="border-2 px-2 py-2">Residual Impact</th>
+              <th className="border-2 px-2 py-2">Probability</th>
+              <th className="border-2 px-2 py-2">Residual Impact Rating</th>
+              <th className="border-2 px-2 py-2">Statement</th>
+              <th className="border-2 px-2 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentRisks.map((r) => (
+              <tr key={r._id}>
+                <td className="border-2 text-normal px-2">{r.rid}</td>
+                <td className="border-2 text-normal px-2">{r.owner}</td>
+                <td className="border-2 text-normal px-2">
+                  {r.responsibility}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.description}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">{r.sources}</td>
+                <td className="border-2 text-normal px-4 py-3">{r.assets}</td>
+                <td className="border-2 text-normal px-4 py-3">{r.element}</td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.objectives}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">{r.controls}</td>
+                <td className="border-2 text-normal px-4 py-3">{r.impact}</td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.likelihood}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.impactRating}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.treatMethod}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">{r.date}</td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.newControls}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.residualImpact}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.probability}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.residualImpactRating}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.statement}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  <div className="flex gap-3">
+                    <Link to={`/editRisk/${r._id}`}>
+                      <button className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold">
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => deleteRisk(r._id)}
+                      className="px-4 py-1 rounded-lg bg-red-600 text-white font-semibold"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="flex justify-start mt-4">
+          {Array.from(
+            { length: Math.ceil(risks.length / risksPerPage) },
+            (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => paginate(i + 1)}
+                className={`px-3 py-1 mx-1 border ${
+                  currentPage === i + 1 ? "bg-gray-300" : "bg-white"
+                }`}
+              >
+                {i + 1}
+              </button>
+            )
+          )}
         </div>
       </div>
     </div>

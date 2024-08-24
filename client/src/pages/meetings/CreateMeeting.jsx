@@ -103,12 +103,12 @@ const CreateMeeting = () => {
     // <div className="flex gap-x-10 bg-yellow-300">
     // <div className="w-full bg-red-500">
     //   <div className="flex flex-col">
-    <div className="bg-cyan-50">
-      <h2 className="font-bold text-[#52B14A] text-4xl text-center">
+    <div className="bg-cyan-100 rounded-2xl h-full overflow-y-auto">
+      <h2 className="font-bold text-green-500 text-3xl text-center">
         New Meeting
       </h2>
       <form onSubmit={handleSubmit} className="p-5">
-        <div className=" mx-10">
+        <div className="mx-10">
           <div className="pb-2">
             <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">

@@ -117,7 +117,7 @@ const ViewMeeting = () => {
     //     <Sidebar />
     //     <div className="border-2 w-full p-5 rounded-2xl mr-5 ml-5 mt-">
 
-    <div className="bg-cyan-50 rounded-2xl">
+    <div className="bg-cyan-100 rounded-2xl h-full overflow-y-auto">
       <h1 className="text-green-500 font-bold text-3xl">View Meeting</h1>
       <div className="flex justify-end">
         {user &&

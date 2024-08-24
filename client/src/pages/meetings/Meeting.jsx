@@ -73,7 +73,7 @@ const Meeting = () => {
     // <div className="flex gap-x-4">
     // {/* <Sidebar /> */}
 
-    <div>
+    <div className="h-full overflow-y-auto">
       <div className="flex justify-between bg-red-500">
         <h1 className="mt-5 text-[#52B14A] font-bold text-3xl">Meeting</h1>
 

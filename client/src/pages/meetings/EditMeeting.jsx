@@ -97,7 +97,7 @@ const EditMeeting = () => {
   }
 
   return (
-    <div className="w-full h-full bg-cyan-50 p-2">
+    <div className="w-full h-full overflow-y-auto rounded-2xl bg-cyan-50 p-2">
       <h2 className="font-bold text-[#52B14A] text-4xl text-center mt-3">
         Update Meeting Actions
       </h2>
