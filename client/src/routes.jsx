@@ -47,6 +47,8 @@ import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import CreateObjective from "./pages/documents/ContextOrganization/Objectives/CreateObjective";
 import EditObjectives from "./pages/documents/ContextOrganization/Objectives/EditObjective";
+import CreateInternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateInternalIssue";
+import CreateExternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateExternalIssue";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -219,6 +221,16 @@ const router = createBrowserRouter([
   {
     path: "/createObjective",
     element: <CreateObjective />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/createInternalIssue",
+    element: <CreateInternalIssue />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/createExternalIssue",
+    element: <CreateExternalIssue />,
     errorElement: <ErrorPage />,
   },
   {
