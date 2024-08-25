@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { MdChat, MdClose, MdTopic } from "react-icons/md";
 import { FaCheckCircle, FaEnvelope, FaUser } from "react-icons/fa";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { MdChat, MdClose, MdTopic } from "react-icons/md";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
 import ellipse from "../../assets/Ellipse.png";
 import feedback from "../../assets/feedback.png";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 
 const Feedback = () => {
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(null);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ const Feedback = () => {
   };
 
   const closeModal = () => {
-    setFeedbackSubmitted(null);
+    setFeedbackSubmitted(false);
   };
 
   const navigate = useNavigate();
@@ -88,6 +88,7 @@ const Feedback = () => {
                 <FaUser className="text-2xl absolute left-3 top-1/2 transform -translate-y-1/2" />
                 <input
                   type="text"
+                  name="name"
                   className="w-full pl-14 py-2 border-2 border-blue-500 rounded-md"
                   placeholder="Name"
                   // required
@@ -99,6 +100,7 @@ const Feedback = () => {
                 <FaEnvelope className="text-2xl absolute left-3 top-1/2 transform -translate-y-1/2" />
                 <input
                   type="email"
+                  name="email"
                   className="w-full pl-14 py-2 border-2 border-blue-500 rounded-md"
                   placeholder="Email"
                   // required
@@ -110,6 +112,7 @@ const Feedback = () => {
                 <MdTopic className="text-2xl absolute left-3 top-1/2 transform -translate-y-1/2" />
                 <input
                   type="text"
+                  name="subject"
                   className="w-full pl-14 py-2 border-2 border-blue-500 rounded-md"
                   placeholder="Subject"
                   // required
@@ -122,6 +125,7 @@ const Feedback = () => {
                 <textarea
                   className="w-full pl-14 py-2 border-2 border-blue-500 rounded-md"
                   rows="4"
+                  name="message"
                   placeholder="Message"
                   // required
                 />
@@ -132,7 +136,7 @@ const Feedback = () => {
                 <button
                   className="bg-gradient-to-r from-[#003E81] to-[#2ACF1C]
                   hover:from-[#2ACF1C] hover:to-[#003E81] transition duration-1000 ease-in-out
-                   w-full md:w-1/4 text-white font-semibold py-2 px-4 rounded-3xl focus:outline-none focus:shadow-outline"
+                   w-full md:w-1/4 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
                   type="submit"
                 >
                   Submit
