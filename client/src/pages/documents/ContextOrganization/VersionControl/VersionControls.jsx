@@ -57,12 +57,12 @@ const VersionControls = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-sky-100 rounded-2xl">
-      <h1 className="text-2xl font-bold text-green-500">
+    <div className="w-full h-full p-5 flex flex-col bg-sky-100 rounded-2xl">
+      <h1 className="text-3xl mb-5 font-bold text-green-500">
         Context Of The Organization
       </h1>
       <ContextNavigation />
-      <div className="flex justify-between items-center mt-8">
+      <div className="flex justify-between items-center mt-10">
         <h1 className="text-2xl font-bold text-blue-900">Version Control</h1>
         <Link to="/createVersion">
           <button className="px-3 py-1 bg-green-500 text-white font-semibold rounded-lg">
@@ -72,7 +72,7 @@ const VersionControls = () => {
       </div>
 
       {/* Table */}
-      <div className="mt-8 h-full overflow-auto">
+      <div className="mt-10 h-full overflow-auto">
         <table className="relative w-full h-full bg-cyan-50">
           <thead className="sticky top-0 bg-white">
             <tr>

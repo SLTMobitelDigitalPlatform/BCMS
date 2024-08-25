@@ -59,25 +59,21 @@ const BCPRiskAssesement = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex flex-col h-full rounded-2xl bg-sky-100">
-      {/* Heading */}
+    <div className="w-full h-full flex flex-col p-5 bg-sky-100 rounded-2xl">
+      <h1 className="text-2xl font-bold text-green-500">Risk Management</h1>
+      <RiskAssNavigation />
 
-      <div className="flex items-center justify-between p-5 w-full">
-        <RiskAssNavigation />
-
-        <div className="flex justify-between items-center mt-8">
-          <h1 className="text-2xl font-bold">BCP Risk Assessments</h1>
-        </div>
-
-        <Link to="/createBCPRisk">
-          <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
-            Create Risk Assessment
+      <div className="flex justify-between items-center mt-8">
+        <h1 className="text-2xl font-bold text-blue-900">BCP</h1>
+        <Link to="/createVersion">
+          <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
+            Create Version Control
           </button>
         </Link>
       </div>
 
       {/* Table */}
-      <div className="p-5 overflow-y-auto h-full">
+      <div className="mt-8 overflow-auto h-full">
         <table className="border-2 bg-cyan-50">
           <thead>
             <tr>
