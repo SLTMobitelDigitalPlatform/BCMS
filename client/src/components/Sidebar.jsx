@@ -72,7 +72,7 @@ const Sidebar = () => {
                     <Menu.Item>
                       {({ active }) => (
                         <Link
-                          to="/riskAssesements"
+                          to="/riskVersionControl"
                           className={classNames(
                             active
                               ? "bg-gray-100 text-gray-900 "

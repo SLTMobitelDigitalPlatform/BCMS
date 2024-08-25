@@ -72,7 +72,7 @@ const Meeting = () => {
     // {/* <Sidebar /> */}
 
     <div className="h-full overflow-y-auto">
-      <div className="flex justify-between bg-red-500">
+      <div className="flex justify-between">
         <h1 className="mt-5 text-[#52B14A] font-bold text-3xl">Meeting</h1>
 
         {user &&

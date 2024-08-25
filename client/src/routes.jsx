@@ -140,6 +140,14 @@ const router = createBrowserRouter([
       { path: "riskAssesements", element: <RiskAssesement /> },
       { path: "createRisk", element: <CreateRiskAssesement /> },
       { path: "editRisk/:id", element: <EditRiskAssesement /> },
+      { path: "/bcpRisk", element: <BCPRiskAssesement /> },
+      { path: "/createRiskIS", element: <CreateISRiskAssesement /> },
+      { path: "/createBCPRisk", element: <CreateBCPRiskAssesement /> },
+      { path: "/editISRisk/:id", element: <EditISRiskAssesement /> },
+      { path: "/editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
+      { path: "/riskVersionControl", element: <RiskVersionControls /> },
+      { path: "/informationSecurity", element: <ISRiskAssesement /> },
+        
 
       // Context of the Organization
       // * Version Controls
