@@ -24,6 +24,9 @@ const routerExternalIssue = require("./routes/documentRoutes/externalIssueRoutes
 const routerInternalIssue = require("./routes/documentRoutes/internalIssueRoutes");
 const routerInterfaceDependancy = require("./routes/documentRoutes/interfaceDependancyRoutes");
 const routerProceduresAndProcess = require("./routes/documentRoutes/proceduresAndProcessRoutes");
+const routerRiskIS = require("./routes/documentRoutes/riskAssesemetISRoutes");
+const routerRiskBCP = require("./routes/documentRoutes/riskAssesemetBCPRoutes");
+
 const PORT = 5000;
 
 // middleware
@@ -46,7 +49,9 @@ app.use(
   routerExternalIssue,
   routerInternalIssue,
   routerInterfaceDependancy,
-  routerProceduresAndProcess
+  routerProceduresAndProcess,
+  routerRiskIS,
+  routerRiskBCP
 );
 
 // Create uploads directory if it doesn't exist

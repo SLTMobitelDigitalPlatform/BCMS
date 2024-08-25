@@ -51,6 +51,13 @@ import CreateInternalIssue from "./pages/documents/ContextOrganization/IssueRegi
 import CreateExternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateExternalIssue";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 import CreateMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/CreateMasterProducers";
+import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/riskVersionControl";
+import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
+import CreateISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/CreateISRiskAssesement";
+import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
+import BCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/BCPRiskAssesement";
+import CreateBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/CreateBCPRiskAssesement";
+import EditBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/EditBCPRiskAssesement";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -146,9 +153,15 @@ const router = createBrowserRouter([
       // Documents
       //  Risk Assessment
       { path: "/riskAssesements", element: <RiskAssesement /> },
+      { path: "/bcpRisk", element: <BCPRiskAssesement /> },
       { path: "/createRisk", element: <CreateRiskAssesement /> },
+      { path: "/createRiskIS", element: <CreateISRiskAssesement /> },
+      { path: "/createBCPRisk", element: <CreateBCPRiskAssesement /> },
       { path: "/editRisk/:id", element: <EditRiskAssesement /> },
-
+      { path: "/editISRisk/:id", element: <EditISRiskAssesement /> },
+      { path: "/editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
+      { path: "/riskVersionControl", element: <RiskVersionControls /> },
+      { path: "/informationSecurity", element: <ISRiskAssesement /> },
       // Context of the Organization
 
       // BIA
