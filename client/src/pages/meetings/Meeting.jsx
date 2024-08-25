@@ -1,8 +1,6 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
-import axios from "axios";
 
 const Meeting = () => {
   const [meetings, setMeetings] = useState([]);
