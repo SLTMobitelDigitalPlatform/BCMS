@@ -22,13 +22,13 @@ const ExternalIssues = () => {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col bg-sky-100 rounded-2xl">
-      <h1 className="text-2xl font-bold text-green-500">
+    <div className="w-full h-full p-5 flex flex-col bg-sky-100 rounded-2xl">
+      <h1 className="text-3xl mb-5 font-bold text-green-500">
         Context Of The Organization
       </h1>
       <ContextNavigation />
       {/* <div className="bg-sky-50 w-full h-full p-5 mt-8 rounded-2xl"> */}
-      <div className="flex justify-between items-center mt-8">
+      <div className="flex justify-between items-center mt-10">
         <div className="flex items-center gap-10">
           <h1 className="text-2xl font-bold text-blue-900">Issue Register</h1>
           <Link to="/internalIssues">
@@ -53,7 +53,7 @@ const ExternalIssues = () => {
       </div>
 
       {/* Table */}
-      <div className="w-full h-full overflow-auto">
+      <div className="mt-10 w-full h-full overflow-auto">
         <table className="w-full border-2">
           <thead>
             <tr className="border-2">

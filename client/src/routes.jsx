@@ -42,6 +42,13 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
+import EditBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/EditBCPRiskAssesement";
+import BCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/BCPRiskAssesement";
+import CreateBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/CreateBCPRiskAssesement";
+import CreateISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/CreateISRiskAssesement";
+import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
+import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
+import ISRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ISRiskAssesement";
 
 const router = createBrowserRouter([
   {
@@ -136,60 +143,65 @@ const router = createBrowserRouter([
       // ! { path: "add-event", element: <AddEvents /> },
 
       // Documents
-      //  Risk Assessment
-      { path: "riskAssesements", element: <RiskAssesement /> },
-      { path: "createRisk", element: <CreateRiskAssesement /> },
-      { path: "editRisk/:id", element: <EditRiskAssesement /> },
-      { path: "/bcpRisk", element: <BCPRiskAssesement /> },
-      { path: "/createRiskIS", element: <CreateISRiskAssesement /> },
-      { path: "/createBCPRisk", element: <CreateBCPRiskAssesement /> },
-      { path: "/editISRisk/:id", element: <EditISRiskAssesement /> },
-      { path: "/editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
-      { path: "/riskVersionControl", element: <RiskVersionControls /> },
-      { path: "/informationSecurity", element: <ISRiskAssesement /> },
-        
+      //?  Risk Assessment
+      //! { path: "riskAssesements", element: <RiskAssesement /> },
+      //! { path: "createRisk", element: <CreateRiskAssesement /> },
+      //!{ path: "editRisk/:id", element: <EditRiskAssesement /> },
 
-      // Context of the Organization
+      // * Version Controls
+      { path: "riskVersionControl", element: <RiskVersionControls /> },
+      { path: "editVersion/:id", element: <EditVersionControl /> },
+
+      // * Information Security
+      { path: "informationSecurity", element: <ISRiskAssesement /> },
+      { path: "createRiskIS", element: <CreateISRiskAssesement /> },
+      { path: "editISRisk/:id", element: <EditISRiskAssesement /> },
+
+      //  * BCP
+      { path: "bcpRisk", element: <BCPRiskAssesement /> },
+      { path: "createBCPRisk", element: <CreateBCPRiskAssesement /> },
+      { path: "editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
+
+      //? Context of the Organization
       // * Version Controls
       { path: "versionControls", element: <VersionControls /> },
       { path: "createVersion", element: <CreateVersionControl /> },
-      { path: "/editVersion/:id", element: <EditVersionControl /> },
 
       // * Intersested Parties
 
       // * Issue Register
       // ** External Issues
-      { path: "/externalIssues", element: <ExternalIssues /> },
-      { path: "/createExternalIssue", element: <CreateExternalIssue /> },
+      { path: "externalIssues", element: <ExternalIssues /> },
+      { path: "createExternalIssue", element: <CreateExternalIssue /> },
 
       // ** Internal Issues
-      { path: "/internalIssues", element: <InternalIssues /> },
-      { path: "/createInternalIssue", element: <CreateInternalIssue /> },
+      { path: "internalIssues", element: <InternalIssues /> },
+      { path: "createInternalIssue", element: <CreateInternalIssue /> },
 
       // * Interfaces and Dependencies
-      { path: "/interfaces", element: <InterfacesDependencies /> },
+      { path: "interfaces", element: <InterfacesDependencies /> },
       {
-        path: "/createInterfaceDependancy",
+        path: "createInterfaceDependancy",
         element: <CreateInterfaceDependancy />,
       },
 
       // * Objectives
-      { path: "/objectives", element: <Objectives /> },
-      { path: "/createObjective", element: <CreateObjective /> },
-      { path: "/editObjective/:id", element: <EditObjectives /> },
+      { path: "objectives", element: <Objectives /> },
+      { path: "createObjective", element: <CreateObjective /> },
+      { path: "editObjective/:id", element: <EditObjectives /> },
 
       // * Master of Procedures and Process
-      { path: "/masterProcedures", element: <MasterProcedures /> },
-      { path: "/createMasterProducers", element: <CreateMasterProducers /> },
+      { path: "masterProcedures", element: <MasterProcedures /> },
+      { path: "createMasterProducers", element: <CreateMasterProducers /> },
 
-      // BIA
+      //? BIA
 
-      // BCP
+      //? BCP
 
       // Roles
-      { path: "/roles", element: <Roles /> },
-      { path: "/roles/createRoles", element: <CreateRoles /> },
-      { path: "/roles/editRoles", element: <EditRoles /> },
+      { path: "roles", element: <Roles /> },
+      { path: "roles/createRoles", element: <CreateRoles /> },
+      { path: "roles/editRoles", element: <EditRoles /> },
     ],
   },
   {
