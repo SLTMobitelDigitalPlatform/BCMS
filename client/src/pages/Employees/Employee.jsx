@@ -158,7 +158,7 @@ function Employee() {
   return (
     <div>
       {/* Main Content */}
-      <div className="flex-grow  bg-red-500">
+      <div className="flex-grow ">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-green-500">Employee</h1>
 
