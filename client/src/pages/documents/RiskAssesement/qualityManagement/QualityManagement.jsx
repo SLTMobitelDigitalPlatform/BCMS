@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import RiskAssNavigation from "../../../../components/RiskAssNavigation";
 
-const ISRiskAssesement = () => {
+const QualityManagement = () => {
   const [risks, setRisks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const risksPerPage = 5;
@@ -12,7 +12,9 @@ const ISRiskAssesement = () => {
   // Fetch all risks
   const fetchRisks = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/risks/");
+      const response = await axios.get(
+        "http://localhost:5000/api/qualityRisks/"
+      );
       setRisks(response.data);
     } catch (error) {
       console.error(error);
@@ -36,7 +38,9 @@ const ISRiskAssesement = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/api/risks/delete/${id}`);
+          await axios.delete(
+            `http://localhost:5000/api/qualityRisks/delete/${id}`
+          );
           setRisks(risks.filter((risk) => risk._id !== id));
           Swal.fire("Deleted!", "Your risk has been deleted.", "success");
         } catch (error) {
@@ -66,10 +70,10 @@ const ISRiskAssesement = () => {
         <RiskAssNavigation />
 
         <div className="flex justify-between items-center mt-8">
-          <h1 className="text-2xl font-bold">Risk Assessments</h1>
+          <h1 className="text-2xl font-bold">Quality Management</h1>
         </div>
 
-        <Link to="/createRisk">
+        <Link to="/createQualityManagement">
           <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
             Create Risk Assessment
           </button>
@@ -149,7 +153,7 @@ const ISRiskAssesement = () => {
                 </td>
                 <td className="border-2 text-normal px-4 py-3">
                   <div className="flex gap-3">
-                    <Link to={`/editRisk/${r._id}`}>
+                    <Link to={`/editQualityManagement/${r._id}`}>
                       <button className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold">
                         Edit
                       </button>
@@ -187,4 +191,4 @@ const ISRiskAssesement = () => {
   );
 };
 
-export default ISRiskAssesement;
+export default QualityManagement;
