@@ -58,7 +58,7 @@ import EditQualityManagement from "./pages/documents/RiskAssesement/qualityManag
 import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ResidualRiskAssesement";
 import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
 import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
-
+import Customer from "./pages/Customers/Customer";
 
 const router = createBrowserRouter([
   {
