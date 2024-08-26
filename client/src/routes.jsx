@@ -48,6 +48,7 @@ import CreateBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/Create
 import CreateISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/CreateISRiskAssesement";
 import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
 import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
+
 import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
 import CreateRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/CreateVersionControl";
 import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/EditVersionControl";
@@ -57,6 +58,7 @@ import EditQualityManagement from "./pages/documents/RiskAssesement/qualityManag
 import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ResidualRiskAssesement";
 import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
 import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
+
 
 const router = createBrowserRouter([
   {
@@ -226,6 +228,10 @@ const router = createBrowserRouter([
       { path: "roles/createRoles", element: <CreateRoles /> },
       { path: "roles/editRoles", element: <EditRoles /> },
     ],
+  },
+  {
+    path: "/customers",
+    element: <Customer />,
   },
   {
     path: "*",
