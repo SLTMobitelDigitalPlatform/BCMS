@@ -48,7 +48,7 @@ import CreateBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/Create
 import CreateISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/CreateISRiskAssesement";
 import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
 import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
-import ISRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ISRiskAssesement";
+import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
 
 const router = createBrowserRouter([
   {
@@ -140,7 +140,7 @@ const router = createBrowserRouter([
       { path: "calendar", element: <Calendar /> },
       { path: "event/:id/update", element: <UpdateEvent /> },
 
-      // ! { path: "add-event", element: <AddEvents /> },
+      //!  { path: "add-event", element: <AddEvents /> },
 
       // Documents
       //?  Risk Assessment
