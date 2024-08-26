@@ -49,6 +49,8 @@ import CreateISRiskAssesement from "./pages/documents/RiskAssesement/information
 import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
 import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
 import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
+import CreateRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/CreateVersionControl";
+import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/EditVersionControl";
 
 const router = createBrowserRouter([
   {
@@ -151,6 +153,8 @@ const router = createBrowserRouter([
       // * Version Controls
       { path: "riskVersionControl", element: <RiskVersionControls /> },
       { path: "editVersion/:id", element: <EditVersionControl /> },
+      { path: "createRiskVersion", element: <CreateRiskVersionControl /> },
+      { path: "editISRiskVersion/:id", element: <EditRiskVersionControl /> },
 
       // * Information Security
       { path: "informationSecurity", element: <ISRiskAssesement /> },
