@@ -25,7 +25,7 @@ const EditVersionControl = () => {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   const handleEditVersion = (e) => {
     e.preventDefault();
