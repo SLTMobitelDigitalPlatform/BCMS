@@ -54,6 +54,9 @@ import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersion
 import QualityManagement from "./pages/documents/RiskAssesement/qualityManagement/QualityManagement";
 import CreateQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/CreateQualityManagement";
 import EditQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/EditQualityManagement";
+import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ResidualRiskAssesement";
+import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
+import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
 
 const router = createBrowserRouter([
   {
@@ -173,6 +176,14 @@ const router = createBrowserRouter([
       { path: "qualityManagement", element: <QualityManagement /> },
       { path: "createQualityManagement", element: <CreateQualityManagement /> },
       { path: "editQualityManagement/:id", element: <EditQualityManagement /> },
+
+      //  * Residual Risk Assesment
+      { path: "residualRisk", element: <ResidualRiskAssesement /> },
+      {
+        path: "createResidualRisk",
+        element: <CreateIResidualRiskAssesement />,
+      },
+      { path: "editResidualRisk/:id", element: <EditResidualRiskAssesement /> },
 
       //? Context of the Organization
       // * Version Controls

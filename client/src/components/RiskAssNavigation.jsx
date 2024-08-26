@@ -24,7 +24,7 @@ const RiskAssNavigation = () => {
             Quality Management
           </button>
         </Link>
-        <Link to="/residualRiskAss">
+        <Link to="/residualRisk">
           <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
             Residual Risk Assesment
           </button>

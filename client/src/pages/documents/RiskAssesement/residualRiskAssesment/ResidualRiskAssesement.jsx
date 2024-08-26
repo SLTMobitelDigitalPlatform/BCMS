@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import RiskAssNavigation from "../../../../components/RiskAssNavigation";
 
-const ISRiskAssesement = () => {
+const ResidualRiskAssesement = () => {
   const [risks, setRisks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const risksPerPage = 5;
@@ -12,7 +12,9 @@ const ISRiskAssesement = () => {
   // Fetch all risks
   const fetchRisks = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/risks/");
+      const response = await axios.get(
+        "http://localhost:5000/api/residualRisks/"
+      );
       setRisks(response.data);
     } catch (error) {
       console.error(error);
@@ -36,7 +38,9 @@ const ISRiskAssesement = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/api/risks/delete/${id}`);
+          await axios.delete(
+            `http://localhost:5000/api/residualRisks/delete/${id}`
+          );
           setRisks(risks.filter((risk) => risk._id !== id));
           Swal.fire("Deleted!", "Your risk has been deleted.", "success");
         } catch (error) {
@@ -66,7 +70,7 @@ const ISRiskAssesement = () => {
         <h1 className="text-2xl font-bold text-blue-900">
           Information Security
         </h1>
-        <Link to="/createRisk">
+        <Link to="/createResidualRisk">
           <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
             Create Risk Assessment
           </button>
@@ -81,74 +85,43 @@ const ISRiskAssesement = () => {
           <thead>
             <tr>
               <th className="border-2 px-2 py-2">Risk ID</th>
-              <th className="border-2 px-2 py-2">Risk owner</th>
-              <th className="border-2 px-2 py-2">Responsible Person</th>
-              <th className="border-2 px-2 py-2">Description</th>
-              <th className="border-2 px-2 py-2">Sources</th>
-              <th className="border-2 px-2 py-2">Assets</th>
-              <th className="border-2 px-2 py-2">Element</th>
-              <th className="border-2 px-2 py-2">Objectives</th>
-              <th className="border-2 px-2 py-2">Controls</th>
+              <th className="border-2 px-2 py-2">Residual Risk Rating</th>
+              <th className="border-2 px-2 py-2">Treatment Method</th>
+              <th className="border-2 px-2 py-2">Identified New Controls</th>
+              <th className="border-2 px-2 py-2">
+                Target Control Implementation completion Date
+              </th>
               <th className="border-2 px-2 py-2">Impact</th>
-              <th className="border-2 px-2 py-2">Likelihood</th>
-              <th className="border-2 px-2 py-2">Impact Rating</th>
-              <th className="border-2 px-2 py-2">Treat Method</th>
-              <th className="border-2 px-2 py-2">Date</th>
-              <th className="border-2 px-2 py-2">New Controls</th>
-              <th className="border-2 px-2 py-2">Residual Impact</th>
-              <th className="border-2 px-2 py-2">Probability</th>
-              <th className="border-2 px-2 py-2">Residual Impact Rating</th>
-              <th className="border-2 px-2 py-2">Statement</th>
-              <th className="border-2 px-2 py-2">Actions</th>
+              <th className="border-2 px-2 py-2">Liklihood</th>
+              <th className="border-2 px-2 py-2">
+                Residual Risk Impact Rating
+              </th>
+              <th className="border-2 px-2 py-2">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRisks.map((r) => (
               <tr key={r._id}>
                 <td className="border-2 text-normal px-2">{r.rid}</td>
-                <td className="border-2 text-normal px-2">{r.owner}</td>
                 <td className="border-2 text-normal px-2">
-                  {r.responsibility}
+                  {r.residualRiskRating}
                 </td>
+                <td className="border-2 text-normal px-2">{r.treatMethod}</td>
                 <td className="border-2 text-normal px-4 py-3">
-                  {r.description}
+                  {r.identifiedControls}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">{r.sources}</td>
-                <td className="border-2 text-normal px-4 py-3">{r.assets}</td>
-                <td className="border-2 text-normal px-4 py-3">{r.element}</td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.objectives}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">{r.controls}</td>
+                <td className="border-2 text-normal px-4 py-3">{r.date}</td>
                 <td className="border-2 text-normal px-4 py-3">{r.impact}</td>
                 <td className="border-2 text-normal px-4 py-3">
                   {r.likelihood}
                 </td>
                 <td className="border-2 text-normal px-4 py-3">
-                  {r.impactRating}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.treatMethod}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">{r.date}</td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.newControls}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.residualImpact}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.probability}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">
                   {r.residualImpactRating}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.statement}
-                </td>
+
                 <td className="border-2 text-normal px-4 py-3">
                   <div className="flex gap-3">
-                    <Link to={`/editRisk/${r._id}`}>
+                    <Link to={`/editResidualRisk/${r._id}`}>
                       <button className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold">
                         Edit
                       </button>
@@ -186,4 +159,4 @@ const ISRiskAssesement = () => {
   );
 };
 
-export default ISRiskAssesement;
+export default ResidualRiskAssesement;
