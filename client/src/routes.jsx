@@ -49,6 +49,7 @@ import CreateISRiskAssesement from "./pages/documents/RiskAssesement/information
 import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
 import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
 import ISRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ISRiskAssesement";
+import Customer from "./pages/Customers/Customer";
 
 const router = createBrowserRouter([
   {
@@ -203,6 +204,10 @@ const router = createBrowserRouter([
       { path: "roles/createRoles", element: <CreateRoles /> },
       { path: "roles/editRoles", element: <EditRoles /> },
     ],
+  },
+  {
+    path: "/customers",
+    element: <Customer />,
   },
   {
     path: "*",
