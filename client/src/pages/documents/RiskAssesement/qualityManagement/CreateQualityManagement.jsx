@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const CreateRiskAssesement = () => {
+const CreateQualityManagement = () => {
   const [rid, setRid] = useState("");
   const [owner, setOwner] = useState("");
   const [responsibility, setResponsibility] = useState("");
@@ -31,20 +31,21 @@ const CreateRiskAssesement = () => {
       try {
         // Assuming your endpoint is correct and returns the last record
         const response = await axios.get(
-          "http://localhost:5000/api/risks/last"
+          "http://localhost:5000/api/qualityRisks/last"
         );
         const lastRecord = response.data;
 
         const currentYear = new Date().getFullYear();
         let newIndex = 1;
+        console.log(newIndex);
 
         if (lastRecord && lastRecord.rid) {
-          const lastIndex = parseInt(lastRecord.rid.slice(7), 10);
+          const lastIndex = parseInt(lastRecord.rid.slice(9), 10);
           newIndex = lastIndex + 1;
         }
-        console.log(lastRecord);
+        console.log(newIndex);
 
-        setRid(`${currentYear}RAS${newIndex}`);
+        setRid(`QMR-${currentYear}-${newIndex}`);
       } catch (error) {
         console.error("Error fetching the last record:", error);
       }
@@ -89,14 +90,14 @@ const CreateRiskAssesement = () => {
     };
 
     axios
-      .post("http://localhost:5000/api/risks/add", data)
+      .post("http://localhost:5000/api/qualityRisks/add", data)
       .then(() => {
         handleSuccessAlert();
         // Update the index in localStorage
         const currentIndex = localStorage.getItem("currentIndex");
         const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
         localStorage.setItem("currentIndex", newIndex);
-        navigate("/riskAssesements");
+        navigate("/qualityManagement");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -374,7 +375,7 @@ const CreateRiskAssesement = () => {
                 >
                   Save
                 </button>
-                <Link to="/riskAssesements">
+                <Link to="/qualityManagement">
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>
@@ -389,4 +390,4 @@ const CreateRiskAssesement = () => {
   );
 };
 
-export default CreateRiskAssesement;
+export default CreateQualityManagement;

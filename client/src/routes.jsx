@@ -51,6 +51,9 @@ import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSe
 import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
 import CreateRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/CreateVersionControl";
 import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/EditVersionControl";
+import QualityManagement from "./pages/documents/RiskAssesement/qualityManagement/QualityManagement";
+import CreateQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/CreateQualityManagement";
+import EditQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/EditQualityManagement";
 
 const router = createBrowserRouter([
   {
@@ -161,10 +164,15 @@ const router = createBrowserRouter([
       { path: "createRiskIS", element: <CreateISRiskAssesement /> },
       { path: "editISRisk/:id", element: <EditISRiskAssesement /> },
 
-      //  * BCP
+      //  * BCP Risk Assesment
       { path: "bcpRisk", element: <BCPRiskAssesement /> },
       { path: "createBCPRisk", element: <CreateBCPRiskAssesement /> },
       { path: "editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
+
+      //  * Quality Management Risk Assesment
+      { path: "qualityManagement", element: <QualityManagement /> },
+      { path: "createQualityManagement", element: <CreateQualityManagement /> },
+      { path: "editQualityManagement/:id", element: <EditQualityManagement /> },
 
       //? Context of the Organization
       // * Version Controls

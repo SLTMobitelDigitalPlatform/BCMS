@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const EditRiskAssesement = () => {
+const EditQualityManagement = () => {
   const [rid, setRid] = useState("");
   const [owner, setOwner] = useState("");
   const [responsibility, setResponsibility] = useState("");
@@ -28,7 +28,7 @@ const EditRiskAssesement = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/risks/${id}`)
+      .get(`http://localhost:5000/api/qualityRisks/${id}`)
       .then((res) => {
         setRid(res.data.rid);
         setOwner(res.data.owner);
@@ -82,16 +82,26 @@ const EditRiskAssesement = () => {
     };
 
     axios
-      .put(`http://localhost:5000/api/risks/edit/${id}`, data)
+      .put(`http://localhost:5000/api/qualityRisks/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/riskAssesements");
+        navigate("/qualityManagement");
       })
       .catch((err) => {
         handleErrorAlert();
         console.log(err);
       });
   };
+
+  // Calculate Impact Rating
+  useEffect(() => {
+    setImpactRating(impact * likelihood);
+  }, [impact, likelihood]);
+
+  // Calculate Residual Impact Rating
+  useEffect(() => {
+    setResidualImpactRating(residualImpact * probability);
+  }, [residualImpact, probability]);
 
   const handleSuccessAlert = () => {
     Swal.fire({
@@ -115,7 +125,7 @@ const EditRiskAssesement = () => {
     // <div className="container mx-auto py-8">
     <div className="flex gap-x-10 h-full overflow-y-auto bg-sky-100 rounded-2xl">
       <div className="w-full">
-        <h1 className="text-2xl font-bold">Add New BCP</h1>
+        <h1 className="text-2xl font-bold">Edit Quality Mangement</h1>
         <div className="w-full mx-auto p-8">
           <form onSubmit={handleEditDoc}>
             <div className="flex flex-col gap-2">
@@ -369,7 +379,7 @@ const EditRiskAssesement = () => {
               <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
                 Save
               </button>
-              <Link to="/riskAssesements">
+              <Link to="/qualityManagement">
                 <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
                   Cancel
                 </button>
@@ -383,4 +393,4 @@ const EditRiskAssesement = () => {
   );
 };
 
-export default EditRiskAssesement;
+export default EditQualityManagement;
