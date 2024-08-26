@@ -26,6 +26,7 @@ const routerInterfaceDependancy = require("./routes/documentRoutes/interfaceDepe
 const routerProceduresAndProcess = require("./routes/documentRoutes/proceduresAndProcessRoutes");
 const routerRiskIS = require("./routes/documentRoutes/riskAssesemetISRoutes");
 const routerRiskBCP = require("./routes/documentRoutes/riskAssesemetBCPRoutes");
+const routerRiskVersion = require("./routes/documentRoutes/versionControlRiskRoutes");
 
 const PORT = 5000;
 
@@ -51,7 +52,8 @@ app.use(
   routerInterfaceDependancy,
   routerProceduresAndProcess,
   routerRiskIS,
-  routerRiskBCP
+  routerRiskBCP,
+  routerRiskVersion
 );
 
 // Create uploads directory if it doesn't exist

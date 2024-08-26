@@ -10,7 +10,7 @@ const RiskVersionControls = () => {
   const fetchVersionControls = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/versionControls/"
+        "http://localhost:5000/api/versionControlsRisks/"
       );
       setVersionControls(response.data);
     } catch (error) {
@@ -36,7 +36,7 @@ const RiskVersionControls = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(
-            `http://localhost:5000/api/versionControls/delete/${id}`
+            `http://localhost:5000/api/versionControlsRisk/delete/${id}`
           );
           setVersionControls(
             versionControls.filter(
@@ -62,7 +62,7 @@ const RiskVersionControls = () => {
       <RiskAssNavigation />
       <div className="flex justify-between items-center mt-8">
         <h1 className="text-2xl font-bold text-blue-900">Version Control</h1>
-        <Link to="/createVersion">
+        <Link to="/createRiskVersion">
           <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
             Create Version Control
           </button>
@@ -94,7 +94,7 @@ const RiskVersionControls = () => {
                 <td className="border-2 p-3">{v.reasons}</td>
                 <td className="border-2 p-3 flex justify-center">
                   <div className="flex gap-3 items-center">
-                    <Link to={`/editVersion/${v._id}`}>
+                    <Link to={`/editISRiskVersion/${v._id}`}>
                       <button>Edit</button>
                     </Link>
                     <button onClick={() => deleteVersionControl(v._id)}>
