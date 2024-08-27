@@ -33,7 +33,7 @@ const NewSidebar = () => {
       <div className="text-4xl text-center font-bold text-sky-400">
         <NavLink to={"/profile"}>BCMS</NavLink>
       </div>
-      <p>/document/!doc name!/!doc section!</p>
+      {/* <p>/document/!doc name!/!doc section!</p> */}
       <div>
         <ul className="text-lg font-semibold flex flex-col gap-2 text-left">
           {/* Employees */}
@@ -128,7 +128,7 @@ const NewSidebar = () => {
           {/* Meetings */}
           <li>
             <NavLink
-              to="/meetings"
+              to="/meeting"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
@@ -152,7 +152,7 @@ const NewSidebar = () => {
           {/* Roles and Responsibilities */}
           <li>
             <NavLink
-              to="/"
+              to="/roles"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }

@@ -4,6 +4,8 @@ import { RxExclamationTriangle } from "react-icons/rx";
 import { TbChevronLeft, TbChevronRight } from "react-icons/tb";
 import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { VscFeedback } from "react-icons/vsc";
+import { FiHome } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import image1 from "../../assets/header/1.jpg";
 import image2 from "../../assets/header/2.jpg";
@@ -78,12 +80,20 @@ const Home = () => {
 
           <div className="flex space-x-4">
             {isAuthenticated ? (
-              <button
-                onClick={logout}
-                className="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 cursor-pointer"
-              >
-                LOGOUT
-              </button>
+              <>
+                <Link
+                  to="/profile"
+                  className="bg-blue-100 text-black font-semibold py-2 px-4 rounded-lg hover:bg-blue-300 cursor-pointer"
+                >
+                  <FiHome className="m-1 w-5" />
+                </Link>
+                <button
+                  onClick={logout}
+                  className="bg-red-100 text-black font-semibold py-2 px-4 rounded-lg hover:bg-red-600 cursor-pointer"
+                >
+                  <FiLogOut className="mr-2" />
+                </button>
+              </>
             ) : (
               <>
                 <Link
