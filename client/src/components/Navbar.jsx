@@ -62,7 +62,7 @@ const Navbar = () => {
             <img
               src={previewUrl} // Directly use the base64 data URL
               alt="Profile"
-              className="text-black h-10 w-10 rounded-full"
+              className="text-black h-11 w-14 rounded-full"
             />
           </Link>
         </div>

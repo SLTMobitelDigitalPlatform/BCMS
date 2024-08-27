@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../../../../components/Sidebar";
 
-const EditVersionControl = () => {
+const EditRiskVersionControl = () => {
   const [serialNo, setSerialNo] = useState(0);
   const [versionNo, setVersionNo] = useState(0);
   const [prepare, setPrepare] = useState("");
@@ -15,7 +15,7 @@ const EditVersionControl = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/versionControls/${id}`)
+      .get(`http://localhost:5000/api/versionControlsRisk/${id}`)
       .then((res) => {
         setSerialNo(res.data.serialNo);
         setVersionNo(res.data.versionNo);
@@ -26,7 +26,7 @@ const EditVersionControl = () => {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   const handleEditVersion = (e) => {
     e.preventDefault();
@@ -40,10 +40,10 @@ const EditVersionControl = () => {
     };
 
     axios
-      .put(`http://localhost:5000/api/versionControls/edit/${id}`, data)
+      .put(`http://localhost:5000/api/versionControlsRisk/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/versionControls");
+        navigate("/riskVersionControl");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -74,7 +74,6 @@ const EditVersionControl = () => {
   return (
     <div className="container mx-auto py-8">
       <div className="flex gap-x-10">
-        <Sidebar />
         <div className="border-2 w-full rounded-2xl ml-5 mr-[20px] mt-1 mb-5 p-5">
           <h1 className="text-2xl font-bold">Add New Version Control</h1>
           <div className="w-full mx-auto p-8 rounded-xl shadow-lg border-2 mt-5">
@@ -151,7 +150,7 @@ const EditVersionControl = () => {
                   >
                     Save
                   </button>
-                  <Link to="/versionControls">
+                  <Link to="/riskVersionControl">
                     <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                       Cancel
                     </button>
@@ -166,4 +165,4 @@ const EditVersionControl = () => {
   );
 };
 
-export default EditVersionControl;
+export default EditRiskVersionControl;

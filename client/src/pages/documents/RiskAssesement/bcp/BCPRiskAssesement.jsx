@@ -65,9 +65,9 @@ const BCPRiskAssesement = () => {
 
       <div className="flex justify-between items-center mt-8">
         <h1 className="text-2xl font-bold text-blue-900">BCP</h1>
-        <Link to="/createVersion">
+        <Link to="/createBCPRisk">
           <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
-            Create Version Control
+            Create Risk Assessment
           </button>
         </Link>
       </div>

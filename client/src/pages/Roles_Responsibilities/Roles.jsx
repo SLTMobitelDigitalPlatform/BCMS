@@ -75,10 +75,10 @@ const Roles = () => {
       {/* <div className="bg-cyan-50 p-3 mt-5 rounded-2xl px-5 border"> */}
       {/* Table */}
       <div className="relative overflow-y-auto rounded-b-2xl">
-        <table className="w-full text-lg rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xl text-[#003E81] uppercase dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-lg rtl:text-right text-gray-500 dark:text-gray-200">
+          <thead className="text-xl text-[#003E81] uppercase dark:bg-gray-700 dark:text-gray-200">
             <tr>
-              <th scope="col" className="px-6 py-3 border-r border-gray-600">
+              <th scope="col" className="px-6 py-3 border-r border-gray-300">
                 Roles
               </th>
               <th scope="col" className="px-6 py-3">
@@ -89,7 +89,7 @@ const Roles = () => {
           <tbody>
             {roles.map((role, index) => (
               <tr key={index} className="dark:bg-gray-800 dark:border-gray-700">
-                <td className="px-6 py-4 text-gray-600 font-semibold border-r border-gray-600">
+                <td className="px-6 py-4 text-gray-100 font-semibold border-r border-gray-200">
                   {role.roles}
                 </td>
                 <td className="px-6 py-4 text-justify">

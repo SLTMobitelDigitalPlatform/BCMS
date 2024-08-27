@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const CreateRiskAssesement = () => {
+const EditQualityManagement = () => {
   const [rid, setRid] = useState("");
   const [owner, setOwner] = useState("");
   const [responsibility, setResponsibility] = useState("");
@@ -24,46 +24,39 @@ const CreateRiskAssesement = () => {
   const [residualImpactRating, setResidualImpactRating] = useState(0);
   const [statement, setStatement] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  // Auto increment ID
   useEffect(() => {
-    const fetchLastRecord = async () => {
-      try {
-        // Assuming your endpoint is correct and returns the last record
-        const response = await axios.get(
-          "http://localhost:5000/api/risks/last"
-        );
-        const lastRecord = response.data;
+    axios
+      .get(`http://localhost:5000/api/qualityRisks/${id}`)
+      .then((res) => {
+        setRid(res.data.rid);
+        setOwner(res.data.owner);
+        setResponsibility(res.data.responsibility);
+        setDescription(res.data.description);
+        setSources(res.data.sources);
+        setAssets(res.data.assets);
+        setElement(res.data.element);
+        setObjectives(res.data.objectives);
+        setControls(res.data.controls);
+        setImpact(res.data.impact);
+        setLikelihood(res.data.likelihood);
+        setImpactRating(res.data.impactRating);
+        setTreatMethod(res.data.treatMethod);
+        setDate(res.data.date);
+        setNewControls(res.data.newControls);
+        setResidualImpact(res.data.residualImpact);
+        setProbability(res.data.probability);
+        setResidualImpactRating(res.data.residualImpactRating);
+        setStatement(res.data.statement);
+      })
+      .catch((err) => {
+        alert("Something went wrong...");
+        console.log(err);
+      });
+  }, [id]);
 
-        const currentYear = new Date().getFullYear();
-        let newIndex = 1;
-
-        if (lastRecord && lastRecord.rid) {
-          const lastIndex = parseInt(lastRecord.rid.slice(7), 10);
-          newIndex = lastIndex + 1;
-        }
-        console.log(lastRecord);
-
-        setRid(`${currentYear}RAS${newIndex}`);
-      } catch (error) {
-        console.error("Error fetching the last record:", error);
-      }
-    };
-
-    fetchLastRecord();
-  }, []);
-
-  // Calculate Impact Rating
-  useEffect(() => {
-    setImpactRating(impact * likelihood);
-  }, [impact, likelihood]);
-
-  // Calculate Residual Impact Rating
-  useEffect(() => {
-    setResidualImpactRating(residualImpact * probability);
-  }, [residualImpact, probability]);
-
-  const handleaddDoc = (e) => {
+  const handleEditDoc = (e) => {
     e.preventDefault();
 
     const data = {
@@ -89,14 +82,10 @@ const CreateRiskAssesement = () => {
     };
 
     axios
-      .post("http://localhost:5000/api/risks/add", data)
+      .put(`http://localhost:5000/api/qualityRisks/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        // Update the index in localStorage
-        const currentIndex = localStorage.getItem("currentIndex");
-        const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
-        localStorage.setItem("currentIndex", newIndex);
-        navigate("/riskAssesements");
+        navigate("/qualityManagement");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -104,18 +93,26 @@ const CreateRiskAssesement = () => {
       });
   };
 
-  // Success Alert
+  // Calculate Impact Rating
+  useEffect(() => {
+    setImpactRating(impact * likelihood);
+  }, [impact, likelihood]);
+
+  // Calculate Residual Impact Rating
+  useEffect(() => {
+    setResidualImpactRating(residualImpact * probability);
+  }, [residualImpact, probability]);
+
   const handleSuccessAlert = () => {
     Swal.fire({
       position: "top-end",
       icon: "success",
-      title: "Record Added Successfully",
+      title: "Record Edited Successfully",
       showConfirmButton: false,
       timer: 2000,
     });
   };
 
-  // Error Alert
   const handleErrorAlert = () => {
     Swal.fire({
       title: "Something Went Wrong",
@@ -127,25 +124,27 @@ const CreateRiskAssesement = () => {
   return (
     // <div className="container mx-auto py-8">
     <div className="flex gap-x-10 h-full overflow-y-auto bg-sky-100 rounded-2xl">
-      <div className=" w-full">
-        <h1 className="text-2xl font-bold">Add New Risk Assesement</h1>
+      <div className="w-full">
+        <h1 className="text-2xl font-bold">Edit Quality Mangement</h1>
         <div className="w-full mx-auto p-8">
-          <form onSubmit={handleaddDoc}>
+          <form onSubmit={handleEditDoc}>
             <div className="flex flex-col gap-2">
+              <h1 className="text-lg font-bold">Risk Assesment</h1>
               <div className="flex justify-between">
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold">
+                  <label htmlFor="" className="font-semibold mt-5">
                     Risk ID
                   </label>
                   <input
                     type="text"
+                    placeholder="Enter Risk ID"
                     value={rid}
-                    readOnly
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
+                    onChange={(e) => setRid(e.target.value)}
+                    className=" w-[300px] p-2 rounded-lg bg-slate-100"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold">
+                  <label htmlFor="" className=" font-semibold mt-5">
                     Risk Owner
                   </label>
                   <input
@@ -157,12 +156,12 @@ const CreateRiskAssesement = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold">
+                  <label htmlFor="" className=" font-semibold mt-5">
                     Responsibility
                   </label>
                   <input
                     type="text"
-                    placeholder="Enter Responsibility"
+                    placeholder="Enter Risk Owner"
                     value={responsibility}
                     onChange={(e) => setResponsibility(e.target.value)}
                     className="w-[300px] p-2 rounded-lg bg-slate-100"
@@ -170,7 +169,7 @@ const CreateRiskAssesement = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
+                <label htmlFor="" className=" font-semibold mt-5">
                   Risk Description
                 </label>
                 <textarea
@@ -182,7 +181,7 @@ const CreateRiskAssesement = () => {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
+                <label htmlFor="" className=" font-semibold mt-5">
                   Sources and causes of risk
                 </label>
                 <textarea
@@ -203,11 +202,11 @@ const CreateRiskAssesement = () => {
                     placeholder="Enter Affected Asset"
                     value={assets}
                     onChange={(e) => setAssets(e.target.value)}
-                    className="w-[450px] p-2 rounded-lg bg-slate-100"
+                    className=" w-[450px] p-2 rounded-lg bg-slate-100"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold mt-5">
+                  <label htmlFor="" className=" font-semibold mt-5">
                     Risk Element
                   </label>
                   <input
@@ -220,24 +219,24 @@ const CreateRiskAssesement = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
+                <label htmlFor="" className=" font-semibold mt-5">
                   Affected Business Unit BCP Objectives
                 </label>
                 <textarea
                   type="text"
-                  placeholder="Enter Objectives"
+                  placeholder="Enter Sources and causes of risk"
                   value={objectives}
                   onChange={(e) => setObjectives(e.target.value)}
                   className="w-full p-2 rounded-lg bg-slate-100"
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
+                <label htmlFor="" className=" font-semibold mt-5">
                   Controls Already Implemented
                 </label>
                 <textarea
                   type="text"
-                  placeholder="Enter Controls"
+                  placeholder="Enter Sources and causes of risk"
                   value={controls}
                   onChange={(e) => setControls(e.target.value)}
                   className="w-full p-2 rounded-lg bg-slate-100"
@@ -245,141 +244,146 @@ const CreateRiskAssesement = () => {
               </div>
               <div className="flex justify-between">
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold mt-5">
-                    Risk Impact (I)
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="Enter Risk Impact"
-                    value={impact}
-                    onChange={(e) => setImpact(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold mt-5">
+                  <label htmlFor="" className=" font-semibold mt-5">
                     Likelihood (L)
                   </label>
                   <input
                     type="number"
-                    placeholder="Enter Likelihood"
+                    placeholder="Enter Risk Element"
                     value={likelihood}
                     onChange={(e) => setLikelihood(e.target.value)}
                     className="w-[300px] p-2 rounded-lg bg-slate-100"
                   />
                 </div>
-
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold mt-5">
+                    Risk Impact (I)
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Enter Affected Asset"
+                    value={impact}
+                    onChange={(e) => setImpact(e.target.value)}
+                    className=" w-[300px] p-2 rounded-lg bg-slate-100"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="" className=" font-semibold mt-5">
                     Risk Impact Rating (I * L)
                   </label>
                   <input
                     type="number"
+                    placeholder="Enter Risk Element"
                     value={impactRating}
-                    readOnly
+                    onChange={(e) => setImpactRating(e.target.value)}
                     className="w-[300px] p-2 rounded-lg bg-slate-100"
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
-                  Treatment Method
-                </label>
-                <textarea
-                  type="text"
-                  placeholder="Enter Treatment Method"
-                  value={treatMethod}
-                  onChange={(e) => setTreatMethod(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-slate-100"
-                />
+
+              <h1 className="text-lg font-bold mt-8">Risk Treatment</h1>
+              <div className="flex justify-between">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="" className="font-semibold mt-5">
+                    Risk Treatment Method
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Affected Asset"
+                    value={treatMethod}
+                    onChange={(e) => setTreatMethod(e.target.value)}
+                    className=" w-[450px] p-2 rounded-lg bg-slate-100"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="" className=" font-semibold mt-5">
+                    Target Control Implementation Date
+                  </label>
+                  <input
+                    type="date"
+                    placeholder="Enter Risk Element"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-[450px] p-2 rounded-lg bg-slate-100"
+                  />
+                </div>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
-                  Target Control Implementation Date
-                </label>
-                <input
-                  type="date"
-                  placeholder="Enter Implementation Date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-slate-100"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
+                <label htmlFor="" className=" font-semibold mt-5">
                   Identified New Controls
                 </label>
                 <textarea
                   type="text"
-                  placeholder="Enter New or changed controls to be implemented"
+                  placeholder="Enter Risk Description"
                   value={newControls}
                   onChange={(e) => setNewControls(e.target.value)}
                   className="w-full p-2 rounded-lg bg-slate-100"
                 />
               </div>
+              <h1 className="text-lg font-bold mt-8">Residual Risk</h1>
               <div className="flex justify-between">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold mt-5">
-                    Residual Impact (I)
+                    Impact (I)
                   </label>
                   <input
                     type="number"
-                    placeholder="Enter Residual Impact"
+                    placeholder="Enter Affected Asset"
                     value={residualImpact}
                     onChange={(e) => setResidualImpact(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
+                    className=" w-[300px] p-2 rounded-lg bg-slate-100"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold mt-5">
+                  <label htmlFor="" className=" font-semibold mt-5">
                     Probability (P)
                   </label>
                   <input
                     type="number"
-                    placeholder="Enter Probability"
+                    placeholder="Enter Risk Element"
                     value={probability}
                     onChange={(e) => setProbability(e.target.value)}
                     className="w-[300px] p-2 rounded-lg bg-slate-100"
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold mt-5">
+                  <label htmlFor="" className=" font-semibold mt-5">
                     Residual Risk Impact Rating (I * P)
                   </label>
                   <input
                     type="number"
+                    placeholder="Enter Risk Element"
                     value={residualImpactRating}
-                    readOnly
+                    onChange={(e) => setResidualImpactRating(e.target.value)}
                     className="w-[300px] p-2 rounded-lg bg-slate-100"
                   />
                 </div>
               </div>
 
+              <h1 className="text-lg font-bold mt-8">Risk Statement</h1>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
+                <label htmlFor="" className=" font-semibold mt-5">
                   Risk Statement
                 </label>
                 <textarea
                   type="text"
-                  placeholder="Enter Statement"
+                  placeholder="Enter Risk Description"
                   value={statement}
                   onChange={(e) => setStatement(e.target.value)}
                   className="w-full p-2 rounded-lg bg-slate-100"
                 />
               </div>
-              <div className="flex justify-start gap-2 mt-5">
-                <button
-                  type="submit"
-                  className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
-                >
-                  Save
+            </div>
+
+            <div className="mt-10 flex justify-end gap-10">
+              <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
+                Save
+              </button>
+              <Link to="/qualityManagement">
+                <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
+                  Cancel
                 </button>
-                <Link to="/riskAssesements">
-                  <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
-                    Cancel
-                  </button>
-                </Link>
-              </div>
+              </Link>
             </div>
           </form>
         </div>
@@ -389,4 +393,4 @@ const CreateRiskAssesement = () => {
   );
 };
 
-export default CreateRiskAssesement;
+export default EditQualityManagement;

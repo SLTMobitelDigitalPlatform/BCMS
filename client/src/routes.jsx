@@ -48,7 +48,17 @@ import CreateBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/Create
 import CreateISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/CreateISRiskAssesement";
 import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
 import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
-import ISRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ISRiskAssesement";
+
+import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
+import CreateRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/CreateVersionControl";
+import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/EditVersionControl";
+import QualityManagement from "./pages/documents/RiskAssesement/qualityManagement/QualityManagement";
+import CreateQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/CreateQualityManagement";
+import EditQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/EditQualityManagement";
+import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ResidualRiskAssesement";
+import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
+import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
+import Customer from "./pages/Customers/Customer";
 
 const router = createBrowserRouter([
   {
@@ -140,7 +150,7 @@ const router = createBrowserRouter([
       { path: "calendar", element: <Calendar /> },
       { path: "event/:id/update", element: <UpdateEvent /> },
 
-      // ! { path: "add-event", element: <AddEvents /> },
+      //!  { path: "add-event", element: <AddEvents /> },
 
       // Documents
       //?  Risk Assessment
@@ -151,16 +161,31 @@ const router = createBrowserRouter([
       // * Version Controls
       { path: "riskVersionControl", element: <RiskVersionControls /> },
       { path: "editVersion/:id", element: <EditVersionControl /> },
+      { path: "createRiskVersion", element: <CreateRiskVersionControl /> },
+      { path: "editISRiskVersion/:id", element: <EditRiskVersionControl /> },
 
       // * Information Security
       { path: "informationSecurity", element: <ISRiskAssesement /> },
       { path: "createRiskIS", element: <CreateISRiskAssesement /> },
       { path: "editISRisk/:id", element: <EditISRiskAssesement /> },
 
-      //  * BCP
+      //  * BCP Risk Assesment
       { path: "bcpRisk", element: <BCPRiskAssesement /> },
       { path: "createBCPRisk", element: <CreateBCPRiskAssesement /> },
       { path: "editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
+
+      //  * Quality Management Risk Assesment
+      { path: "qualityManagement", element: <QualityManagement /> },
+      { path: "createQualityManagement", element: <CreateQualityManagement /> },
+      { path: "editQualityManagement/:id", element: <EditQualityManagement /> },
+
+      //  * Residual Risk Assesment
+      { path: "residualRisk", element: <ResidualRiskAssesement /> },
+      {
+        path: "createResidualRisk",
+        element: <CreateIResidualRiskAssesement />,
+      },
+      { path: "editResidualRisk/:id", element: <EditResidualRiskAssesement /> },
 
       //? Context of the Organization
       // * Version Controls
@@ -203,6 +228,10 @@ const router = createBrowserRouter([
       { path: "roles/createRoles", element: <CreateRoles /> },
       { path: "roles/editRoles", element: <EditRoles /> },
     ],
+  },
+  {
+    path: "/customers",
+    element: <Customer />,
   },
   {
     path: "*",

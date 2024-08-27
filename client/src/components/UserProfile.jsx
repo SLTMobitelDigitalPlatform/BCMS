@@ -233,14 +233,10 @@ const UserProfile = () => {
 
       {/* User Details */}
       {user ? (
-        <div className="mt-6 gap-x-6 gap-y-4">
-          {/* Left column */}
-          <div>
+        <div className="mt-6 gap-x-6 gap-y-4 flex justify-center">
+          <div className="text-center">
             <h2 className="font-bold text-xl text-blue-900">{user.name}</h2>
             <p className="text-md text-blue-900">{user.email}</p>
-          </div>
-          {/* Right column */}
-          <div>
             <p className="text-md text-blue-900">{user.role}</p>
             <p className="text-md text-blue-900 capitalize">{user.section}</p>
             <p className="text-md text-blue-900">
@@ -256,3 +252,24 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
+// {/* User Details */}
+// {user ? (
+//   <div className="mt-6 gap-x-6 gap-y-4">
+//     {/* Left column */}
+//     <div>
+//       <h2 className="font-bold text-xl text-blue-900">{user.name}</h2>
+//       <p className="text-md text-blue-900">{user.email}</p>
+//     </div>
+//     {/* Right column */}
+//     <div>
+//       <p className="text-md text-blue-900">{user.role}</p>
+//       <p className="text-md text-blue-900 capitalize">{user.section}</p>
+//       <p className="text-md text-blue-900">
+//         Service No: {user.serviceNumber}
+//       </p>
+//     </div>
+//   </div>
+// ) : (
+//   <p className="text-blue-900 text-md mt-6">No user details found.</p>
+// )}

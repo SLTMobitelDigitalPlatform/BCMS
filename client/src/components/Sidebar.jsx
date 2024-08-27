@@ -48,15 +48,13 @@ const Sidebar = () => {
             {/* New Doc Tab */}
 
             <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button className="inline-flex w-full justify-between text-lg items-center text-white ">
-                  Documents
-                  {/* <ChevronDownIcon
+              <Menu.Button className="inline-flex w-full justify-between text-lg items-center text-white ">
+                Documents
+                {/* <ChevronDownIcon
                     className="-mr-1 h-5 w-5 text-white"
                     aria-hidden="true"
                   /> */}
-                </Menu.Button>
-              </div>
+              </Menu.Button>
 
               <Transition
                 as={Fragment}
@@ -171,9 +169,6 @@ const Sidebar = () => {
           >
             Logout
           </button>
-          {/* <button className="px-8 py-1 bg-[#C8ECFE] text-black font-semibold rounded-2xl">
-            Intranet
-          </button> */}
         </div>
       </div>
     </div>
