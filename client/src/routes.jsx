@@ -59,6 +59,7 @@ import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRis
 import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
 import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
 import Customer from "./pages/Customers/Customer";
+import BIA from "./pages/documents/BIA/BIA";
 
 const router = createBrowserRouter([
   {
@@ -220,6 +221,7 @@ const router = createBrowserRouter([
       { path: "createMasterProducers", element: <CreateMasterProducers /> },
 
       //? BIA
+      { path: "bia", element: <BIA /> },
 
       //? BCP
 
