@@ -41,7 +41,7 @@ export default function Calendar() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-full flex flex-col">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Calendar</h1>
         {user &&
@@ -59,7 +59,7 @@ export default function Calendar() {
           " "
         )}
       </div>
-      <div className="relative min-h-screen">
+      <div className="relative h-full overflow-y-auto">
         {/* {showAddEvent && <AddEvents onAddEvent={handleAddEvent} />} */}
         {!showAddEvent && <MyCalendar events={events} />}
       </div>

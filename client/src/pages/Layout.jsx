@@ -5,7 +5,7 @@ import NewSidebar from "../components/NewSidebar";
 
 const Layout = () => {
   return (
-    <div className="min-h-screen h-screen flex flex-col">
+    <div className="min-h-screen h-screen flex flex-col ob">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         {/* <Sidebar /> */}
