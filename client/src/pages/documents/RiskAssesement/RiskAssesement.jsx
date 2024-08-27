@@ -58,7 +58,7 @@ const RiskAssesement = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex flex-col h-full rounded-2xl bg-sky-100">
+    <div className="flex flex-col h-full rounded-2xl bg-red-500">
       {/* Heading */}
       <div className="flex items-center justify-between p-5 w-full">
         <h1 className="text-2xl font-bold">Risk Assessments</h1>
@@ -70,7 +70,7 @@ const RiskAssesement = () => {
       </div>
 
       {/* Table */}
-      <div className="p-5 overflow-y-auto h-full">
+      <div className="p-5 overflow-y-auto h-full rounded-2xl bg-sky-50">
         <table className="border-2 bg-cyan-50">
           <thead>
             <tr>

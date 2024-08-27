@@ -152,7 +152,7 @@ const NewSidebar = () => {
           {/* Roles and Responsibilities */}
           <li>
             <NavLink
-              to="/"
+              to="/roles"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }

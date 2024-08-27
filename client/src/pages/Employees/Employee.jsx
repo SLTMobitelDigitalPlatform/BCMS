@@ -33,7 +33,7 @@ function Employee() {
   const [dataList, setDataList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 7;
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
@@ -160,12 +160,12 @@ function Employee() {
       {/* Main Content */}
       <div className="flex-grow">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-green-500">Employee</h1>
+          <h1 className="topic">Employee</h1>
 
           <input
             type="text"
             placeholder="Search"
-            className="border rounded-xl w-96 px-2 py-2"
+            className="border border-green-500 rounded-xl w-96 px-2 py-2"
             value={searchTerm}
             onChange={(e) => {
               const value = e.target.value;
@@ -179,7 +179,7 @@ function Employee() {
           />
 
           <button
-            className="btn-primary px-6 py-2 rounded-xl text-white"
+            className="btn-primary text-white font-medium"
             onClick={() => setAddSection(true)}
           >
             Add Employee
@@ -212,72 +212,62 @@ function Employee() {
           </div>
         )}
 
-        <div className="tableContainer mt-5">
-          <table className="table-auto w-full bg-gray-100 border-collapse">
-            <thead>
-              <tr className="bg-blue-200 text-blue-900">
-                {/* <th className="px-2 py-2 border">
-                    <input
-                      type="checkbox"
-                      onChange={handleSelectAll}
-                      checked={
-                        selectedIds.length === paginatedDataList.length &&
-                        paginatedDataList.length > 0
-                      }
-                    />
-                  </th> */}
-                <th className="p-1 border">Name</th>
-                <th className="p-1 border">Service Number</th>
-                <th className="p-1 border">Designation</th>
-                <th className="p-1 border">Email</th>
-                <th className="p-1 border">Role</th>
-                <th className="p-1 border">Section</th>
-                <th className="p-1 border">Contact Number</th>
-                <th className="p-1 border">Actions</th>
+        <div className="mt-5">
+          <table className="table-auto w-full min-w-full bg-white border border-green-500">
+            <thead className="bg-blue-900 text-white">
+              <tr>
+                <th className="p-1 border border-green-500">Name</th>
+                <th className="p-1 border border-green-500">Service Number</th>
+                <th className="p-1 border border-green-500">Designation</th>
+                <th className="p-1 border border-green-500">Email</th>
+                <th className="p-1 border border-green-500">Role</th>
+                <th className="p-1 border border-green-500">Section</th>
+                <th className="p-1 border border-green-500">Contact Number</th>
+                <th className="p-1 border border-green-500">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedDataList.length > 0 ? (
                 paginatedDataList.map((el) => (
                   <tr key={el._id} className="hover:bg-gray-200">
-                    {/* <td className="border p-1 text-blue-900">
+                    {/* <td className="border border-green-500 p-1 text-blue-900">
                         <input
                           type="checkbox"
                           checked={selectedIds.includes(el._id)}
                           onChange={(e) => handleSelect(e, el._id)}
                         />
                       </td> */}
-                    <td className="border p-1 text-blue-900 text-sm">
+                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {el.name}
                     </td>
-                    <td className="border p-1 text-blue-900 text-sm">
+                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {el.serviceNumber}
                     </td>
-                    <td className="border p-1 text-blue-900 text-sm">
+                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {el.designation}
                     </td>
-                    <td className="border p-1 text-blue-900 text-sm">
+                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {el.email}
                     </td>
-                    <td className="border p-1 text-blue-900 text-sm">
+                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {el.role}
                     </td>
-                    <td className="border p-1 text-blue-900 text-sm">
+                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {el.section}
                     </td>
-                    <td className="border p-1 text-blue-900 text-sm">
+                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {el.contactNumber}
                     </td>
-                    <td className="border p-1">
+                    <td className="border border-green-500 p-1">
                       <div className="flex space-x-2">
                         <button
-                          className="btn btn-edit bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-xl text-sm"
+                          className="btn-secondary px-2 py-1 rounded-lg font-medium"
                           onClick={() => handleEdit(el)}
                         >
                           Edit
                         </button>
                         <button
-                          className="btn btn-delete bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-xl text-sm"
+                          className="btn btn-delete bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg font-medium"
                           onClick={() => handleDelete(el._id)}
                         >
                           Delete
@@ -289,7 +279,7 @@ function Employee() {
               ) : (
                 <tr>
                   <td
-                    className="border p-1"
+                    className="border border-green-500 p-1"
                     colSpan="9"
                     style={{ textAlign: "center" }}
                   >
