@@ -57,55 +57,57 @@ const RiskVersionControls = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col p-5 bg-sky-100 rounded-2xl">
-      <h1 className="text-2xl font-bold text-green-500">Risk Management</h1>
+    <div className="w-full h-full flex flex-col">
+      <h1 className="text-3xl mb-5 font-bold text-green-500">
+        Risk Management
+      </h1>
       <RiskAssNavigation />
-      <div className="flex justify-between items-center mt-8">
-        <h1 className="text-2xl font-bold text-blue-900">Version Control</h1>
-        <Link to="/createRiskVersion">
-          <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
-            Create Version Control
-          </button>
-        </Link>
-      </div>
-      {/* <div className="flex justify-between items-center mt-8">
+      <div className="bg-sky-50 rounded-2xl h-full mt-5 p-5">
+        <div className="flex justify-between items-center ">
+          <h1 className="text-2xl font-bold text-blue-900">Version Control</h1>
+          <Link to="/createRiskVersion">
+            <button className="btn-primary">Create Version Control</button>
+          </Link>
+        </div>
+        {/* <div className="flex justify-between items-center mt-8">
         </div> */}
 
-      {/* Table */}
-      <div className="mt-8 h-full overflow-auto">
-        <table className="w-full border-2">
-          <thead>
-            <tr className="border-2">
-              <th className="border-2">Serial Number</th>
-              <th className="border-2">Version Number</th>
-              <th className="border-2">Prepared By</th>
-              <th className="border-2">Approved By</th>
-              <th className="border-2">Reasons for new release</th>
-              <th className="border-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {versionControls.map((v) => (
-              <tr key={v.id}>
-                <td className="border-2 p-3">{v.serialNo}</td>
-                <td className="border-2 p-3">{v.versionNo}</td>
-                <td className="border-2 p-3">{v.prepare}</td>
-                <td className="border-2 p-3">{v.approve}</td>
-                <td className="border-2 p-3">{v.reasons}</td>
-                <td className="border-2 p-3 flex justify-center">
-                  <div className="flex gap-3 items-center">
-                    <Link to={`/editISRiskVersion/${v._id}`}>
-                      <button>Edit</button>
-                    </Link>
-                    <button onClick={() => deleteVersionControl(v._id)}>
-                      Delete
-                    </button>
-                  </div>
-                </td>
+        {/* Table */}
+        <div className="mt-8 h-full overflow-auto">
+          <table className="w-full border-2">
+            <thead>
+              <tr className="border-2">
+                <th className="border-2">Serial Number</th>
+                <th className="border-2">Version Number</th>
+                <th className="border-2">Prepared By</th>
+                <th className="border-2">Approved By</th>
+                <th className="border-2">Reasons for new release</th>
+                <th className="border-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {versionControls.map((v) => (
+                <tr key={v.id}>
+                  <td className="border-2 p-3">{v.serialNo}</td>
+                  <td className="border-2 p-3">{v.versionNo}</td>
+                  <td className="border-2 p-3">{v.prepare}</td>
+                  <td className="border-2 p-3">{v.approve}</td>
+                  <td className="border-2 p-3">{v.reasons}</td>
+                  <td className="border-2 p-3 flex justify-center">
+                    <div className="flex gap-3 items-center">
+                      <Link to={`/editISRiskVersion/${v._id}`}>
+                        <button>Edit</button>
+                      </Link>
+                      <button onClick={() => deleteVersionControl(v._id)}>
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

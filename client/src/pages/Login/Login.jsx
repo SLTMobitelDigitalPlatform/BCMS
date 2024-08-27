@@ -149,7 +149,7 @@ const Login = () => {
             {/*Login button*/}
             <div>
               <button
-                className="btn-primary font-semibold w-full py-2 rounded-xl"
+                className="btn-primary font-semibold w-full"
                 type="submit"
                 disabled={loading}
               >

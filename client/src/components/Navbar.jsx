@@ -41,18 +41,21 @@ const Navbar = () => {
         <a href="/" className="text-black hover:text-blue-600 font-bold">
           Home
         </a>
-        <a href="/about" className="text-black hover:text-blue-600 font-bold">
-          About
-        </a>
-        <a
-          href="/services"
+        <Link
+          to="/about-us"
           className="text-black hover:text-blue-600 font-bold"
         >
-          Services
-        </a>
-        <a href="/contact" className="text-black hover:text-blue-600 font-bold">
+          About
+        </Link>
+        <Link to="/roles" className="text-black hover:text-blue-600 font-bold">
+          Roles and Responsibilities
+        </Link>
+        <Link
+          to="/contact-us"
+          className="text-black hover:text-blue-600 font-bold"
+        >
           Contact
-        </a>
+        </Link>
       </div>
 
       {/* User Icon */}
@@ -62,7 +65,7 @@ const Navbar = () => {
             <img
               src={previewUrl} // Directly use the base64 data URL
               alt="Profile"
-              className="text-black h-11 w-14 rounded-full"
+              className="text-black h-11 w-11 rounded-full"
             />
           </Link>
         </div>

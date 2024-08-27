@@ -5,32 +5,32 @@ const ContextNavigation = () => {
     <div>
       <div className="flex justify-between items-center">
         <Link to="/versionControls">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
+          <button className="px-2 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
             Version Control
           </button>
         </Link>
         <Link to="/externalIssues">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
+          <button className="px-2 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
             Interested Parties
           </button>
         </Link>
         <Link to="/internalIssues">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
+          <button className="px-2 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B24A] hover:border-[#52B24A] font-semibold rounded-lg">
             Issue Register
           </button>
         </Link>
         <Link to="/interfaces">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
+          <button className="px-2 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
             Interfaces and Dependencies
           </button>
         </Link>
         <Link to="/objectives">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
+          <button className="px-2 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
             Objectives
           </button>
         </Link>
         <Link to="/masterProcedures">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
+          <button className="px-2 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
             Master of Procedures and Process
           </button>
         </Link>
