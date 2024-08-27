@@ -116,7 +116,7 @@ const router = createBrowserRouter([
     element: <SubscriptionForm />,
     errorElement: <ErrorPage />,
   },
-  // Dashboard
+
   {
     path: "/",
     element: <Layout />,

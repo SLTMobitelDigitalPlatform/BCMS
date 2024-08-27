@@ -35,7 +35,7 @@ const NewSidebar = () => {
       </div>
       {/* <p>/document/!doc name!/!doc section!</p> */}
       <div>
-        <ul className="text-lg font-semibold flex flex-col gap-2 text-left">
+        <ul className="text-base font-semibold flex flex-col gap-2 text-left">
           {/* Employees */}
           <li>
             <NavLink
@@ -201,7 +201,7 @@ const NewSidebar = () => {
           <hr className="opacity-50" />
         </ul>
       </div>
-      <div className="flex gap-3 mt-10 justify-center">
+      <div className="flex gap-3 mt-3 justify-center">
         <button
           className="px-8 py-1 bg-[#00BBF6] text-black font-semibold rounded-2xl"
           onClick={handleLogout}

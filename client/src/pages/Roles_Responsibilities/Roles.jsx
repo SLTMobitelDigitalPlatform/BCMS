@@ -39,31 +39,20 @@ const Roles = () => {
   }, []);
 
   return (
-    // <div className="container mx-auto py-8">
-    <div className="flex flex-col gap-x-10 rounded-2xl bg-sky-100 h-full">
-      {/* <div className="w-full"> */}
-      {/* Heading */}
+    <div className="flex flex-col gap-x-10 h-full">
       <div className="justify-between flex">
-        <h1 className="mt-5 text-[#52B14A] font-bold text-3xl">
-          Roles & Responsibilities
-        </h1>
+        <h1 className="topic">Roles & Responsibilities</h1>
         {user &&
         (user.role === "Super Admin" ||
           user.role === "Secretariat Coordinator") ? (
-          <div>
+          <div className="space-x-4">
             <Link to="/roles/createRoles">
-              <button
-                type="button"
-                className="text-white bg-[#003E81] focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-              >
+              <button type="button" className="btn-primary">
                 Add
               </button>
             </Link>
             <Link to="/roles/editRoles">
-              <button
-                type="button"
-                className="text-white bg-red-700 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-              >
+              <button type="button" className="btn-secondary">
                 Update
               </button>
             </Link>
@@ -74,7 +63,7 @@ const Roles = () => {
       </div>
       {/* <div className="bg-cyan-50 p-3 mt-5 rounded-2xl px-5 border"> */}
       {/* Table */}
-      <div className="relative overflow-y-auto rounded-b-2xl">
+      <div className="relative overflow-y-auto rounded-b-2xl mt-5">
         <table className="w-full text-lg rtl:text-right text-gray-500 dark:text-gray-200">
           <thead className="text-xl text-[#003E81] uppercase dark:bg-gray-700 dark:text-gray-200">
             <tr>
