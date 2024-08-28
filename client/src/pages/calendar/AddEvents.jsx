@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -66,7 +67,7 @@ const AddEvents = ({ onAddEvent }) => {
         end: values.end,
         describe: values.describe,
         section: dropdownValue,
-        attendees: attendees.map((attendee) => attendee._id),
+        attendees: attendees.map((attendee) => attendee.value),
       };
       const response = await axios.post(
         "http://localhost:5000/events",
@@ -97,6 +98,11 @@ const AddEvents = ({ onAddEvent }) => {
     { value: "IT Department", label: "IT Department" },
     { value: "Marketing Department", label: "Marketing Department" },
   ];
+
+  const attendeeOptions = employees.map((employee) => ({
+    value: employee._id,
+    label: employee.name,
+  }));
 
   return (
     <div className="h-full overflow-y-auto">
@@ -228,22 +234,19 @@ const AddEvents = ({ onAddEvent }) => {
           >
             Select Attendees
           </label>
-          <div className="flex flex-wrap gap-4">
-            {employees.map((employee) => (
-              <button
-                type="button"
-                key={employee._id}
-                onClick={() => handleAttendeeClick(employee)}
-                className={`p-2 border rounded-lg ${
-                  attendees.some((attendee) => attendee._id === employee._id)
-                    ? "bg-green-200"
-                    : "bg-gray-200"
-                }`}
-              >
-                {employee.name}
-              </button>
-            ))}
-          </div>
+          <Controller
+            control={control}
+            name="attendees"
+            render={({ field }) => (
+              <Select
+                {...field}
+                isMulti
+                options={attendeeOptions}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            )}
+          />
         </div>
 
         <div className="mb-9 flex justify-center">
