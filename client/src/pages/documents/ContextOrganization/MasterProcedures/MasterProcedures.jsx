@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ContextNavigation from "../../../../components/ContextNavigation";
+import Swal from "sweetalert2";
 
 const MasterProcedures = () => {
   const [masterProducers, setMasterProducers] = useState([]);
@@ -9,12 +10,43 @@ const MasterProcedures = () => {
   const fetchMasterProducers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/proceduresAndProdess"
+        "http://localhost:5000/proceduresAndProcess"
       );
       setMasterProducers(response.data);
     } catch (error) {
       confirm.log(error);
     }
+  };
+
+  const deleteMasterProcess = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(
+            `http://localhost:5000/proceduresAndProcess/delete/${id}`
+          );
+          setMasterProducers(
+            masterProducers.filter((masterProd) => masterProd._id !== id)
+          );
+          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
+        } catch (error) {
+          console.error(error);
+          Swal.fire(
+            "Error!",
+            "There was a problem deleting the record.",
+            "error"
+          );
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -48,6 +80,7 @@ const MasterProcedures = () => {
               <th className="border-2">Process Name</th>
               <th className="border-2">Process KPI</th>
               <th className="border-2">Process Owner</th>
+              <th className="border-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -57,6 +90,21 @@ const MasterProcedures = () => {
                 <td className="border-2 p-3">{masterProd.processName}</td>
                 <td className="border-2 p-3">{masterProd.processKpi}</td>
                 <td className="border-2 p-3">{masterProd.responsiblePerson}</td>
+                <td className="border-2 p-3 flex justify-center">
+                  <div className="flex gap-3 items-center">
+                    <Link to={`/editMasterProcedures/${masterProd._id}`}>
+                      <button className="p-1 w-20 bg-sky-600 text-white rounded-lg font-semibold">
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      className="p-1 w-20 bg-red-500 text-white rounded-lg"
+                      onClick={() => deleteMasterProcess(masterProd._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
