@@ -19,6 +19,7 @@ const schema = yup
       .nullable()
       .min(yup.ref("start"), "End date can't be before start date"),
     describe: yup.string().optional(),
+    attendees: yup.array().min(1, "Please select at least one attendee").required("Attendees are required"),
   })
   .required();
 
@@ -57,9 +58,6 @@ const AddEvents = ({ onAddEvent }) => {
   }, []);
 
   const onSubmit = async (values) => {
-    setFirstRender(false);
-    console.log("Start Date:", values.start);
-    console.log("End Date:", values.end);
     try {
       const newEvent = {
         title: values.title,
@@ -67,19 +65,21 @@ const AddEvents = ({ onAddEvent }) => {
         end: values.end,
         describe: values.describe,
         section: dropdownValue,
-        attendees: attendees.map((attendee) => attendee.value),
+        attendees: values.attendees.map((attendee) => attendee.value),
       };
+  
       const response = await axios.post(
         "http://localhost:5000/events",
         newEvent
       );
+  
       onAddEvent(response.data);
       setDbError(null);
-      // window.location.href = "http://localhost:5173/calendar";
     } catch (error) {
+      console.error("Error creating event:", error);
       setDbError(error.response.data);
     }
-  };
+  };  
 
   const handleAttendeeClick = (employee) => {
     setAttendees((prevAttendees) => {
@@ -247,6 +247,7 @@ const AddEvents = ({ onAddEvent }) => {
               />
             )}
           />
+          <p className="text-red-500 text-sm">{errors.attendees?.message}</p>
         </div>
 
         <div className="mb-9 flex justify-center">
