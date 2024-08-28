@@ -3,40 +3,43 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const EditObjective = () => {
-  const [informationSecurity, setInformationSecurity] = useState("");
-  const [businessContinuity, setBusinessContinuity] = useState("");
-  const [quality, setQuality] = useState("");
+const EditMasterProducers = () => {
+  const [processNo, setProcessNo] = useState(0);
+  const [processName, setProcessName] = useState("");
+  const [processKpi, setProcessKpi] = useState("");
+  const [responsiblePerson, setResponsiblePerson] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/objective/${id}`)
+      .get(`http://localhost:5000/proceduresAndProcess/${id}`)
       .then((res) => {
-        setInformationSecurity(res.data.informationSecurity);
-        setBusinessContinuity(res.data.businessContinuity);
-        setQuality(res.data.quality);
+        setProcessNo(res.data.processNo);
+        setProcessName(res.data.processName);
+        setProcessKpi(res.data.processKpi);
+        setResponsiblePerson(res.data.responsiblePerson);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
 
-  const handleEditObjective = (e) => {
+  const handleEditMasterProducers = (e) => {
     e.preventDefault();
 
     const data = {
-      informationSecurity,
-      businessContinuity,
-      quality,
+      processNo,
+      processName,
+      processKpi,
+      responsiblePerson,
     };
 
     axios
-      .put(`http://localhost:5000/objective/edit/${id}`, data)
+      .put(`http://localhost:5000/proceduresAndProcess/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/objectives");
+        navigate("/masterProcedures");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -68,43 +71,55 @@ const EditObjective = () => {
     <div className="w-full rounded-2xl bg-sky-100 p-5 h-full overflow-auto">
       <h1 className="text-2xl font-bold">Edit Objective</h1>
       <div className="w-full mt-10 rounded-2xl">
-        <form onSubmit={handleEditObjective}>
+        <form onSubmit={handleEditMasterProducers}>
           <div className="flex flex-col gap-6">
             <div className="flex justify-between">
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className="font-semibold">
-                  Information Security
+                  Process Number
                 </label>
                 <textarea
-                  type="text"
-                  placeholder="Prepared Person"
-                  value={informationSecurity}
-                  onChange={(e) => setInformationSecurity(e.target.value)}
+                  type="number"
+                  placeholder="Process Number"
+                  value={processNo}
+                  onChange={(e) => setProcessNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className="font-semibold">
-                  Business Continuity
+                  Process Name
                 </label>
                 <textarea
                   type="text"
-                  placeholder="Approved Person"
-                  value={businessContinuity}
-                  onChange={(e) => setBusinessContinuity(e.target.value)}
+                  placeholder="Process Name"
+                  value={processName}
+                  onChange={(e) => setProcessName(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold">
-                Quality
+                Process KPI
               </label>
               <textarea
                 type="text"
-                placeholder="Reasons"
-                value={quality}
-                onChange={(e) => setQuality(e.target.value)}
+                placeholder="Process KPI"
+                value={processKpi}
+                onChange={(e) => setProcessKpi(e.target.value)}
+                className="w-full p-2 rounded-lg bg-slate-100"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="font-semibold">
+                Process Owner
+              </label>
+              <textarea
+                type="text"
+                placeholder="Process Owner"
+                value={responsiblePerson}
+                onChange={(e) => setResponsiblePerson(e.target.value)}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
@@ -116,7 +131,7 @@ const EditObjective = () => {
               >
                 Save
               </button>
-              <Link to="/objectives">
+              <Link to="/masterProcedures">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>
@@ -129,4 +144,4 @@ const EditObjective = () => {
   );
 };
 
-export default EditObjective;
+export default EditMasterProducers;

@@ -2,6 +2,7 @@ import ContextNavigation from "../../../../components/ContextNavigation";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const InterfacesDependencies = () => {
   const [interfaceDependancy, setInterfaceDependancy] = useState([]);
@@ -15,6 +16,39 @@ const InterfacesDependencies = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const deleteInterfaceAndDependacy = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(
+            `http://localhost:5000/interfaceDependancy/delete/${id}`
+          );
+          setInterfaceDependancy(
+            interfaceDependancy.filter(
+              (interfaceDep) => interfaceDep._id !== id
+            )
+          );
+          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
+        } catch (error) {
+          console.error(error);
+          Swal.fire(
+            "Error!",
+            "There was a problem deleting the record.",
+            "error"
+          );
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -51,6 +85,7 @@ const InterfacesDependencies = () => {
               <th className="border-2 px-2">Medium</th>
               <th className="border-2 px-2">Exchange method</th>
               <th className="border-2 px-2">Service provided/obtained</th>
+              <th className="border-2 px-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +103,23 @@ const InterfacesDependencies = () => {
                 <td className="border-2 p-3">{interfaceDep.exchangeMethod}</td>
                 <td className="border-2 p-3">
                   {interfaceDep.serviceProvidedObtained}
+                </td>
+                <td className="border-2 p-3 flex justify-center">
+                  <div className="flex gap-3 items-center">
+                    <Link to={`/editInterfaceDependancy/${interfaceDep._id}`}>
+                      <button className="p-1 w-20 bg-sky-600 text-white rounded-lg font-semibold">
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      className="p-1 w-20 bg-red-500 text-white rounded-lg"
+                      onClick={() =>
+                        deleteInterfaceAndDependacy(interfaceDep._id)
+                      }
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
