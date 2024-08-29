@@ -10,7 +10,7 @@ const EditRiskVersionControl = () => {
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
   const [users, setUsers] = useState([]);
-  const [loggedInUser, setLoggedInUsers] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState([]);
   const [isApproved, setIsApproved] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
@@ -57,7 +57,7 @@ const EditRiskVersionControl = () => {
       });
       // console.log(response.data.name);
 
-      setLoggedInUsers(response.data);
+      setLoggedInUser(response.data);
     } catch (error) {
       console.error("Error fetching user details:", error);
     }
