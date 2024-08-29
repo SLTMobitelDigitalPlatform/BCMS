@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -10,6 +10,48 @@ const CreateVersionControl = () => {
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
   const navigate = useNavigate();
+
+  const fetchLastVersion = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/versionControls/last"
+      );
+      const lastRecord = response.data;
+
+      const baseYear = 2024;
+      const currentYear = new Date().getFullYear();
+      const yearOffset = currentYear - baseYear + 1;
+
+      let newVersionNo = `${yearOffset}.0`;
+      let newSerialNo = 1;
+      // console.log(newVersionNo);
+      let lastVersionYearOffset;
+      let lastIndex;
+
+      if (lastRecord && lastRecord.versionNo) {
+        lastVersionYearOffset = parseInt(
+          lastRecord.versionNo.split(".")[0],
+          10
+        );
+        lastIndex = parseInt(lastRecord.versionNo.split(".")[1], 10);
+        newSerialNo = lastRecord.serialNo + 1;
+      }
+
+      if (lastVersionYearOffset === yearOffset) {
+        newVersionNo = `${yearOffset}.${lastIndex + 1}`;
+      }
+
+      // console.log(newVersionNo);
+      setVersionNo(newVersionNo);
+      setSerialNo(newSerialNo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLastVersion();
+  }, []);
 
   const handleCreateVersion = (e) => {
     e.preventDefault();

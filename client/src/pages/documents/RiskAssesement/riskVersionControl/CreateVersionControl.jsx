@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Sidebar from "../../../../components/Sidebar";
@@ -11,6 +11,48 @@ const CreateRiskVersionControl = () => {
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
   const navigate = useNavigate();
+
+  const fetchLastVersion = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/versionControlsRisk/last"
+      );
+      const lastRecord = response.data;
+
+      const baseYear = 2024;
+      const currentYear = new Date().getFullYear();
+      const yearOffset = currentYear - baseYear + 1;
+
+      let newVersionNo = `${yearOffset}.0`;
+      let newSerialNo = 1;
+      // console.log(newVersionNo);
+      let lastVersionYearOffset;
+      let lastIndex;
+
+      if (lastRecord && lastRecord.versionNo) {
+        lastVersionYearOffset = parseInt(
+          lastRecord.versionNo.split(".")[0],
+          10
+        );
+        lastIndex = parseInt(lastRecord.versionNo.split(".")[1], 10);
+        newSerialNo = lastRecord.serialNo + 1;
+      }
+
+      if (lastVersionYearOffset === yearOffset) {
+        newVersionNo = `${yearOffset}.${lastIndex + 1}`;
+      }
+
+      // console.log(newVersionNo);
+      setVersionNo(newVersionNo);
+      setSerialNo(newSerialNo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLastVersion();
+  }, []);
 
   const handleCreateVersion = (e) => {
     e.preventDefault();
@@ -72,6 +114,7 @@ const CreateRiskVersionControl = () => {
                       type="number"
                       placeholder="Serial Number"
                       value={serialNo}
+                      readOnly
                       onChange={(e) => setSerialNo(e.target.value)}
                       className="w-[500px] p-2 rounded-lg bg-slate-100"
                     />
@@ -81,9 +124,10 @@ const CreateRiskVersionControl = () => {
                       Version Number
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       placeholder="Version Number"
                       value={versionNo}
+                      readOnly
                       onChange={(e) => setVersionNo(e.target.value)}
                       className="w-[500px] p-2 rounded-lg bg-slate-100"
                     />
