@@ -64,8 +64,7 @@ const deleteVersion = async (req, res) => {
 const getLastVersion = async (req, res) => {
   try {
     const lastVersion = await vControl.findOne().sort({ _id: -1 });
-    if (!lastVersion)
-      return res.status(404).json({ message: "versionControl not found" });
+
     res.status(200).json(lastVersion);
   } catch (error) {
     res.status(500).json({ message: error.message });

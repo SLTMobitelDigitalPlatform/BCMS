@@ -8,17 +8,16 @@ router.post(
   versionControlRiskController.createVersionControl
 );
 router.get(
+  "/api/versionControlsRisk/last",
+  versionControlRiskController.getLastVersion
+);
+router.get(
   "/api/versionControlsRisks/",
   versionControlRiskController.getVersionControls
 );
 router.get(
   "/api/versionControlsRisk/:id",
   versionControlRiskController.getVersionById
-);
-
-router.get(
-  "/api/versionControlsRisk/last",
-  versionControlRiskController.getLastVersion
 );
 
 router.put(
