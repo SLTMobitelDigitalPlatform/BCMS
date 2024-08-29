@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const CreateMeeting = () => {
   const [employees, setEmployees] = useState([]);
@@ -322,6 +323,13 @@ const CreateMeeting = () => {
           >
             Submit
           </button>
+
+          <Link
+            to="/meeting"
+            className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold"
+          >
+            Cancel
+          </Link>
         </div>
       </form>
     </div>

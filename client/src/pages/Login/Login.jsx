@@ -10,7 +10,6 @@ import { validateEmail } from "../../utilities/helper";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [serviceNumber, setServiceNumber] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -23,7 +22,6 @@ const Login = () => {
     if (savedEmail && savedServiceNumber) {
       setEmail(savedEmail);
       setServiceNumber(savedServiceNumber);
-      setRememberMe(true);
     }
   }, []);
 
@@ -130,22 +128,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Remember Me Checkbox */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                {/* <input
-                  type="checkbox"
-                  id="rememberMe"
-                  className="mr-3 accent-green-500 h-4 w-4"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <label htmlFor="rememberMe" className="text-sm">
-                  Remember Me
-                </label> */}
-              </div>
-            </div>
-
             {/*Login button*/}
             <div>
               <button
@@ -161,12 +143,6 @@ const Login = () => {
               </button>
             </div>
           </form>
-
-          {/* <div className="mb-10 flex items-center my-4">
-            <div className="flex-grow h-px bg-gradient-to-r from-[#2ACF1C] to-[#003E81]"></div>
-            <span className="flex-shrink text-sm text-[#003E81] px-4">OR</span>
-            <div className="flex-grow h-px bg-gradient-to-r from-[#2ACF1C] to-[#003E81]"></div>
-          </div> */}
 
           <div className="mt-8 flex items-center justify-center space-x-4">
             <span className="h-px w-full bg-gradient-to-r from-[#2ACF1C] to-[#003E81]"></span>
