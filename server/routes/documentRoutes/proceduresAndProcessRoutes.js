@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const proceduresAndProdessController = require("../../controllers/documentController/proceduresAndProdessController");
+const proceduresAndProdessController = require("../../controllers/documentController/contextOfOrganization/proceduresAndProdessController");
 const authControllers = require("../../controllers/userControllers/authController");
 
 router.post(

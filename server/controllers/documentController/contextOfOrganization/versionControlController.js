@@ -1,4 +1,4 @@
-const vControl = require("../../models/documentModels/versionControlModel");
+const vControl = require("../../../models/documentModels/versionControlModel");
 
 // Create a new version control
 const createVersionControl = async (req, res) => {

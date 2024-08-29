@@ -1,4 +1,4 @@
-const InternalIssue = require("../../models/documentModels/internalIssues");
+const InternalIssue = require("../../../models/documentModels/internalIssues");
 
 const getInternalIssues = async (req, res) => {
   try {
