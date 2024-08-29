@@ -83,6 +83,7 @@ const VersionControls = () => {
                 <th className="border-2 border-black w-96">
                   Reasons for new release
                 </th>
+                <th className="border-2 border-black">Approval Status</th>
                 <th className="border-2 border-black">Actions</th>
               </tr>
             </thead>
@@ -96,6 +97,7 @@ const VersionControls = () => {
                   <td className="p-3 border-2 border-black w-96">
                     {v.reasons}
                   </td>
+                  <td className="p-3 border-2 border-black">{v.isApproved}</td>
                   <td className="border-2 border-black ">
                     <div className="flex justify-center items-center gap-3">
                       <Link to={`/editVersion/${v._id}`}>

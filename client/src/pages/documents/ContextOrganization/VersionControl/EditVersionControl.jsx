@@ -9,6 +9,8 @@ const EditVersionControl = () => {
   const [prepare, setPrepare] = useState("");
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
+  const [users, setUsers] = useState([]);
+  const [isApproved, setIsApproved] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -21,10 +23,30 @@ const EditVersionControl = () => {
         setPrepare(res.data.prepare);
         setApprove(res.data.approve);
         setReasons(res.data.reasons);
+        setIsApproved(res.data.isApproved);
       })
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/users", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const users = response.data.map((user) => user.name);
+      setUsers(users);
+
+      // console.log(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   const handleEditVersion = (e) => {
@@ -36,6 +58,7 @@ const EditVersionControl = () => {
       prepare,
       approve,
       reasons,
+      isApproved,
     };
 
     axios
@@ -104,28 +127,46 @@ const EditVersionControl = () => {
             </div>
             <div className="flex justify-between">
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold">
+                <label htmlFor="prepare" className="font-semibold">
                   Prepared By
                 </label>
-                <input
-                  type="text"
+                <select
+                  id="prepare"
                   placeholder="Prepared Person"
                   value={prepare}
                   onChange={(e) => setPrepare(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
-                />
+                >
+                  <option value="" disabled>
+                    {prepare}
+                  </option>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold">
+                <label htmlFor="approve" className="font-semibold">
                   Approved By
                 </label>
-                <input
-                  type="text"
+                <select
+                  id="approve"
                   placeholder="Approved Person"
                   value={approve}
                   onChange={(e) => setApprove(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
-                />
+                >
+                  <option value="" disabled>
+                    {approve}
+                  </option>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -140,6 +181,23 @@ const EditVersionControl = () => {
                 onChange={(e) => setReasons(e.target.value)}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="isapprove" className="font-semibold">
+                Approval
+              </label>
+              <select
+                id="isapprove"
+                placeholder="Approval"
+                value={isApproved}
+                onChange={(e) => setIsApproved(e.target.value)}
+                className="w-[500px] p-2 rounded-lg bg-slate-100"
+              >
+                <option disabled>{isApproved}</option>
+                <option>Approved</option>
+                <option>Not Approved</option>
+                <option>Pending</option>
+              </select>
             </div>
             <div className="flex justify-start gap-2">
               <button
