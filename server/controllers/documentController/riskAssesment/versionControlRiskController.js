@@ -63,10 +63,21 @@ const deleteVersion = async (req, res) => {
   }
 };
 
+const getLastVersion = async (req, res) => {
+  try {
+    const lastVersion = await VersionControlRisk.findOne().sort({ _id: -1 });
+
+    res.status(200).json(lastVersion);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createVersionControl,
   getVersionControls,
   getVersionById,
   updateVersion,
   deleteVersion,
+  getLastVersion,
 };

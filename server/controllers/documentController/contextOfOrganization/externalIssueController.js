@@ -1,4 +1,4 @@
-const ExternalIssue = require("../../models/documentModels/externalissues");
+const ExternalIssue = require("../../../models/documentModels/externalissues");
 
 const getExternalIssues = async (req, res) => {
   try {

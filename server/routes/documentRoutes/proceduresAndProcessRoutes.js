@@ -1,30 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const proceduresAndProdessController = require("../../controllers/documentController/proceduresAndProdessController");
+const proceduresAndProdessController = require("../../controllers/documentController/contextOfOrganization/proceduresAndProdessController");
 const authControllers = require("../../controllers/userControllers/authController");
 
 router.post(
-  "/proceduresAndProdess/create",
+  "/proceduresAndProcess/create",
   proceduresAndProdessController.createProceduresAndProcess
 );
 
 router.get(
-  "/proceduresAndProdess",
+  "/proceduresAndProcess",
   proceduresAndProdessController.getProceduresAndProcess
 );
 
 router.get(
-  "/proceduresAndProdess/:id",
+  "/proceduresAndProcess/:id",
   proceduresAndProdessController.getProceduresAndProcessById
 );
 
 router.put(
-  "/proceduresAndProdess/edit/:id",
+  "/proceduresAndProcess/edit/:id",
   proceduresAndProdessController.updateProceduresAndProcess
 );
 
 router.delete(
-  "/proceduresAndProdess/delete/:id",
+  "/proceduresAndProcess/delete/:id",
   proceduresAndProdessController.deleteProceduresAndProcess
 );
 

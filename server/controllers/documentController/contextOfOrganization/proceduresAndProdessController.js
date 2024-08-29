@@ -1,4 +1,4 @@
-const ProceduresAndProcess = require("../../models/documentModels/proceduresAndProcess");
+const ProceduresAndProcess = require("../../../models/documentModels/proceduresAndProcess");
 
 const getProceduresAndProcess = async (req, res) => {
   try {

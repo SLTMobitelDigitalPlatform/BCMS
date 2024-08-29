@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const objectiveController = require("../../controllers/documentController/objectivesController");
+const objectiveController = require("../../controllers/documentController/contextOfOrganization/objectivesController");
 const authControllers = require("../../controllers/userControllers/authController");
 
 router.post("/objective/create", objectiveController.createObjective);
