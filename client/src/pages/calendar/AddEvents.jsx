@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -18,6 +19,7 @@ const schema = yup
       .nullable()
       .min(yup.ref("start"), "End date can't be before start date"),
     describe: yup.string().optional(),
+    attendees: yup.array().min(1, "Please select at least one attendee").required("Attendees are required"),
   })
   .required();
 
@@ -56,9 +58,6 @@ const AddEvents = ({ onAddEvent }) => {
   }, []);
 
   const onSubmit = async (values) => {
-    setFirstRender(false);
-    console.log("Start Date:", values.start);
-    console.log("End Date:", values.end);
     try {
       const newEvent = {
         title: values.title,
@@ -66,19 +65,21 @@ const AddEvents = ({ onAddEvent }) => {
         end: values.end,
         describe: values.describe,
         section: dropdownValue,
-        attendees: attendees.map((attendee) => attendee._id),
+        attendees: values.attendees.map((attendee) => attendee.value),
       };
+  
       const response = await axios.post(
         "http://localhost:5000/events",
         newEvent
       );
+  
       onAddEvent(response.data);
       setDbError(null);
-      // window.location.href = "http://localhost:5173/calendar";
     } catch (error) {
+      console.error("Error creating event:", error);
       setDbError(error.response.data);
     }
-  };
+  };  
 
   const handleAttendeeClick = (employee) => {
     setAttendees((prevAttendees) => {
@@ -97,6 +98,11 @@ const AddEvents = ({ onAddEvent }) => {
     { value: "IT Department", label: "IT Department" },
     { value: "Marketing Department", label: "Marketing Department" },
   ];
+
+  const attendeeOptions = employees.map((employee) => ({
+    value: employee._id,
+    label: employee.name,
+  }));
 
   return (
     <div className="h-full overflow-y-auto">
@@ -228,22 +234,20 @@ const AddEvents = ({ onAddEvent }) => {
           >
             Select Attendees
           </label>
-          <div className="flex flex-wrap gap-4">
-            {employees.map((employee) => (
-              <button
-                type="button"
-                key={employee._id}
-                onClick={() => handleAttendeeClick(employee)}
-                className={`p-2 border rounded-lg ${
-                  attendees.some((attendee) => attendee._id === employee._id)
-                    ? "bg-green-200"
-                    : "bg-gray-200"
-                }`}
-              >
-                {employee.name}
-              </button>
-            ))}
-          </div>
+          <Controller
+            control={control}
+            name="attendees"
+            render={({ field }) => (
+              <Select
+                {...field}
+                isMulti
+                options={attendeeOptions}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            )}
+          />
+          <p className="text-red-500 text-sm">{errors.attendees?.message}</p>
         </div>
 
         <div className="mb-9 flex justify-center">
