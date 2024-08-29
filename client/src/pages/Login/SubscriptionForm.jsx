@@ -15,7 +15,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import bg from "../../assets/bgblue.png";
 import ellipse from "../../assets/Ellipse2.png";
-import { validateEmail, validateMobileNumber } from "../../utilities/helper";
+import {
+  validateEmail,
+  validateMobileNumber,
+  validateName,
+} from "../../utilities/helper";
 
 const SubscriptionForm = () => {
   const [subscribed, setSubscribed] = useState(false);
@@ -40,7 +44,7 @@ const SubscriptionForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name.trim()) {
+    if (!validateName(name)) {
       setHasError(true);
       toast.error("Please enter your name.");
       return;

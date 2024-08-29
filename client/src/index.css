@@ -18,15 +18,15 @@
     @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600;
   }
   .input-field {
-    @apply rounded-md w-full h-full py-1 pl-10 border-2 focus:outline-none transition duration-200;
+    @apply rounded-md w-full h-full py-1 px-3 border-2 focus:outline-none transition duration-200;
   }
 
   .input-field-error {
-    @apply border-red-500 ring ring-red-200;
+    @apply border-red-500;
   }
 
   .input-field-border {
-    @apply border-blue-500 focus:ring focus:border-green-500 focus:ring-green-200;
+    @apply border-blue-500 focus:border-green-500;
   }
 
   .checkbox {

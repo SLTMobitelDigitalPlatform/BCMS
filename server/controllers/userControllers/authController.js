@@ -47,7 +47,7 @@ exports.userOtpSend = async (req, res) => {
         const mailOptions = {
           from: process.env.EMAIL,
           to: email,
-          subject: "Sending Eamil For Otp Validation",
+          subject: "Sending Email For Otp Validation",
           text: `OTP:- ${OTP}`,
         };
 
@@ -70,7 +70,7 @@ exports.userOtpSend = async (req, res) => {
         const mailOptions = {
           from: process.env.EMAIL,
           to: email,
-          subject: "Sending Eamil For Otp Validation",
+          subject: "Sending Email For Otp Validation",
           text: `OTP:- ${OTP}`,
         };
 

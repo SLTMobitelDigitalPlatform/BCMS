@@ -53,14 +53,7 @@ const NewSidebar = () => {
           <li className="relative">
             <button
               onClick={toggleDropdown}
-              className={`flex items-center justify-between w-full px-4 py-2 rounded-2xl focus:outline-none ${
-                location.pathname.startsWith("/risk") ||
-                location.pathname.startsWith("/VersionControls") ||
-                location.pathname.startsWith("/bcp") ||
-                location.pathname.startsWith("/bia")
-                  ? "sidebar-active"
-                  : "sidebar-hover"
-              }`}
+              className="flex items-center justify-between w-full px-4 py-2 rounded-2xl focus:outline-none"
             >
               Documents <FaChevronDown className="ml-2" />
             </button>
@@ -69,7 +62,6 @@ const NewSidebar = () => {
                 <li>
                   <NavLink
                     to="/riskVersionControl"
-                    // className="block px-4 py-2 rounded-2xl items-center hover:dropdown-active"
                     className={({ isActive }) =>
                       `sidebar-link ${
                         isActive ? "dropdown-active" : "dropdown-hover"

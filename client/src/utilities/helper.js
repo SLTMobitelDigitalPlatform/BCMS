@@ -3,6 +3,15 @@ export const validateOTP = (otp) => {
   return regex.test(otp);
 };
 
+export const validateName = (name) => {
+  const regex = /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/;
+  return regex.test(name);
+};
+
+export const validateServiceNumber = (serviceNumber) => {
+  const regex = /^\d{6}$/;
+  return regex.test(serviceNumber);
+};
 export const validateEmail = (email) => {
   const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   return regex.test(email);

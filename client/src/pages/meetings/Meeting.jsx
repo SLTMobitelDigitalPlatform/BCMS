@@ -1,9 +1,12 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
+import axios from "axios";
 
 const Meeting = () => {
+  // const { meetings, deleteMeeting } = useContext(MeetingContext);
+  // const { user } = useContext(UserContext);
+
   const [meetings, setMeetings] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [meetingToDelete, setMeetingToDelete] = useState(null);
@@ -57,6 +60,12 @@ const Meeting = () => {
       });
   };
 
+  // const handleDelete = (meetingId) => {
+  //   deleteMeeting(meetingId);
+  //   setShowConfirmation(false);
+  //   setMeetingToDelete(null);
+  // };
+
   const showDeleteConfirmation = (meetingId) => {
     setMeetingToDelete(meetingId);
     setShowConfirmation(true);
@@ -82,13 +91,11 @@ const Meeting = () => {
         {user &&
         (user.role === "Super Admin" ||
           user.role === "Secretariat Coordinator") ? (
-          <Link to={"createMeeting"}>
-            <button
-              type="button"
-              className="btn-primary px-6 py-2 rounded-xl text-white font-medium"
-            >
-              Create a Meeting
-            </button>
+          <Link
+            to={"createMeeting"}
+            className="btn-primary px-6 py-2 rounded-xl text-white font-medium"
+          >
+            Create a Meeting
           </Link>
         ) : (
           " "
