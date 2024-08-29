@@ -15,6 +15,12 @@ router.get(
   "/api/versionControlsRisk/:id",
   versionControlRiskController.getVersionById
 );
+
+router.get(
+  "/api/versionControlsRisk/last",
+  versionControlRiskController.getLastVersion
+);
+
 router.put(
   "/api/versionControlsRisk/edit/:id",
   versionControlRiskController.updateVersion

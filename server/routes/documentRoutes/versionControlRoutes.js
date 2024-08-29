@@ -15,6 +15,10 @@ router.get(
   "/api/versionControls/:id",
   versionControlControllers.getVersionById
 );
+router.get(
+  "/api/versionControls/last",
+  versionControlControllers.getLastVersion
+);
 router.put(
   "/api/versionControls/edit/:id",
   versionControlControllers.updateVersion
