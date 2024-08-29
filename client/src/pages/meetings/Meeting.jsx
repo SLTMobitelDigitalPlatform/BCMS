@@ -4,9 +4,6 @@ import Pagination from "./Pagination";
 import axios from "axios";
 
 const Meeting = () => {
-  // const { meetings, deleteMeeting } = useContext(MeetingContext);
-  // const { user } = useContext(UserContext);
-
   const [meetings, setMeetings] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [meetingToDelete, setMeetingToDelete] = useState(null);

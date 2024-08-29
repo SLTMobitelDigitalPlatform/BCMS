@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { _get, _post, _put, _delete } from "../../services/apiClient";
 
 const CreateMeeting = () => {
   const [employees, setEmployees] = useState([]);
@@ -13,36 +12,17 @@ const CreateMeeting = () => {
   const [chairedBy, setChairedBy] = useState("");
 
   // get all employees
-  // useEffect(() => {
-  //   fetch("http://localhost:5000/users", {
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setEmployees(data);
-  //     });
-  // }, []);
-
-  // ! *******************************************************************************************************
   useEffect(() => {
-    // Fetch data when component mounts
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await _get("/users", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    fetch("http://localhost:5000/users", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setEmployees(data);
       });
-      setEmployees(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      // Handle errors
-    }
-  };
-  // ! *******************************************************************************************************
+  }, []);
 
   // select attendees from all employees
   const handleAttendeeClick = (employeeId) => {
