@@ -112,7 +112,7 @@ const UpdateEvent = () => {
       setDbError("Error updating event");
     }
   };
-  
+
   const attendeeOptions = employees.map((employee) => ({
     value: employee._id,
     label: employee.name,
@@ -257,10 +257,12 @@ const UpdateEvent = () => {
                 )}
                 onChange={(selectedOptions) => {
                   field.onChange(selectedOptions);
-                  setAttendees(selectedOptions.map((option) => ({
-                    _id: option.value,
-                    name: option.label
-                  })));
+                  setAttendees(
+                    selectedOptions.map((option) => ({
+                      _id: option.value,
+                      name: option.label,
+                    }))
+                  );
                 }}
                 className="basic-multi-select"
                 classNamePrefix="select"
