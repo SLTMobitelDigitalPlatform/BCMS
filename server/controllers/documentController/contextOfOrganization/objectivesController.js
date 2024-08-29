@@ -1,4 +1,4 @@
-const Objective = require("../../models/documentModels/objectivesModel");
+const Objective = require("../../../models/documentModels/objectivesModel");
 
 const getObjectives = async (req, res) => {
   const objectives = await Objective.find();

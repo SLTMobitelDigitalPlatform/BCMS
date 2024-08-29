@@ -1,4 +1,4 @@
-const InterfaceDependancy = require("../../models/documentModels/interfaceDependancies");
+const InterfaceDependancy = require("../../../models/documentModels/interfaceDependancies");
 
 const getInterfaceDependacy = async (req, res) => {
   try {
