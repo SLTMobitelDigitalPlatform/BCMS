@@ -11,6 +11,8 @@ const EditVersionControl = () => {
   const [reasons, setReasons] = useState("");
   const [users, setUsers] = useState([]);
   const [isApproved, setIsApproved] = useState("");
+  const [loggedInUser, setLoggedInUser] = useState([]);
+
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -45,8 +47,25 @@ const EditVersionControl = () => {
       console.log(error);
     }
   };
+
+  const fetchLoggedInUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/currentuser", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // console.log(response.data.name);
+
+      setLoggedInUser(response.data);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
   useEffect(() => {
     fetchUsers();
+    fetchLoggedInUser();
   }, []);
 
   const handleEditVersion = (e) => {
@@ -182,23 +201,27 @@ const EditVersionControl = () => {
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="isapprove" className="font-semibold">
-                Approval
-              </label>
-              <select
-                id="isapprove"
-                placeholder="Approval"
-                value={isApproved}
-                onChange={(e) => setIsApproved(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
-              >
-                <option disabled>{isApproved}</option>
-                <option>Approved</option>
-                <option>Not Approved</option>
-                <option>Pending</option>
-              </select>
-            </div>
+            {loggedInUser.name === approve ? (
+              <div className="flex flex-col gap-2">
+                <label htmlFor="isapprove" className="font-semibold">
+                  Approval
+                </label>
+                <select
+                  id="isapprove"
+                  placeholder="Approval"
+                  value={isApproved}
+                  onChange={(e) => setIsApproved(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option disabled>{isApproved}</option>
+                  <option>Approved</option>
+                  <option>Not Approved</option>
+                  <option>Pending</option>
+                </select>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="flex justify-start gap-2">
               <button
                 type="submit"

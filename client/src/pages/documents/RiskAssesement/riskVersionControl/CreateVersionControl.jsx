@@ -11,6 +11,7 @@ const CreateRiskVersionControl = () => {
   const [reasons, setReasons] = useState("");
   const [isApproved, setIsApproved] = useState("");
   const [users, setUsers] = useState([]);
+  const [loggedInUser, setLoggedInUsers] = useState([]);
   const navigate = useNavigate();
 
   const fetchLastVersion = async () => {
@@ -51,6 +52,22 @@ const CreateRiskVersionControl = () => {
     }
   };
 
+  const fetchLoggedInUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/currentuser", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // console.log(response.data.name);
+
+      setLoggedInUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:5000/users", {
@@ -70,6 +87,7 @@ const CreateRiskVersionControl = () => {
   useEffect(() => {
     fetchLastVersion();
     fetchUsers();
+    fetchLoggedInUser();
   }, []);
 
   const handleCreateVersion = (e) => {
@@ -208,25 +226,27 @@ const CreateRiskVersionControl = () => {
                     className="w-full p-2 rounded-lg bg-slate-100"
                   />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="isapprove" className="font-semibold">
-                    Approval
-                  </label>
-                  <select
-                    id="isapprove"
-                    placeholder="Approved Person"
-                    value={isApproved}
-                    onChange={(e) => setIsApproved(e.target.value)}
-                    className="w-[500px] p-2 rounded-lg bg-slate-100"
-                  >
-                    <option value="" disabled>
-                      Select
-                    </option>
-                    <option>Approved</option>
-                    <option>Not Approved</option>
-                    <option>Pending</option>
-                  </select>
-                </div>
+                {/* {loggedInUser.name === approve ? (
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="isapprove" className="font-semibold">
+                      Approval
+                    </label>
+                    <select
+                      id="isapprove"
+                      placeholder="Approval"
+                      value={isApproved}
+                      onChange={(e) => setIsApproved(e.target.value)}
+                      className="w-[500px] p-2 rounded-lg bg-slate-100"
+                    >
+                      <option disabled>{isApproved}</option>
+                      <option>Approved</option>
+                      <option>Not Approved</option>
+                      <option>Pending</option>
+                    </select>
+                  </div>
+                ) : (
+                  ""
+                )} */}
                 <div className="flex justify-start gap-2 mt-5">
                   <button
                     type="submit"
