@@ -9,6 +9,7 @@ const CreateRiskVersionControl = () => {
   const [prepare, setPrepare] = useState("");
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
+  const [isApproved, setIsApproved] = useState("");
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
@@ -80,6 +81,7 @@ const CreateRiskVersionControl = () => {
       prepare,
       approve,
       reasons,
+      isApproved,
     };
 
     axios
@@ -205,6 +207,25 @@ const CreateRiskVersionControl = () => {
                     onChange={(e) => setReasons(e.target.value)}
                     className="w-full p-2 rounded-lg bg-slate-100"
                   />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="isapprove" className="font-semibold">
+                    Approval
+                  </label>
+                  <select
+                    id="isapprove"
+                    placeholder="Approved Person"
+                    value={isApproved}
+                    onChange={(e) => setIsApproved(e.target.value)}
+                    className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    <option>Approved</option>
+                    <option>Not Approved</option>
+                    <option>Pending</option>
+                  </select>
                 </div>
                 <div className="flex justify-start gap-2 mt-5">
                   <button

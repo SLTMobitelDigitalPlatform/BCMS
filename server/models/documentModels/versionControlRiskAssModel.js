@@ -8,6 +8,12 @@ const vControlRiskSchema = new Schema(
     prepare: { type: String, required: true },
     approve: { type: String, required: true },
     reasons: { type: String, required: true },
+    isApproved: {
+      type: String,
+      required: false,
+      enum: ["Approved", "Not Approved", "Pending"],
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );

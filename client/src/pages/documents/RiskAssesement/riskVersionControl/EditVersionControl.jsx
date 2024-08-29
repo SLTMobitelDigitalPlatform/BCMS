@@ -10,6 +10,8 @@ const EditRiskVersionControl = () => {
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
   const [users, setUsers] = useState([]);
+  const [loggedInUser, setLoggedInUsers] = useState([]);
+  const [isApproved, setIsApproved] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -22,6 +24,7 @@ const EditRiskVersionControl = () => {
         setPrepare(res.data.prepare);
         setApprove(res.data.approve);
         setReasons(res.data.reasons);
+        setIsApproved(res.data.isApproved);
       })
       .catch((err) => {
         console.log(err);
@@ -43,8 +46,25 @@ const EditRiskVersionControl = () => {
       console.log(error);
     }
   };
+
+  const fetchLoggedInUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/currentuser", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // console.log(response.data.name);
+
+      setLoggedInUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
   useEffect(() => {
     fetchUsers();
+    fetchLoggedInUser();
   }, []);
 
   const handleEditVersion = (e) => {
@@ -56,6 +76,7 @@ const EditRiskVersionControl = () => {
       prepare,
       approve,
       reasons,
+      isApproved,
     };
 
     axios
@@ -94,7 +115,7 @@ const EditRiskVersionControl = () => {
     <div className="container mx-auto py-8">
       <div className="flex gap-x-10">
         <div className="border-2 w-full rounded-2xl ml-5 mr-[20px] mt-1 mb-5 p-5">
-          <h1 className="text-2xl font-bold">Add New Version Control</h1>
+          <h1 className="text-2xl font-bold">Update Version Control</h1>
           <div className="w-full mx-auto p-8 rounded-xl shadow-lg border-2 mt-5">
             <form onSubmit={handleEditVersion}>
               <div className="flex flex-col gap-6">
@@ -180,6 +201,28 @@ const EditRiskVersionControl = () => {
                     className="w-full p-2 rounded-lg bg-slate-100"
                   />
                 </div>
+                {loggedInUser.name === approve ? (
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="isapprove" className="font-semibold">
+                      Approval
+                    </label>
+                    <select
+                      id="isapprove"
+                      placeholder="Approval"
+                      value={isApproved}
+                      onChange={(e) => setIsApproved(e.target.value)}
+                      className="w-[500px] p-2 rounded-lg bg-slate-100"
+                    >
+                      <option disabled>{isApproved}</option>
+                      <option>Approved</option>
+                      <option>Not Approved</option>
+                      <option>Pending</option>
+                    </select>
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <div className="flex justify-start gap-2 mt-5">
                   <button
                     type="submit"

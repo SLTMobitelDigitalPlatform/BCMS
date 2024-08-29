@@ -82,6 +82,7 @@ const RiskVersionControls = () => {
                 <th className="border-2">Prepared By</th>
                 <th className="border-2">Approved By</th>
                 <th className="border-2">Reasons for new release</th>
+                <th className="border-2">Approval Status</th>
                 <th className="border-2">Actions</th>
               </tr>
             </thead>
@@ -93,6 +94,7 @@ const RiskVersionControls = () => {
                   <td className="border-2 p-3">{v.prepare}</td>
                   <td className="border-2 p-3">{v.approve}</td>
                   <td className="border-2 p-3">{v.reasons}</td>
+                  <td className="border-2 p-3">{v.isApproved}</td>
                   <td className="border-2 p-3 flex justify-center">
                     <div className="flex gap-3 items-center">
                       <Link to={`/editISRiskVersion/${v._id}`}>
