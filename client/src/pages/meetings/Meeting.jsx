@@ -1,7 +1,9 @@
+// import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
-import axios from "axios";
+import { getCurrentUser } from "../../services/userAPI";
+import { getAllMeetings } from "../../services/meetingAPI";
 
 const Meeting = () => {
   const [meetings, setMeetings] = useState([]);
@@ -11,36 +13,29 @@ const Meeting = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  // Fetch all meetings
+  // Get all meetings
+  const getMeetings = async () => {
+    try {
+      const response = await getAllMeetings();
+      setMeetings(response.data);
+    } catch (error) {
+      console.error("Error fetching meetings data:", error);
+    }
+  };
+
+  // Get current user
+  const getUserDetails = async () => {
+    try {
+      const response = await getCurrentUser();
+      setUser(response.data);
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get("http://localhost:5000/currentuser", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUser(response.data);
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-
-    const fetchMeetings = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/getMeetings");
-        const data = await response.json();
-        setMeetings(data);
-      } catch (error) {
-        console.error("Error fetching meetings data:", error);
-      }
-    };
-
-    fetchUserDetails();
-    fetchMeetings();
+    getUserDetails();
+    getMeetings();
   }, []);
 
   // Delete a meeting
@@ -56,12 +51,6 @@ const Meeting = () => {
         window.location.reload();
       });
   };
-
-  // const handleDelete = (meetingId) => {
-  //   deleteMeeting(meetingId);
-  //   setShowConfirmation(false);
-  //   setMeetingToDelete(null);
-  // };
 
   const showDeleteConfirmation = (meetingId) => {
     setMeetingToDelete(meetingId);
@@ -132,7 +121,7 @@ const Meeting = () => {
 
       <div className="overflow-x-auto mt-5">
         <table className="min-w-full bg-white border border-green-500 border-collapse">
-          <thead className="bg-blue-900 text-white">
+          <thead className="bg-indigo-800 text-white">
             <tr>
               <th className="py-2 px-4 border border-green-500">Date</th>
               <th className="py-2 px-4 border border-green-500">Start Time</th>
@@ -214,3 +203,29 @@ const Meeting = () => {
 };
 
 export default Meeting;
+
+// const getUserDetails = async () => {
+//   try {
+//     const token = localStorage.getItem("token");
+
+//     const response = await axios.get("http://localhost:5000/currentuser", {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+
+//     setUser(response.data);
+//   } catch (error) {
+//     console.error("Error fetching user details:", error);
+//   }
+// };
+
+// const getAllMeetings = async () => {
+//   try {
+//     const response = await fetch("http://localhost:5000/getMeetings");
+//     const data = await response.json();
+//     setMeetings(data);
+//   } catch (error) {
+//     console.error("Error fetching meetings data:", error);
+//   }
+// };

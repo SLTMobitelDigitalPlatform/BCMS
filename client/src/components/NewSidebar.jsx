@@ -75,7 +75,7 @@ const NewSidebar = () => {
                 <hr className="my-1 border-black opacity-50" />
                 <li>
                   <NavLink
-                    to="/VersionControls"
+                    to="Context-of-the-Organization/VersionControls"
                     className={({ isActive }) =>
                       `sidebar-link ${
                         isActive ? "dropdown-active" : "dropdown-hover"

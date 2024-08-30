@@ -6,9 +6,15 @@ export const registerUser = async (formData) => {
   return response;
 };
 
-// Fetch all users
-export const fetchUsers = async () => {
+// Get all users
+export const getUsers = async () => {
   const response = await axiosInstance.get("/users");
+  return response;
+};
+
+// Get current user
+export const getCurrentUser = async () => {
+  const response = await axiosInstance.get("/currentuser");
   return response;
 };
 

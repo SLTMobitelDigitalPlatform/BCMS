@@ -56,7 +56,7 @@ const InterfacesDependencies = () => {
   }, []);
 
   return (
-    <div className="w-full h-full p-5 flex flex-col bg-sky-100 rounded-2xl">
+    <div className="w-full h-full flex flex-col">
       <h1 className="text-3xl mb-5 font-bold text-green-500">
         Context Of The Organization
       </h1>
