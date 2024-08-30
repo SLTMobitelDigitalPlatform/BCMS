@@ -190,7 +190,10 @@ const router = createBrowserRouter([
         path: "createResidualRisk",
         element: <CreateIResidualRiskAssesement />,
       },
-      { path: "editResidualRisk/:id", element: <EditResidualRiskAssesement /> },
+      {
+        path: "editResidualRisk/:id/:source",
+        element: <EditResidualRiskAssesement />,
+      },
 
       //? Context of the Organization
       // * Version Controls

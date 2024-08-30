@@ -6,8 +6,44 @@ import RiskAssNavigation from "../../../../components/RiskAssNavigation";
 
 const ResidualRiskAssesement = () => {
   const [risks, setRisks] = useState([]);
+  const [bcpRisks, setBCPRisks] = useState([]);
+  const [isRisks, setIsRisks] = useState([]);
+  const [qmRisks, setQmRisks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   const risksPerPage = 5;
+
+  const fetchBCPRisks = async () => {
+    try {
+      const bcpResponse = await axios.get(
+        "http://localhost:5000/api/risksBCP/"
+      );
+      const isResponse = await axios.get("http://localhost:5000/api/risksIS/");
+      const qmResponse = await axios.get(
+        "http://localhost:5000/api/qualityRisks/"
+      );
+
+      const filteredBCPRisks = bcpResponse.data
+        .filter((item) => item.residualImpactRating > 12)
+        .map((risk) => ({ ...risk, source: "risksBCP" })); // Add source here
+
+      const filterIsRisks = isResponse.data
+        .filter((item) => item.residualImpactRating > 12)
+        .map((risk) => ({ ...risk, source: "risksIS" })); // Add source here
+
+      const filterQmRisks = qmResponse.data
+        .filter((item) => item.residualImpactRating > 12)
+        .map((risk) => ({ ...risk, source: "qualityRisks" })); // Add source here
+
+      setBCPRisks(filteredBCPRisks);
+      setIsRisks(filterIsRisks);
+      setQmRisks(filterQmRisks);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const combinedRisks = [...bcpRisks, ...isRisks, ...qmRisks];
 
   // Fetch all risks
   const fetchRisks = async () => {
@@ -23,10 +59,12 @@ const ResidualRiskAssesement = () => {
 
   useEffect(() => {
     fetchRisks();
+    fetchBCPRisks();
   }, []);
 
   // Delete a risk with SweetAlert2 confirmation
-  const deleteRisk = async (id) => {
+  const deleteRisk = async (id, source) => {
+    console.log("Deleting Risk ID:", id, "Source:", source); // Log id and source here
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -39,7 +77,7 @@ const ResidualRiskAssesement = () => {
       if (result.isConfirmed) {
         try {
           await axios.delete(
-            `http://localhost:5000/api/residualRisks/delete/${id}`
+            `http://localhost:5000/api/${source}/delete/${id}`
           );
           setRisks(risks.filter((risk) => risk._id !== id));
           Swal.fire("Deleted!", "Your risk has been deleted.", "success");
@@ -58,7 +96,7 @@ const ResidualRiskAssesement = () => {
   // Pagination logic
   const indexOfLastRisk = currentPage * risksPerPage;
   const indexOfFirstRisk = indexOfLastRisk - risksPerPage;
-  const currentRisks = risks.slice(indexOfFirstRisk, indexOfLastRisk);
+  const currentRisks = combinedRisks.slice(indexOfFirstRisk, indexOfLastRisk);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -70,14 +108,12 @@ const ResidualRiskAssesement = () => {
         <h1 className="text-2xl font-bold text-blue-900">
           Information Security
         </h1>
-        <Link to="/createResidualRisk">
+        {/* <Link to="/createResidualRisk">
           <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
             Create Risk Assessment
           </button>
-        </Link>
+        </Link> */}
       </div>
-
-      {/* <div className="flex items-center justify-between p-5 w-full"></div> */}
 
       {/* Table */}
       <div className="mt-8 overflow-auto h-full">
@@ -103,31 +139,31 @@ const ResidualRiskAssesement = () => {
             {currentRisks.map((r) => (
               <tr key={r._id}>
                 <td className="border-2 text-normal px-2">{r.rid}</td>
-                <td className="border-2 text-normal px-2">
-                  {r.residualRiskRating}
-                </td>
-                <td className="border-2 text-normal px-2">{r.treatMethod}</td>
+                <td className="border-2 text-normal px-2">{r.impactRating}</td>
+                <td className="border-2 text-normal px-2">{r.newMethod}</td>
                 <td className="border-2 text-normal px-4 py-3">
-                  {r.identifiedControls}
+                  {r.newIdntifiedControls}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">{r.date}</td>
-                <td className="border-2 text-normal px-4 py-3">{r.impact}</td>
+                <td className="border-2 text-normal px-4 py-3">{r.newDate}</td>
                 <td className="border-2 text-normal px-4 py-3">
-                  {r.likelihood}
+                  {r.newImpact}
                 </td>
                 <td className="border-2 text-normal px-4 py-3">
-                  {r.residualImpactRating}
+                  {r.newLikelihood}
+                </td>
+                <td className="border-2 text-normal px-4 py-3">
+                  {r.newResidualImpactRating}
                 </td>
 
                 <td className="border-2 text-normal px-4 py-3">
                   <div className="flex gap-3">
-                    <Link to={`/editResidualRisk/${r._id}`}>
+                    <Link to={`/editResidualRisk/${r._id}/${r.source}`}>
                       <button className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold">
                         Edit
                       </button>
                     </Link>
                     <button
-                      onClick={() => deleteRisk(r._id)}
+                      onClick={() => deleteRisk(r._id, r.source)}
                       className="px-4 py-1 rounded-lg bg-red-600 text-white font-semibold"
                     >
                       Delete
