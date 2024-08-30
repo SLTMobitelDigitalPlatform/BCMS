@@ -21,7 +21,13 @@ const riskBCPSchema = new Schema(
     residualImpact: { type: Number, required: true },
     probability: { type: Number, required: true },
     residualImpactRating: { type: Number, required: true },
-    statement: { type: String, required: true },
+
+    newMethod: { type: String, required: false },
+    newIdntifiedControls: { type: String, required: false },
+    newDate: { type: String, required: false },
+    newImpact: { type: Number, required: false },
+    newLikelihood: { type: Number, required: false },
+    newResidualImpactRating: { type: Number, required: false },
   },
   { timestamps: true }
 );
@@ -29,3 +35,10 @@ const riskBCPSchema = new Schema(
 const RiskAssesementBCP = mongoose.model("RiskAssesementBCP", riskBCPSchema);
 
 module.exports = RiskAssesementBCP;
+
+// newMethod: { type: String, required: false },
+// newIdntifiedControls: { type: String, required: false },
+// newDate: { type: String, required: false },
+// newImpact: { type: Number, required: false },
+// newLikelihood: { type: Number, required: false },
+// newResidualImpactRating: { type: Number, required: false },
