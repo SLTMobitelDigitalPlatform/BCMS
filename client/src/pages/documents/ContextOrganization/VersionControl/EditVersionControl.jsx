@@ -84,7 +84,7 @@ const EditVersionControl = () => {
       .put(`http://localhost:5000/api/versionControls/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/versionControls");
+        navigate("/Context-of-the-Organization/VersionControls");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -115,7 +115,7 @@ const EditVersionControl = () => {
   return (
     <div className="flex flex-col w-full h-full selection rounded-2xl bg-sky-200">
       <h1 className="text-2xl font-bold">Edit Version Control</h1>
-      <div className="bg-cyan-100 h-full p-8 mt-5 rounded-2xl">
+      <div className="bg-cyan-100 h-full p-8 mt-5 rounded-2xl overflow-auto">
         <form onSubmit={handleEditVersion}>
           <div className="flex flex-col gap-6">
             <div className="flex justify-between">
@@ -196,7 +196,7 @@ const EditVersionControl = () => {
                 type="text"
                 placeholder="Reasons"
                 value={reasons}
-                rows={8}
+                rows={4}
                 onChange={(e) => setReasons(e.target.value)}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
@@ -229,7 +229,7 @@ const EditVersionControl = () => {
               >
                 Save
               </button>
-              <Link to="/versionControls">
+              <Link to="/Context-of-the-Organization/VersionControls">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

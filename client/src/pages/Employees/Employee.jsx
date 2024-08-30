@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { deleteUser, fetchUsers } from "../../services/userApi";
-import Pagination from "./Pagination";
+import { deleteUser, getUsers } from "../../services/userAPI";
 import AddEditEmployee from "./AddEditEmployee";
+import Pagination from "./Pagination";
 
 const Employee = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -49,7 +49,7 @@ const Employee = () => {
   // Fetch Employee data
   const getAllEmployees = async () => {
     try {
-      const response = await fetchUsers();
+      const response = await getUsers();
       setEmployeeData(response.data);
     } catch (error) {
       console.error("Error fetching users:", error.response?.data || error);
@@ -183,7 +183,7 @@ const Employee = () => {
 
         <div className="mt-5">
           <table className="table-auto w-full min-w-full bg-white border border-green-500">
-            <thead className="bg-blue-900 text-white">
+            <thead className="bg-indigo-800 text-white">
               <tr>
                 <th className="p-1 border border-green-500">Name</th>
                 <th className="p-1 border border-green-500">Service Number</th>

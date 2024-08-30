@@ -57,70 +57,74 @@ const VersionControls = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <h1 className="text-3xl mb-5 font-bold text-green-500">
-        Context Of The Organization
-      </h1>
-      <ContextNavigation />
+    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-2xl font-bold text-blue-900">Version Control</h1>
+        <Link to="/createVersion">
+          <button className="btn-primary font-semibold">
+            Create Version Control
+          </button>
+        </Link>
+      </div>
 
-      <div className="p-5 h-full bg-sky-100 rounded-2xl mt-5">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-blue-900">Version Control</h1>
-          <Link to="/createVersion">
-            <button className="btn-primary">Create Version Control</button>
-          </Link>
-        </div>
-
-        {/* Table */}
-        <div className="mt-5 h-full overflow-auto">
-          <table className="relative w-full h-full bg-cyan-50">
-            <thead className="sticky top-0 bg-white">
-              <tr>
-                <th className="border-2 border-black">Serial Number</th>
-                <th className="border-2 border-black">Version Number</th>
-                <th className="border-2 border-black">Prepared By</th>
-                <th className="border-2 border-black">Approved By</th>
-                <th className="border-2 border-black w-96">
-                  Reasons for new release
-                </th>
-                <th className="border-2 border-black">Approval Status</th>
-                <th className="border-2 border-black">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {versionControls.map((v) => (
-                <tr key={v.id}>
-                  <td className="p-3 border-2 border-black">{v.serialNo}</td>
-                  <td className="p-3 border-2 border-black">{v.versionNo}</td>
-                  <td className="p-3 border-2 border-black">{v.prepare}</td>
-                  <td className="p-3 border-2 border-black">{v.approve}</td>
-                  <td className="p-3 border-2 border-black w-96">
-                    {v.reasons}
-                  </td>
-                  <td className="p-3 border-2 border-black">{v.isApproved}</td>
-                  <td className="border-2 border-black ">
-                    <div className="flex justify-center items-center gap-3">
-                      <Link to={`/editVersion/${v._id}`}>
-                        <button className="px-1 bg-blue-500 text-white rounded">
-                          Edit
-                        </button>
-                      </Link>
-                      <button
-                        className="px-1 bg-red-500 text-white rounded"
-                        onClick={() => deleteVersionControl(v._id)}
-                      >
-                        Delete
+      {/* Table */}
+      <div className="h-full w-full overflow-auto">
+        <table className="relative w-full py-10 bg-cyan-50">
+          <thead className="sticky top-0 bg-indigo-800 text-white border border-green-500">
+            <tr>
+              <th className="w-20 border border-green-500">Serial Number</th>
+              <th className="w-20 border border-green-500">Version Number</th>
+              <th className="w-40 border border-green-500">Prepared By</th>
+              <th className="w-40 border border-green-500">Approved By</th>
+              <th className="w-80 border border-green-500">
+                Reasons for new release
+              </th>
+              <th className="w-32 border border-green-500">Approval Status</th>
+              <th className="w-28 border border-green-500">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {versionControls.map((v) => (
+              <tr key={v.id}>
+                <td className="py-2 px-4 w-20 border border-green-500">
+                  {v.serialNo}
+                </td>
+                <td className="py-2 px-4 w-20 border border-green-500">
+                  {v.versionNo}
+                </td>
+                <td className="py-2 px-4 w-40 border border-green-500">
+                  {v.prepare}
+                </td>
+                <td className="py-2 px-4 w-40 border border-green-500">
+                  {v.approve}
+                </td>
+                <td className="py-2 px-4 w-80 border border-green-500">
+                  {v.reasons}
+                </td>
+                <td className="py-2 px-4 w-32 border border-green-500">
+                  {v.isApproved}
+                </td>
+                <td className="px-3 w-28 border border-green-500 ">
+                  <div className="flex justify-between">
+                    <Link to={`/editVersion/${v._id}`}>
+                      <button className="px-1 bg-blue-500 text-white rounded">
+                        Edit
                       </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                    </Link>
+                    <button
+                      className="px-1 bg-red-500 text-white rounded"
+                      onClick={() => deleteVersionControl(v._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
-    // </div>
   );
 };
 

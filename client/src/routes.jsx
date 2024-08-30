@@ -64,6 +64,7 @@ import EditMasterProducers from "./pages/documents/ContextOrganization/MasterPro
 import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
 import EditInternal from "./pages/documents/ContextOrganization/IssueRegister/EditInternal";
 import EditExternal from "./pages/documents/ContextOrganization/IssueRegister/EditExternal";
+import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 
 const router = createBrowserRouter([
   {
@@ -196,6 +197,13 @@ const router = createBrowserRouter([
       },
 
       //? Context of the Organization
+      // * Layout
+      {
+        path: "Context-of-the-Organization",
+        element: <ContextOfTheOrganizationLayout />,
+        children: [{ path: "versionControls", element: <VersionControls /> }],
+      },
+
       // * Version Controls
       { path: "versionControls", element: <VersionControls /> },
       { path: "createVersion", element: <CreateVersionControl /> },
