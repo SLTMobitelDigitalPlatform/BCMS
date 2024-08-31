@@ -26,7 +26,7 @@ const CreateInternalIssue = () => {
       .post("http://localhost:5000/internalIssue/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/internalIssues");
+        navigate("/Context-of-the-Organization/internalIssues");
       })
       .catch((error) => {
         handleErrorAlert();
@@ -127,7 +127,7 @@ const CreateInternalIssue = () => {
               >
                 Save
               </button>
-              <Link to="/internalIssues">
+              <Link to="/Context-of-the-Organization/internalIssues">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

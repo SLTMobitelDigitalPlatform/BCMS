@@ -15,7 +15,7 @@ const ContextNavigation = () => {
           Version Control
         </NavLink>
         <NavLink
-          to="/externalIssues"
+          to="/Context-of-the-Organization/externalIssues"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -25,7 +25,7 @@ const ContextNavigation = () => {
           Interested Parties
         </NavLink>
         <NavLink
-          to="/internalIssues"
+          to="/Context-of-the-Organization/internalIssues"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -35,7 +35,7 @@ const ContextNavigation = () => {
           Issue Register
         </NavLink>
         <NavLink
-          to="/interfaces"
+          to="/Context-of-the-Organization/interfaces"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -45,7 +45,7 @@ const ContextNavigation = () => {
           Interfaces and Dependencies
         </NavLink>
         <NavLink
-          to="/objectives"
+          to="/Context-of-the-Organization/objectives"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -55,7 +55,7 @@ const ContextNavigation = () => {
           Objectives
         </NavLink>
         <NavLink
-          to="/masterProcedures"
+          to="/Context-of-the-Organization/masterProcedures"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"

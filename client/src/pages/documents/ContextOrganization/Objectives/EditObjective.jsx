@@ -36,7 +36,7 @@ const EditObjective = () => {
       .put(`http://localhost:5000/objective/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/objectives");
+        navigate("/Context-of-the-Organization/objectives");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -116,7 +116,7 @@ const EditObjective = () => {
               >
                 Save
               </button>
-              <Link to="/objectives">
+              <Link to="/Context-of-the-Organization/objectives">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

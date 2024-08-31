@@ -39,7 +39,7 @@ const EditMasterProducers = () => {
       .put(`http://localhost:5000/proceduresAndProcess/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/masterProcedures");
+        navigate("/Context-of-the-Organization/masterProcedures");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -131,7 +131,7 @@ const EditMasterProducers = () => {
               >
                 Save
               </button>
-              <Link to="/masterProcedures">
+              <Link to="/Context-of-the-Organization/masterProcedures">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

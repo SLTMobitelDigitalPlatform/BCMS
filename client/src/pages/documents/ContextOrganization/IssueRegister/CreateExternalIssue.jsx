@@ -26,7 +26,7 @@ const CreateExternalIssue = () => {
       .post("http://localhost:5000/externalIssue/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/externalIssues");
+        navigate("/Context-of-the-Organization/externalIssues");
       })
       .catch((error) => {
         handleErrorAlert();
@@ -127,7 +127,7 @@ const CreateExternalIssue = () => {
               >
                 Save
               </button>
-              <Link to="/externalIssues">
+              <Link to="/Context-of-the-Organization/externalIssues">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

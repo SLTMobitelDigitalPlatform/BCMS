@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import ContextNavigation from "../../../../components/ContextNavigation";
+import { Link, NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const InternalIssues = () => {
@@ -53,66 +52,83 @@ const InternalIssues = () => {
   }, []);
 
   return (
-    <div className="w-full h-full p-5 flex flex-col bg-sky-100 rounded-2xl">
-      <h1 className="text-3xl mb-5 font-bold text-green-500">
-        Context Of The Organization
-      </h1>
-      <ContextNavigation />
-      {/* <div className="bg-sky-50 p-5 mt-8 rounded-xl"> */}
-      <div className="flex justify-between items-center mt-10">
+    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-xl font-bold text-blue-900">
+          Issue Register - Internal Issues
+        </h1>
+
         <div className="flex items-center gap-10">
-          <h1 className="text-2xl font-bold text-blue-900">Issue Register</h1>
-          <Link to="/internalIssues">
-            <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-              Internal Issues
-            </button>
-          </Link>
-          <Link to="/externalIssues">
-            <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-              External Issues
-            </button>
-          </Link>
+          <NavLink
+            to="/Context-of-the-Organization/externalIssues"
+            className={({ isActive }) =>
+              `px-2 py-1 rounded-lg text-white font-semibold ${
+                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              }`
+            }
+          >
+            External Issues
+          </NavLink>
+          <NavLink
+            to="/Context-of-the-Organization/internalIssues"
+            className={({ isActive }) =>
+              `px-2 py-1 rounded-lg text-white font-semibold ${
+                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              }`
+            }
+          >
+            Internal Issues
+          </NavLink>
         </div>
-        <Link to="/createInternalIssue">
-          <button className="px-3 py-1 bg-[#52B14A] text-white font-semibold rounded-lg">
-            Create Record
-          </button>
+        <Link to="/createInternalIssue" className="btn-primary font-semibold">
+          Create Record
         </Link>
       </div>
-      <div className="mt-5">
+      {/* <div className="mt-5">
         <h1 className="text-center text-2xl font-bold mb-3">Internal Issues</h1>
-      </div>
+      </div> */}
 
       {/* Table */}
-      <div className="mt-10 w-full h-full overflow-auto">
-        <table className="w-full border-2">
-          <thead>
-            <tr className="border-2">
-              <th className="border-2">Internal Issues</th>
-              <th className="border-2">Requirments</th>
-              <th className="border-2">ISMS</th>
-              <th className="border-2">QMS</th>
-              <th className="border-2">BCMS</th>
-              <th className="border-2">Actions</th>
+      <div className="h-full w-full overflow-auto">
+        <table className="table-fixed relative w-full py-10 bg-cyan-50">
+          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+            <tr>
+              <th className="doc-table-border">Internal Issues</th>
+              <th className="doc-table-border">Requirments</th>
+              <th className="w-20 doc-table-border">ISMS</th>
+              <th className="w-20 doc-table-border">QMS</th>
+              <th className="w-20 doc-table-border">BCMS</th>
+              <th className="w-32 doc-table-border">Actions</th>
             </tr>
           </thead>
           <tbody>
             {internalIssues.map((internal) => (
               <tr key={internal._id}>
-                <td className="border-2 p-3">{internal.internalIssues}</td>
-                <td className="border-2 p-3">{internal.requirments}</td>
-                <td className="border-2 p-3">{internal.isms ? "✓" : "✗"}</td>
-                <td className="border-2 p-3">{internal.qms ? "✓" : "✗"}</td>
-                <td className="border-2 p-3">{internal.bcms ? "✓" : "✗"}</td>
-                <td className="border-2 p-3 flex justify-center">
-                  <div className="flex gap-3 items-center">
-                    <Link to={`/editInternalIssues/${internal._id}`}>
-                      <button className="p-1 w-20 bg-sky-600 text-white rounded-lg font-semibold">
-                        Edit
-                      </button>
+                <td className="py-2 px-4 doc-table-border">
+                  {internal.internalIssues}
+                </td>
+                <td className="py-2 px-4 doc-table-border">
+                  {internal.requirments}
+                </td>
+                <td className="py-2 px-4 w-20 text-center font-bold doc-table-border">
+                  {internal.isms ? "✓" : "✗"}
+                </td>
+                <td className="py-2 px-4 w-20 text-center font-bold doc-table-border">
+                  {internal.qms ? "✓" : "✗"}
+                </td>
+                <td className="py-2 px-4 w-20 text-center font-bold doc-table-border">
+                  {internal.bcms ? "✓" : "✗"}
+                </td>
+                <td className="py-2 px-4 w-32 doc-table-border">
+                  <div className="flex justify-center gap-2">
+                    <Link
+                      to={`/editInternalIssues/${internal._id}`}
+                      className="doc-edit-btn"
+                    >
+                      Edit
                     </Link>
                     <button
-                      className="p-1 w-20 bg-red-500 text-white rounded-lg"
+                      className="doc-delete-btn"
                       onClick={() => deleteInternal(internal._id)}
                     >
                       Delete
@@ -125,8 +141,6 @@ const InternalIssues = () => {
         </table>
       </div>
     </div>
-    // </div>
-    // </div>
   );
 };
 
