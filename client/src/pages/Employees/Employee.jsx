@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { deleteUser, getUsers } from "../../services/userAPI";
+import { deleteUser, getUsers } from "../../services/userApi";
 import AddEditEmployee from "./AddEditEmployee";
 import Pagination from "./Pagination";
 
