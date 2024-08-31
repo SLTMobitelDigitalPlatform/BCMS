@@ -56,6 +56,12 @@ const Navbar = () => {
         >
           Contact
         </Link>
+        <Link
+          to="/sections"
+          className="text-black hover:text-blue-600 font-bold"
+        >
+          Sections
+        </Link>
       </div>
 
       {/* User Icon */}
