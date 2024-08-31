@@ -54,11 +54,11 @@
   }
 
   .doc-edit-btn {
-    @apply p-1 bg-sky-600 text-white text-sm font-semibold rounded-lg;
+    @apply py-1 px-2 bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold rounded-lg;
   }
 
   .doc-delete-btn {
-    @apply p-1 bg-red-500 text-white text-sm font-semibold rounded-lg;
+    @apply py-1 px-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-lg;
   }
 
   .doc-table-border {

@@ -76,7 +76,7 @@ const MasterProcedures = () => {
           </thead>
           <tbody>
             {masterProducers.map((masterProd) => (
-              <tr key={masterProd.processNo}>
+              <tr key={masterProd.processNo} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-24 text-center doc-table-border">
                   {masterProd.processNo}
                 </td>

@@ -87,7 +87,7 @@ const InterfacesDependencies = () => {
           </thead>
           <tbody>
             {interfaceDependancy.map((interfaceDep) => (
-              <tr key={interfaceDep._id}>
+              <tr key={interfaceDep._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 doc-table-border">
                   {interfaceDep.processName}
                 </td>

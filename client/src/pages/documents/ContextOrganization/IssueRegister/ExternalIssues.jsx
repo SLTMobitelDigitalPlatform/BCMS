@@ -103,7 +103,7 @@ const ExternalIssues = () => {
           </thead>
           <tbody>
             {externalIssues.map((external) => (
-              <tr key={external._id}>
+              <tr key={external._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 doc-table-border">
                   {external.externalIssues}
                 </td>

@@ -221,9 +221,9 @@ const Employee = () => {
                       {employee.contactNumber}
                     </td>
                     <td className="border border-green-500 p-1">
-                      <div className="flex space-x-2">
+                      <div className="flex justify-center gap-2">
                         <button
-                          className="btn-secondary px-2 py-1 rounded-lg font-medium"
+                          className="doc-edit-btn"
                           onClick={() => {
                             setOpenAddEditModal({
                               isShown: true,
@@ -235,7 +235,7 @@ const Employee = () => {
                           Edit
                         </button>
                         <button
-                          className="btn btn-delete bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg font-medium"
+                          className="doc-delete-btn"
                           onClick={() => handleDelete(employee._id)}
                         >
                           Delete
