@@ -61,7 +61,7 @@ const CreateISRiskAssesement = () => {
       let paddedIndex = newIndex;
 
       if (lastRecord && lastRecord.rid) {
-        const lastIndex = parseInt(lastRecord.rid.slice(9), 10);
+        const lastIndex = parseInt(lastRecord.rid.slice(12), 10);
         // console.log(lastIndex);
         newIndex = lastIndex + 1;
         // console.log(lastIndex);
