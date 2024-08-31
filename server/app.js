@@ -30,6 +30,8 @@ const routerRiskVersion = require("./routes/documentRoutes/versionControlRiskRou
 const routerRiskResidual = require("./routes/documentRoutes/residualRiskRoutes");
 const routerRiskQuality = require("./routes/documentRoutes/qualityManagementRoutes");
 
+const routerSection = require("./routes/sectionRoutes/sectionRoutes");
+
 const PORT = 5000;
 
 // middleware
@@ -57,7 +59,8 @@ app.use(
   routerRiskBCP,
   routerRiskVersion,
   routerRiskResidual,
-  routerRiskQuality
+  routerRiskQuality,
+  routerSection
 );
 
 // Create uploads directory if it doesn't exist

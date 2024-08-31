@@ -65,6 +65,7 @@ import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization
 import EditInternal from "./pages/documents/ContextOrganization/IssueRegister/EditInternal";
 import EditExternal from "./pages/documents/ContextOrganization/IssueRegister/EditExternal";
 import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
+import { Section } from "./pages/sections/Section";
 
 const router = createBrowserRouter([
   {
@@ -267,8 +268,12 @@ const router = createBrowserRouter([
     element: <Customer />,
   },
   {
-    // path: "*",
-    // element: <ErrorPage />,
+    path: "/sections",
+    element: <Section />,
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
 

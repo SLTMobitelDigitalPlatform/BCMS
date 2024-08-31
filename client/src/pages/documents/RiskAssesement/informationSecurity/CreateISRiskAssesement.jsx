@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getCurrentUser } from "../../../../services/userApi";
 
 const CreateISRiskAssesement = () => {
   const [rid, setRid] = useState("");
@@ -34,22 +35,43 @@ const CreateISRiskAssesement = () => {
       const response = await axios.get(
         "http://localhost:5000/api/risksIS/last"
       );
+      const user = await getCurrentUser();
+      let section = user.data.section;
+      if (section === "Information Technology (IT)") {
+        section = "ITSE";
+      } else if (section === "Marketing") {
+        section = "MARC";
+      } else if (section === "Sales") {
+        section = "SALE";
+      } else if (section === "Human Resources(HR)") {
+        section = "HRMA";
+      } else if (section === "Finance") {
+        section = "FINA";
+      } else if (section === "Operations") {
+        section = "OPER";
+      } else if (section === "Customer Service") {
+        section = "CUSE";
+      }
+      console.log(section);
       const lastRecord = response.data;
       // console.log(lastRecord.rid);
 
-      const currentYear = new Date().getFullYear();
+      const currentYear = new Date().getFullYear().toString().slice(-2);
       let newIndex = 1;
+      let paddedIndex = newIndex;
 
       if (lastRecord && lastRecord.rid) {
-        const lastIndex = parseInt(lastRecord.rid.slice(9), 10);
+        const lastIndex = parseInt(lastRecord.rid.slice(12), 10);
         // console.log(lastIndex);
         newIndex = lastIndex + 1;
         // console.log(lastIndex);
+        // newIndex = 23;
+        paddedIndex = String(newIndex).padStart(3, "0");
       }
 
       // console.log(lastRecord);
 
-      setRid(`ISR-${currentYear}-${newIndex}`);
+      setRid(`ISR-${section}-${currentYear}${paddedIndex}`);
     } catch (error) {
       console.error("Error fetching the last record:", error);
     }

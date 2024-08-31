@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { registerUser, updateUser } from "../../services/userApi";
 import {
   validateEmail,
@@ -7,6 +7,7 @@ import {
   validateName,
   validateServiceNumber,
 } from "../../utilities/helper";
+import { getSections } from "../../services/sectionApi";
 
 const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
   const [name, setName] = useState(employeeData?.name || "");
@@ -19,6 +20,7 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
   const [email, setEmail] = useState(employeeData?.email || "");
   const [role, setRole] = useState(employeeData?.role || "");
   const [section, setSection] = useState(employeeData?.section || "");
+  const [sectionNames, setSectionNames] = useState([]);
   const [contactNumber, setContactNumber] = useState(
     employeeData?.contactNumber || ""
   );
@@ -26,6 +28,21 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
   const [error, setError] = useState("");
 
   const [hasError, setHasError] = useState(false);
+
+  const fetchSections = async () => {
+    try {
+      const response = await getSections();
+      const sectionNames = response.data.map((section) => section.name);
+      // console.log(sectionNames);
+      setSectionNames(sectionNames);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSections();
+  }, []);
 
   // Add new Employee
   const addNewEmployee = async () => {
@@ -320,15 +337,11 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
             <option value="" disabled>
               Select Section
             </option>
-            <option value="humanresources">Human Resources(HR) </option>
-            <option value="marketing">Marketing</option>
-            <option value="sales">Sales</option>
-            <option value="finance">Finance</option>
-            <option value="operations">Operations</option>
-            <option value="informationtechnology ">
-              Information Technology (IT)
-            </option>
-            <option value="customerservice">Customer Service</option>
+            {sectionNames.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
           </select>
         </div>
 

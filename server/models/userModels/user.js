@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema(
       default: "customer",
     },
     section: { type: String, required: false },
+    // section: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Section",
+    //   required: false,
+    // },
 
     callTree: {
       type: [String], // Define as an array of strings
