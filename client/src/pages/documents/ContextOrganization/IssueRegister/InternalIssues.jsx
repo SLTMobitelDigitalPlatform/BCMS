@@ -103,7 +103,7 @@ const InternalIssues = () => {
           </thead>
           <tbody>
             {internalIssues.map((internal) => (
-              <tr key={internal._id}>
+              <tr key={internal._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 doc-table-border">
                   {internal.internalIssues}
                 </td>

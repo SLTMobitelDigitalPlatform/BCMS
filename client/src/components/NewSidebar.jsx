@@ -53,7 +53,7 @@ const NewSidebar = () => {
           <li className="relative">
             <button
               onClick={toggleDropdown}
-              className="flex items-center justify-between w-full px-4 py-2 rounded-2xl focus:outline-none"
+              className="flex items-center justify-between w-full px-4 py-2 rounded-2xl sidebar-hover transition-all duration-300"
             >
               Documents <FaChevronDown className="ml-2" />
             </button>

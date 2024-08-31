@@ -3,13 +3,20 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Profile from "./components/Profile";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
+import Customer from "./pages/Customers/Customer";
+import BIA from "./pages/documents/BIA/BIA";
+import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
+import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
 import InterfacesDependencies from "./pages/documents/ContextOrganization/InterfacesDependencies/InterfacesDependencies";
 import CreateExternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateExternalIssue";
 import CreateInternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateInternalIssue";
+import EditExternal from "./pages/documents/ContextOrganization/IssueRegister/EditExternal";
+import EditInternal from "./pages/documents/ContextOrganization/IssueRegister/EditInternal";
 import ExternalIssues from "./pages/documents/ContextOrganization/IssueRegister/ExternalIssues";
 import InternalIssues from "./pages/documents/ContextOrganization/IssueRegister/InternalIssues";
 import CreateMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/CreateMasterProducers";
+import EditMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/EditMasterProducers";
 import MasterProcedures from "./pages/documents/ContextOrganization/MasterProcedures/MasterProcedures";
 import CreateObjective from "./pages/documents/ContextOrganization/Objectives/CreateObjective";
 import EditObjectives from "./pages/documents/ContextOrganization/Objectives/EditObjective";
@@ -17,9 +24,21 @@ import Objectives from "./pages/documents/ContextOrganization/Objectives/Objecti
 import CreateVersionControl from "./pages/documents/ContextOrganization/VersionControl/CreateVersionControl";
 import EditVersionControl from "./pages/documents/ContextOrganization/VersionControl/EditVersionControl";
 import VersionControls from "./pages/documents/ContextOrganization/VersionControl/VersionControls";
-import CreateRiskAssesement from "./pages/documents/RiskAssesement/CreateRiskAssesement";
-import EditRiskAssesement from "./pages/documents/RiskAssesement/EditRiskAssesement";
-import RiskAssesement from "./pages/documents/RiskAssesement/RiskAssesement";
+import BCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/BCPRiskAssesement";
+import CreateBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/CreateBCPRiskAssesement";
+import EditBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/EditBCPRiskAssesement";
+import CreateISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/CreateISRiskAssesement";
+import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
+import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
+import CreateQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/CreateQualityManagement";
+import EditQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/EditQualityManagement";
+import QualityManagement from "./pages/documents/RiskAssesement/qualityManagement/QualityManagement";
+import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
+import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
+import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ResidualRiskAssesement";
+import CreateRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/CreateVersionControl";
+import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/EditVersionControl";
+import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
 import Employee from "./pages/Employees/Employee";
 import ErrorPage from "./pages/ErrorPage";
 import AboutUs from "./pages/Home/AboutUs";
@@ -42,29 +61,6 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
-import EditBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/EditBCPRiskAssesement";
-import BCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/BCPRiskAssesement";
-import CreateBCPRiskAssesement from "./pages/documents/RiskAssesement/bcp/CreateBCPRiskAssesement";
-import CreateISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/CreateISRiskAssesement";
-import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
-import EditISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/EditISRiskAssesement";
-
-import ISRiskAssesement from "./pages/documents/RiskAssesement/informationSecurity/ISRiskAssesement";
-import CreateRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/CreateVersionControl";
-import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/EditVersionControl";
-import QualityManagement from "./pages/documents/RiskAssesement/qualityManagement/QualityManagement";
-import CreateQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/CreateQualityManagement";
-import EditQualityManagement from "./pages/documents/RiskAssesement/qualityManagement/EditQualityManagement";
-import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ResidualRiskAssesement";
-import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
-import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
-import Customer from "./pages/Customers/Customer";
-import BIA from "./pages/documents/BIA/BIA";
-import EditMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/EditMasterProducers";
-import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
-import EditInternal from "./pages/documents/ContextOrganization/IssueRegister/EditInternal";
-import EditExternal from "./pages/documents/ContextOrganization/IssueRegister/EditExternal";
-import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 import { Section } from "./pages/sections/Section";
 
 const router = createBrowserRouter([
@@ -141,6 +137,7 @@ const router = createBrowserRouter([
       { path: "employee", element: <Employee /> },
 
       // Customer Table
+      { path: "/customers", element: <Customer /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
@@ -262,10 +259,6 @@ const router = createBrowserRouter([
       { path: "roles/createRoles", element: <CreateRoles /> },
       { path: "roles/editRoles", element: <EditRoles /> },
     ],
-  },
-  {
-    path: "/customers",
-    element: <Customer />,
   },
   {
     path: "/sections",

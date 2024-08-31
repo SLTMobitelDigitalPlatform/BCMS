@@ -80,7 +80,7 @@ const VersionControls = () => {
           </thead>
           <tbody>
             {versionControls.map((v) => (
-              <tr key={v.id}>
+              <tr key={v.id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {v.serialNo}
                 </td>
