@@ -159,7 +159,7 @@ const router = createBrowserRouter([
       //!  { path: "add-event", element: <AddEvents /> },
 
       // Documents
-      //?  Risk Assessment
+      //?--------------------------  Risk Assessment  ----------------------------------------------
       //! { path: "riskAssesements", element: <RiskAssesement /> },
       //! { path: "createRisk", element: <CreateRiskAssesement /> },
       //!{ path: "editRisk/:id", element: <EditRiskAssesement /> },
@@ -196,12 +196,19 @@ const router = createBrowserRouter([
         element: <EditResidualRiskAssesement />,
       },
 
-      //? Context of the Organization
+      //? ------------------------ Context of the Organization -----------------------------
       // * Layout
       {
         path: "Context-of-the-Organization",
         element: <ContextOfTheOrganizationLayout />,
-        children: [{ path: "versionControls", element: <VersionControls /> }],
+        children: [
+          { path: "versionControls", element: <VersionControls /> },
+          { path: "externalIssues", element: <ExternalIssues /> },
+          { path: "internalIssues", element: <InternalIssues /> },
+          { path: "interfaces", element: <InterfacesDependencies /> },
+          { path: "objectives", element: <Objectives /> },
+          { path: "masterProcedures", element: <MasterProcedures /> },
+        ],
       },
 
       // * Version Controls
@@ -212,7 +219,6 @@ const router = createBrowserRouter([
 
       // * Issue Register
       // ** External Issues
-      { path: "externalIssues", element: <ExternalIssues /> },
       { path: "createExternalIssue", element: <CreateExternalIssue /> },
       {
         path: "editExternalIssues/:id",
@@ -220,7 +226,7 @@ const router = createBrowserRouter([
       },
 
       // ** Internal Issues
-      { path: "internalIssues", element: <InternalIssues /> },
+
       { path: "createInternalIssue", element: <CreateInternalIssue /> },
       {
         path: "editInternalIssues/:id",
@@ -228,7 +234,6 @@ const router = createBrowserRouter([
       },
 
       // * Interfaces and Dependencies
-      { path: "interfaces", element: <InterfacesDependencies /> },
       {
         path: "createInterfaceDependancy",
         element: <CreateInterfaceDependancy />,
@@ -239,19 +244,17 @@ const router = createBrowserRouter([
       },
 
       // * Objectives
-      { path: "objectives", element: <Objectives /> },
       { path: "createObjective", element: <CreateObjective /> },
       { path: "editObjective/:id", element: <EditObjectives /> },
 
       // * Master of Procedures and Process
-      { path: "masterProcedures", element: <MasterProcedures /> },
       { path: "createMasterProducers", element: <CreateMasterProducers /> },
       { path: "editMasterProcedures/:id", element: <EditMasterProducers /> },
 
-      //? BIA
+      //? --------------------------------- BIA -------------------------------------
       { path: "bia", element: <BIA /> },
 
-      //? BCP
+      //? -------------------------------- BCP --------------------------------------
 
       // Roles
       { path: "roles", element: <Roles /> },

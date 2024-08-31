@@ -48,7 +48,7 @@ const EditInterfacesAndDependancies = () => {
       .put(`http://localhost:5000/interfaceDependancy/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/interfaces");
+        navigate("/Context-of-the-Organization/interfaces");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -185,7 +185,7 @@ const EditInterfacesAndDependancies = () => {
               >
                 Save
               </button>
-              <Link to="/interfaces">
+              <Link to="/Context-of-the-Organization/interfaces">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

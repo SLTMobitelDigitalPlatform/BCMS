@@ -52,4 +52,16 @@
   .dropdown-hover {
     @apply hover:bg-indigo-400;
   }
+
+  .doc-edit-btn {
+    @apply p-1 bg-sky-600 text-white text-sm font-semibold rounded-lg;
+  }
+
+  .doc-delete-btn {
+    @apply p-1 bg-red-500 text-white text-sm font-semibold rounded-lg;
+  }
+
+  .doc-table-border {
+    @apply border border-green-500;
+  }
 }
