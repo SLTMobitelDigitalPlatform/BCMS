@@ -62,6 +62,7 @@ import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import { Section } from "./pages/sections/Section";
+import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
 
 const router = createBrowserRouter([
   {
@@ -192,6 +193,10 @@ const router = createBrowserRouter([
       {
         path: "editResidualRisk/:id/:source",
         element: <EditResidualRiskAssesement />,
+      },
+      {
+        path: "riskElements",
+        element: <RiskElements />,
       },
 
       //? ------------------------ Context of the Organization -----------------------------
