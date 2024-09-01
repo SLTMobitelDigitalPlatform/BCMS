@@ -9,6 +9,7 @@ import {
   deleteCategory,
   deleteItemFromCategory,
 } from "../../../../services/riskElementsApi";
+import RiskAssNavigation from "../../../../components/RiskAssNavigation";
 
 const RiskElements = () => {
   const [categories, setCategories] = useState([]);
@@ -26,7 +27,13 @@ const RiskElements = () => {
   const fetchCategories = async () => {
     try {
       const response = await getAllCategories();
-      setCategories(response.data);
+      const categoriesWithItems = await Promise.all(
+        response.data.map(async (category) => {
+          const itemsResponse = await getItemsInCategory(category.categoryName);
+          return { ...category, items: itemsResponse.data };
+        })
+      );
+      setCategories(categoriesWithItems);
     } catch (error) {
       console.error("Failed to fetch categories", error);
     }
@@ -46,7 +53,6 @@ const RiskElements = () => {
     try {
       const response = await getItemsInCategory(categoryName);
       setSelectedCategory({ name: categoryName, items: response.data });
-      //   console.log({ name: categoryName, items: response.data });
     } catch (error) {
       console.error("Failed to select category", error);
     }
@@ -99,98 +105,153 @@ const RiskElements = () => {
 
   const handleDeleteItem = async (itemId) => {
     try {
+      if (!selectedCategory || !selectedCategory.name) {
+        console.error("No category selected or category name is missing");
+        return;
+      }
+
       await deleteItemFromCategory(selectedCategory.name, itemId);
       handleSelectCategory(selectedCategory.name);
     } catch (error) {
       console.error("Failed to delete item", error);
     }
   };
-
   return (
     <div>
-      <h1>Category Manager</h1>
-      <div>
-        <h2>Create New Category</h2>
+      <RiskAssNavigation />
+      <div className="mt-5">
+        <h2>Create New Risk Element Category</h2>
         <input
           type="text"
           placeholder="Category Name"
           value={newCategoryName}
+          className="border rounded px-2 py-1"
           onChange={(e) => setNewCategoryName(e.target.value)}
         />
-        <button onClick={handleCreateCategory}>Create</button>
-      </div>
-      <div>
-        <h2>Categories</h2>
-        <ul>
-          {categories.map((category) => (
-            <li key={category._id}>
-              <div>
-                <span
-                  onClick={() => handleSelectCategory(category.categoryName)}
-                >
-                  {category.categoryName}
-                </span>
-                <button onClick={() => handleDeleteCategory(category._id)}>
-                  Delete
-                </button>
-              </div>
-              {editCategoryNameInput && (
-                <div>
-                  <input
-                    type="text"
-                    placeholder="New Category Name"
-                    value={editCategoryNameInput}
-                    onChange={(e) => setEditCategoryNameInput(e.target.value)}
-                  />
-                  <button onClick={() => handleEditCategory(category._id)}>
-                    Save
-                  </button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+        <button
+          className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold"
+          onClick={handleCreateCategory}
+        >
+          Create
+        </button>
       </div>
       {selectedCategory && (
-        <div>
-          <h2>{selectedCategory.name} Items</h2>
-          <ul>
-            {selectedCategory.items.map((item) => (
-              <li key={item._id}>
-                {editItem === item._id ? (
+        <div className="mt-5 overflow-auto">
+          <h2>Add New Item to {selectedCategory.name}</h2>
+          <input
+            type="text"
+            placeholder="New Item Name"
+            value={newItemName}
+            onChange={(e) => setNewItemName(e.target.value)}
+            className="border rounded px-2 py-1"
+          />
+          <button
+            className="ml-2 px-4 py-1 bg-blue-600 text-white rounded-lg"
+            onClick={handleAddItem}
+          >
+            Add Item
+          </button>
+        </div>
+      )}
+      <div className="mt-5 max-h-[500px] overflow-y-auto">
+        <h2>Categories</h2>
+        <table className="table-auto w-full border-collapse">
+          <thead>
+            <tr>
+              {categories.map((category) => (
+                <th
+                  key={category._id}
+                  className="border px-4 py-2 bg-gray-200 text-left"
+                >
                   <div>
-                    <input
-                      type="text"
-                      value={editItemNameInput}
-                      onChange={(e) => setEditItemNameInput(e.target.value)}
-                    />
-                    <button onClick={() => handleEditItem(item._id)}>
-                      Save
-                    </button>
-                  </div>
-                ) : (
-                  <div>
-                    {item.name}
-                    <button onClick={() => setEditItem(item._id)}>Edit</button>
-                    <button onClick={() => handleDeleteItem(item._id)}>
+                    <span
+                      className="cursor-pointer text-blue-600"
+                      onClick={() =>
+                        handleSelectCategory(category.categoryName)
+                      }
+                    >
+                      {category.categoryName}
+                    </span>
+                    <button
+                      className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
+                      onClick={() => handleDeleteCategory(category._id)}
+                    >
                       Delete
                     </button>
                   </div>
-                )}
-              </li>
-            ))}
-          </ul>
-          <div>
-            <input
-              type="text"
-              placeholder="New Item Name"
-              value={newItemName}
-              onChange={(e) => setNewItemName(e.target.value)}
-            />
-            <button onClick={handleAddItem}>Add Item</button>
-          </div>
-        </div>
-      )}
+                  {editCategoryNameInput && (
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        placeholder="New Category Name"
+                        value={editCategoryNameInput}
+                        onChange={(e) =>
+                          setEditCategoryNameInput(e.target.value)
+                        }
+                        className="border rounded px-2 py-1"
+                      />
+                      <button
+                        className="ml-2 px-2 py-1 bg-green-500 text-white rounded"
+                        onClick={() => handleEditCategory(category._id)}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  )}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {categories.map((category) => (
+                <td key={category._id} className="border px-4 py-2">
+                  <ul>
+                    {category.items.map((item) => (
+                      <li key={item._id} className="mt-2">
+                        {editItem === item._id ? (
+                          <div>
+                            <input
+                              type="text"
+                              value={editItemNameInput}
+                              onChange={(e) =>
+                                setEditItemNameInput(e.target.value)
+                              }
+                              className="border rounded px-2 py-1"
+                            />
+                            <button
+                              className="ml-2 px-2 py-1 bg-green-500 text-white rounded"
+                              onClick={() => handleEditItem(item._id)}
+                            >
+                              Save
+                            </button>
+                          </div>
+                        ) : (
+                          <div>
+                            {item.name}
+                            <button
+                              className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded"
+                              onClick={() => setEditItem(item._id)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
+                              onClick={() => handleDeleteItem(item._id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
