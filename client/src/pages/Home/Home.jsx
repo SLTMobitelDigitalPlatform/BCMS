@@ -79,6 +79,12 @@ const Home = () => {
           <img src={logo} className="w-32 h-auto" alt="Logo" />
 
           <div className="flex space-x-4">
+            <Link
+              to="/subscribe"
+              className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 cursor-pointer"
+            >
+              Subscribe
+            </Link>
             {isAuthenticated ? (
               <>
                 <Link
@@ -98,15 +104,9 @@ const Home = () => {
               <>
                 <Link
                   to="/login"
-                  className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 cursor-pointer"
+                  className="bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 cursor-pointer"
                 >
                   Login
-                </Link>
-                <Link
-                  to="/subscribe"
-                  className="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 cursor-pointer"
-                >
-                  Subscribe
                 </Link>
               </>
             )}

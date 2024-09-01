@@ -196,6 +196,7 @@ const Otp = () => {
             type="text"
             name="otp"
             id="otp"
+            autoFocus={true}
             onChange={(e) => setOtp(e.target.value)}
             onFocus={() => setHasError(false)}
             placeholder="Enter Your OTP"

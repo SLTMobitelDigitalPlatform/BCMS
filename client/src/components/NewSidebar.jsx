@@ -117,6 +117,7 @@ const NewSidebar = () => {
             )}
           </li>
           <hr className="opacity-50" />
+
           {/* Meetings */}
           <li>
             <NavLink
@@ -129,6 +130,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Calendar */}
           <li>
             <NavLink
@@ -141,6 +143,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Roles and Responsibilities */}
           <li>
             <NavLink
@@ -153,6 +156,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Policies */}
           <li>
             <NavLink
@@ -165,10 +169,11 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Call Tree */}
           <li>
             <NavLink
-              to="/"
+              to="/calltree"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
@@ -177,6 +182,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Customers */}
           <li>
             <NavLink
@@ -195,7 +201,7 @@ const NewSidebar = () => {
       </div>
       <div className="flex gap-3 mt-3 justify-center">
         <button
-          className="px-8 py-1 bg-[#00BBF6] text-black font-semibold rounded-2xl"
+          className="px-8 py-1 bg-sky-400 hover:bg-sky-500 text-black font-semibold rounded-2xl"
           onClick={handleLogout}
         >
           Logout
