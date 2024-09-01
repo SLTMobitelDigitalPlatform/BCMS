@@ -29,6 +29,7 @@ const routerRiskBCP = require("./routes/documentRoutes/riskAssesemetBCPRoutes");
 const routerRiskVersion = require("./routes/documentRoutes/versionControlRiskRoutes");
 const routerRiskResidual = require("./routes/documentRoutes/residualRiskRoutes");
 const routerRiskQuality = require("./routes/documentRoutes/qualityManagementRoutes");
+const routerRiskElements = require("./routes/documentRoutes/riskAssesment/riskElementRoutes");
 
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
@@ -60,7 +61,8 @@ app.use(
   routerRiskVersion,
   routerRiskResidual,
   routerRiskQuality,
-  routerSection
+  routerSection,
+  routerRiskElements
 );
 
 // Create uploads directory if it doesn't exist
