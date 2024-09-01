@@ -29,11 +29,11 @@ const RiskAssNavigation = () => {
             Residual Risk Assesment
           </button>
         </Link>
-        {/* <Link to="/masterProcedures">
+        <Link to="/riskElements">
           <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            Master of Procedures and Process
+            Risk Elements
           </button>
-        </Link> */}
+        </Link>
       </div>
     </div>
   );
