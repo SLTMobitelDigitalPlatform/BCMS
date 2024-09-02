@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getCurrentUser } from "../../../../services/userApi";
+import {
+  getAllCategories,
+  getItemsInCategory,
+} from "../../../../services/riskElementsApi";
 
 const CreateISRiskAssesement = () => {
   const [rid, setRid] = useState("");
@@ -24,6 +28,7 @@ const CreateISRiskAssesement = () => {
   const [probability, setProbability] = useState(0);
   const [residualImpactRating, setResidualImpactRating] = useState(0);
   const [statement, setStatement] = useState("");
+  const [riskItems, setRiskItems] = useState([]);
 
   const [isOptions, setIsOptions] = useState([]);
 
@@ -52,7 +57,7 @@ const CreateISRiskAssesement = () => {
       } else if (section === "Customer Service") {
         section = "CUSE";
       }
-      console.log(section);
+      // console.log(section);
       const lastRecord = response.data;
       // console.log(lastRecord.rid);
 
@@ -77,6 +82,27 @@ const CreateISRiskAssesement = () => {
     }
   };
 
+  // const fetchCategory = async () => {
+  //   try {
+  //     const response = await getAllCategories();
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const fetchRiskElements = async () => {
+    try {
+      const response = await getItemsInCategory("Information Security");
+      // console.log(response.data);
+      const riskElemets = response.data.map((item) => item.name);
+      // console.log(riskElemets);
+      setRiskItems(riskElemets);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchISObjectives = async () => {
     try {
       const response = await axios.get("http://localhost:5000/objectives");
@@ -92,6 +118,8 @@ const CreateISRiskAssesement = () => {
   useEffect(() => {
     fetchLastRecord();
     fetchISObjectives();
+    // fetchCategory();
+    fetchRiskElements();
   }, []);
 
   // Calculate Impact Rating
@@ -248,16 +276,25 @@ const CreateISRiskAssesement = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold mt-5">
+                  <label htmlFor="riskElement" className="font-semibold mt-5">
                     Risk Element
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Risk Element"
+                  <select
+                    id="riskElement"
                     value={element}
                     onChange={(e) => setElement(e.target.value)}
-                    className="w-[450px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      {" "}
+                      Select
+                    </option>
+                    {riskItems.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
