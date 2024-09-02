@@ -24,7 +24,7 @@ export const deleteCustomer = async () => {
   return response;
 };
 
-// Delete a customer
+// Delete a customer by Id
 export const deleteCustomerByID = async (id) => {
   const response = await axiosInstance.delete(`/customer/deleteByID/${id}`);
   return response;
