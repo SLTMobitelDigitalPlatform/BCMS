@@ -63,6 +63,7 @@ import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import { Section } from "./pages/sections/Section";
 import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
+import CallTree from "./pages/Call Tree/CallTree";
 
 const router = createBrowserRouter([
   {
@@ -143,6 +144,9 @@ const router = createBrowserRouter([
 
       // Customer Table
       { path: "/customers", element: <Customer /> },
+
+      // Call Tree
+      { path: "callTree", element: <CallTree /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
