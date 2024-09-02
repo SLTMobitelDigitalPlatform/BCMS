@@ -60,9 +60,15 @@ const deleteRisk = async (req, res) => {
 
 const getLastRisk = async (req, res) => {
   try {
-    const lastRisk = await ISRiskAssessment.findOne().sort({ _id: -1 });
+    const { section } = req.params;
+    // const lastRisk = await RiskAssessment.findOne().sort({ _id: -1 });
+    const lastRisk = await ISRiskAssessment.findOne({
+      rid: new RegExp(`^ISR-${section}-`),
+    }).sort({ _id: -1 });
+    // console.log(lastRisk);
     res.status(200).json(lastRisk);
   } catch (error) {
+    // console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
