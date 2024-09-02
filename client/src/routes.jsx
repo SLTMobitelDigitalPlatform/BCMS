@@ -137,6 +137,10 @@ const router = createBrowserRouter([
       },
       // Employee Table
       { path: "employee", element: <Employee /> },
+      {
+        path: "/sections",
+        element: <Section />,
+      },
 
       // Customer Table
       { path: "/customers", element: <Customer /> },
@@ -269,10 +273,7 @@ const router = createBrowserRouter([
       { path: "roles/editRoles", element: <EditRoles /> },
     ],
   },
-  {
-    path: "/sections",
-    element: <Section />,
-  },
+
   {
     path: "*",
     element: <ErrorPage />,

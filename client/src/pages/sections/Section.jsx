@@ -21,7 +21,6 @@ export const Section = () => {
 
   return (
     <div>
-      <Navbar />
       <div>
         <table>
           <thead>
