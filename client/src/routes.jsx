@@ -64,8 +64,6 @@ import Roles from "./pages/Roles_Responsibilities/Roles";
 import { Section } from "./pages/sections/Section";
 import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
 import CallTree from "./pages/Call Tree/CallTree";
-import CallTreeTable from "./pages/Call Tree/CallTreeTable";
-import CallTreeGraph from "./pages/Call Tree/CallTreeGraph";
 
 const router = createBrowserRouter([
   {
@@ -152,8 +150,6 @@ const router = createBrowserRouter([
 
       // Call Tree
       { path: "callTree", element: <CallTree /> },
-      { path: "callTreeTable", element: <CallTreeTable /> },
-      { path: "callTreeGraph", element: <CallTreeGraph /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
@@ -280,6 +276,7 @@ const router = createBrowserRouter([
       { path: "roles/editRoles", element: <EditRoles /> },
     ],
   },
+
   {
     path: "*",
     element: <ErrorPage />,
