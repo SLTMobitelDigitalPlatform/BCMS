@@ -80,6 +80,7 @@ const RiskVersionControls = () => {
                 <th className="border-2">Serial Number</th>
                 <th className="border-2">Version Number</th>
                 <th className="border-2">Prepared By</th>
+                <th className="w-48 doc-table-border">Checked By</th>
                 <th className="border-2">Approved By</th>
                 <th className="border-2">Reasons for new release</th>
                 <th className="border-2">Approval Status</th>
@@ -92,6 +93,9 @@ const RiskVersionControls = () => {
                   <td className="border-2 p-3">{v.serialNo}</td>
                   <td className="border-2 p-3">{v.versionNo}</td>
                   <td className="border-2 p-3">{v.prepare}</td>
+                  <td className="py-2 px-4 w-48 doc-table-border">
+                    {v.checkedBy}
+                  </td>
                   <td className="border-2 p-3">{v.approve}</td>
                   <td className="border-2 p-3">{v.reasons}</td>
                   <td className="border-2 p-3">{v.isApproved}</td>

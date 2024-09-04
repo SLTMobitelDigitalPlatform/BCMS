@@ -133,6 +133,7 @@ const EditVersionControl = () => {
                   type="number"
                   placeholder="Serial Number"
                   value={serialNo}
+                  readOnly
                   onChange={(e) => setSerialNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
@@ -145,6 +146,7 @@ const EditVersionControl = () => {
                   type="number"
                   placeholder="Version Number"
                   value={versionNo}
+                  readOnly
                   onChange={(e) => setVersionNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
