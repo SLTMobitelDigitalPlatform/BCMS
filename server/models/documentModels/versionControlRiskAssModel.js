@@ -6,6 +6,7 @@ const vControlRiskSchema = new Schema(
     serialNo: { type: Number, required: true },
     versionNo: { type: String, required: true },
     prepare: { type: String, required: true },
+    checkedBy: { type: String, required: true },
     approve: { type: String, required: true },
     reasons: { type: String, required: true },
     isApproved: {
@@ -14,6 +15,7 @@ const vControlRiskSchema = new Schema(
       enum: ["Approved", "Not Approved", "Pending"],
       default: "Pending",
     },
+    comment: { type: String, required: false },
   },
   { timestamps: true }
 );
