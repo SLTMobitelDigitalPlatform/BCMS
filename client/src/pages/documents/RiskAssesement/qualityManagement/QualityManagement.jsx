@@ -3,10 +3,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import RiskAssNavigation from "../../../../components/RiskAssNavigation";
+import { getCurrentUser } from "../../../../services/userApi";
 
 const QualityManagement = () => {
   const [risks, setRisks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredRisks, setFilteredRisks] = useState([]);
+  const [section, setSection] = useState("");
   const risksPerPage = 5;
 
   // Fetch all risks
@@ -15,11 +18,47 @@ const QualityManagement = () => {
       const response = await axios.get(
         "http://localhost:5000/api/qualityRisks/"
       );
+      const user = await getCurrentUser();
+      let section = user.data.section;
+      if (section === "Information Technology (IT)") {
+        section = "ITSE";
+      } else if (section === "Marketing") {
+        section = "MARC";
+      } else if (section === "Sales") {
+        section = "SALE";
+      } else if (section === "Human Resources(HR)") {
+        section = "HRMA";
+      } else if (section === "Finance") {
+        section = "FINA";
+      } else if (section === "Operations") {
+        section = "OPER";
+      } else if (section === "Customer Service") {
+        section = "CUSE";
+      }
+      // console.log(section);
       setRisks(response.data);
+      setSection(section);
+      filterRisks(response.data, section);
     } catch (error) {
       console.error(error);
     }
   };
+
+  const filterRisks = async (risks, section) => {
+    try {
+      const filtered = risks.filter((risk) => {
+        const sectionIdentifier = risk.rid.split("-")[1];
+        return sectionIdentifier === section;
+      });
+      setFilteredRisks(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    filterRisks(risks, section);
+  }, [risks, section]);
 
   useEffect(() => {
     fetchRisks();
@@ -58,7 +97,7 @@ const QualityManagement = () => {
   // Pagination logic
   const indexOfLastRisk = currentPage * risksPerPage;
   const indexOfFirstRisk = indexOfLastRisk - risksPerPage;
-  const currentRisks = risks.slice(indexOfFirstRisk, indexOfLastRisk);
+  const currentRisks = filteredRisks.slice(indexOfFirstRisk, indexOfLastRisk);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 

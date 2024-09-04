@@ -31,46 +31,37 @@ const CreateQualityManagement = () => {
   // Auto increment ID
   const fetchLastRecord = async () => {
     try {
-      // Assuming your endpoint is correct and returns the last record
-      const response = await axios.get(
-        "http://localhost:5000/api/qualityRisks/last"
-      );
       const user = await getCurrentUser();
       let section = user.data.section;
-      if (section === "Information Technology (IT)") {
-        section = "ITSE";
-      } else if (section === "Marketing") {
-        section = "MARC";
-      } else if (section === "Sales") {
-        section = "SALE";
-      } else if (section === "Human Resources(HR)") {
-        section = "HRMA";
-      } else if (section === "Finance") {
-        section = "FINA";
-      } else if (section === "Operations") {
-        section = "OPER";
-      } else if (section === "Customer Service") {
-        section = "CUSE";
-      }
-      // console.log(section);
+
+      // Map section names to abbreviations
+      const sectionMap = {
+        "Information Technology (IT)": "ITSE",
+        Marketing: "MARC",
+        Sales: "SALE",
+        "Human Resources(HR)": "HRMA",
+        Finance: "FINA",
+        Operations: "OPER",
+        "Customer Service": "CUSE",
+      };
+
+      section = sectionMap[section] || section;
+
+      // Fetch the last record for the specific section
+      const response = await axios.get(
+        `http://localhost:5000/api/qualityRisks/last/${section}`
+      );
       const lastRecord = response.data;
-      // console.log(lastRecord.rid);
 
       const currentYear = new Date().getFullYear().toString().slice(-2);
-      console.log(currentYear);
       let newIndex = 1;
-      let paddedIndex = newIndex;
+      let paddedIndex = String(newIndex).padStart(3, "0");
 
       if (lastRecord && lastRecord.rid) {
         const lastIndex = parseInt(lastRecord.rid.slice(12), 10);
-        // console.log(lastIndex);
         newIndex = lastIndex + 1;
-        // console.log(lastIndex);
-        // newIndex = 23;
         paddedIndex = String(newIndex).padStart(3, "0");
       }
-
-      console.log(newIndex);
 
       setRid(`QMR-${section}-${currentYear}${paddedIndex}`);
     } catch (error) {

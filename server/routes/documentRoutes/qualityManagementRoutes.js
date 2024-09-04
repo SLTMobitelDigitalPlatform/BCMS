@@ -5,7 +5,10 @@ const authControllers = require("../../controllers/userControllers/authControlle
 
 router.post("/api/qualityRisks/add", qualityManagementController.createRisk);
 router.get("/api/qualityRisks/", qualityManagementController.getRisks);
-router.get("/api/qualityRisks/last", qualityManagementController.getLastRisk);
+router.get(
+  "/api/qualityRisks/last/:section",
+  qualityManagementController.getLastRisk
+);
 router.get("/api/qualityRisks/:id", qualityManagementController.getRiskById);
 router.put(
   "/api/qualityRisks/edit/:id",
