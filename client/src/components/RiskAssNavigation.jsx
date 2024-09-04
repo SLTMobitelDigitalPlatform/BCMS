@@ -16,7 +16,7 @@ const RiskAssNavigation = () => {
         </Link>
         <Link to="/bcpRisk">
           <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            BCP
+            Business Continuity
           </button>
         </Link>
         <Link to="/qualityManagement">

@@ -7,10 +7,11 @@ const CreateVersionControl = () => {
   const [serialNo, setSerialNo] = useState(0);
   const [versionNo, setVersionNo] = useState(0);
   const [prepare, setPrepare] = useState("");
+  const [checkedBy, setCheckedBy] = useState("");
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
   const [users, setUsers] = useState([]);
-  const [isApproved, setIsApproved] = useState("");
+  const [isApproved, setIsApproved] = useState("Pending");
   const navigate = useNavigate();
 
   const fetchLastVersion = async () => {
@@ -79,6 +80,7 @@ const CreateVersionControl = () => {
       serialNo,
       versionNo,
       prepare,
+      checkedBy,
       approve,
       reasons,
       isApproved,
@@ -130,6 +132,7 @@ const CreateVersionControl = () => {
                 <input
                   type="number"
                   placeholder="Serial Number"
+                  readOnly
                   value={serialNo}
                   onChange={(e) => setSerialNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
@@ -142,6 +145,7 @@ const CreateVersionControl = () => {
                 <input
                   type="number"
                   placeholder="Version Number"
+                  readOnly
                   value={versionNo}
                   onChange={(e) => setVersionNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
@@ -170,6 +174,7 @@ const CreateVersionControl = () => {
                   ))}
                 </select>
               </div>
+
               <div className="flex flex-col gap-2">
                 <label htmlFor="approve" className="font-semibold">
                   Approved By
@@ -193,6 +198,27 @@ const CreateVersionControl = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2">
+              <label htmlFor="prepare" className="font-semibold">
+                Checked By
+              </label>
+              <select
+                id="prepare"
+                placeholder="Prepared Person"
+                value={checkedBy}
+                onChange={(e) => setCheckedBy(e.target.value)}
+                className="w-[500px] p-2 rounded-lg bg-slate-100"
+              >
+                <option value="" disabled>
+                  Select
+                </option>
+                {users.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold">
                 Reasons for new release
               </label>
@@ -205,7 +231,7 @@ const CreateVersionControl = () => {
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <label htmlFor="isapprove" className="font-semibold">
                 Approval
               </label>
@@ -223,7 +249,7 @@ const CreateVersionControl = () => {
                 <option>Not Approved</option>
                 <option>Pending</option>
               </select>
-            </div>
+            </div> */}
             <div className="flex justify-start gap-2">
               <button
                 type="submit"

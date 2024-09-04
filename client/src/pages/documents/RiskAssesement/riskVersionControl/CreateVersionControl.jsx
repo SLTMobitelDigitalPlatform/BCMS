@@ -7,6 +7,7 @@ const CreateRiskVersionControl = () => {
   const [serialNo, setSerialNo] = useState(0);
   const [versionNo, setVersionNo] = useState(0);
   const [prepare, setPrepare] = useState("");
+  const [checkedBy, setCheckedBy] = useState("");
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
   const [isApproved, setIsApproved] = useState("");
@@ -97,6 +98,7 @@ const CreateRiskVersionControl = () => {
       serialNo,
       versionNo,
       prepare,
+      checkedBy,
       approve,
       reasons,
       isApproved,
@@ -213,6 +215,27 @@ const CreateRiskVersionControl = () => {
                       ))}
                     </select>
                   </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="prepare" className="font-semibold">
+                    Checked By
+                  </label>
+                  <select
+                    id="prepare"
+                    placeholder="Prepared Person"
+                    value={checkedBy}
+                    onChange={(e) => setCheckedBy(e.target.value)}
+                    className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold">

@@ -8,10 +8,12 @@ const EditRiskVersionControl = () => {
   const [versionNo, setVersionNo] = useState(0);
   const [prepare, setPrepare] = useState("");
   const [approve, setApprove] = useState("");
+  const [checkedBy, setCheckedBy] = useState("");
   const [reasons, setReasons] = useState("");
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState([]);
   const [isApproved, setIsApproved] = useState("");
+  const [comment, setComment] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -22,9 +24,11 @@ const EditRiskVersionControl = () => {
         setSerialNo(res.data.serialNo);
         setVersionNo(res.data.versionNo);
         setPrepare(res.data.prepare);
+        setCheckedBy(res.data.checkedBy);
         setApprove(res.data.approve);
         setReasons(res.data.reasons);
         setIsApproved(res.data.isApproved);
+        setComment(res.data.comment);
       })
       .catch((err) => {
         console.log(err);
@@ -74,9 +78,11 @@ const EditRiskVersionControl = () => {
       serialNo,
       versionNo,
       prepare,
+      checkedBy,
       approve,
       reasons,
       isApproved,
+      comment,
     };
 
     axios
@@ -127,6 +133,7 @@ const EditRiskVersionControl = () => {
                     <input
                       type="number"
                       placeholder="Serial Number"
+                      readOnly
                       value={serialNo}
                       onChange={(e) => setSerialNo(e.target.value)}
                       className="w-[500px] p-2 rounded-lg bg-slate-100"
@@ -139,6 +146,7 @@ const EditRiskVersionControl = () => {
                     <input
                       type="number"
                       placeholder="Version Number"
+                      readOnly
                       value={versionNo}
                       onChange={(e) => setVersionNo(e.target.value)}
                       className="w-[500px] p-2 rounded-lg bg-slate-100"
@@ -190,6 +198,26 @@ const EditRiskVersionControl = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
+                  <label htmlFor="checkedBy" className="font-semibold">
+                    Checked By
+                  </label>
+                  <select
+                    id="checkedBy"
+                    value={checkedBy}
+                    onChange={(e) => setCheckedBy(e.target.value)}
+                    className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      {checkedBy}
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold">
                     Reasons for new release
                   </label>
@@ -222,6 +250,20 @@ const EditRiskVersionControl = () => {
                 ) : (
                   ""
                 )}
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="" className="font-semibold">
+                    Comments
+                  </label>
+                  <textarea
+                    type="text"
+                    placeholder="Reasons"
+                    value={comment}
+                    rows={4}
+                    onChange={(e) => setComment(e.target.value)}
+                    readOnly={loggedInUser.name !== approve}
+                    className="w-full p-2 rounded-lg bg-slate-100"
+                  />
+                </div>
 
                 <div className="flex justify-start gap-2 mt-5">
                   <button
