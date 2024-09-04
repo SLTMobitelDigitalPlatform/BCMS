@@ -139,7 +139,9 @@ const ResidualRiskAssesement = () => {
             {currentRisks.map((r) => (
               <tr key={r._id}>
                 <td className="border-2 text-normal px-2">{r.rid}</td>
-                <td className="border-2 text-normal px-2">{r.impactRating}</td>
+                <td className="border-2 text-normal px-2">
+                  {r.residualImpactRating}
+                </td>
                 <td className="border-2 text-normal px-2">{r.newMethod}</td>
                 <td className="border-2 text-normal px-4 py-3">
                   {r.newIdntifiedControls}
