@@ -19,22 +19,22 @@ const QualityManagement = () => {
         "http://localhost:5000/api/qualityRisks/"
       );
       const user = await getCurrentUser();
-      let section = user.data.section;
-      if (section === "Information Technology (IT)") {
-        section = "ITSE";
-      } else if (section === "Marketing") {
-        section = "MARC";
-      } else if (section === "Sales") {
-        section = "SALE";
-      } else if (section === "Human Resources(HR)") {
-        section = "HRMA";
-      } else if (section === "Finance") {
-        section = "FINA";
-      } else if (section === "Operations") {
-        section = "OPER";
-      } else if (section === "Customer Service") {
-        section = "CUSE";
-      }
+      let section = user.data.section.sectionCode;
+      // if (section === "Information Technology (IT)") {
+      //   section = "ITSE";
+      // } else if (section === "Marketing") {
+      //   section = "MARC";
+      // } else if (section === "Sales") {
+      //   section = "SALE";
+      // } else if (section === "Human Resources(HR)") {
+      //   section = "HRMA";
+      // } else if (section === "Finance") {
+      //   section = "FINA";
+      // } else if (section === "Operations") {
+      //   section = "OPER";
+      // } else if (section === "Customer Service") {
+      //   section = "CUSE";
+      // }
       // console.log(section);
       setRisks(response.data);
       setSection(section);
