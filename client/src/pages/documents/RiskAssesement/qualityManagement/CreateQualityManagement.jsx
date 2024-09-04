@@ -32,20 +32,20 @@ const CreateQualityManagement = () => {
   const fetchLastRecord = async () => {
     try {
       const user = await getCurrentUser();
-      let section = user.data.section;
+      let section = user.data.section.sectionCode;
 
       // Map section names to abbreviations
-      const sectionMap = {
-        "Information Technology (IT)": "ITSE",
-        Marketing: "MARC",
-        Sales: "SALE",
-        "Human Resources(HR)": "HRMA",
-        Finance: "FINA",
-        Operations: "OPER",
-        "Customer Service": "CUSE",
-      };
+      // const sectionMap = {
+      //   "Information Technology (IT)": "ITSE",
+      //   Marketing: "MARC",
+      //   Sales: "SALE",
+      //   "Human Resources(HR)": "HRMA",
+      //   Finance: "FINA",
+      //   Operations: "OPER",
+      //   "Customer Service": "CUSE",
+      // };
 
-      section = sectionMap[section] || section;
+      // section = sectionMap[section] || section;
 
       // Fetch the last record for the specific section
       const response = await axios.get(

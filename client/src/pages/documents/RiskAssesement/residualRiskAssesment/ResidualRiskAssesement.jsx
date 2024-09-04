@@ -53,24 +53,24 @@ const ResidualRiskAssesement = () => {
   const fetchAndFilterRisks = async () => {
     try {
       const user = await getCurrentUser();
-      let section = user.data.section;
-      console.log(user.data);
+      let section = user.data.section.sectionCode;
+      // console.log(user.data);
 
-      if (section === "Information Technology (IT)") {
-        section = "ITSE";
-      } else if (section === "Marketing") {
-        section = "MARC";
-      } else if (section === "Sales") {
-        section = "SALE";
-      } else if (section === "Human Resources(HR)") {
-        section = "HRMA";
-      } else if (section === "Finance") {
-        section = "FINA";
-      } else if (section === "Operations") {
-        section = "OPER";
-      } else if (section === "Customer Service") {
-        section = "CUSE";
-      }
+      // if (section === "Information Technology (IT)") {
+      //   section = "ITSE";
+      // } else if (section === "Marketing") {
+      //   section = "MARC";
+      // } else if (section === "Sales") {
+      //   section = "SALE";
+      // } else if (section === "Human Resources(HR)") {
+      //   section = "HRMA";
+      // } else if (section === "Finance") {
+      //   section = "FINA";
+      // } else if (section === "Operations") {
+      //   section = "OPER";
+      // } else if (section === "Customer Service") {
+      //   section = "CUSE";
+      // }
 
       setSection(section);
       // console.log(combinedRisks);

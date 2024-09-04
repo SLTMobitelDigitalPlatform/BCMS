@@ -32,8 +32,12 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
   const fetchSections = async () => {
     try {
       const response = await getSections();
-      const sectionNames = response.data.map((section) => section.name);
-      // console.log(sectionNames);
+      const sectionNames = response.data.map((section) => ({
+        id: section._id,
+        name: section.name,
+        sectionCode: section.sectionCode,
+      }));
+      console.log(sectionNames);
       setSectionNames(sectionNames);
     } catch (error) {
       console.log(error);
@@ -337,9 +341,9 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
             <option value="" disabled>
               Select Section
             </option>
-            {sectionNames.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
+            {sectionNames.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.name}
               </option>
             ))}
           </select>
