@@ -70,6 +70,11 @@ import CreateInternalParty from "./pages/documents/ContextOrganization/intereste
 import EditInternalParty from "./pages/documents/ContextOrganization/interestedParties/EditInternalParty";
 import CreateExternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateExternalParty";
 import EditExternalParty from "./pages/documents/ContextOrganization/interestedParties/EditExternalParty";
+import Table from "./pages/documents/BCP/table";
+import Dependencies from "./pages/documents/BCP/Dependencies";
+import DocumentControl from "./pages/documents/BCP/DocsCon";
+import Document from "./pages/documents/BCP/Document";
+import EmDoc from "./pages/documents/BCP/EmDoc";
 
 const router = createBrowserRouter([
   {
@@ -289,6 +294,12 @@ const router = createBrowserRouter([
       { path: "bia", element: <BIA /> },
 
       //? -------------------------------- BCP --------------------------------------
+      // bcp
+      { path: "table", element: <Table /> },
+      { path: "dependancies", element: <Dependencies /> },
+      { path: "documentControl", element: <DocumentControl /> },
+      { path: "bcp", element: <Document /> },
+      { path: "emdoc", element: <EmDoc /> },
 
       // Roles
       { path: "roles", element: <Roles /> },
