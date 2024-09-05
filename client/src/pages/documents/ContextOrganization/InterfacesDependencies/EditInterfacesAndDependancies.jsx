@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getUsers } from "../../../../services/userAPI";
 
 const EditInterfacesAndDependancies = () => {
   const [processName, setProcessName] = useState("");
@@ -11,6 +12,7 @@ const EditInterfacesAndDependancies = () => {
   const [medium, setMedium] = useState("");
   const [exchangeMethod, setExchangeMethod] = useState("");
   const [serviceProvidedObtained, setServiceProvidedObtained] = useState("");
+  const [externalEntityOptions, setExternalEntityOptions] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -56,6 +58,21 @@ const EditInterfacesAndDependancies = () => {
       });
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const externalEntityOptions = response.data.map((item) => item.name);
+      // console.log(externalEntityOptions);
+      setExternalEntityOptions(externalEntityOptions);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   // Success Alert
   const handleSuccessAlert = () => {
     Swal.fire({
@@ -96,16 +113,22 @@ const EditInterfacesAndDependancies = () => {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold">
+                <label htmlFor="externalEntityName" className="font-semibold">
                   External Entity Name
                 </label>
-                <textarea
-                  type="text"
-                  placeholder="External Entity Name"
+                <select
+                  id="externalEntityName"
                   value={externalEntityName}
                   onChange={(e) => setExternalEntityName(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
-                />
+                >
+                  <option>{externalEntityName}</option>
+                  {externalEntityOptions.map((option, index) => (
+                    <option value={option} key={index}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -133,6 +156,7 @@ const EditInterfacesAndDependancies = () => {
                 <option value="">Select</option>
                 <option value="Inward">Inward</option>
                 <option value="Outward">Outward</option>
+                <option value="Inward/Outward">Inward/Outward</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
