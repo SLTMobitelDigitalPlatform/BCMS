@@ -64,6 +64,12 @@ import Roles from "./pages/Roles_Responsibilities/Roles";
 import { Section } from "./pages/sections/Section";
 import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
 import CallTree from "./pages/Call Tree/CallTree";
+import ExternalParty from "./pages/documents/ContextOrganization/interestedParties/ExternaParty";
+import InternalParty from "./pages/documents/ContextOrganization/interestedParties/InternalParty";
+import CreateInternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateInternalParty";
+import EditInternalParty from "./pages/documents/ContextOrganization/interestedParties/EditInternalParty";
+import CreateExternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateExternalParty";
+import EditExternalParty from "./pages/documents/ContextOrganization/interestedParties/EditExternalParty";
 
 const router = createBrowserRouter([
   {
@@ -219,6 +225,8 @@ const router = createBrowserRouter([
           { path: "versionControls", element: <VersionControls /> },
           { path: "externalIssues", element: <ExternalIssues /> },
           { path: "internalIssues", element: <InternalIssues /> },
+          { path: "externalParty", element: <ExternalParty /> },
+          { path: "internalParty", element: <InternalParty /> },
           { path: "interfaces", element: <InterfacesDependencies /> },
           { path: "objectives", element: <Objectives /> },
           { path: "masterProcedures", element: <MasterProcedures /> },
@@ -245,6 +253,18 @@ const router = createBrowserRouter([
       {
         path: "editInternalIssues/:id",
         element: <EditInternal />,
+      },
+      //
+      { path: "createInternalParty", element: <CreateInternalParty /> },
+      {
+        path: "editInternalParty/:id",
+        element: <EditInternalParty />,
+      },
+      //
+      { path: "createExternalParty", element: <CreateExternalParty /> },
+      {
+        path: "editExternalParty/:id",
+        element: <EditExternalParty />,
       },
 
       // * Interfaces and Dependencies

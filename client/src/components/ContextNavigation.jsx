@@ -15,7 +15,7 @@ const ContextNavigation = () => {
           Version Control
         </NavLink>
         <NavLink
-          to="/Context-of-the-Organization/externalIssues"
+          to="/Context-of-the-Organization/externalParty"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
