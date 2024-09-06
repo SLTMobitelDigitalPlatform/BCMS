@@ -54,21 +54,9 @@ const ExternalIssues = () => {
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">
-          Issue Register - External Issues
-        </h1>
+        <h1 className="text-xl font-bold text-indigo-900">External Issues</h1>
 
         <div className="flex items-center gap-10">
-          <NavLink
-            to="/Context-of-the-Organization/externalIssues"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            External Issues
-          </NavLink>
           <NavLink
             to="/Context-of-the-Organization/internalIssues"
             className={({ isActive }) =>
@@ -78,6 +66,16 @@ const ExternalIssues = () => {
             }
           >
             Internal Issues
+          </NavLink>
+          <NavLink
+            to="/Context-of-the-Organization/externalIssues"
+            className={({ isActive }) =>
+              `px-2 py-1 rounded-lg text-white font-semibold ${
+                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              }`
+            }
+          >
+            External Issues
           </NavLink>
         </div>
         <Link to="/createExternalIssue" className="btn-primary font-semibold">
