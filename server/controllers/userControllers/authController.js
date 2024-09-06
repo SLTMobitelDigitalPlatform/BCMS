@@ -90,7 +90,7 @@ exports.userOtpSend = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(400).json({ error: "Invalid Details", error });
+    res.status(400).json({ error: "Invalid Details" });
   }
 };
 
@@ -130,7 +130,7 @@ exports.userLogin = async (req, res) => {
       res.status(400).json({ error: "Invalid Otp" });
     }
   } catch (error) {
-    res.status(400).json({ error: "Invalid Details", error });
+    res.status(400).json({ error: "Invalid Details" });
   }
 };
 

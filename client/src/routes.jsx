@@ -154,10 +154,10 @@ const router = createBrowserRouter([
       },
 
       // Customer Table
-      { path: "/customers", element: <Customer /> },
+      { path: "customers", element: <Customer /> },
 
       // Sections
-      { path: "/sections", element: <Section /> },
+      { path: "sections", element: <Section /> },
 
       // Call Tree
       { path: "callTree", element: <CallTree /> },
