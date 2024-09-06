@@ -75,6 +75,7 @@ import Dependencies from "./pages/documents/BCP/Dependencies";
 import DocumentControl from "./pages/documents/BCP/DocsCon";
 import Document from "./pages/documents/BCP/Document";
 import EmDoc from "./pages/documents/BCP/EmDoc";
+import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
 
 const router = createBrowserRouter([
   {
@@ -185,8 +186,24 @@ const router = createBrowserRouter([
       //! { path: "createRisk", element: <CreateRiskAssesement /> },
       //!{ path: "editRisk/:id", element: <EditRiskAssesement /> },
 
+      // * Layout
+      {
+        path: "Risk-Assesment",
+        element: <RiskAssessmentLayout />,
+        children: [
+          { path: "versionControl", element: <RiskVersionControls /> },
+          { path: "externalIssues", element: <ExternalIssues /> },
+          { path: "internalIssues", element: <InternalIssues /> },
+          { path: "externalParty", element: <ExternalParty /> },
+          { path: "internalParty", element: <InternalParty /> },
+          { path: "interfaces", element: <InterfacesDependencies /> },
+          { path: "objectives", element: <Objectives /> },
+          { path: "masterProcedures", element: <MasterProcedures /> },
+        ],
+      },
+
       // * Version Controls
-      { path: "riskVersionControl", element: <RiskVersionControls /> },
+      // { path: "riskVersionControl", element: <RiskVersionControls /> },
       { path: "editVersion/:id", element: <EditVersionControl /> },
       { path: "createRiskVersion", element: <CreateRiskVersionControl /> },
       { path: "editISRiskVersion/:id", element: <EditRiskVersionControl /> },

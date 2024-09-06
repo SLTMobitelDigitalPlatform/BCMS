@@ -1,39 +1,69 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const RiskAssNavigation = () => {
   return (
     <div>
-      <div className="flex justify-between items-center">
-        <Link to="/riskVersionControl">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            Version Control
-          </button>
-        </Link>
-        <Link to="/informationSecurity">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            Information Security
-          </button>
-        </Link>
-        <Link to="/bcpRisk">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            Business Continuity
-          </button>
-        </Link>
-        <Link to="/qualityManagement">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            Quality Management
-          </button>
-        </Link>
-        <Link to="/residualRisk">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            Residual Risk Assesment
-          </button>
-        </Link>
-        <Link to="/riskElements">
-          <button className="px-3 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg">
-            Risk Elements
-          </button>
-        </Link>
+      <div className="flex justify-between items-center text-white font-semibold">
+        <NavLink
+          to="/Risk-Assesment/versionControl"
+          className={({ isActive }) =>
+            `px-2 py-1 rounded-lg ${
+              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            }`
+          }
+        >
+          Version Control
+        </NavLink>
+        <NavLink
+          to="/informationSecurity"
+          className={({ isActive }) =>
+            `px-2 py-1 rounded-lg ${
+              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            }`
+          }
+        >
+          Information Security
+        </NavLink>
+        <NavLink
+          to="/bcpRisk"
+          className={({ isActive }) =>
+            `px-2 py-1 rounded-lg ${
+              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            }`
+          }
+        >
+          Business Continuity
+        </NavLink>
+        <NavLink
+          to="/qualityManagement"
+          className={({ isActive }) =>
+            `px-2 py-1 rounded-lg ${
+              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            }`
+          }
+        >
+          Quality Management
+        </NavLink>
+        <NavLink
+          to="/residualRisk"
+          className={({ isActive }) =>
+            `px-2 py-1 rounded-lg ${
+              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            }`
+          }
+        >
+          Residual Risk Assesment
+        </NavLink>
+        <NavLink
+          to="/riskElements"
+          className={({ isActive }) =>
+            `px-2 py-1 rounded-lg ${
+              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            }`
+          }
+        >
+          Risk Elements
+        </NavLink>
       </div>
     </div>
   );
