@@ -8,7 +8,9 @@ const EditVersionControl = () => {
   const [versionNo, setVersionNo] = useState(0);
   const [prepare, setPrepare] = useState("");
   const [approve, setApprove] = useState("");
+  const [checkedBy, setCheckedBy] = useState("");
   const [reasons, setReasons] = useState("");
+  const [comment, setComment] = useState("");
   const [users, setUsers] = useState([]);
   const [isApproved, setIsApproved] = useState("");
   const [loggedInUser, setLoggedInUser] = useState([]);
@@ -23,8 +25,10 @@ const EditVersionControl = () => {
         setSerialNo(res.data.serialNo);
         setVersionNo(res.data.versionNo);
         setPrepare(res.data.prepare);
+        setCheckedBy(res.data.checkedBy);
         setApprove(res.data.approve);
         setReasons(res.data.reasons);
+        setComment(res.data.comment);
         setIsApproved(res.data.isApproved);
       })
       .catch((err) => {
@@ -75,8 +79,10 @@ const EditVersionControl = () => {
       serialNo,
       versionNo,
       prepare,
+      checkedBy,
       approve,
       reasons,
+      comment,
       isApproved,
     };
 
@@ -127,6 +133,7 @@ const EditVersionControl = () => {
                   type="number"
                   placeholder="Serial Number"
                   value={serialNo}
+                  readOnly
                   onChange={(e) => setSerialNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
@@ -139,6 +146,7 @@ const EditVersionControl = () => {
                   type="number"
                   placeholder="Version Number"
                   value={versionNo}
+                  readOnly
                   onChange={(e) => setVersionNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
@@ -189,6 +197,26 @@ const EditVersionControl = () => {
               </div>
             </div>
             <div className="flex flex-col gap-2">
+              <label htmlFor="checkedBy" className="font-semibold">
+                Checked By
+              </label>
+              <select
+                id="checkedBy"
+                value={checkedBy}
+                onChange={(e) => setCheckedBy(e.target.value)}
+                className="w-[500px] p-2 rounded-lg bg-slate-100"
+              >
+                <option value="" disabled>
+                  {checkedBy}
+                </option>
+                {users.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold">
                 Reasons for new release
               </label>
@@ -202,26 +230,42 @@ const EditVersionControl = () => {
               />
             </div>
             {loggedInUser.name === approve ? (
-              <div className="flex flex-col gap-2">
-                <label htmlFor="isapprove" className="font-semibold">
-                  Approval
-                </label>
-                <select
-                  id="isapprove"
-                  placeholder="Approval"
-                  value={isApproved}
-                  onChange={(e) => setIsApproved(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
-                >
-                  <option disabled>{isApproved}</option>
-                  <option>Approved</option>
-                  <option>Not Approved</option>
-                  <option>Pending</option>
-                </select>
-              </div>
+              <>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="isapprove" className="font-semibold">
+                    Approval
+                  </label>
+                  <select
+                    id="isapprove"
+                    placeholder="Approval"
+                    value={isApproved}
+                    onChange={(e) => setIsApproved(e.target.value)}
+                    className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  >
+                    <option disabled>{isApproved}</option>
+                    <option>Approved</option>
+                    <option>Not Approved</option>
+                    <option>Pending</option>
+                  </select>
+                </div>
+              </>
             ) : (
               ""
             )}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="font-semibold">
+                Comments
+              </label>
+              <textarea
+                type="text"
+                placeholder="Reasons"
+                value={comment}
+                rows={4}
+                onChange={(e) => setComment(e.target.value)}
+                readOnly={loggedInUser.name !== approve}
+                className="w-full p-2 rounded-lg bg-slate-100"
+              />
+            </div>
             <div className="flex justify-start gap-2">
               <button
                 type="submit"

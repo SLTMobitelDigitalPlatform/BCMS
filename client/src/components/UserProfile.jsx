@@ -24,6 +24,7 @@ const UserProfile = () => {
           },
         });
         const fullImageUrl = `http://localhost:5000${response.data.profileImg}`;
+        console.log(response.data);
         setUser(response.data);
         setPreviewUrl(fullImageUrl); // Set the initial previewUrl
       } catch (error) {
@@ -238,7 +239,9 @@ const UserProfile = () => {
             <h2 className="font-bold text-xl text-blue-900">{user.name}</h2>
             <p className="text-md text-blue-900">{user.email}</p>
             <p className="text-md text-blue-900">{user.role}</p>
-            <p className="text-md text-blue-900 capitalize">{user.section}</p>
+            <p className="text-md text-blue-900 capitalize">
+              {user.section.name}
+            </p>
             <p className="text-md text-blue-900">
               Service No: {user.serviceNumber}
             </p>

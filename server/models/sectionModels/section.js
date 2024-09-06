@@ -8,6 +8,12 @@ const sectionSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    sectionCode: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     users: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import RiskAssNavigation from "../../../../components/RiskAssNavigation";
+import { getCurrentUser } from "../../../../services/userApi";
 
 const ResidualRiskAssesement = () => {
   const [risks, setRisks] = useState([]);
@@ -10,8 +11,10 @@ const ResidualRiskAssesement = () => {
   const [isRisks, setIsRisks] = useState([]);
   const [qmRisks, setQmRisks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredRisks, setFilteredRisks] = useState([]);
+  const [section, setSection] = useState("");
 
-  const risksPerPage = 5;
+  const risksPerPage = 10;
 
   const fetchBCPRisks = async () => {
     try {
@@ -25,15 +28,15 @@ const ResidualRiskAssesement = () => {
 
       const filteredBCPRisks = bcpResponse.data
         .filter((item) => item.residualImpactRating > 12)
-        .map((risk) => ({ ...risk, source: "risksBCP" })); // Add source here
+        .map((risk) => ({ ...risk, source: "risksBCP" }));
 
       const filterIsRisks = isResponse.data
         .filter((item) => item.residualImpactRating > 12)
-        .map((risk) => ({ ...risk, source: "risksIS" })); // Add source here
+        .map((risk) => ({ ...risk, source: "risksIS" }));
 
       const filterQmRisks = qmResponse.data
         .filter((item) => item.residualImpactRating > 12)
-        .map((risk) => ({ ...risk, source: "qualityRisks" })); // Add source here
+        .map((risk) => ({ ...risk, source: "qualityRisks" }));
 
       setBCPRisks(filteredBCPRisks);
       setIsRisks(filterIsRisks);
@@ -43,60 +46,57 @@ const ResidualRiskAssesement = () => {
     }
   };
 
+  // Combine all risks
   const combinedRisks = [...bcpRisks, ...isRisks, ...qmRisks];
 
-  // Fetch all risks
-  const fetchRisks = async () => {
+  // Fetch risks and filter by section
+  const fetchAndFilterRisks = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/residualRisks/"
-      );
-      setRisks(response.data);
+      const user = await getCurrentUser();
+      let section = user.data.section.sectionCode;
+      // console.log(user.data);
+
+      // if (section === "Information Technology (IT)") {
+      //   section = "ITSE";
+      // } else if (section === "Marketing") {
+      //   section = "MARC";
+      // } else if (section === "Sales") {
+      //   section = "SALE";
+      // } else if (section === "Human Resources(HR)") {
+      //   section = "HRMA";
+      // } else if (section === "Finance") {
+      //   section = "FINA";
+      // } else if (section === "Operations") {
+      //   section = "OPER";
+      // } else if (section === "Customer Service") {
+      //   section = "CUSE";
+      // }
+
+      setSection(section);
+      // console.log(combinedRisks);
+      const filtered = combinedRisks.filter((risk) => {
+        const sectionIdentifier = risk.rid.split("-")[1];
+        return sectionIdentifier === section;
+      });
+
+      setFilteredRisks(filtered);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchRisks();
     fetchBCPRisks();
   }, []);
 
-  // Delete a risk with SweetAlert2 confirmation
-  const deleteRisk = async (id, source) => {
-    console.log("Deleting Risk ID:", id, "Source:", source); // Log id and source here
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(
-            `http://localhost:5000/api/${source}/delete/${id}`
-          );
-          setRisks(risks.filter((risk) => risk._id !== id));
-          Swal.fire("Deleted!", "Your risk has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the risk.",
-            "error"
-          );
-        }
-      }
-    });
-  };
+  useEffect(() => {
+    fetchAndFilterRisks();
+  }, [bcpRisks, isRisks, qmRisks]);
 
   // Pagination logic
   const indexOfLastRisk = currentPage * risksPerPage;
   const indexOfFirstRisk = indexOfLastRisk - risksPerPage;
-  const currentRisks = combinedRisks.slice(indexOfFirstRisk, indexOfLastRisk);
+  const currentRisks = filteredRisks.slice(indexOfFirstRisk, indexOfLastRisk);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -108,11 +108,6 @@ const ResidualRiskAssesement = () => {
         <h1 className="text-2xl font-bold text-blue-900">
           Information Security
         </h1>
-        {/* <Link to="/createResidualRisk">
-          <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
-            Create Risk Assessment
-          </button>
-        </Link> */}
       </div>
 
       {/* Table */}
@@ -128,7 +123,7 @@ const ResidualRiskAssesement = () => {
                 Target Control Implementation completion Date
               </th>
               <th className="border-2 px-2 py-2">Impact</th>
-              <th className="border-2 px-2 py-2">Liklihood</th>
+              <th className="border-2 px-2 py-2">Likelihood</th>
               <th className="border-2 px-2 py-2">
                 Residual Risk Impact Rating
               </th>
@@ -139,7 +134,9 @@ const ResidualRiskAssesement = () => {
             {currentRisks.map((r) => (
               <tr key={r._id}>
                 <td className="border-2 text-normal px-2">{r.rid}</td>
-                <td className="border-2 text-normal px-2">{r.impactRating}</td>
+                <td className="border-2 text-normal px-2">
+                  {r.residualImpactRating}
+                </td>
                 <td className="border-2 text-normal px-2">{r.newMethod}</td>
                 <td className="border-2 text-normal px-4 py-3">
                   {r.newIdntifiedControls}
@@ -176,7 +173,7 @@ const ResidualRiskAssesement = () => {
         </table>
         <div className="flex justify-start mt-4">
           {Array.from(
-            { length: Math.ceil(risks.length / risksPerPage) },
+            { length: Math.ceil(filteredRisks.length / risksPerPage) },
             (_, i) => (
               <button
                 key={i + 1}

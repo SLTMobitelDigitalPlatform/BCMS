@@ -17,7 +17,7 @@ const interfaceSchema = new Schema({
   inwardOutward: {
     type: String,
     required: false,
-    enum: ["Inward", "Outward"],
+    enum: ["Inward", "Outward", "Inward/Outward"],
     default: "",
   },
   medium: {

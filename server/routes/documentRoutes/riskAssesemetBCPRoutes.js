@@ -5,7 +5,10 @@ const authControllers = require("../../controllers/userControllers/authControlle
 
 router.post("/api/risksBCP/add", riskAssesmentBCPControllers.createRisk);
 router.get("/api/risksBCP/", riskAssesmentBCPControllers.getRisks);
-router.get("/api/risksBCP/last", riskAssesmentBCPControllers.getLastRisk);
+router.get(
+  "/api/risksBCP/last/:section",
+  riskAssesmentBCPControllers.getLastRisk
+);
 router.get("/api/risksBCP/:id", riskAssesmentBCPControllers.getRiskById);
 router.put("/api/risksBCP/edit/:id", riskAssesmentBCPControllers.updateRisk);
 router.delete(

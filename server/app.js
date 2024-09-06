@@ -30,6 +30,8 @@ const routerRiskVersion = require("./routes/documentRoutes/versionControlRiskRou
 const routerRiskResidual = require("./routes/documentRoutes/residualRiskRoutes");
 const routerRiskQuality = require("./routes/documentRoutes/qualityManagementRoutes");
 const routerRiskElements = require("./routes/documentRoutes/riskAssesment/riskElementRoutes");
+const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/externalPartyRoutes");
+const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
 
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
@@ -62,7 +64,9 @@ app.use(
   routerRiskResidual,
   routerRiskQuality,
   routerSection,
-  routerRiskElements
+  routerRiskElements,
+  routerExternalParty,
+  routerInternalParty
 );
 
 // Create uploads directory if it doesn't exist

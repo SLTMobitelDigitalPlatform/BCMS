@@ -50,6 +50,7 @@ const Employee = () => {
   const getAllEmployees = async () => {
     try {
       const response = await getUsers();
+      // console.log(response.data);
       setEmployeeData(response.data);
     } catch (error) {
       console.error("Error fetching users:", error.response?.data || error);
@@ -215,7 +216,9 @@ const Employee = () => {
                       {employee.role}
                     </td>
                     <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {employee.section}
+                      {employee.section
+                        ? employee.section.name
+                        : "No Section Assigned"}
                     </td>
                     <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {employee.contactNumber}
