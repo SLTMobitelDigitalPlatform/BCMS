@@ -137,119 +137,120 @@ const CreateRiskVersionControl = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex gap-x-10">
-        <div className="border-2 w-full rounded-2xl ml-5 mr-[20px] mt-1 mb-5 p-5">
-          <h1 className="text-2xl font-bold">Add New Version Control</h1>
-          <div className="w-full mx-auto p-8 rounded-xl shadow-lg border-2 mt-5">
-            <form onSubmit={handleCreateVersion}>
-              <div className="flex flex-col gap-6">
-                <div className="flex justify-between">
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="" className="font-semibold">
-                      Serial Number
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Serial Number"
-                      value={serialNo}
-                      readOnly
-                      onChange={(e) => setSerialNo(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="" className="font-semibold">
-                      Version Number
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Version Number"
-                      value={versionNo}
-                      readOnly
-                      onChange={(e) => setVersionNo(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-between">
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="prepare" className="font-semibold">
-                      Prepared By
-                    </label>
-                    <select
-                      id="prepare"
-                      placeholder="Prepared Person"
-                      value={prepare}
-                      onChange={(e) => setPrepare(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    >
-                      <option value="" disabled>
-                        Select
-                      </option>
-                      {users.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="approve" className="font-semibold">
-                      Approved By
-                    </label>
-                    <select
-                      id="approve"
-                      placeholder="Approved Person"
-                      value={approve}
-                      onChange={(e) => setApprove(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    >
-                      <option value="" disabled>
-                        Select
-                      </option>
-                      {users.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="prepare" className="font-semibold">
-                    Checked By
-                  </label>
-                  <select
-                    id="prepare"
-                    placeholder="Prepared Person"
-                    value={checkedBy}
-                    onChange={(e) => setCheckedBy(e.target.value)}
-                    className="w-[500px] p-2 rounded-lg bg-slate-100"
-                  >
-                    <option value="" disabled>
-                      Select
+    <div className="flex flex-col w-full h-full">
+      <h1 className="text-2xl font-bold text-green-500">
+        Add New Version Control
+      </h1>
+      <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
+        <form onSubmit={handleCreateVersion}>
+          <div className="flex flex-col gap-6">
+            <div className="flex justify-between">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="" className="font-semibold">
+                  Serial Number
+                </label>
+                <input
+                  type="number"
+                  placeholder="Serial Number"
+                  value={serialNo}
+                  readOnly
+                  onChange={(e) => setSerialNo(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="" className="font-semibold">
+                  Version Number
+                </label>
+                <input
+                  type="text"
+                  placeholder="Version Number"
+                  value={versionNo}
+                  readOnly
+                  onChange={(e) => setVersionNo(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                />
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="prepare" className="font-semibold">
+                  Prepared By
+                </label>
+                <select
+                  id="prepare"
+                  placeholder="Prepared Person"
+                  value={prepare}
+                  onChange={(e) => setPrepare(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
                     </option>
-                    {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold">
-                    Reasons for new release
-                  </label>
-                  <textarea
-                    type="text"
-                    placeholder="Reasons"
-                    value={reasons}
-                    onChange={(e) => setReasons(e.target.value)}
-                    className="w-full p-2 rounded-lg bg-slate-100"
-                  />
-                </div>
-                {/* {loggedInUser.name === approve ? (
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="approve" className="font-semibold">
+                  Approved By
+                </label>
+                <select
+                  id="approve"
+                  placeholder="Approved Person"
+                  value={approve}
+                  onChange={(e) => setApprove(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="prepare" className="font-semibold">
+                Checked By
+              </label>
+              <select
+                id="prepare"
+                placeholder="Prepared Person"
+                value={checkedBy}
+                onChange={(e) => setCheckedBy(e.target.value)}
+                className="w-[500px] p-2 rounded-lg bg-slate-100"
+              >
+                <option value="" disabled>
+                  Select
+                </option>
+                {users.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="font-semibold">
+                Reasons for new release
+              </label>
+              <textarea
+                type="text"
+                placeholder="Reasons"
+                value={reasons}
+                rows={4}
+                onChange={(e) => setReasons(e.target.value)}
+                className="w-full p-2 rounded-lg bg-slate-100"
+              />
+            </div>
+            {/* {loggedInUser.name === approve ? (
                   <div className="flex flex-col gap-2">
                     <label htmlFor="isapprove" className="font-semibold">
                       Approval
@@ -270,23 +271,21 @@ const CreateRiskVersionControl = () => {
                 ) : (
                   ""
                 )} */}
-                <div className="flex justify-start gap-2 mt-5">
-                  <button
-                    type="submit"
-                    className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
-                  >
-                    Save
-                  </button>
-                  <Link to="/riskVersionControl">
-                    <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
-                      Cancel
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </form>
+            <div className="flex justify-start gap-2">
+              <button
+                type="submit"
+                className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              >
+                Save
+              </button>
+              <Link to="/Risk-Assessment/versionControl">
+                <button className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold">
+                  Cancel
+                </button>
+              </Link>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

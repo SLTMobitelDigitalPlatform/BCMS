@@ -5,7 +5,7 @@ const RiskAssNavigation = () => {
     <div>
       <div className="flex justify-between items-center text-white font-semibold">
         <NavLink
-          to="/Risk-Assesment/versionControl"
+          to="/Risk-Assessment/versionControl"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -15,7 +15,7 @@ const RiskAssNavigation = () => {
           Version Control
         </NavLink>
         <NavLink
-          to="/informationSecurity"
+          to="/Risk-Assessment/informationSecurity"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -25,7 +25,7 @@ const RiskAssNavigation = () => {
           Information Security
         </NavLink>
         <NavLink
-          to="/bcpRisk"
+          to="/Risk-Assessment/bcpRisk"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -35,7 +35,7 @@ const RiskAssNavigation = () => {
           Business Continuity
         </NavLink>
         <NavLink
-          to="/qualityManagement"
+          to="/Risk-Assessment/qualityManagement"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -45,7 +45,7 @@ const RiskAssNavigation = () => {
           Quality Management
         </NavLink>
         <NavLink
-          to="/residualRisk"
+          to="/Risk-Assessment/residualRisk"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -55,7 +55,7 @@ const RiskAssNavigation = () => {
           Residual Risk Assesment
         </NavLink>
         <NavLink
-          to="/riskElements"
+          to="/Risk-Assessment/riskElements"
           className={({ isActive }) =>
             `px-2 py-1 rounded-lg ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
