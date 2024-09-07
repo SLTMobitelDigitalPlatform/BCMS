@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getAllCategories,
   getItemsInCategory,
@@ -117,9 +117,8 @@ const RiskElements = () => {
     }
   };
   return (
-    <div>
-      <RiskAssNavigation />
-      <div className="mt-5">
+    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+      <div>
         <h2>Create New Risk Element Category</h2>
         <input
           type="text"
@@ -153,7 +152,9 @@ const RiskElements = () => {
           </button>
         </div>
       )}
-      <div className="mt-5 max-h-[500px] overflow-y-auto">
+
+      {/* Table */}
+      <div className="h-full w-full overflow-auto">
         <h2>Categories</h2>
         <table className="table-auto w-full border-collapse">
           <thead>

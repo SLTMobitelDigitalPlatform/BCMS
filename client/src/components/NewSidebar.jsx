@@ -61,7 +61,7 @@ const NewSidebar = () => {
               <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
                 <li>
                   <NavLink
-                    to="/Risk-Assesment/versionControl"
+                    to="/Risk-Assessment/versionControl"
                     className={({ isActive }) =>
                       `sidebar-link ${
                         isActive ? "dropdown-active" : "dropdown-hover"

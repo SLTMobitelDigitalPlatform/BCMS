@@ -118,170 +118,168 @@ const EditRiskVersionControl = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="flex gap-x-10">
-        <div className="border-2 w-full rounded-2xl ml-5 mr-[20px] mt-1 mb-5 p-5">
-          <h1 className="text-2xl font-bold">Update Version Control</h1>
-          <div className="w-full mx-auto p-8 rounded-xl shadow-lg border-2 mt-5">
-            <form onSubmit={handleEditVersion}>
-              <div className="flex flex-col gap-6">
-                <div className="flex justify-between">
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="" className="font-semibold">
-                      Serial Number
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Serial Number"
-                      readOnly
-                      value={serialNo}
-                      onChange={(e) => setSerialNo(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="" className="font-semibold">
-                      Version Number
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Version Number"
-                      readOnly
-                      value={versionNo}
-                      onChange={(e) => setVersionNo(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-between">
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="prepare" className="font-semibold">
-                      Prepared By
-                    </label>
-                    <select
-                      id="prepare"
-                      placeholder="Prepared Person"
-                      value={prepare}
-                      onChange={(e) => setPrepare(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    >
-                      <option value="" disabled>
-                        {prepare}
-                      </option>
-                      {users.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="approve" className="font-semibold">
-                      Approved By
-                    </label>
-                    <select
-                      id="approve"
-                      placeholder="Approved Person"
-                      value={approve}
-                      onChange={(e) => setApprove(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    >
-                      <option value="" disabled>
-                        {approve}
-                      </option>
-                      {users.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="checkedBy" className="font-semibold">
-                    Checked By
-                  </label>
-                  <select
-                    id="checkedBy"
-                    value={checkedBy}
-                    onChange={(e) => setCheckedBy(e.target.value)}
-                    className="w-[500px] p-2 rounded-lg bg-slate-100"
-                  >
-                    <option value="" disabled>
-                      {checkedBy}
-                    </option>
-                    {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold">
-                    Reasons for new release
-                  </label>
-                  <textarea
-                    type="text"
-                    placeholder="Reasons"
-                    value={reasons}
-                    onChange={(e) => setReasons(e.target.value)}
-                    className="w-full p-2 rounded-lg bg-slate-100"
-                  />
-                </div>
-                {loggedInUser.name === approve ? (
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="isapprove" className="font-semibold">
-                      Approval
-                    </label>
-                    <select
-                      id="isapprove"
-                      placeholder="Approval"
-                      value={isApproved}
-                      onChange={(e) => setIsApproved(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
-                    >
-                      <option disabled>{isApproved}</option>
-                      <option>Approved</option>
-                      <option>Not Approved</option>
-                      <option>Pending</option>
-                    </select>
-                  </div>
-                ) : (
-                  ""
-                )}
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold">
-                    Comments
-                  </label>
-                  <textarea
-                    type="text"
-                    placeholder="Reasons"
-                    value={comment}
-                    rows={4}
-                    onChange={(e) => setComment(e.target.value)}
-                    readOnly={loggedInUser.name !== approve}
-                    className="w-full p-2 rounded-lg bg-slate-100"
-                  />
-                </div>
-
-                <div className="flex justify-start gap-2 mt-5">
-                  <button
-                    type="submit"
-                    className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
-                  >
-                    Save
-                  </button>
-                  <Link to="/riskVersionControl">
-                    <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
-                      Cancel
-                    </button>
-                  </Link>
-                </div>
+    <div className="flex flex-col w-full h-full overflow-auto">
+      <h1 className="text-2xl font-bold text-green-500">
+        Update Version Control
+      </h1>
+      <div className="w-full mx-auto p-8 rounded-xl shadow-lg border-2 mt-5">
+        <form onSubmit={handleEditVersion}>
+          <div className="flex flex-col gap-6">
+            <div className="flex justify-between">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="" className="font-semibold">
+                  Serial Number
+                </label>
+                <input
+                  type="number"
+                  placeholder="Serial Number"
+                  readOnly
+                  value={serialNo}
+                  onChange={(e) => setSerialNo(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                />
               </div>
-            </form>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="" className="font-semibold">
+                  Version Number
+                </label>
+                <input
+                  type="number"
+                  placeholder="Version Number"
+                  readOnly
+                  value={versionNo}
+                  onChange={(e) => setVersionNo(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                />
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="prepare" className="font-semibold">
+                  Prepared By
+                </label>
+                <select
+                  id="prepare"
+                  placeholder="Prepared Person"
+                  value={prepare}
+                  onChange={(e) => setPrepare(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    {prepare}
+                  </option>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="approve" className="font-semibold">
+                  Approved By
+                </label>
+                <select
+                  id="approve"
+                  placeholder="Approved Person"
+                  value={approve}
+                  onChange={(e) => setApprove(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    {approve}
+                  </option>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="checkedBy" className="font-semibold">
+                Checked By
+              </label>
+              <select
+                id="checkedBy"
+                value={checkedBy}
+                onChange={(e) => setCheckedBy(e.target.value)}
+                className="w-[500px] p-2 rounded-lg bg-slate-100"
+              >
+                <option value="" disabled>
+                  {checkedBy}
+                </option>
+                {users.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="font-semibold">
+                Reasons for new release
+              </label>
+              <textarea
+                type="text"
+                placeholder="Reasons"
+                value={reasons}
+                onChange={(e) => setReasons(e.target.value)}
+                className="w-full p-2 rounded-lg bg-slate-100"
+              />
+            </div>
+            {loggedInUser.name === approve ? (
+              <div className="flex flex-col gap-2">
+                <label htmlFor="isapprove" className="font-semibold">
+                  Approval
+                </label>
+                <select
+                  id="isapprove"
+                  placeholder="Approval"
+                  value={isApproved}
+                  onChange={(e) => setIsApproved(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option disabled>{isApproved}</option>
+                  <option>Approved</option>
+                  <option>Not Approved</option>
+                  <option>Pending</option>
+                </select>
+              </div>
+            ) : (
+              ""
+            )}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="font-semibold">
+                Comments
+              </label>
+              <textarea
+                type="text"
+                placeholder="Reasons"
+                value={comment}
+                rows={4}
+                onChange={(e) => setComment(e.target.value)}
+                readOnly={loggedInUser.name !== approve}
+                className="w-full p-2 rounded-lg bg-slate-100"
+              />
+            </div>
+
+            <div className="flex justify-start gap-2 mt-5">
+              <button
+                type="submit"
+                className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
+              >
+                Save
+              </button>
+              <Link to="/Risk-Assessment/versionControl">
+                <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
+                  Cancel
+                </button>
+              </Link>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
