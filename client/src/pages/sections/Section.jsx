@@ -1,84 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
-import {
-  createSection,
-  deleteSection,
-  getSections,
-  updateSection,
-} from "../../services/sectionApi";
+import { useSections } from "../../hooks/useSections";
 import { validateSectionCode } from "../../utilities/helper";
 
 Modal.setAppElement("#root");
 
 const Section = () => {
-  const [sections, setSections] = useState([]);
-  // const [newSectionID, setNewSectionID] = useState("");
-  // const [newSectionName, setNewSectionName] = useState("");
+  const { sections, loading, error, addSection, editSection, removeSection } =
+    useSections();
   const [addEditSectionModal, setAddEditSectionModal] = useState({
     isShown: false,
     type: "add",
     data: { sectionCode: "", name: "" },
   });
-  const [error, setError] = useState("");
-
-  // Get all sections
-  const fetchSections = async () => {
-    try {
-      const response = await getSections();
-      setSections(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchSections();
-  }, []);
+  const [formError, setFormError] = useState("");
 
   const handleAddEditSectionModal = async () => {
     const { sectionCode, name } = addEditSectionModal.data;
 
-    setError("");
+    setFormError("");
 
     if (!validateSectionCode(sectionCode)) {
-      setError("Section ID should be exactly 4 capital letters.");
+      setFormError("Section ID should be exactly 4 capital letters.");
       return;
     }
 
     if (!name.trim()) {
-      setError("Section name is required.");
+      setFormError("Section name is required.");
       return;
     }
 
-    // if (!newSectionID.trim()) {
-    //   setError("Section ID is required.");
-    //   setHasError(true);
-    //   return;
-    // }
-
-    // if (newSectionID.length !== 4) {
-    //   setError("Section ID should be exactly 4 characters.");
-    //   setHasError(true);
-    //   return;
-    // }
-
-    // if (!/^[A-Z]+$/.test(newSectionID)) {
-    //   // setNewSectionID(newSectionID.toUpperCase());
-    //   setError("Section ID should only contain capital letters.");
-    //   setHasError(true);
-    //   return;
-    // }
-
     try {
       if (addEditSectionModal.type === "add") {
-        await createSection({ sectionCode, name });
+        await addSection({ sectionCode, name });
       } else {
-        await updateSection(addEditSectionModal.data._id, {
+        await editSection(addEditSectionModal.data._id, {
           sectionCode,
           name,
         });
       }
-      fetchSections();
+
       setAddEditSectionModal({
         isShown: false,
         type: "add",
@@ -91,12 +52,7 @@ const Section = () => {
 
   // Delete section
   const handleDeleteSection = async (id) => {
-    try {
-      await deleteSection(id);
-      fetchSections(); // Refresh the list after deletion
-    } catch (error) {
-      console.log(error);
-    }
+    await removeSection(id);
   };
 
   const handleInputChange = (e) => {
@@ -109,6 +65,9 @@ const Section = () => {
       },
     }));
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="p-5 rounded-2xl w-full h-full overflow-hidden bg-indigo-100">
@@ -156,7 +115,7 @@ const Section = () => {
               value={addEditSectionModal.data.sectionCode}
               onChange={handleInputChange}
               className={`border p-2 my-3 ${
-                error &&
+                formError &&
                 !validateSectionCode(addEditSectionModal.data.sectionCode)
                   ? "border-red-500"
                   : ""
@@ -169,10 +128,14 @@ const Section = () => {
               value={addEditSectionModal.data.name}
               onChange={handleInputChange}
               className={`border p-2 my-3 ${
-                error && !addEditSectionModal.data.name ? "border-red-500" : ""
+                formError && !addEditSectionModal.data.name
+                  ? "border-red-500"
+                  : ""
               }`}
             />
-            {error && <p className="text-red-500 text-center">{error}</p>}
+            {formError && (
+              <p className="text-red-500 text-center">{formError}</p>
+            )}
             <div className="flex mt-5 space-x-4">
               <button
                 className="bg-green-500 hover:bg-green-600 py-1 px-2 text-white text-sm font-semibold rounded-lg"
