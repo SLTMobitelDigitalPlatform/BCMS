@@ -19,12 +19,12 @@ const RiskElements = () => {
   const [categoryModal, setCategoryModal] = useState({
     isShown: false,
     type: "add",
-    data: null,
+    data: {},
   });
   const [itemModal, setItemModal] = useState({
     isShown: false,
     type: "add",
-    data: null,
+    data: {},
   });
   const [error, setError] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -34,19 +34,45 @@ const RiskElements = () => {
   }, []);
 
   const fetchCategories = async () => {
+    // try {
+    //   const response = await getAllCategories();
+    //   const categoriesWithItems = await Promise.all(
+    //     response.data.map(async (category) => {
+    //       const itemsResponse = await getItemsInCategory(category.categoryName);
+    //       return { ...category, items: itemsResponse.data };
+    //     })
+    //   );
+    //   // if (categoriesWithItems.length > 0) {
+    //   //   setSelectedCategory(categoriesWithItems[0]._id);
+    //   // }
+    //   setCategories(categoriesWithItems);
+    //   setSelectedCategory(categoriesWithItems[0]?._id);
     try {
       const response = await getAllCategories();
-      const categoriesWithItems = await Promise.all(
-        response.data.map(async (category) => {
-          const itemsResponse = await getItemsInCategory(category.categoryName);
-          return { ...category, items: itemsResponse.data };
-        })
-      );
-      // if (categoriesWithItems.length > 0) {
-      //   setSelectedCategory(categoriesWithItems[0]._id);
-      // }
-      setCategories(categoriesWithItems);
-      setSelectedCategory(categoriesWithItems[0]?._id);
+      if (response.data && response.data.length > 0) {
+        const categoriesWithItems = await Promise.all(
+          response.data.map(async (category) => {
+            if (category.categoryName) {
+              try {
+                const itemsResponse = await getItemsInCategory(
+                  category.categoryName
+                );
+                return { ...category, items: itemsResponse.data };
+              } catch (error) {
+                console.error("Failed to fetch items for category", error);
+                return { ...category, items: [] };
+              }
+            } else {
+              return category;
+            }
+          })
+        );
+        setCategories(categoriesWithItems);
+        setSelectedCategory(categoriesWithItems[0]?._id);
+      } else {
+        setCategories([]);
+        setSelectedCategory(null);
+      }
     } catch (error) {
       console.error("Failed to fetch categories", error);
     }
@@ -67,7 +93,7 @@ const RiskElements = () => {
 
         if (response.data) {
           fetchCategories();
-          setCategoryModal({ isShown: false, type: "add", data: null });
+          setCategoryModal({ isShown: false, type: "add", data: {} });
         }
       } catch (error) {
         console.error("Error creating category", error.response?.data || error);
@@ -76,12 +102,12 @@ const RiskElements = () => {
       try {
         const response = await editCategoryName(
           categoryData._id,
-          categoryData.name
+          categoryData.categoryName
         );
 
         if (response.data) {
           fetchCategories();
-          setCategoryModal({ isShown: false, type: "add", data: null });
+          setCategoryModal({ isShown: false, type: "add", data: {} });
         }
       } catch (error) {
         console.error("Error updating category", error.response?.data || error);
@@ -108,8 +134,8 @@ const RiskElements = () => {
         const response = await addItemToCategory(categoryName, itemData.name);
 
         if (response.data) {
-          // fetchCategories();
-          setItemModal({ isShown: false, type: "add", data: null });
+          fetchCategories();
+          setItemModal({ isShown: false, type: "add", data: {} });
         }
       } catch (error) {
         console.error("Error creating category", error.response?.data || error);
@@ -124,7 +150,7 @@ const RiskElements = () => {
 
         if (response.data) {
           fetchCategories();
-          setItemModal({ isShown: false, type: "add", data: null });
+          setItemModal({ isShown: false, type: "add", data: {} });
         }
       } catch (error) {
         console.error("Error updating category", error.response?.data || error);
@@ -160,7 +186,7 @@ const RiskElements = () => {
         <button
           className="btn-primary font-semibold"
           onClick={() =>
-            setCategoryModal({ isShown: true, type: "add", data: null })
+            setCategoryModal({ isShown: true, type: "add", data: {} })
           }
         >
           Add New Category
@@ -277,7 +303,7 @@ const RiskElements = () => {
       <Modal
         isOpen={categoryModal.isShown}
         onRequestClose={() =>
-          setCategoryModal({ isShown: false, type: "add", data: null })
+          setCategoryModal({ isShown: false, type: "add", data: {} })
         }
         contentLabel="Add/Edit Category"
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
@@ -314,7 +340,7 @@ const RiskElements = () => {
           <button
             className="mt-4 bg-red-500 text-white rounded px-4 py-2"
             onClick={() =>
-              setCategoryModal({ isShown: false, type: "add", data: null })
+              setCategoryModal({ isShown: false, type: "add", data: {} })
             }
           >
             Cancel
@@ -326,7 +352,7 @@ const RiskElements = () => {
       <Modal
         isOpen={itemModal.isShown}
         onRequestClose={() =>
-          setItemModal({ isShown: false, type: "add", data: null })
+          setItemModal({ isShown: false, type: "add", data: {} })
         }
         contentLabel="Add/Edit Item"
         className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
@@ -357,7 +383,7 @@ const RiskElements = () => {
           <button
             className="mt-4 bg-red-500 text-white rounded px-4 py-2"
             onClick={() =>
-              setItemModal({ isShown: false, type: "add", data: null })
+              setItemModal({ isShown: false, type: "add", data: {} })
             }
           >
             Cancel
