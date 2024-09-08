@@ -127,7 +127,7 @@ const EditISRiskAssesement = () => {
       .put(`http://localhost:5000/api/risksIS/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/informationSecurity");
+        navigate("/Risk-Assessment/informationSecurity");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -427,7 +427,7 @@ const EditISRiskAssesement = () => {
               <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
                 Save
               </button>
-              <Link to="/informationSecurity">
+              <Link to="/Risk-Assessment/informationSecurity">
                 <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
                   Cancel
                 </button>

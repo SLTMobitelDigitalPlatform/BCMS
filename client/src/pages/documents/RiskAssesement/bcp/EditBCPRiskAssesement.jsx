@@ -93,7 +93,7 @@ const EditBCPRiskAssesement = () => {
       .put(`http://localhost:5000/api/risksBCP/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/bcpRisk");
+        navigate("/Risk-Assessment/bcpRisk");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -430,7 +430,7 @@ const EditBCPRiskAssesement = () => {
               <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
                 Save
               </button>
-              <Link to="/bcpRisk">
+              <Link to="/Risk-Assessment/bcpRisk">
                 <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
                   Cancel
                 </button>
