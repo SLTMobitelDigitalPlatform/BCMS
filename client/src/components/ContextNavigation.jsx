@@ -7,7 +7,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/VersionControls"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -17,7 +17,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/externalParty"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -27,7 +27,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/internalIssues"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -37,7 +37,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/interfaces"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -47,7 +47,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/objectives"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -57,7 +57,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/masterProcedures"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
