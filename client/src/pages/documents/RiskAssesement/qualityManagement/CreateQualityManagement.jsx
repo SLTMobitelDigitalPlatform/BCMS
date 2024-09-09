@@ -129,7 +129,7 @@ const CreateQualityManagement = () => {
         const currentIndex = localStorage.getItem("currentIndex");
         const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
         localStorage.setItem("currentIndex", newIndex);
-        navigate("/qualityManagement");
+        navigate("/Risk-Assessment/qualityManagement");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -415,7 +415,7 @@ const CreateQualityManagement = () => {
                 >
                   Save
                 </button>
-                <Link to="/qualityManagement">
+                <Link to="/Risk-Assessment/qualityManagement">
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>

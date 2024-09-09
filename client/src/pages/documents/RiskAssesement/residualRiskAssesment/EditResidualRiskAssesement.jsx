@@ -98,7 +98,7 @@ const EditResidualRiskAssesement = () => {
       .put(endpoint, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/residualRisk"); // Update with correct path
+        navigate("/Risk-Assessment/residualRisk"); // Update with correct path
       })
       .catch((err) => {
         handleErrorAlert();
@@ -242,7 +242,7 @@ const EditResidualRiskAssesement = () => {
               <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
                 Save
               </button>
-              <Link to="/residualRisk">
+              <Link to="/Risk-Assessment/residualRisk">
                 <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
                   Cancel
                 </button>

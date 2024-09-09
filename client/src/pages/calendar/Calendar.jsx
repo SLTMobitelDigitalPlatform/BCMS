@@ -43,7 +43,7 @@ export default function Calendar() {
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Calendar</h1>
+        <h1 className="topic">Calendar</h1>
         {user &&
         (user.role === "Super Admin" ||
           user.role === "Secretariat Coordinator" ||
@@ -51,7 +51,7 @@ export default function Calendar() {
         !showAddEvent ? (
           <button
             onClick={handleAddEventClick}
-            className="bg-gradient-to-r from-[#003E81] to-[#52B14A] text-white px-4 py-2 rounded mr-6"
+            className="btn-primary px-6 py-2 rounded-xl text-white font-medium"
           >
             Add Event
           </button>

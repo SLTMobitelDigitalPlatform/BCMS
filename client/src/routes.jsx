@@ -61,7 +61,7 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
-import { Section } from "./pages/sections/Section";
+
 import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
 import CallTree from "./pages/Call Tree/CallTree";
 import ExternalParty from "./pages/documents/ContextOrganization/interestedParties/ExternaParty";
@@ -151,10 +151,6 @@ const router = createBrowserRouter([
       },
       // Employee Table
       { path: "employee", element: <Employee /> },
-      {
-        path: "/sections",
-        element: <Section />,
-      },
 
       // Customer Table
       { path: "customers", element: <Customer /> },
@@ -186,10 +182,6 @@ const router = createBrowserRouter([
 
       // Documents
       //?--------------------------  Risk Assessment  ----------------------------------------------
-      //! { path: "riskAssesements", element: <RiskAssesement /> },
-      //! { path: "createRisk", element: <CreateRiskAssesement /> },
-      //!{ path: "editRisk/:id", element: <EditRiskAssesement /> },
-
       // * Risk Assessment Layout
       {
         path: "Risk-Assessment",
@@ -205,28 +197,23 @@ const router = createBrowserRouter([
       },
 
       // * Version Controls
-      // { path: "riskVersionControl", element: <RiskVersionControls /> },
       { path: "editVersion/:id", element: <EditVersionControl /> },
       { path: "createRiskVersion", element: <CreateRiskVersionControl /> },
       { path: "editISRiskVersion/:id", element: <EditRiskVersionControl /> },
 
       // * Information Security
-      // { path: "informationSecurity", element: <ISRiskAssesement /> },
       { path: "createRiskIS", element: <CreateISRiskAssesement /> },
       { path: "editISRisk/:id", element: <EditISRiskAssesement /> },
 
       //  * BCP Risk Assesment
-      // { path: "bcpRisk", element: <BCPRiskAssesement /> },
       { path: "createBCPRisk", element: <CreateBCPRiskAssesement /> },
       { path: "editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
 
       //  * Quality Management Risk Assesment
-      // { path: "qualityManagement", element: <QualityManagement /> },
       { path: "createQualityManagement", element: <CreateQualityManagement /> },
       { path: "editQualityManagement/:id", element: <EditQualityManagement /> },
 
       //  * Residual Risk Assesment
-      // { path: "residualRisk", element: <ResidualRiskAssesement /> },
       {
         path: "createResidualRisk",
         element: <CreateIResidualRiskAssesement />,
@@ -235,10 +222,6 @@ const router = createBrowserRouter([
         path: "editResidualRisk/:id/:source",
         element: <EditResidualRiskAssesement />,
       },
-      // {
-      //   path: "riskElements",
-      //   element: <RiskElements />,
-      // },
 
       //? ------------------------ Context of the Organization -----------------------------
       // * Context of the Organization Layout

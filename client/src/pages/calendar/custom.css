@@ -1,7 +1,7 @@
 /* customStyles.css */
 /* Style for the month name */
 .rbc-toolbar-label {
-    @apply text-2xl font-bold text-green-700 font-sans;
+    @apply text-2xl font-bold text-emerald-500 font-sans;
   }
   
   /* Style for the toolbar buttons (Today, Month, Week, Agenda) */

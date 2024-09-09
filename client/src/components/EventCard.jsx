@@ -15,11 +15,14 @@ const EventCard = () => {
 
       const eventArray = Array.isArray(response.data) ? response.data : [];
 
-      const formattedEvents = eventArray.map((event) => ({
-        ...event,
-        start: new Date(event.start),
-        end: new Date(event.end),
-      }));
+      const formattedEvents = eventArray
+        .map((event) => ({
+          ...event,
+          start: new Date(event.start),
+          end: new Date(event.end),
+        }))
+        .filter((event) => event.start >= new Date()) // Filter events that haven't started yet
+        .sort((a, b) => a.start - b.start); // Sort events by start date in ascending order
 
       setEvents(formattedEvents);
     } catch (error) {

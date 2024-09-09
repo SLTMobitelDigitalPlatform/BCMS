@@ -157,7 +157,7 @@ const CreateISRiskAssesement = () => {
         const currentIndex = localStorage.getItem("currentIndex");
         const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
         localStorage.setItem("currentIndex", newIndex);
-        navigate("/informationSecurity");
+        navigate("/Risk-Assessment/informationSecurity");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -452,7 +452,7 @@ const CreateISRiskAssesement = () => {
                 >
                   Save
                 </button>
-                <Link to="/informationSecurity">
+                <Link to="/Risk-Assessment/informationSecurity">
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>
