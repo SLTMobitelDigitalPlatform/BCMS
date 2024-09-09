@@ -21,10 +21,10 @@ const CreateMasterProducers = () => {
     };
 
     axios
-      .post("http://localhost:5000/proceduresAndProdess/create", data)
+      .post("http://localhost:5000/proceduresAndProcess/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/masterProcedures");
+        navigate("/Context-of-the-Organization/masterProcedures");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -115,7 +115,7 @@ const CreateMasterProducers = () => {
               >
                 Save
               </button>
-              <Link to="/masterProcedures">
+              <Link to="/Context-of-the-Organization/masterProcedures">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

@@ -22,7 +22,7 @@ const CreateObjective = () => {
       .post("http://localhost:5000/objective/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/objectives");
+        navigate("/Context-of-the-Organization/objectives");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -101,7 +101,7 @@ const CreateObjective = () => {
               >
                 Save
               </button>
-              <Link to="/objectives">
+              <Link to="/Context-of-the-Organization/objectives">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

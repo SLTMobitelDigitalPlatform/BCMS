@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
+import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -84,21 +85,17 @@ const UpdateEvent = () => {
   };
 
   useEffect(() => {
-    if (event) {
+    if (event && employees.length > 0) {
+      const eventAttendees = employees.filter((employee) =>
+        event.attendees.includes(employee._id)
+      );
+      setAttendees(eventAttendees);
       reset({
         title: event.title,
         start: new Date(event.start),
         end: event.end ? new Date(event.end) : "",
         describe: event.describe ? event.describe : "",
       });
-
-      // Set attendees if the employees are already fetched
-      if (employees.length > 0) {
-        const eventAttendees = employees.filter((employee) =>
-          event.attendees.includes(employee._id)
-        );
-        setAttendees(eventAttendees);
-      }
     }
   }, [event, reset, employees]);
 
@@ -115,6 +112,11 @@ const UpdateEvent = () => {
       setDbError("Error updating event");
     }
   };
+
+  const attendeeOptions = employees.map((employee) => ({
+    value: employee._id,
+    label: employee.name,
+  }));
 
   const handleAttendeeClick = (employee) => {
     if (!employee || !employee._id) return;
@@ -242,24 +244,31 @@ const UpdateEvent = () => {
           >
             Select Attendees
           </label>
-          <div className="flex flex-wrap gap-4">
-            {employees.map((employee) => (
-              <button
-                type="button"
-                key={employee._id}
-                onClick={() => handleAttendeeClick(employee)}
-                className={`p-2 border rounded-lg ${
-                  attendees.some(
-                    (attendee) => attendee && attendee._id === employee._id
-                  )
-                    ? "bg-green-200"
-                    : "bg-gray-200"
-                }`}
-              >
-                {employee.name}
-              </button>
-            ))}
-          </div>
+          <Controller
+            control={control}
+            name="attendees"
+            render={({ field }) => (
+              <Select
+                {...field}
+                isMulti
+                options={attendeeOptions}
+                value={attendeeOptions.filter((option) =>
+                  attendees.some((attendee) => attendee._id === option.value)
+                )}
+                onChange={(selectedOptions) => {
+                  field.onChange(selectedOptions);
+                  setAttendees(
+                    selectedOptions.map((option) => ({
+                      _id: option.value,
+                      name: option.label,
+                    }))
+                  );
+                }}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            )}
+          />
         </div>
 
         <div className="flex justify-center">

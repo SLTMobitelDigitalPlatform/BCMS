@@ -14,14 +14,14 @@ const EditObjective = () => {
     axios
       .get(`http://localhost:5000/objective/${id}`)
       .then((res) => {
-        setInformationSecurity(res.data.serialNo);
-        setBusinessContinuity(res.data.versionNo);
-        setQuality(res.data.prepare);
+        setInformationSecurity(res.data.informationSecurity);
+        setBusinessContinuity(res.data.businessContinuity);
+        setQuality(res.data.quality);
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, [id]);
 
   const handleEditObjective = (e) => {
     e.preventDefault();
@@ -33,10 +33,10 @@ const EditObjective = () => {
     };
 
     axios
-      .put(`http://localhost:5000/api/versionControls/edit/${id}`, data)
+      .put(`http://localhost:5000/objective/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/objectives");
+        navigate("/Context-of-the-Organization/objectives");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -116,7 +116,7 @@ const EditObjective = () => {
               >
                 Save
               </button>
-              <Link to="/objectives">
+              <Link to="/Context-of-the-Organization/objectives">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

@@ -47,7 +47,7 @@ exports.userOtpSend = async (req, res) => {
         const mailOptions = {
           from: process.env.EMAIL,
           to: email,
-          subject: "Sending Eamil For Otp Validation",
+          subject: "Sending Email For Otp Validation",
           text: `OTP:- ${OTP}`,
         };
 
@@ -70,7 +70,7 @@ exports.userOtpSend = async (req, res) => {
         const mailOptions = {
           from: process.env.EMAIL,
           to: email,
-          subject: "Sending Eamil For Otp Validation",
+          subject: "Sending Email For Otp Validation",
           text: `OTP:- ${OTP}`,
         };
 
@@ -90,7 +90,7 @@ exports.userOtpSend = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(400).json({ error: "Invalid Details", error });
+    res.status(400).json({ error: "Invalid Details" });
   }
 };
 
@@ -130,7 +130,7 @@ exports.userLogin = async (req, res) => {
       res.status(400).json({ error: "Invalid Otp" });
     }
   } catch (error) {
-    res.status(400).json({ error: "Invalid Details", error });
+    res.status(400).json({ error: "Invalid Details" });
   }
 };
 

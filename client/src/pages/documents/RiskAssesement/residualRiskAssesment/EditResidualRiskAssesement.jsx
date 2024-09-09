@@ -5,55 +5,100 @@ import Swal from "sweetalert2";
 
 const EditResidualRiskAssesement = () => {
   const [rid, setRid] = useState("");
-  const [identifiedControls, setIdentifiedControls] = useState("");
-  const [impact, setImpact] = useState(0);
-  const [likelihood, setLikelihood] = useState(0);
-  const [treatMethod, setTreatMethod] = useState("");
-  const [date, setDate] = useState("");
-  const [residualRiskRating, setResidualRiskRating] = useState(0);
-  const [residualImpactRating, setResidualImpactRating] = useState(0);
+  const [impactRating, setImpactRating] = useState(0);
+  // const [identifiedControls, setIdentifiedControls] = useState("");
+  // const [impact, setImpact] = useState(0);
+  // const [likelihood, setLikelihood] = useState(0);
+  // const [treatMethod, setTreatMethod] = useState("");
+  // const [date, setDate] = useState("");
+  // const [residualRiskRating, setResidualRiskRating] = useState(0);
+  // const [residualImpactRating, setResidualImpactRating] = useState(0);
+
+  const [newMethod, setNewMethods] = useState("");
+  const [newIdntifiedControls, setNewIdentifiedControls] = useState("");
+  const [newDate, setNewDate] = useState("");
+  const [newImpact, setNewImpact] = useState(0);
+  const [newLikelihood, setNewLikelihood] = useState(0);
+  const [newResidualImpactRating, setNewResidualImpactRating] = useState(0);
 
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, source } = useParams(); // Getting the source from the route params
 
   useEffect(() => {
+    // Determine the correct endpoint based on the source
+    let endpoint;
+    switch (source) {
+      case "qualityRisks":
+        endpoint = `http://localhost:5000/api/qualityRisks/${id}`;
+        break;
+      case "risksIS":
+        endpoint = `http://localhost:5000/api/risksIS/${id}`;
+        break;
+      case "risksBCP":
+        endpoint = `http://localhost:5000/api/risksBCP/${id}`;
+        break;
+      default:
+        alert("Invalid source!");
+        return;
+    }
+
+    // Fetch the data
     axios
-      .get(`http://localhost:5000/api/residualRisks/${id}`)
+      .get(endpoint)
       .then((res) => {
-        setRid(res.data.rid);
-        setIdentifiedControls(res.data.identifiedControls);
-        setImpact(res.data.impact);
-        setLikelihood(res.data.likelihood);
-        setTreatMethod(res.data.treatMethod);
-        setDate(res.data.date);
-        setResidualRiskRating(res.data.residualRiskRating);
-        setResidualImpactRating(res.data.residualImpactRating);
+        setRid(res.data.rid || ""); // Ensure rid is a string
+        setImpactRating(Number(res.data.impactRating) || 0); // Ensure a numeric value
+        setNewMethods(res.data.newMethod || "");
+        setNewIdentifiedControls(res.data.newIdntifiedControls || "");
+        setNewDate(res.data.newDate || "");
+        setNewImpact(Number(res.data.newImpact) || 0); // Ensure a numeric value
+        setNewLikelihood(Number(res.data.newLikelihood) || 0); // Ensure a numeric value
+        setNewResidualImpactRating(
+          Number(res.data.newResidualImpactRating) || 0
+        ); // Ensure a numeric value
       })
       .catch((err) => {
         alert("Something went wrong...");
         console.log(err);
       });
-  }, [id]);
+  }, [id, source]);
 
   const handleEditDoc = (e) => {
     e.preventDefault();
 
     const data = {
       rid,
-      identifiedControls,
-      impact,
-      likelihood,
-      treatMethod,
-      date,
-      residualRiskRating,
-      residualImpactRating,
+      impactRating,
+      newMethod,
+      newIdntifiedControls,
+      newDate,
+      newImpact,
+      newLikelihood,
+      newResidualImpactRating,
     };
 
+    // Determine the correct endpoint for the PUT request based on the source
+    let endpoint;
+    switch (source) {
+      case "qualityRisks":
+        endpoint = `http://localhost:5000/api/qualityRisks/edit/${id}`;
+        break;
+      case "risksIS":
+        endpoint = `http://localhost:5000/api/risksIS/edit/${id}`;
+        break;
+      case "risksBCP":
+        endpoint = `http://localhost:5000/api/risksBCP/edit/${id}`;
+        break;
+      default:
+        alert("Invalid source!");
+        return;
+    }
+
     axios
-      .put(`http://localhost:5000/api/residualRisks/edit/${id}`, data)
+      .put(endpoint, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/residualRisk");
+        navigate("/Risk-Assessment/residualRisk"); // Update with correct path
       })
       .catch((err) => {
         handleErrorAlert();
@@ -62,8 +107,8 @@ const EditResidualRiskAssesement = () => {
   };
 
   useEffect(() => {
-    setResidualImpactRating(impact * likelihood);
-  }, [impact, likelihood]);
+    setNewResidualImpactRating(newImpact * newLikelihood);
+  }, [newImpact, newLikelihood]);
 
   const handleSuccessAlert = () => {
     Swal.fire({
@@ -84,7 +129,6 @@ const EditResidualRiskAssesement = () => {
   };
 
   return (
-    // <div className="container mx-auto py-8">
     <div className="flex gap-x-10 h-full overflow-y-auto bg-sky-100 rounded-2xl">
       <div className="w-full">
         <h1 className="text-2xl font-bold">Edit Residual Risk</h1>
@@ -110,14 +154,13 @@ const EditResidualRiskAssesement = () => {
                 <input
                   type="number"
                   placeholder="Identified New Controls"
-                  value={residualRiskRating}
-                  onChange={(e) => setResidualRiskRating(e.target.value)}
+                  value={impactRating}
+                  readOnly
+                  onChange={(e) => setImpactRating(e.target.value)}
                   className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
             </div>
-
-            <div className="flex justify-between"></div>
 
             <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold mt-5">
@@ -126,8 +169,8 @@ const EditResidualRiskAssesement = () => {
               <textarea
                 type="text"
                 placeholder="Enter Treatment Method"
-                value={treatMethod}
-                onChange={(e) => setTreatMethod(e.target.value)}
+                value={newMethod}
+                onChange={(e) => setNewMethods(e.target.value)}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
@@ -138,8 +181,8 @@ const EditResidualRiskAssesement = () => {
               <input
                 type="date"
                 placeholder="Enter Implementation Date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
@@ -150,8 +193,8 @@ const EditResidualRiskAssesement = () => {
               <textarea
                 type="text"
                 placeholder="Enter New or changed controls to be implemented"
-                value={identifiedControls}
-                onChange={(e) => setIdentifiedControls(e.target.value)}
+                value={newIdntifiedControls}
+                onChange={(e) => setNewIdentifiedControls(e.target.value)}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
@@ -163,8 +206,8 @@ const EditResidualRiskAssesement = () => {
                 <input
                   type="number"
                   placeholder="Enter Risk Impact"
-                  value={impact}
-                  onChange={(e) => setImpact(e.target.value)}
+                  value={newImpact}
+                  onChange={(e) => setNewImpact(e.target.value)}
                   className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
@@ -175,8 +218,8 @@ const EditResidualRiskAssesement = () => {
                 <input
                   type="number"
                   placeholder="Enter Likelihood"
-                  value={likelihood}
-                  onChange={(e) => setLikelihood(e.target.value)}
+                  value={newLikelihood}
+                  onChange={(e) => setNewLikelihood(e.target.value)}
                   className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
@@ -188,7 +231,7 @@ const EditResidualRiskAssesement = () => {
                 </label>
                 <input
                   type="number"
-                  value={residualImpactRating}
+                  value={newResidualImpactRating}
                   readOnly
                   className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
@@ -199,7 +242,7 @@ const EditResidualRiskAssesement = () => {
               <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
                 Save
               </button>
-              <Link to="/riskAssesements">
+              <Link to="/Risk-Assessment/residualRisk">
                 <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
                   Cancel
                 </button>
@@ -209,7 +252,6 @@ const EditResidualRiskAssesement = () => {
         </div>
       </div>
     </div>
-    // </div>
   );
 };
 

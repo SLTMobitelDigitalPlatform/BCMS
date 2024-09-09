@@ -1,134 +1,167 @@
-import { Link } from "react-router-dom";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import RiskAssNavigation from "../../../../components/RiskAssNavigation";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import { getCurrentUser } from "../../../../services/userApi";
 
 const ResidualRiskAssesement = () => {
   const [risks, setRisks] = useState([]);
+  const [bcpRisks, setBCPRisks] = useState([]);
+  const [isRisks, setIsRisks] = useState([]);
+  const [qmRisks, setQmRisks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const risksPerPage = 5;
+  const [filteredRisks, setFilteredRisks] = useState([]);
+  const [section, setSection] = useState("");
 
-  // Fetch all risks
-  const fetchRisks = async () => {
+  const risksPerPage = 10;
+
+  const fetchBCPRisks = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/residualRisks/"
+      const bcpResponse = await axios.get(
+        "http://localhost:5000/api/risksBCP/"
       );
-      setRisks(response.data);
+      const isResponse = await axios.get("http://localhost:5000/api/risksIS/");
+      const qmResponse = await axios.get(
+        "http://localhost:5000/api/qualityRisks/"
+      );
+
+      const filteredBCPRisks = bcpResponse.data
+        .filter((item) => item.residualImpactRating > 12)
+        .map((risk) => ({ ...risk, source: "risksBCP" }));
+
+      const filterIsRisks = isResponse.data
+        .filter((item) => item.residualImpactRating > 12)
+        .map((risk) => ({ ...risk, source: "risksIS" }));
+
+      const filterQmRisks = qmResponse.data
+        .filter((item) => item.residualImpactRating > 12)
+        .map((risk) => ({ ...risk, source: "qualityRisks" }));
+
+      setBCPRisks(filteredBCPRisks);
+      setIsRisks(filterIsRisks);
+      setQmRisks(filterQmRisks);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Combine all risks
+  const combinedRisks = [...bcpRisks, ...isRisks, ...qmRisks];
+
+  // Fetch risks and filter by section
+  const fetchAndFilterRisks = async () => {
+    try {
+      const user = await getCurrentUser();
+      let section = user.data.section.sectionCode;
+      // console.log(user.data);
+
+      // if (section === "Information Technology (IT)") {
+      //   section = "ITSE";
+      // } else if (section === "Marketing") {
+      //   section = "MARC";
+      // } else if (section === "Sales") {
+      //   section = "SALE";
+      // } else if (section === "Human Resources(HR)") {
+      //   section = "HRMA";
+      // } else if (section === "Finance") {
+      //   section = "FINA";
+      // } else if (section === "Operations") {
+      //   section = "OPER";
+      // } else if (section === "Customer Service") {
+      //   section = "CUSE";
+      // }
+
+      setSection(section);
+      // console.log(combinedRisks);
+      const filtered = combinedRisks.filter((risk) => {
+        const sectionIdentifier = risk.rid.split("-")[1];
+        return sectionIdentifier === section;
+      });
+
+      setFilteredRisks(filtered);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchRisks();
+    fetchBCPRisks();
   }, []);
 
-  // Delete a risk with SweetAlert2 confirmation
-  const deleteRisk = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(
-            `http://localhost:5000/api/residualRisks/delete/${id}`
-          );
-          setRisks(risks.filter((risk) => risk._id !== id));
-          Swal.fire("Deleted!", "Your risk has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the risk.",
-            "error"
-          );
-        }
-      }
-    });
-  };
+  useEffect(() => {
+    fetchAndFilterRisks();
+  }, [bcpRisks, isRisks, qmRisks]);
 
   // Pagination logic
   const indexOfLastRisk = currentPage * risksPerPage;
   const indexOfFirstRisk = indexOfLastRisk - risksPerPage;
-  const currentRisks = risks.slice(indexOfFirstRisk, indexOfLastRisk);
+  const currentRisks = filteredRisks.slice(indexOfFirstRisk, indexOfLastRisk);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="w-full h-full flex flex-col p-5 bg-sky-100 rounded-2xl">
-      <h1 className="text-2xl font-bold text-green-500">Risk Management</h1>
-      <RiskAssNavigation />
-      <div className="flex justify-between items-center mt-8">
-        <h1 className="text-2xl font-bold text-blue-900">
+    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-xl font-bold text-indigo-900">
           Information Security
         </h1>
-        <Link to="/createResidualRisk">
-          <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
-            Create Risk Assessment
-          </button>
-        </Link>
       </div>
 
-      {/* <div className="flex items-center justify-between p-5 w-full"></div> */}
-
       {/* Table */}
-      <div className="mt-8 overflow-auto h-full">
-        <table className="border-2 bg-cyan-50">
-          <thead>
+      <div className="h-full w-full overflow-auto">
+        <table className="table-fixed relative w-full py-10 bg-cyan-50">
+          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
             <tr>
-              <th className="border-2 px-2 py-2">Risk ID</th>
-              <th className="border-2 px-2 py-2">Residual Risk Rating</th>
-              <th className="border-2 px-2 py-2">Treatment Method</th>
-              <th className="border-2 px-2 py-2">Identified New Controls</th>
-              <th className="border-2 px-2 py-2">
+              <th className="w-28 doc-table-border">Risk ID</th>
+              <th className="w-28 doc-table-border">Residual Risk Rating</th>
+              <th className="w-28 doc-table-border">Treatment Method</th>
+              <th className="w-28 doc-table-border">Identified New Controls</th>
+              <th className="w-28 doc-table-border">
                 Target Control Implementation completion Date
               </th>
-              <th className="border-2 px-2 py-2">Impact</th>
-              <th className="border-2 px-2 py-2">Liklihood</th>
-              <th className="border-2 px-2 py-2">
+              <th className="w-28 doc-table-border">Impact</th>
+              <th className="w-28 doc-table-border">Likelihood</th>
+              <th className="w-28 doc-table-border">
                 Residual Risk Impact Rating
               </th>
-              <th className="border-2 px-2 py-2">Action</th>
+              <th className="w-28 doc-table-border">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRisks.map((r) => (
               <tr key={r._id}>
-                <td className="border-2 text-normal px-2">{r.rid}</td>
-                <td className="border-2 text-normal px-2">
-                  {r.residualRiskRating}
-                </td>
-                <td className="border-2 text-normal px-2">{r.treatMethod}</td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.identifiedControls}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">{r.date}</td>
-                <td className="border-2 text-normal px-4 py-3">{r.impact}</td>
-                <td className="border-2 text-normal px-4 py-3">
-                  {r.likelihood}
-                </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">{r.rid}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.residualImpactRating}
                 </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {r.newMethod}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {r.newIdntifiedControls}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">{r.newDate}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {r.newImpact}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {r.newLikelihood}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {r.newResidualImpactRating}
+                </td>
 
-                <td className="border-2 text-normal px-4 py-3">
-                  <div className="flex gap-3">
-                    <Link to={`/editResidualRisk/${r._id}`}>
-                      <button className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold">
-                        Edit
-                      </button>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  <div className="flex justify-center gap-2">
+                    <Link
+                      to={`/editResidualRisk/${r._id}/${r.source}`}
+                      className="doc-edit-btn"
+                    >
+                      Edit
                     </Link>
                     <button
-                      onClick={() => deleteRisk(r._id)}
-                      className="px-4 py-1 rounded-lg bg-red-600 text-white font-semibold"
+                      onClick={() => deleteRisk(r._id, r.source)}
+                      className="doc-delete-btn"
                     >
                       Delete
                     </button>
@@ -138,9 +171,9 @@ const ResidualRiskAssesement = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-start mt-4">
+        <div className="flex justify-center mt-4">
           {Array.from(
-            { length: Math.ceil(risks.length / risksPerPage) },
+            { length: Math.ceil(filteredRisks.length / risksPerPage) },
             (_, i) => (
               <button
                 key={i + 1}

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getItemsInCategory } from "../../../../services/riskElementsApi";
 
 const EditBCPRiskAssesement = () => {
   const [rid, setRid] = useState("");
@@ -27,6 +28,7 @@ const EditBCPRiskAssesement = () => {
   const [businessContinuityOptions, setBusinessContinuityOptions] = useState(
     []
   );
+  const [riskItems, setRiskItems] = useState([]);
 
   const navigate = useNavigate();
 
@@ -91,7 +93,7 @@ const EditBCPRiskAssesement = () => {
       .put(`http://localhost:5000/api/risksBCP/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/bcpRisk");
+        navigate("/Risk-Assessment/bcpRisk");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -109,9 +111,21 @@ const EditBCPRiskAssesement = () => {
       console.log(error);
     }
   };
+  const fetchRiskElements = async () => {
+    try {
+      const response = await getItemsInCategory("Business Continuity");
+      // console.log(response.data);
+      const riskElemets = response.data.map((item) => item.name);
+      // console.log(riskElemets);
+      setRiskItems(riskElemets);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchBCObjectives();
+    fetchRiskElements();
   }, []);
 
   // Calculate Impact Rating
@@ -227,16 +241,24 @@ const EditBCPRiskAssesement = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className=" font-semibold mt-5">
+                  <label htmlFor="riskElement" className="font-semibold mt-5">
                     Risk Element
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Risk Element"
+                  <select
+                    id="riskElement"
                     value={element}
                     onChange={(e) => setElement(e.target.value)}
-                    className="w-[450px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {riskItems.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -408,7 +430,7 @@ const EditBCPRiskAssesement = () => {
               <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
                 Save
               </button>
-              <Link to="/bcpRisk">
+              <Link to="/Risk-Assessment/bcpRisk">
                 <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
                   Cancel
                 </button>

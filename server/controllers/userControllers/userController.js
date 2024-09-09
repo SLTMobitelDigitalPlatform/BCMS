@@ -5,7 +5,7 @@ const fs = require("fs");
 
 exports.getusers = async (req, res) => {
   try {
-    const userData = await User.find();
+    const userData = await User.find().populate("section", "name");
 
     if (!userData || userData.length === 0) {
       return res.status(404).json({ message: "User data not found!" });
@@ -20,7 +20,7 @@ exports.getusers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate("section", "name");
 
     if (!user) {
       return res.status(404).json({ message: "User data not found!" });
@@ -108,7 +108,10 @@ exports.getLoggedInUser = async (req, res) => {
   try {
     // req.user is set by the protect middleware
 
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id).populate(
+      "section",
+      "name sectionCode"
+    );
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }

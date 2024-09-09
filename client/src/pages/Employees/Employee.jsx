@@ -1,159 +1,107 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import Formtable from "./Formtable";
+import Modal from "react-modal";
+import { deleteUser, getUsers } from "../../services/userApi";
+import AddEditEmployee from "./AddEditEmployee";
 import Pagination from "./Pagination";
 
-axios.defaults.baseURL = "http://localhost:5000";
+const Employee = () => {
+  const [openAddEditModal, setOpenAddEditModal] = useState({
+    isShown: false,
+    type: "add",
+    data: {},
+  });
 
-function Employee() {
-  const [addSection, setAddSection] = useState(false);
-  const [editSection, setEditSection] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    serviceNumber: "",
-    designation: "",
-    email: "",
-    role: "",
-    section: "",
-    contactNumber: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   serviceNumber: "",
+  //   designation: "",
+  //   email: "",
+  //   role: "",
+  //   section: "",
+  //   contactNumber: "",
+  // });
 
-  const [formDataEdit, setFormDataEdit] = useState({
-    name: "",
-    serviceNumber: "",
-    designation: "",
-    email: "",
-    role: "",
-    section: "",
-    contactNumber: "",
-    _id: "",
-  });
+  // const [formDataEdit, setFormDataEdit] = useState({
+  //   name: "",
+  //   serviceNumber: "",
+  //   designation: "",
+  //   email: "",
+  //   role: "",
+  //   section: "",
+  //   contactNumber: "",
+  //   _id: "",
+  // });
 
-  const [dataList, setDataList] = useState([]);
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [employeeData, setEmployeeData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  const handleOnChange = (e) => {
-    const { value, name } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // Handle form field changes
+  // const handleOnChange = (e) => {
+  //   const { value, name } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = await axios.post("/user/register", formData);
-    if (data.data.success) {
-      setAddSection(false);
-      alert(data.data.message);
-
-      getFetchData();
-    }
-  };
-
-  const getFetchData = async () => {
-    const data = await axios.get("/users", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-
-    if (data) {
-      setDataList(data.data);
+  // Fetch Employee data
+  const getAllEmployees = async () => {
+    try {
+      const response = await getUsers();
+      // console.log(response.data);
+      setEmployeeData(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error.response?.data || error);
     }
   };
 
   useEffect(() => {
-    getFetchData();
+    getAllEmployees();
   }, []);
 
+  // Handle delete action
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this entry?")) {
       try {
-        const response = await axios.delete(`/user/delete/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        if (response.data.success) {
-          setDataList((prevDataList) =>
-            prevDataList.filter((user) => user._id !== id)
+        const response = await deleteUser(id);
+
+        if (response.data) {
+          setEmployeeData((prevemployeeData) =>
+            prevemployeeData.filter((user) => user._id !== id)
           );
-          alert(response.data.message);
+          alert(response.data);
         }
       } catch (error) {
         console.error("Error deleting user:", error.response?.data || error);
         alert("An error occurred while deleting the user.");
+      } finally {
+        getAllEmployees();
       }
     }
   };
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      const { _id, ...updatedData } = formDataEdit;
-      const response = await axios.put(`/user/update/${_id}`, updatedData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (response.data.success) {
-        alert(response.data.message);
-        setEditSection(false);
-        getFetchData();
-      }
-    } catch (error) {
-      console.error("Error updating user:", error.response.data);
-      alert("An error occurred while updating the user.");
-    }
-  };
-
-  const handleEditOnChange = (e) => {
-    const { value, name } = e.target;
-    setFormDataEdit((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleEdit = (el) => {
-    setFormDataEdit(el);
-    setEditSection(true);
-  };
+  // const handleEditOnChange = (e) => {
+  //   const { value, name } = e.target;
+  //   setFormDataEdit((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   // Updated filtering logic
-  const filteredDataList = dataList.filter((el) =>
+  const filteredemployeeData = employeeData.filter((el) =>
     Object.values(el).some((value) =>
       String(value).toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
-  const totalPages = Math.ceil(filteredDataList.length / itemsPerPage);
-  const paginatedDataList = filteredDataList.slice(
+  const totalPages = Math.ceil(filteredemployeeData.length / itemsPerPage);
+  const paginatedemployeeData = filteredemployeeData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      const allIds = paginatedDataList.map((el) => el._id);
-      setSelectedIds(allIds);
-    } else {
-      setSelectedIds([]);
-    }
-  };
-
-  const handleSelect = (e, id) => {
-    if (e.target.checked) {
-      setSelectedIds((prev) => [...prev, id]);
-    } else {
-      setSelectedIds((prev) => prev.filter((selectedId) => selectedId !== id));
-    }
-  };
 
   return (
     <div>
@@ -180,13 +128,35 @@ function Employee() {
 
           <button
             className="btn-primary text-white font-medium"
-            onClick={() => setAddSection(true)}
+            onClick={() => {
+              setOpenAddEditModal({ isShown: true, type: "add", data: null });
+            }}
           >
             Add Employee
           </button>
+
+          <Modal
+            isOpen={openAddEditModal.isShown}
+            onRequestClose={() => {}}
+            contentLabel="Add/Edit Employee"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          >
+            <AddEditEmployee
+              type={openAddEditModal.type}
+              employeeData={openAddEditModal.data}
+              onClose={() => {
+                setOpenAddEditModal({
+                  isShown: false,
+                  type: "add",
+                  data: null,
+                });
+              }}
+              getAllEmployees={getAllEmployees}
+            />
+          </Modal>
         </div>
 
-        {addSection && (
+        {/* {addSection && (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8 w-full max-w-2xl z-50">
               <Formtable
@@ -197,9 +167,9 @@ function Employee() {
               />
             </div>
           </div>
-        )}
+        )} */}
 
-        {editSection && (
+        {/* {editSection && (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg overflow-hidden shadow-lg p-8 w-full max-w-2xl z-50">
               <Formtable
@@ -210,65 +180,66 @@ function Employee() {
               />
             </div>
           </div>
-        )}
+        )} */}
 
         <div className="mt-5">
-          <table className="table-auto w-full min-w-full bg-white border border-green-500">
-            <thead className="bg-blue-900 text-white">
+          <table className="table-fixed w-full min-w-full bg-white border border-green-500">
+            <thead className="bg-indigo-800 text-white">
               <tr>
-                <th className="p-1 border border-green-500">Name</th>
-                <th className="p-1 border border-green-500">Service Number</th>
-                <th className="p-1 border border-green-500">Designation</th>
-                <th className="p-1 border border-green-500">Email</th>
-                <th className="p-1 border border-green-500">Role</th>
-                <th className="p-1 border border-green-500">Section</th>
-                <th className="p-1 border border-green-500">Contact Number</th>
-                <th className="p-1 border border-green-500">Actions</th>
+                <th className="w-28 border border-green-500">Name</th>
+                <th className="w-20 border border-green-500">Service Number</th>
+                <th className="w-28 border border-green-500">Designation</th>
+                <th className="w-56 border border-green-500">Email</th>
+                <th className="w-28 border border-green-500">Role</th>
+                <th className="w-32 border border-green-500">Section</th>
+                <th className="w-28 border border-green-500">Contact Number</th>
+                <th className="w-28 border border-green-500">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {paginatedDataList.length > 0 ? (
-                paginatedDataList.map((el) => (
-                  <tr key={el._id} className="hover:bg-gray-200">
-                    {/* <td className="border border-green-500 p-1 text-blue-900">
-                        <input
-                          type="checkbox"
-                          checked={selectedIds.includes(el._id)}
-                          onChange={(e) => handleSelect(e, el._id)}
-                        />
-                      </td> */}
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {el.name}
+              {paginatedemployeeData.length > 0 ? (
+                paginatedemployeeData.map((employee) => (
+                  <tr key={employee._id} className="hover:bg-gray-200">
+                    <td className="py-2 pl-1 border border-green-500 text-blue-900 text-sm">
+                      {employee.name}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {el.serviceNumber}
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
+                      {employee.serviceNumber}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {el.designation}
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
+                      {employee.designation}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {el.email}
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
+                      {employee.email}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {el.role}
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
+                      {employee.role}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {el.section}
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
+                      {employee.section
+                        ? employee.section.name
+                        : "No Section Assigned"}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
-                      {el.contactNumber}
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
+                      {employee.contactNumber}
                     </td>
-                    <td className="border border-green-500 p-1">
-                      <div className="flex space-x-2">
+                    <td className="py-2 pl-1 border border-green-500 ">
+                      <div className="flex justify-center gap-2">
                         <button
-                          className="btn-secondary px-2 py-1 rounded-lg font-medium"
-                          onClick={() => handleEdit(el)}
+                          className="doc-edit-btn"
+                          onClick={() => {
+                            setOpenAddEditModal({
+                              isShown: true,
+                              type: "edit",
+                              data: employee,
+                            });
+                          }}
                         >
                           Edit
                         </button>
                         <button
-                          className="btn btn-delete bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg font-medium"
-                          onClick={() => handleDelete(el._id)}
+                          className="doc-delete-btn"
+                          onClick={() => handleDelete(employee._id)}
                         >
                           Delete
                         </button>
@@ -299,6 +270,6 @@ function Employee() {
       </div>
     </div>
   );
-}
+};
 
 export default Employee;

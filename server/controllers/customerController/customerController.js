@@ -69,3 +69,53 @@ exports.customerDelete = async (req, res) => {
     res.status(500).json({ error: "Something Went Wrong", error });
   }
 };
+
+//  Delete Customer by Id
+exports.deleteCustomerByID = async (req, res) => {
+  try {
+    const customerId = req.params.id; // Assuming the ID is passed in the URL as a parameter
+
+    // Find customer by ID and delete
+    const deletedCustomer = await Customer.findByIdAndDelete(customerId);
+
+    if (!deletedCustomer) {
+      return res.status(404).json({ error: "Customer Not Found!" });
+    }
+
+    res.status(200).json({ message: "Customer deleted successfully!" });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+exports.updateCustomer = async (req, res) => {
+  try {
+    const { name, email, mobileNumber, province, company, subPreference } =
+      req.body;
+    const id = req.params.id;
+    if (!name || !email || !mobileNumber) {
+      return res.status(400).json({ error: "Please Enter Mandatory Data!" });
+    }
+
+    const updatedCustomer = await Customer.findByIdAndUpdate(
+      id,
+      {
+        name,
+        email,
+        mobileNumber,
+        province,
+        company,
+        subPreference,
+      },
+      { new: true }
+    );
+
+    if (!updatedCustomer) {
+      return res.status(404).json({ error: "Customer Not Found!" });
+    }
+
+    res.status(200).json(updatedCustomer);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};

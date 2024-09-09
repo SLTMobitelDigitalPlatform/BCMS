@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const interfaceDependanciesController = require("../../controllers/documentController/interfaceDependanciesController");
+const interfaceDependanciesController = require("../../controllers/documentController/contextOfOrganization/interfaceDependanciesController");
 const authControllers = require("../../controllers/userControllers/authController");
 
 router.post(
