@@ -1,150 +1,31 @@
-// import { NavLink } from "react-router-dom";
-
-// const BCPNavigation = () => {
-//   return (
-//     <div className="flex overflow-x-auto scrollbar-thin space-x-2 text-white font-semibold">
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         BCP Form
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Document Control
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Recovery Strategy
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Legal Requirements
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Pre-Incident Preparation
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Critical Business Function
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Resources Required
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Dependencies
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Vital Records
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Work Area Recovery
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Manpower
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Recovery and Resumption
-//       </NavLink>
-//       <NavLink
-//         to="/Business-Continuity-Plan/"
-//         className={({ isActive }) =>
-//           `whitespace-nowrap px-2 py-1 rounded-lg ${
-//             isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-//           }`
-//         }
-//       >
-//         Embedded Documents
-//       </NavLink>
-//     </div>
-//   );
-// };
-
-// export default BCPNavigation;
-
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Using HeroIcons for arrow icons
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const BCPNavigation = () => {
   const scrollContainerRef = useRef(null);
+
+  // Function to scroll to a specific tab
+  const scrollToTab = (tabIndex) => {
+    const tabWidth = 150; // adjust this value to match your tab width
+    const containerWidth = scrollContainerRef.current.offsetWidth;
+    const tabOffset = tabIndex * tabWidth;
+    const centerX = containerWidth / 2;
+    const currentScrollLeft = scrollContainerRef.current.scrollLeft;
+
+    const targetOffset = tabOffset - centerX;
+    if (targetOffset < 0) {
+      scrollContainerRef.current.scrollBy({
+        left: targetOffset,
+        behavior: "smooth",
+      });
+    } else {
+      scrollContainerRef.current.scrollBy({
+        left: targetOffset - currentScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
 
   // Function to scroll left
   const scrollLeft = () => {
@@ -155,6 +36,36 @@ const BCPNavigation = () => {
   const scrollRight = () => {
     scrollContainerRef.current.scrollBy({ left: 150, behavior: "smooth" });
   };
+
+  // Function to handle tab click
+  const handleTabClick = (index) => {
+    scrollToTab(index);
+  };
+
+  // Save scroll position on scroll
+  const handleScroll = () => {
+    localStorage.setItem(
+      "scrollPosition",
+      scrollContainerRef.current.scrollLeft
+    );
+  };
+
+  useEffect(() => {
+    // Restore scroll position on mount
+    const savedPosition = localStorage.getItem("scrollPosition");
+    if (savedPosition) {
+      scrollContainerRef.current.scrollLeft = parseInt(savedPosition, 10);
+    }
+
+    // Add scroll event listener
+    const container = scrollContainerRef.current;
+    container.addEventListener("scroll", handleScroll);
+
+    // Cleanup event listener on unmount
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className="relative flex items-center">
@@ -196,6 +107,7 @@ const BCPNavigation = () => {
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
               }`
             }
+            onClick={() => handleTabClick(idx)}
           >
             {link}
           </NavLink>

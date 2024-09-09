@@ -42,7 +42,9 @@ const EditInternal = () => {
       .put(`http://localhost:5000/internalIssue/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/internalIssues");
+        navigate("/Context-of-the-Organization/issue-register", {
+          state: { activeTab: "internal" },
+        });
       })
       .catch((err) => {
         handleErrorAlert();
@@ -147,7 +149,10 @@ const EditInternal = () => {
                 >
                   Save
                 </button>
-                <Link to="/Context-of-the-Organization/internalIssues">
+                <Link
+                  to="/Context-of-the-Organization/issue-register"
+                  state={{ activeTab: "internal" }}
+                >
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>
