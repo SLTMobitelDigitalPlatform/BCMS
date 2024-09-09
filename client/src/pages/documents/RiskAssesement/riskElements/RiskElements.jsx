@@ -224,7 +224,7 @@ const RiskElements = () => {
                 <span>{item.name}</span>
                 <div>
                   <button
-                    className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded"
+                    className="ml-2 px-2 py-1 bg-blue-600 text-white rounded"
                     onClick={() =>
                       setItemModal({
                         isShown: true,
@@ -275,7 +275,7 @@ const RiskElements = () => {
           Add Item
         </button>
         <button
-          className="ml-2 px-4 py-2 bg-yellow-500 text-white rounded"
+          className="ml-2 px-4 py-2 bg-blue-600 text-white rounded"
           onClick={() =>
             setCategoryModal({
               isShown: true,

@@ -74,7 +74,7 @@ const RiskVersionControls = () => {
               <th className="w-48 doc-table-border">Prepared By</th>
               <th className="w-48 doc-table-border">Checked By</th>
               <th className="w-48 doc-table-border">Approved By</th>
-              <th className="doc-table-border">Reasons for new release</th>
+              <th className="w-36 doc-table-border">Reasons for new release</th>
               <th className="w-36 doc-table-border">Approval Status</th>
               <th className="w-28 doc-table-border">Actions</th>
             </tr>
@@ -93,7 +93,7 @@ const RiskVersionControls = () => {
                   {v.checkedBy}
                 </td>
                 <td className="py-2 px-4 w-48 doc-table-border">{v.approve}</td>
-                <td className="py-2 px-4 doc-table-border">{v.reasons}</td>
+                <td className="py-2 px-4 w-36 doc-table-border">{v.reasons}</td>
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {v.isApproved}
                 </td>
