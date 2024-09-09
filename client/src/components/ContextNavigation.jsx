@@ -60,7 +60,7 @@ const ContextNavigation = () => {
         {/* <NavLink
           to="/Context-of-the-Organization/VersionControls"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -68,6 +68,7 @@ const ContextNavigation = () => {
           Version Control
         </NavLink>
         <NavLink
+
           to="/Context-of-the-Organization/interseted-parties/internal-party"
           className={`px-2 py-1 rounded-lg ${
             location.pathname.includes(
@@ -76,6 +77,7 @@ const ContextNavigation = () => {
               ? "bg-green-500"
               : "bg-indigo-900 hover:bg-indigo-600"
           }`}
+
         >
           Interested Parties
         </NavLink>
@@ -88,13 +90,14 @@ const ContextNavigation = () => {
               ? "bg-green-500"
               : "bg-indigo-900 hover:bg-indigo-600"
           }`}
+
         >
           Issue Register
         </NavLink>
         <NavLink
           to="/Context-of-the-Organization/interfaces"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -104,7 +107,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/objectives"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }
@@ -114,7 +117,7 @@ const ContextNavigation = () => {
         <NavLink
           to="/Context-of-the-Organization/masterProcedures"
           className={({ isActive }) =>
-            `px-2 py-1 rounded-lg ${
+            `px-2 py-1 rounded ${
               isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
             }`
           }

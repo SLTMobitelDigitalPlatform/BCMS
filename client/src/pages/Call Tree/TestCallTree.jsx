@@ -1,80 +1,45 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Tree, TreeNode } from "react-organizational-chart";
+import React, { useState, useEffect } from "react";
+import { OrgDiagram } from "basicprimitivesreact";
+import { PageFitMode, Enabled } from "basicprimitives";
 
-// StyledNode component to display each node
-const StyledNode = ({ label, mobileNumber }) => (
-  <div className="p-2 rounded-lg inline-block border-2 border-indigo-600 text-center">
-    <div>{label}</div>
-    <div>{mobileNumber}</div>
-  </div>
-);
+function TestCallTree() {
+  const [items, setItems] = useState([]);
 
-// Recursive function to render TreeNode components
-const renderTreeNodes = (nodeData) => {
-  return (
-    <TreeNode
-      label={
-        <StyledNode
-          label={nodeData.label}
-          mobileNumber={nodeData.mobileNumber}
-        />
-      }
-    >
-      {nodeData.children &&
-        nodeData.children.map((child, index) => (
-          <TreeNode
-            key={index}
-            label={
-              <StyledNode
-                label={child.label}
-                mobileNumber={child.mobileNumber}
-              />
-            }
-          >
-            {child.children && renderTreeNodes(child)}
-          </TreeNode>
-        ))}
-    </TreeNode>
-  );
-};
-
-const TestCallTree = () => {
-  const [treeData, setTreeData] = useState([]);
-
-  const fetchCallTree = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/callTree");
-      setTreeData(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  // Fetch organizational data from the backend
+  const fetchData = async () => {
+    const response = await fetch("http://localhost:5000/callTree");
+    const data = await response.json();
+    // Map backend data to the structure required by OrgDiagram
+    const formattedItems = data.map((item) => ({
+      id: item._id,
+      parent: item.parent ? item.parent._id : null,
+      title: item.title,
+      description: item.description,
+      image:
+        item.image ||
+        "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109",
+    }));
+    console.log(formattedItems);
+    setItems(formattedItems);
   };
-
   useEffect(() => {
-    fetchCallTree();
+    fetchData();
   }, []);
 
-  if (!treeData.length) return <p>Loading...</p>;
+  const config = {
+    pageFitMode: PageFitMode.AutoSize,
+    autoSizeMinimum: { width: 100, height: 100 },
+    cursorItem: 0,
+    highlightItem: 0,
+    hasSelectorCheckbox: Enabled.True,
+    items: items, // Use the fetched data here
+  };
 
   return (
-    <div className="w-full h-full overflow-auto">
-      {treeData.map((node, index) => (
-        <Tree
-          key={index}
-          lineWidth={"2px"}
-          lineColor={"green"}
-          lineBorderRadius={"10px"}
-          label={
-            <StyledNode label={node.label} mobileNumber={node.mobileNumber} />
-          }
-        >
-          {node.children &&
-            node.children.map((child) => renderTreeNodes(child))}
-        </Tree>
-      ))}
+    <div className="App">
+      <OrgDiagram centerOnCursor={true} config={config} />
     </div>
   );
-};
+}
 
 export default TestCallTree;

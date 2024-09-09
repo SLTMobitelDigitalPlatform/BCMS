@@ -2,7 +2,7 @@ const CallTree = require("../../models/callTreeModels/callTree");
 
 const getCallTreee = async (req, res) => {
   try {
-    const callTree = await CallTree.find().populate("children").exec();
+    const callTree = await CallTree.find().populate("parent").exec();
     res.status(200).json(callTree);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -11,11 +11,7 @@ const getCallTreee = async (req, res) => {
 
 const createCallTreeNode = async (req, res) => {
   try {
-    const callTree = new CallTree({
-      label: req.body.label,
-      mobileNumber: req.body.mobileNumber,
-      children: req.body.children || [],
-    });
+    const callTree = new CallTree(req.body);
     const newNode = await callTree.save();
     res.status(201).json(newNode);
   } catch (error) {
@@ -25,11 +21,11 @@ const createCallTreeNode = async (req, res) => {
 
 const editCallTreeNode = async (req, res) => {
   try {
-    const editedNode = await CallTree.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const { id } = req.params;
+
+    const editedNode = await CallTree.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
     res.status(200).json(editedNode);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -38,7 +34,8 @@ const editCallTreeNode = async (req, res) => {
 
 const deleteCallTreeNode = async (req, res) => {
   try {
-    await CallTree.findByIdAndDelete(req.params.id);
+    const { id } = req.params;
+    await CallTree.findByIdAndDelete(id);
     res.status(200).json({ message: "Call Tree Node deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
