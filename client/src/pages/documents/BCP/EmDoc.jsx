@@ -1,10 +1,6 @@
-import React from "react";
-import Navbar from "./NavbarTb";
-
 const EmDoc = () => {
   return (
     <div className="p-6">
-      <Navbar />
       <div className="p-4 bg-blue-50 rounded-xl shadow-lg">
         <h2 className="text-lg font-semibold text-[#52B14A]  mb-4">
           Embedded List/Grab List

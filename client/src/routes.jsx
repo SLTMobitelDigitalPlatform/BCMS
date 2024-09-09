@@ -71,12 +71,25 @@ import EditInternalParty from "./pages/documents/ContextOrganization/interestedP
 import CreateExternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateExternalParty";
 import EditExternalParty from "./pages/documents/ContextOrganization/interestedParties/EditExternalParty";
 import Table from "./pages/documents/BCP/table";
-import Dependencies from "./pages/documents/BCP/Dependencies";
-import DocumentControl from "./pages/documents/BCP/DocsCon";
-import Document from "./pages/documents/BCP/Document";
-import EmDoc from "./pages/documents/BCP/EmDoc";
+// import Dependencies from "./pages/documents/BCP/Dependencies";
+// import Document from "./pages/documents/BCP/Document";
+// import EmDoc from "./pages/documents/BCP/EmDoc";
 import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
 import Section from "./pages/sections/Section";
+import BusinessContinuityPlanLayout from "./pages/documents/BCP/BusinessContinuityPlanLayout";
+import BCPForm from "./pages/documents/BCP/BCPForm/BCPForm";
+import DocumentControl from "./pages/documents/BCP/Document Control/DocumentControl";
+import RecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/RecoveryStrategy";
+import LegalRequirements from "./pages/documents/BCP/Legal Requirements/LegalRequirements";
+import PreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/PreIncidentPreparation";
+import CriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CriticalBusinessFunction";
+import ResourcesRequired from "./pages/documents/BCP/Resources Required/ResourcesRequired";
+import Dependencies from "./pages/documents/BCP/Dependencies/Dependencies";
+import VitalRecords from "./pages/documents/BCP/Vital Records/VitalRecords";
+import WorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/WorkAreaRecovery";
+import Manpower from "./pages/documents/BCP/Manpower/Manpower";
+import RecoveryAndResumption from "./pages/documents/BCP/Recovery and Resumption/RecoveryAndResumption";
+import EmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EmbeddedDocuments";
 
 const router = createBrowserRouter([
   {
@@ -289,16 +302,43 @@ const router = createBrowserRouter([
       { path: "createMasterProducers", element: <CreateMasterProducers /> },
       { path: "editMasterProcedures/:id", element: <EditMasterProducers /> },
 
+      //? -------------------------------- BCP --------------------------------------
+      // * Business Continuity Plan Layout
+      {
+        path: "Business-Continuity-Plan",
+        element: <BusinessContinuityPlanLayout />,
+        children: [
+          { path: "bcp-form", element: <BCPForm /> },
+          { path: "document-control", element: <DocumentControl /> },
+          { path: "recovery-strategy", element: <RecoveryStrategy /> },
+          { path: "legal-requirements", element: <LegalRequirements /> },
+          {
+            path: "pre-incident-preparation",
+            element: <PreIncidentPreparation />,
+          },
+          {
+            path: "critical-business-function",
+            element: <CriticalBusinessFunction />,
+          },
+          { path: "resources-required", element: <ResourcesRequired /> },
+          { path: "dependencies", element: <Dependencies /> },
+          { path: "vital-records", element: <VitalRecords /> },
+          { path: "work-area-recovery", element: <WorkAreaRecovery /> },
+          { path: "manpower", element: <Manpower /> },
+          {
+            path: "recovery-and-resumption",
+            element: <RecoveryAndResumption />,
+          },
+          { path: "embedded-documents", element: <EmbeddedDocuments /> },
+
+          { path: "table", element: <Table /> },
+          // { path: "emdoc", element: <EmDoc /> },
+          // { path: "dependancies", element: <Dependencies /> },
+        ],
+      },
+
       //? --------------------------------- BIA -------------------------------------
       { path: "bia", element: <BIA /> },
-
-      //? -------------------------------- BCP --------------------------------------
-      // bcp
-      { path: "table", element: <Table /> },
-      { path: "dependancies", element: <Dependencies /> },
-      { path: "documentControl", element: <DocumentControl /> },
-      { path: "bcp", element: <Document /> },
-      { path: "emdoc", element: <EmDoc /> },
 
       // Roles
       { path: "roles", element: <Roles /> },
