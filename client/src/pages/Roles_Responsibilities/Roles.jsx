@@ -64,24 +64,20 @@ const Roles = () => {
       {/* <div className="bg-cyan-50 p-3 mt-5 rounded-2xl px-5 border"> */}
       {/* Table */}
       <div className="relative overflow-y-auto rounded-b-2xl mt-5">
-        <table className="w-full text-lg rtl:text-right text-gray-500 dark:text-gray-200">
-          <thead className="text-xl text-[#003E81] uppercase dark:bg-gray-700 dark:text-gray-200">
+        <table className="table-fixed w-full min-w-full bg-cyan-50 border-green-500">
+          <thead className="bg-indigo-800 text-white h-14">
             <tr>
-              <th scope="col" className="px-6 py-3 border-r border-gray-300">
-                Roles
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Responsibilities
-              </th>
+              <th className="w-2/5 border border-green-500">Roles</th>
+              <th className="w-20 border border-green-500">Responsibilities</th>
             </tr>
           </thead>
           <tbody>
             {roles.map((role, index) => (
-              <tr key={index} className="dark:bg-gray-800 dark:border-gray-700">
-                <td className="px-6 py-4 text-gray-100 font-semibold border-r border-gray-200">
+              <tr key={index} className="hover:bg-gray-200">
+                <td className="py-3 px-8 border border-green-500 text-blue-900 text-lg">
                   {role.roles}
                 </td>
-                <td className="px-6 py-4 text-justify">
+                <td className="py-4 px-8 border border-green-500 text-blue-900 text-base text-justify">
                   <ol className="list-decimal list-inside">
                     {role.responsibilities
                       .split(/(\d+\.\s)/g)
