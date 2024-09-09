@@ -65,7 +65,7 @@ const Roles = () => {
       {/* Table */}
       <div className="relative overflow-y-auto rounded-b-2xl mt-5">
         <table className="table-fixed w-full min-w-full bg-cyan-50 border-green-500">
-          <thead className="bg-indigo-800 text-white h-14">
+          <thead className="bg-indigo-800 text-white h-12">
             <tr>
               <th className="w-2/5 border border-green-500">Roles</th>
               <th className="w-20 border border-green-500">Responsibilities</th>
