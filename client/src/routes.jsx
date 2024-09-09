@@ -75,6 +75,8 @@ import Table from "./pages/documents/BCP/table";
 // import Document from "./pages/documents/BCP/Document";
 // import EmDoc from "./pages/documents/BCP/EmDoc";
 import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
+import TestCallTree from "./pages/Call Tree/TestCallTree";
+import CallTreeTable from "./pages/Call Tree/CallTreeTable";
 import Section from "./pages/sections/Section";
 import BusinessContinuityPlanLayout from "./pages/documents/BCP/BusinessContinuityPlanLayout";
 import BCPForm from "./pages/documents/BCP/BCPForm/BCPForm";
@@ -172,6 +174,8 @@ const router = createBrowserRouter([
 
       // Call Tree
       { path: "callTree", element: <CallTree /> },
+      { path: "testCallTree", element: <TestCallTree /> },
+      { path: "callTreeTable", element: <CallTreeTable /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },

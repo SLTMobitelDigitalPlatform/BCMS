@@ -48,6 +48,7 @@ const CreateMeeting = () => {
       }
       return [...prevAttendees, selectedEmployee];
     });
+    console.log(selectedEmployee);
   };
 
   // select chairperson from all employees
@@ -226,7 +227,9 @@ const CreateMeeting = () => {
                     className="block w-full rounded-md border-0 py-1.5 text-[#003E81] shadow-sm ring-1 ring-inset ring-[#52B14A] focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                     onChange={(e) => handleAttendeeClick(e.target.value)}
                   >
-                    <option value="">Select an attendee</option>
+                    <option value="" disabled>
+                      Select an attendee
+                    </option>
                     {employees.map((employee) => (
                       <option key={employee._id} value={employee._id}>
                         {employee.name}
@@ -284,7 +287,7 @@ const CreateMeeting = () => {
                   <td>{i + 1}</td>
                   <td>{attendee.name}</td>
                   <td>{attendee.designation}</td>
-                  <td>{attendee.section}</td>
+                  <td>{attendee.section.name}</td>
                   <td>
                     <button
                       type="button"
