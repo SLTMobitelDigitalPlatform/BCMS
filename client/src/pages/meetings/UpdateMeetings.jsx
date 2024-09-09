@@ -560,7 +560,7 @@ const UpdateMeeting = () => {
                       <th className="pl-2">{i + 1}</th>
                       <td>{attendee.name}</td>
                       <td>{attendee.designation}</td>
-                      <td>{attendee.section}</td>
+                      <td>{attendee.section.name}</td>
                       <td>
                         <select
                           className="block w-full rounded-md border-0 py-1.5 text-[#003E81] shadow-sm ring-1 ring-inset ring-[#52B14A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
