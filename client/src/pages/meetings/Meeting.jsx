@@ -13,15 +13,40 @@ const Meeting = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  // Get all meetings
-  const getMeetings = async () => {
-    try {
-      const response = await getAllMeetings();
-      setMeetings(response.data);
-    } catch (error) {
-      console.error("Error fetching meetings data:", error);
-    }
-  };
+
+  // Fetch all meetings
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get("http://localhost:5000/currentuser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    const fetchMeetings = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getMeetings");
+        const data = await response.json();
+
+        //Sort meetings by date(ascending)
+        const sortedMeetings = data.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+        setMeetings(sortedMeetings);
+      } catch (error) {
+        console.error("Error fetching meetings data:", error);
+      }
+    };
+
 
   // Get current user
   const getUserDetails = async () => {
