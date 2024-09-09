@@ -26,7 +26,9 @@ const CreateExternalIssue = () => {
       .post("http://localhost:5000/externalIssue/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/externalIssues");
+        navigate("/Context-of-the-Organization/issue-register", {
+          state: { activeTab: "external" },
+        });
       })
       .catch((error) => {
         handleErrorAlert();
@@ -127,7 +129,10 @@ const CreateExternalIssue = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/externalIssues">
+              <Link
+                to="/Context-of-the-Organization/issue-register"
+                state={{ activeTab: "external" }}
+              >
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

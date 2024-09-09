@@ -90,7 +90,7 @@ const EditVersionControl = () => {
       .put(`http://localhost:5000/api/versionControls/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/VersionControls");
+        navigate("/Context-of-the-Organization/version-control");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -273,7 +273,7 @@ const EditVersionControl = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/VersionControls">
+              <Link to="/Context-of-the-Organization/version-control">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

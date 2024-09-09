@@ -21,7 +21,9 @@ const CreateInternalParty = () => {
       .post("http://localhost:5000/internalParty/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/internalParty");
+        navigate("/Context-of-the-Organization/interested-parties", {
+          state: { activeTab: "internalParty" },
+        });
       })
       .catch((error) => {
         handleErrorAlert();
@@ -86,7 +88,10 @@ const CreateInternalParty = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/internalParty">
+              <Link
+                to="/Context-of-the-Organization/interested-parties"
+                state={{ activeTab: "internalParty" }}
+              >
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>
