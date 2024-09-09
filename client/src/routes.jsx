@@ -78,6 +78,7 @@ import EmDoc from "./pages/documents/BCP/EmDoc";
 import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
 import TestCallTree from "./pages/Call Tree/TestCallTree";
 import CallTreeTable from "./pages/Call Tree/CallTreeTable";
+import Section from "./pages/sections/Section";
 
 const router = createBrowserRouter([
   {
