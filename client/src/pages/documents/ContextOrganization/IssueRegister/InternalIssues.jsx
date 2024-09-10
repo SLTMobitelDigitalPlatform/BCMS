@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ContextNavigation from "../../../../components/ContextNavigation";
+import Swal from "sweetalert2";
 
 const InternalIssues = () => {
   const [internalIssues, setInternalIssues] = useState([]);
@@ -14,6 +15,37 @@ const InternalIssues = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const deleteInternal = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(
+            `http://localhost:5000/internalIssue/delete/${id}`
+          );
+          setInternalIssues(
+            internalIssues.filter((internal) => internal._id !== id)
+          );
+          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
+        } catch (error) {
+          console.error(error);
+          Swal.fire(
+            "Error!",
+            "There was a problem deleting the record.",
+            "error"
+          );
+        }
+      }
+    });
   };
 
   useEffect(() => {
@@ -61,6 +93,7 @@ const InternalIssues = () => {
               <th className="border-2">ISMS</th>
               <th className="border-2">QMS</th>
               <th className="border-2">BCMS</th>
+              <th className="border-2">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -71,6 +104,21 @@ const InternalIssues = () => {
                 <td className="border-2 p-3">{internal.isms ? "✓" : "✗"}</td>
                 <td className="border-2 p-3">{internal.qms ? "✓" : "✗"}</td>
                 <td className="border-2 p-3">{internal.bcms ? "✓" : "✗"}</td>
+                <td className="border-2 p-3 flex justify-center">
+                  <div className="flex gap-3 items-center">
+                    <Link to={`/editInternalIssues/${internal._id}`}>
+                      <button className="p-1 w-20 bg-sky-600 text-white rounded-lg font-semibold">
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      className="p-1 w-20 bg-red-500 text-white rounded-lg"
+                      onClick={() => deleteInternal(internal._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

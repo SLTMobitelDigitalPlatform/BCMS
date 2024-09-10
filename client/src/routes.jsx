@@ -59,6 +59,13 @@ import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRis
 import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
 import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
 import Customer from "./pages/Customers/Customer";
+import EditMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/EditMasterProducers";
+import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
+import EditInternal from "./pages/documents/ContextOrganization/IssueRegister/EditInternal";
+import EditExternal from "./pages/documents/ContextOrganization/IssueRegister/EditExternal";
+
+import BIA from "./pages/documents/BIA/BIA";
+import PeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/ViewPeak";
 
 const router = createBrowserRouter([
   {
@@ -198,16 +205,28 @@ const router = createBrowserRouter([
       // ** External Issues
       { path: "externalIssues", element: <ExternalIssues /> },
       { path: "createExternalIssue", element: <CreateExternalIssue /> },
+      {
+        path: "editExternalIssues/:id",
+        element: <EditExternal />,
+      },
 
       // ** Internal Issues
       { path: "internalIssues", element: <InternalIssues /> },
       { path: "createInternalIssue", element: <CreateInternalIssue /> },
+      {
+        path: "editInternalIssues/:id",
+        element: <EditInternal />,
+      },
 
       // * Interfaces and Dependencies
       { path: "interfaces", element: <InterfacesDependencies /> },
       {
         path: "createInterfaceDependancy",
         element: <CreateInterfaceDependancy />,
+      },
+      {
+        path: "editInterfaceDependancy/:id",
+        element: <EditInterfacesAndDependancies />,
       },
 
       // * Objectives
@@ -218,8 +237,11 @@ const router = createBrowserRouter([
       // * Master of Procedures and Process
       { path: "masterProcedures", element: <MasterProcedures /> },
       { path: "createMasterProducers", element: <CreateMasterProducers /> },
+      { path: "editMasterProcedures/:id", element: <EditMasterProducers /> },
 
       //? BIA
+      { path: "BIA", element: <BIA /> },
+      { path: "peaks&deadlines", element: <PeaksAndDeadlines /> },
 
       //? BCP
 
@@ -234,8 +256,8 @@ const router = createBrowserRouter([
     element: <Customer />,
   },
   {
-    path: "*",
-    element: <ErrorPage />,
+    // path: "*",
+    // element: <ErrorPage />,
   },
 ]);
 

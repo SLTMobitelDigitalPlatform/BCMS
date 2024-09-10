@@ -85,21 +85,17 @@ const UpdateEvent = () => {
   };
 
   useEffect(() => {
-    if (event) {
+    if (event && employees.length > 0) {
+      const eventAttendees = employees.filter((employee) =>
+        event.attendees.includes(employee._id)
+      );
+      setAttendees(eventAttendees);
       reset({
         title: event.title,
         start: new Date(event.start),
         end: event.end ? new Date(event.end) : "",
         describe: event.describe ? event.describe : "",
       });
-
-      // Set attendees if the employees are already fetched
-      if (employees.length > 0) {
-        const eventAttendees = employees.filter((employee) =>
-          event.attendees.includes(employee._id)
-        );
-        setAttendees(eventAttendees);
-      }
     }
   }, [event, reset, employees]);
 

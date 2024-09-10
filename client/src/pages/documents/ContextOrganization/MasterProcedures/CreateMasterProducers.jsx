@@ -21,7 +21,7 @@ const CreateMasterProducers = () => {
     };
 
     axios
-      .post("http://localhost:5000/proceduresAndProdess/create", data)
+      .post("http://localhost:5000/proceduresAndProcess/create", data)
       .then(() => {
         handleSuccessAlert();
         navigate("/masterProcedures");

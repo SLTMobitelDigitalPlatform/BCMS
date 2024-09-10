@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ContextNavigation from "../../../../components/ContextNavigation";
+import Swal from "sweetalert2";
 
 const Objectives = () => {
   const [objectives, setObjectives] = useState([]);
@@ -14,6 +15,34 @@ const Objectives = () => {
       console.log(error);
     }
   };
+
+  const deleteObjective = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:5000/objective/delete/${id}`);
+          setObjectives(objectives.filter((objective) => objective._id !== id));
+          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
+        } catch (error) {
+          console.error(error);
+          Swal.fire(
+            "Error!",
+            "There was a problem deleting the record.",
+            "error"
+          );
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     fetchObjectives();
   }, []);
@@ -60,6 +89,12 @@ const Objectives = () => {
                         Edit
                       </button>
                     </Link>
+                    <button
+                      className="p-1 w-20 bg-red-500 text-white rounded-lg"
+                      onClick={() => deleteObjective(objective._id)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>
