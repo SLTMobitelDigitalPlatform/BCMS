@@ -6,30 +6,7 @@ import { useNavigate } from "react-router-dom";
 const BiaDocumentControl = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
-      {/* Sidebar */}
-      <aside className="bg-blue-900 text-white w-64 p-4">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold">BCMS</h1>
-        </div>
-
-        <nav className="flex flex-col space-y-6">
-          <button className="text-left">Employee</button>
-          <div>
-            <button className="text-left">Documents</button>
-            <div className="pl-4">
-              <ul>
-                <li className="cursor-pointer">Document Control</li>
-              </ul>
-            </div>
-          </div>
-          <button className="text-left">Meetings</button>
-          <button className="text-left">Calendar</button>
-          <button className="text-left">Risk Management</button>
-          <button className="text-left">Roles & Responsibilities</button>
-        </nav>
-
-        <button className="bg-cyan-500 text-white w-full mt-10 py-2 rounded-lg">Log Out</button>
-      </aside>
+    
 
       {/* Main Content */}
       <div className="flex-1 p-6">

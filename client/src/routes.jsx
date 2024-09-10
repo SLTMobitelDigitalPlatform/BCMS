@@ -6,6 +6,8 @@ import UpdateEvent from "./pages/calendar/UpdateEvent";
 import Customer from "./pages/Customers/Customer";
 import BIA from "./pages/documents/BIA/BIA";
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+import ImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
+import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
 import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
@@ -346,7 +348,9 @@ const router = createBrowserRouter([
 
       //? --------------------------------- BIA -------------------------------------
       { path: "bia", element: <BIA /> },
-      {path: "import BiaDocumentControl from ",element: <BiaDocumentControl/>},
+      {path: "BiaDocumentControl",element: <BiaDocumentControl/>},
+      {path: "ImpactAnalysis",element: <ImpactAnalysis/>},
+      {path: "BiaResourcesRequired",element: <BiaResourcesRequired />},
 
       // Roles
       { path: "roles", element: <Roles /> },

@@ -3,8 +3,7 @@ import React from 'react';
 const ResourcesRequired = () => {
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
-      <Sidebar />
+   
 
       {/* Main Content */}
       <div className="resources-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto">
