@@ -103,7 +103,7 @@ const BCPNavigation = () => {
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
             className={({ isActive }) =>
-              `whitespace-nowrap px-2 py-1 rounded-lg ${
+              `whitespace-nowrap px-2 py-1 rounded ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
               }`
             }
