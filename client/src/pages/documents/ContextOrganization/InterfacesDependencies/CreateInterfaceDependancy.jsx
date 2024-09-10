@@ -127,7 +127,7 @@ const CreateInterfaceDependancy = () => {
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="inwardOutward" className="font-semibold">
-                Inworld/Outworld
+                Inward/Outward
               </label>
               <select
                 id="inwardOutward"
