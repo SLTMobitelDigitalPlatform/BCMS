@@ -76,8 +76,8 @@ const InterfacesDependencies = () => {
               <th className="doc-table-border">Process Name</th>
               <th className="doc-table-border">External entity name</th>
               <th className="doc-table-border">Information Exchanged</th>
-              <th className="w-24 doc-table-border">Inworld/ Outworld</th>
-              <th className="doc-table-border">Medium</th>
+              <th className="w-30 doc-table-border">Inward/ Outward</th>
+              <th className="w-30 doc-table-border">Medium</th>
               <th className="doc-table-border">Exchange method</th>
               <th className="w-24 doc-table-border">
                 Service provided/ obtained
@@ -97,7 +97,7 @@ const InterfacesDependencies = () => {
                 <td className="py-2 px-4 doc-table-border">
                   {interfaceDep.informationExchanged}
                 </td>
-                <td className="py-2 px-4 w-24 doc-table-border text-center">
+                <td className="py-2 px-1 doc-table-border text-center">
                   {interfaceDep.inwardOutward}
                 </td>
                 <td className="py-2 px-4 doc-table-border">
