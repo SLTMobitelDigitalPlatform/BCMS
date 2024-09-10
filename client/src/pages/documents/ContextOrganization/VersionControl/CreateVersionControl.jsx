@@ -90,7 +90,7 @@ const CreateVersionControl = () => {
       .post("http://localhost:5000/api/versionControls/add", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/VersionControls");
+        navigate("/Context-of-the-Organization/version-control");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -259,7 +259,7 @@ const CreateVersionControl = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/VersionControls">
+              <Link to="/Context-of-the-Organization/version-control">
                 <button className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

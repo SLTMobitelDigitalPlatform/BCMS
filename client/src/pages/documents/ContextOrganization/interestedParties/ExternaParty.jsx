@@ -53,22 +53,12 @@ const ExternalParty = () => {
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
-      <div className="flex justify-between items-center mb-5">
+      {/* <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">External Parties</h1>
 
         <div className="flex items-center gap-10">
           <NavLink
-            to="/Context-of-the-Organization/externalParty"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            External Party
-          </NavLink>
-          <NavLink
-            to="/Context-of-the-Organization/internalParty"
+            to="/Context-of-the-Organization/interseted-parties/internal-party"
             className={({ isActive }) =>
               `px-2 py-1 rounded-lg text-white font-semibold ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -76,6 +66,16 @@ const ExternalParty = () => {
             }
           >
             Internal Party
+          </NavLink>
+          <NavLink
+            to="/Context-of-the-Organization/interseted-parties/external-party"
+            className={({ isActive }) =>
+              `px-2 py-1 rounded-lg text-white font-semibold ${
+                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              }`
+            }
+          >
+            External Party
           </NavLink>
         </div>
         <Link to="/createExternalParty" className="btn-primary font-semibold">
@@ -111,6 +111,7 @@ const ExternalParty = () => {
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editExternalParty/${external._id}`}
+                      state={{ activeTab: "external" }}
                       className="doc-edit-btn"
                     >
                       Edit

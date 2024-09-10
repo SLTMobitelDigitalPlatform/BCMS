@@ -34,7 +34,9 @@ const EditExternalParty = () => {
       .put(`http://localhost:5000/externalParty/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/externalParty");
+        navigate("/Context-of-the-Organization/interested-parties", {
+          state: { activeTab: "externalParty" },
+        });
       })
       .catch((err) => {
         handleErrorAlert();
@@ -102,7 +104,10 @@ const EditExternalParty = () => {
                 >
                   Save
                 </button>
-                <Link to="/Context-of-the-Organization/externalParty">
+                <Link
+                  to="/Context-of-the-Organization/interested-parties"
+                  state={{ activeTab: "externalParty" }}
+                >
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>
