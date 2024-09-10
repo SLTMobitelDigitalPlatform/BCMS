@@ -1,0 +1,97 @@
+import React from 'react';
+
+const ResourcesRequired = () => {
+  return (
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Content */}
+      <div className="resources-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto">
+        {/* Header */}
+        <div className="resources-header flex justify-between items-center px-5 py-2 bg-white shadow-md rounded-t-2xl">
+          <h1 className="text-2xl sm:text-3xl font-bold text-green-500">Business Impact Analysis</h1>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search"
+              className="p-2 border border-gray-300 rounded-md"
+            />
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="tabs flex justify-center gap-4 mt-3">
+          <button className="tab text-sm font-semibold text-gray-400">Operating Sites</button>
+          <button className="tab text-sm font-semibold text-gray-400">Critical Business Functions</button>
+          <button className="tab text-sm font-semibold text-gray-400">Business Peaks and Deadlines</button>
+          <button className="tab text-sm font-semibold text-gray-400">Resources</button>
+          <button className="tab text-sm font-semibold text-green-600 border-b-2 border-green-500 pb-2">Resources Required</button>
+        </div>
+
+        {/* Table - Resources Required */}
+        <div className="resources-content mt-6 px-5">
+          <h2 className="text-xl font-bold text-green-500 mb-5">Resources Required</h2>
+
+          <div className="table-container bg-white rounded-xl p-5 shadow-md overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="border p-2 bg-gray-100">Name</th>
+                  <th className="border p-2 bg-gray-100">30 Min</th>
+                  <th className="border p-2 bg-gray-100">1 Hour</th>
+                  <th className="border p-2 bg-gray-100">2 Hours</th>
+                  <th className="border p-2 bg-gray-100">4 Hours</th>
+                  <th className="border p-2 bg-gray-100">6 Hours</th>
+                  <th className="border p-2 bg-gray-100">8 Hours</th>
+                  <th className="border p-2 bg-gray-100">12 Hours</th>
+                  <th className="border p-2 bg-gray-100">1 Day</th>
+                  <th className="border p-2 bg-gray-100">3 Days</th>
+                  <th className="border p-2 bg-gray-100">7 Days</th>
+                  <th className="border p-2 bg-gray-100">2 Weeks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border p-2">Example 1</td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                  <td className="border p-2"></td>
+                </tr>
+                {/* Add more rows as needed */}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Sidebar Component
+const Sidebar = () => (
+  <div className="sidebar bg-blue-900 text-white w-60 p-5 h-screen">
+    <div className="logo mb-10">
+      <img src="logo.png" alt="Logo" />
+    </div>
+    <nav className="nav flex flex-col gap-3">
+      <a href="#" className="font-semibold">Employee</a>
+      <a href="#" className="font-semibold">Documents</a>
+      <a href="#" className="font-semibold">Meetings</a>
+      <a href="#" className="font-semibold">Calendar</a>
+      <a href="#" className="font-semibold">Risk Management</a>
+      <a href="#" className="font-semibold">Roles & Responsibilities</a>
+    </nav>
+    <button className="bg-cyan-600 text-white p-2 mt-10 rounded">Log Out</button>
+  </div>
+);
+
+export default ResourcesRequired;

@@ -5,6 +5,7 @@ import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
 import Customer from "./pages/Customers/Customer";
 import BIA from "./pages/documents/BIA/BIA";
+import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
 import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
@@ -292,6 +293,7 @@ const router = createBrowserRouter([
 
       //? --------------------------------- BIA -------------------------------------
       { path: "bia", element: <BIA /> },
+      {path: "import BiaDocumentControl from ",element: <BiaDocumentControl/>},
 
       //? -------------------------------- BCP --------------------------------------
       // bcp
