@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import RiskAssNavigation from "../../../../components/RiskAssNavigation";
 
 const RiskVersionControls = () => {
   const [versionControls, setVersionControls] = useState([]);
@@ -57,63 +56,67 @@ const RiskVersionControls = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <h1 className="text-3xl mb-5 font-bold text-green-500">
-        Risk Management
-      </h1>
-      <RiskAssNavigation />
-      <div className="bg-sky-50 rounded-2xl h-full mt-5 p-5">
-        <div className="flex justify-between items-center ">
-          <h1 className="text-2xl font-bold text-blue-900">Version Control</h1>
-          <Link to="/createRiskVersion">
-            <button className="btn-primary">Create Version Control</button>
-          </Link>
-        </div>
-        {/* <div className="flex justify-between items-center mt-8">
-        </div> */}
+    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-xl font-bold text-indigo-900">Version Control</h1>
+        <Link to="/createRiskVersion" className="btn-primary font-semibold">
+          Create Version Control
+        </Link>
+      </div>
 
-        {/* Table */}
-        <div className="mt-8 h-full overflow-auto">
-          <table className="w-full border-2">
-            <thead>
-              <tr className="border-2">
-                <th className="border-2">Serial Number</th>
-                <th className="border-2">Version Number</th>
-                <th className="border-2">Prepared By</th>
-                <th className="w-48 doc-table-border">Checked By</th>
-                <th className="border-2">Approved By</th>
-                <th className="border-2">Reasons for new release</th>
-                <th className="border-2">Approval Status</th>
-                <th className="border-2">Actions</th>
+      {/* Table */}
+      <div className="h-full w-full overflow-auto">
+        <table className="table-fixed relative w-full py-10 bg-cyan-50">
+          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+            <tr>
+              <th className="w-20 doc-table-border">Serial Number</th>
+              <th className="w-20 doc-table-border">Version Number</th>
+              <th className="w-48 doc-table-border">Prepared By</th>
+              <th className="w-48 doc-table-border">Checked By</th>
+              <th className="w-48 doc-table-border">Approved By</th>
+              <th className="w-36 doc-table-border">Reasons for new release</th>
+              <th className="w-36 doc-table-border">Approval Status</th>
+              <th className="w-28 doc-table-border">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {versionControls.map((v) => (
+              <tr key={v.id}>
+                <td className="py-2 px-4 w-20 doc-table-border text-center">
+                  {v.serialNo}
+                </td>
+                <td className="py-2 px-4 w-20 doc-table-border text-center">
+                  {v.versionNo}
+                </td>
+                <td className="py-2 px-4 w-48 doc-table-border">{v.prepare}</td>
+                <td className="py-2 px-4 w-48 doc-table-border">
+                  {v.checkedBy}
+                </td>
+                <td className="py-2 px-4 w-48 doc-table-border">{v.approve}</td>
+                <td className="py-2 px-4 w-36 doc-table-border">{v.reasons}</td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {v.isApproved}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  <div className="flex justify-center gap-2">
+                    <Link
+                      to={`/editISRiskVersion/${v._id}`}
+                      className="doc-edit-btn"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      className="doc-delete-btn"
+                      onClick={() => deleteVersionControl(v._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {versionControls.map((v) => (
-                <tr key={v.id}>
-                  <td className="border-2 p-3">{v.serialNo}</td>
-                  <td className="border-2 p-3">{v.versionNo}</td>
-                  <td className="border-2 p-3">{v.prepare}</td>
-                  <td className="py-2 px-4 w-48 doc-table-border">
-                    {v.checkedBy}
-                  </td>
-                  <td className="border-2 p-3">{v.approve}</td>
-                  <td className="border-2 p-3">{v.reasons}</td>
-                  <td className="border-2 p-3">{v.isApproved}</td>
-                  <td className="border-2 p-3 flex justify-center">
-                    <div className="flex gap-3 items-center">
-                      <Link to={`/editISRiskVersion/${v._id}`}>
-                        <button>Edit</button>
-                      </Link>
-                      <button onClick={() => deleteVersionControl(v._id)}>
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

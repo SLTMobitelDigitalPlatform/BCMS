@@ -90,7 +90,7 @@ const CreateVersionControl = () => {
       .post("http://localhost:5000/api/versionControls/add", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/VersionControls");
+        navigate("/Context-of-the-Organization/version-control");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -119,9 +119,11 @@ const CreateVersionControl = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full rounded-2xl bg-sky-200">
-      <h1 className="text-2xl font-bold">Add New Version Control</h1>
-      <div className="bg-cyan-100 h-full mt-5 rounded-2xl p-8 overflow-auto">
+    <div className="flex flex-col w-full h-full">
+      <h1 className="text-2xl font-bold text-green-500">
+        Add New Version Control
+      </h1>
+      <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleCreateVersion}>
           <div className="flex flex-col gap-6">
             <div className="flex justify-between">
@@ -253,12 +255,12 @@ const CreateVersionControl = () => {
             <div className="flex justify-start gap-2">
               <button
                 type="submit"
-                className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
+                className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/VersionControls">
-                <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
+              <Link to="/Context-of-the-Organization/version-control">
+                <button className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold">
                   Cancel
                 </button>
               </Link>

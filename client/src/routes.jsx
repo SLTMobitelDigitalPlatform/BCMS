@@ -14,8 +14,6 @@ import CreateExternalIssue from "./pages/documents/ContextOrganization/IssueRegi
 import CreateInternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateInternalIssue";
 import EditExternal from "./pages/documents/ContextOrganization/IssueRegister/EditExternal";
 import EditInternal from "./pages/documents/ContextOrganization/IssueRegister/EditInternal";
-import ExternalIssues from "./pages/documents/ContextOrganization/IssueRegister/ExternalIssues";
-import InternalIssues from "./pages/documents/ContextOrganization/IssueRegister/InternalIssues";
 import CreateMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/CreateMasterProducers";
 import EditMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/EditMasterProducers";
 import MasterProcedures from "./pages/documents/ContextOrganization/MasterProcedures/MasterProcedures";
@@ -62,20 +60,37 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
-import { Section } from "./pages/sections/Section";
-import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
+
 import CallTree from "./pages/Call Tree/CallTree";
-import ExternalParty from "./pages/documents/ContextOrganization/interestedParties/ExternaParty";
-import InternalParty from "./pages/documents/ContextOrganization/interestedParties/InternalParty";
-import CreateInternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateInternalParty";
-import EditInternalParty from "./pages/documents/ContextOrganization/interestedParties/EditInternalParty";
-import CreateExternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateExternalParty";
-import EditExternalParty from "./pages/documents/ContextOrganization/interestedParties/EditExternalParty";
 import Table from "./pages/documents/BCP/table";
-import Dependencies from "./pages/documents/BCP/Dependencies";
-import DocumentControl from "./pages/documents/BCP/DocsCon";
-import Document from "./pages/documents/BCP/Document";
-import EmDoc from "./pages/documents/BCP/EmDoc";
+import CreateExternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateExternalParty";
+import CreateInternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateInternalParty";
+import EditExternalParty from "./pages/documents/ContextOrganization/interestedParties/EditExternalParty";
+import EditInternalParty from "./pages/documents/ContextOrganization/interestedParties/EditInternalParty";
+import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
+// import Dependencies from "./pages/documents/BCP/Dependencies";
+// import Document from "./pages/documents/BCP/Document";
+// import EmDoc from "./pages/documents/BCP/EmDoc";
+import CallTreeTable from "./pages/Call Tree/CallTreeTable";
+import TestCallTree from "./pages/Call Tree/TestCallTree";
+import BCPForm from "./pages/documents/BCP/BCPForm/BCPForm";
+import BusinessContinuityPlanLayout from "./pages/documents/BCP/BusinessContinuityPlanLayout";
+import CriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CriticalBusinessFunction";
+import Dependencies from "./pages/documents/BCP/Dependencies/Dependencies";
+import DocumentControl from "./pages/documents/BCP/Document Control/DocumentControl";
+import EmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EmbeddedDocuments";
+import LegalRequirements from "./pages/documents/BCP/Legal Requirements/LegalRequirements";
+import Manpower from "./pages/documents/BCP/Manpower/Manpower";
+import PreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/PreIncidentPreparation";
+import RecoveryAndResumption from "./pages/documents/BCP/Recovery and Resumption/RecoveryAndResumption";
+import RecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/RecoveryStrategy";
+import ResourcesRequired from "./pages/documents/BCP/Resources Required/ResourcesRequired";
+import VitalRecords from "./pages/documents/BCP/Vital Records/VitalRecords";
+import WorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/WorkAreaRecovery";
+import InterestedParties from "./pages/documents/ContextOrganization/interestedParties/InterestedParties";
+import IssueRegister from "./pages/documents/ContextOrganization/IssueRegister/IssueRegister";
+import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
+import Section from "./pages/sections/Section";
 
 const router = createBrowserRouter([
   {
@@ -149,19 +164,17 @@ const router = createBrowserRouter([
       },
       // Employee Table
       { path: "employee", element: <Employee /> },
-      {
-        path: "/sections",
-        element: <Section />,
-      },
 
       // Customer Table
-      { path: "/customers", element: <Customer /> },
+      { path: "customers", element: <Customer /> },
 
       // Sections
-      { path: "/sections", element: <Section /> },
+      { path: "sections", element: <Section /> },
 
       // Call Tree
       { path: "callTree", element: <CallTree /> },
+      { path: "testCallTree", element: <TestCallTree /> },
+      { path: "callTreeTable", element: <CallTreeTable /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
@@ -182,33 +195,38 @@ const router = createBrowserRouter([
 
       // Documents
       //?--------------------------  Risk Assessment  ----------------------------------------------
-      //! { path: "riskAssesements", element: <RiskAssesement /> },
-      //! { path: "createRisk", element: <CreateRiskAssesement /> },
-      //!{ path: "editRisk/:id", element: <EditRiskAssesement /> },
+      // * Risk Assessment Layout
+      {
+        path: "Risk-Assessment",
+        element: <RiskAssessmentLayout />,
+        children: [
+          { path: "versionControl", element: <RiskVersionControls /> },
+          { path: "informationSecurity", element: <ISRiskAssesement /> },
+          { path: "bcpRisk", element: <BCPRiskAssesement /> },
+          { path: "qualityManagement", element: <QualityManagement /> },
+          { path: "residualRisk", element: <ResidualRiskAssesement /> },
+          { path: "riskElements", element: <RiskElements /> },
+        ],
+      },
 
       // * Version Controls
-      { path: "riskVersionControl", element: <RiskVersionControls /> },
       { path: "editVersion/:id", element: <EditVersionControl /> },
       { path: "createRiskVersion", element: <CreateRiskVersionControl /> },
       { path: "editISRiskVersion/:id", element: <EditRiskVersionControl /> },
 
       // * Information Security
-      { path: "informationSecurity", element: <ISRiskAssesement /> },
       { path: "createRiskIS", element: <CreateISRiskAssesement /> },
       { path: "editISRisk/:id", element: <EditISRiskAssesement /> },
 
       //  * BCP Risk Assesment
-      { path: "bcpRisk", element: <BCPRiskAssesement /> },
       { path: "createBCPRisk", element: <CreateBCPRiskAssesement /> },
       { path: "editBCPRisk/:id", element: <EditBCPRiskAssesement /> },
 
       //  * Quality Management Risk Assesment
-      { path: "qualityManagement", element: <QualityManagement /> },
       { path: "createQualityManagement", element: <CreateQualityManagement /> },
       { path: "editQualityManagement/:id", element: <EditQualityManagement /> },
 
       //  * Residual Risk Assesment
-      { path: "residualRisk", element: <ResidualRiskAssesement /> },
       {
         path: "createResidualRisk",
         element: <CreateIResidualRiskAssesement />,
@@ -217,25 +235,25 @@ const router = createBrowserRouter([
         path: "editResidualRisk/:id/:source",
         element: <EditResidualRiskAssesement />,
       },
-      {
-        path: "riskElements",
-        element: <RiskElements />,
-      },
 
       //? ------------------------ Context of the Organization -----------------------------
-      // * Layout
+      // * Context of the Organization Layout
       {
         path: "Context-of-the-Organization",
         element: <ContextOfTheOrganizationLayout />,
         children: [
-          { path: "versionControls", element: <VersionControls /> },
-          { path: "externalIssues", element: <ExternalIssues /> },
-          { path: "internalIssues", element: <InternalIssues /> },
-          { path: "externalParty", element: <ExternalParty /> },
-          { path: "internalParty", element: <InternalParty /> },
-          { path: "interfaces", element: <InterfacesDependencies /> },
+          { path: "version-control", element: <VersionControls /> },
+          { path: "interested-parties", element: <InterestedParties /> },
+          { path: "issue-register", element: <IssueRegister /> },
+          {
+            path: "interfaces-and-dependencies",
+            element: <InterfacesDependencies />,
+          },
           { path: "objectives", element: <Objectives /> },
-          { path: "masterProcedures", element: <MasterProcedures /> },
+          {
+            path: "master-of-procedures-and-process",
+            element: <MasterProcedures />,
+          },
         ],
       },
 
@@ -291,17 +309,44 @@ const router = createBrowserRouter([
       { path: "createMasterProducers", element: <CreateMasterProducers /> },
       { path: "editMasterProcedures/:id", element: <EditMasterProducers /> },
 
+      //? -------------------------------- BCP --------------------------------------
+      // * Business Continuity Plan Layout
+      {
+        path: "Business-Continuity-Plan",
+        element: <BusinessContinuityPlanLayout />,
+        children: [
+          { path: "bcp-form", element: <BCPForm /> },
+          { path: "document-control", element: <DocumentControl /> },
+          { path: "recovery-strategy", element: <RecoveryStrategy /> },
+          { path: "legal-requirements", element: <LegalRequirements /> },
+          {
+            path: "pre-incident-preparation",
+            element: <PreIncidentPreparation />,
+          },
+          {
+            path: "critical-business-function",
+            element: <CriticalBusinessFunction />,
+          },
+          { path: "resources-required", element: <ResourcesRequired /> },
+          { path: "dependencies", element: <Dependencies /> },
+          { path: "vital-records", element: <VitalRecords /> },
+          { path: "work-area-recovery", element: <WorkAreaRecovery /> },
+          { path: "manpower", element: <Manpower /> },
+          {
+            path: "recovery-and-resumption",
+            element: <RecoveryAndResumption />,
+          },
+          { path: "embedded-documents", element: <EmbeddedDocuments /> },
+
+          { path: "table", element: <Table /> },
+          // { path: "emdoc", element: <EmDoc /> },
+          // { path: "dependancies", element: <Dependencies /> },
+        ],
+      },
+
       //? --------------------------------- BIA -------------------------------------
       { path: "bia", element: <BIA /> },
       {path: "import BiaDocumentControl from ",element: <BiaDocumentControl/>},
-
-      //? -------------------------------- BCP --------------------------------------
-      // bcp
-      { path: "table", element: <Table /> },
-      { path: "dependancies", element: <Dependencies /> },
-      { path: "documentControl", element: <DocumentControl /> },
-      { path: "bcp", element: <Document /> },
-      { path: "emdoc", element: <EmDoc /> },
 
       // Roles
       { path: "roles", element: <Roles /> },

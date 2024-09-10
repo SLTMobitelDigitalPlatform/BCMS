@@ -22,6 +22,11 @@ export const validateMobileNumber = (mobileNumber) => {
   return regex.test(mobileNumber);
 };
 
+export const validateSectionCode = (sectionCode) => {
+  const regex = /^[A-Z]{4}$/;
+  return regex.test(sectionCode.trim());
+};
+
 export const getInitials = (name) => {
   if (!name) return "";
 

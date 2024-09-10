@@ -1,69 +1,73 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
-import {
-  createSection,
-  deleteSection,
-  getSections,
-  updateSection,
-} from "../../services/sectionApi";
+import { useSections } from "../../hooks/useSections";
+import { validateSectionCode } from "../../utilities/helper";
 
 Modal.setAppElement("#root");
 
-export const Section = () => {
-  const [sections, setSections] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [currentSection, setCurrentSection] = useState(null);
-  const [newSectionName, setNewSectionName] = useState("");
+const Section = () => {
+  const { sections, loading, error, addSection, editSection, removeSection } =
+    useSections();
+  const [addEditSectionModal, setAddEditSectionModal] = useState({
+    isShown: false,
+    type: "add",
+    data: { sectionCode: "", name: "" },
+  });
+  const [formError, setFormError] = useState("");
 
-  // Get all sections
-  const fetchSections = async () => {
-    try {
-      const response = await getSections();
-      setSections(response.data);
-    } catch (error) {
-      console.log(error);
+  const handleAddEditSectionModal = async () => {
+    const { sectionCode, name } = addEditSectionModal.data;
+
+    setFormError("");
+
+    if (!validateSectionCode(sectionCode)) {
+      setFormError("Section ID should be exactly 4 capital letters.");
+      return;
     }
-  };
 
-  useEffect(() => {
-    fetchSections();
-  }, []);
-
-  // Add new section
-  const handleAddSection = async () => {
-    try {
-      await createSection({ name: newSectionName });
-      fetchSections(); // Refresh the list after adding
-      setShowAddModal(false);
-      setNewSectionName("");
-    } catch (error) {
-      console.log(error);
+    if (!name.trim()) {
+      setFormError("Section name is required.");
+      return;
     }
-  };
 
-  // Edit section
-  const handleEditSection = async () => {
     try {
-      await updateSection(currentSection._id, { name: newSectionName });
-      fetchSections(); // Refresh the list after editing
-      setShowEditModal(false);
-      setCurrentSection(null);
-      setNewSectionName("");
+      if (addEditSectionModal.type === "add") {
+        await addSection({ sectionCode, name });
+      } else {
+        await editSection(addEditSectionModal.data._id, {
+          sectionCode,
+          name,
+        });
+      }
+
+      setAddEditSectionModal({
+        isShown: false,
+        type: "add",
+        data: { sectionCode: "", name: "" },
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Error saving section", error.response?.data || error);
     }
   };
 
   // Delete section
   const handleDeleteSection = async (id) => {
-    try {
-      await deleteSection(id);
-      fetchSections(); // Refresh the list after deletion
-    } catch (error) {
-      console.log(error);
-    }
+    await removeSection(id);
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAddEditSectionModal((prev) => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        [name]: value,
+      },
+    }));
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="p-5 rounded-2xl w-full h-full overflow-hidden bg-indigo-100">
@@ -71,80 +75,87 @@ export const Section = () => {
         <h1 className="text-3xl mb-3 font-bold text-green-500">Sections</h1>
         <button
           className="btn-primary font-semibold"
-          onClick={() => setShowAddModal(true)}
+          onClick={() =>
+            setAddEditSectionModal({
+              isShown: true,
+              type: "add",
+              data: { sectionCode: "", name: "" },
+            })
+          }
         >
           Add
         </button>
       </div>
 
-      {/* Add Section Modal */}
+      {/* Add/Edit Section Modal */}
       <Modal
-        isOpen={showAddModal}
-        onRequestClose={() => setShowAddModal(false)}
-        contentLabel="Add Section"
+        isOpen={addEditSectionModal.isShown}
+        onRequestClose={() =>
+          setAddEditSectionModal({
+            isShown: false,
+            type: "add",
+            data: { sectionCode: "", name: "" },
+          })
+        }
+        contentLabel="Add/Edit Section"
         className="fixed inset-0 flex items-center justify-center z-50"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
         <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h3 className="text-xl font-semibold mb-4">Add Section</h3>
-          <input
-            type="text"
-            placeholder="Section Name"
-            value={newSectionName}
-            onChange={(e) => setNewSectionName(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
-          />
-          <div className="flex justify-end space-x-4">
-            <button
-              className="bg-green-500 hover:bg-green-600 py-1 px-2 text-white text-sm font-semibold rounded-lg"
-              onClick={handleAddSection}
-            >
-              Save
-            </button>
-            <button
-              className="doc-delete-btn"
-              onClick={() => setShowAddModal(false) && setNewSectionName("")}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </Modal>
-
-      {/* Edit Section Modal */}
-      <Modal
-        isOpen={showEditModal}
-        onRequestClose={() => setShowEditModal(false)}
-        contentLabel="Edit Section"
-        className="fixed inset-0 flex items-center justify-center z-50"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
-      >
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h3 className="text-xl font-semibold mb-4">Edit Section</h3>
-          <input
-            type="text"
-            placeholder="Section Name"
-            value={newSectionName}
-            onChange={(e) => setNewSectionName(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
-          />
-          <div className="flex justify-end space-x-4">
-            <button
-              className="bg-green-500 hover:bg-green-600 py-1 px-2 text-white text-sm font-semibold rounded-lg"
-              onClick={handleEditSection}
-            >
-              Save
-            </button>
-            <button
-              className="doc-delete-btn"
-              onClick={() => {
-                setShowEditModal(false);
-                setCurrentSection(null);
-                setNewSectionName("");
-              }}
-            >
-              Cancel
-            </button>
+          <h3 className="text-xl font-semibold">
+            {addEditSectionModal.type === "add"
+              ? "Add Section"
+              : "Edit Section"}
+          </h3>
+          <div className="flex flex-col">
+            <input
+              type="text"
+              name="sectionCode"
+              placeholder="Section ID"
+              value={addEditSectionModal.data.sectionCode}
+              onChange={handleInputChange}
+              className={`border p-2 my-3 ${
+                formError &&
+                !validateSectionCode(addEditSectionModal.data.sectionCode)
+                  ? "border-red-500"
+                  : ""
+              }`}
+            />
+            <input
+              type="text"
+              name="name"
+              placeholder="Section Name"
+              value={addEditSectionModal.data.name}
+              onChange={handleInputChange}
+              className={`border p-2 my-3 ${
+                formError && !addEditSectionModal.data.name
+                  ? "border-red-500"
+                  : ""
+              }`}
+            />
+            {formError && (
+              <p className="text-red-500 text-center">{formError}</p>
+            )}
+            <div className="flex mt-5 space-x-4">
+              <button
+                className="bg-green-500 hover:bg-green-600 py-1 px-2 text-white text-sm font-semibold rounded-lg"
+                onClick={handleAddEditSectionModal}
+              >
+                Save
+              </button>
+              <button
+                className="doc-delete-btn"
+                onClick={() =>
+                  setAddEditSectionModal({
+                    isShown: false,
+                    type: "add",
+                    data: { sectionCode: "", name: "" },
+                  })
+                }
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </Modal>
@@ -152,6 +163,7 @@ export const Section = () => {
       <table className="table-fixed relative w-full py-10 bg-cyan-50">
         <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
           <tr>
+            <th className="py-2 px-4 w-20 doc-table-border">Section Code</th>
             <th className="py-2 px-4 w-20 doc-table-border">Section Name</th>
             <th className="py-2 px-4 w-20 doc-table-border">Action</th>
           </tr>
@@ -160,6 +172,9 @@ export const Section = () => {
           {sections.map((section) => (
             <tr key={section._id} className="hover:bg-indigo-100">
               <td className="py-2 px-4 w-28 doc-table-border">
+                {section.sectionCode}
+              </td>
+              <td className="py-2 px-4 w-28 doc-table-border">
                 {section.name}
               </td>
               <td className="py-2 px-4 w-28 doc-table-border">
@@ -167,9 +182,11 @@ export const Section = () => {
                   <button
                     className="doc-edit-btn"
                     onClick={() => {
-                      setCurrentSection(section);
-                      setNewSectionName(section.name);
-                      setShowEditModal(true);
+                      setAddEditSectionModal({
+                        isShown: true,
+                        type: "edit",
+                        data: section,
+                      });
                     }}
                   >
                     Edit
@@ -189,3 +206,5 @@ export const Section = () => {
     </div>
   );
 };
+
+export default Section;

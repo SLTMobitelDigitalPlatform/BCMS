@@ -147,7 +147,7 @@ const CreateBCPRiskAssesement = () => {
         const currentIndex = localStorage.getItem("currentIndex");
         const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
         localStorage.setItem("currentIndex", newIndex);
-        navigate("/bcpRisk");
+        navigate("/Risk-Assessment/bcpRisk");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -441,7 +441,7 @@ const CreateBCPRiskAssesement = () => {
                 >
                   Save
                 </button>
-                <Link to="/bcpRisk">
+                <Link to="/Risk-Assessment/bcpRisk">
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>

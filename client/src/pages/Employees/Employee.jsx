@@ -183,47 +183,47 @@ const Employee = () => {
         )} */}
 
         <div className="mt-5">
-          <table className="table-auto w-full min-w-full bg-white border border-green-500">
+          <table className="table-fixed w-full min-w-full bg-cyan-50 border-green-500">
             <thead className="bg-indigo-800 text-white">
               <tr>
-                <th className="p-1 border border-green-500">Name</th>
-                <th className="p-1 border border-green-500">Service Number</th>
-                <th className="p-1 border border-green-500">Designation</th>
-                <th className="p-1 border border-green-500">Email</th>
-                <th className="p-1 border border-green-500">Role</th>
-                <th className="p-1 border border-green-500">Section</th>
-                <th className="p-1 border border-green-500">Contact Number</th>
-                <th className="p-1 border border-green-500">Actions</th>
+                <th className="w-28 border border-green-500">Name</th>
+                <th className="w-20 border border-green-500">Service Number</th>
+                <th className="w-28 border border-green-500">Designation</th>
+                <th className="w-56 border border-green-500">Email</th>
+                <th className="w-28 border border-green-500">Role</th>
+                <th className="w-32 border border-green-500">Section</th>
+                <th className="w-28 border border-green-500">Contact Number</th>
+                <th className="w-28 border border-green-500">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedemployeeData.length > 0 ? (
                 paginatedemployeeData.map((employee) => (
                   <tr key={employee._id} className="hover:bg-gray-200">
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
+                    <td className="py-2 pl-1 border border-green-500 text-blue-900 text-sm">
                       {employee.name}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
                       {employee.serviceNumber}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
                       {employee.designation}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
                       {employee.email}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
                       {employee.role}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
                       {employee.section
                         ? employee.section.name
                         : "No Section Assigned"}
                     </td>
-                    <td className="border border-green-500 p-1 text-blue-900 text-sm">
+                    <td className="py-2 pl-1 border border-green-500  text-blue-900 text-sm">
                       {employee.contactNumber}
                     </td>
-                    <td className="border border-green-500 p-1">
+                    <td className="py-2 pl-1 border border-green-500 ">
                       <div className="flex justify-center gap-2">
                         <button
                           className="doc-edit-btn"

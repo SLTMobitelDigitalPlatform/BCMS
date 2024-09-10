@@ -52,25 +52,13 @@ const InternalIssues = () => {
   }, []);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-blue-900">
-          Issue Register - Internal Issues
-        </h1>
+    <div>
+      {/* <div className="flex justify-between items-center mb-5">
+        <h1 className="text-xl font-bold text-blue-900">Internal Issues</h1>
 
         <div className="flex items-center gap-10">
           <NavLink
-            to="/Context-of-the-Organization/externalIssues"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            External Issues
-          </NavLink>
-          <NavLink
-            to="/Context-of-the-Organization/internalIssues"
+            to="/Context-of-the-Organization/issue-register/internalIssues"
             className={({ isActive }) =>
               `px-2 py-1 rounded-lg text-white font-semibold ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -79,13 +67,20 @@ const InternalIssues = () => {
           >
             Internal Issues
           </NavLink>
+          <NavLink
+            to="/Context-of-the-Organization/issue-register/externalIssues"
+            className={({ isActive }) =>
+              `px-2 py-1 rounded-lg text-white font-semibold ${
+                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              }`
+            }
+          >
+            External Issues
+          </NavLink>
         </div>
         <Link to="/createInternalIssue" className="btn-primary font-semibold">
           Create Record
         </Link>
-      </div>
-      {/* <div className="mt-5">
-        <h1 className="text-center text-2xl font-bold mb-3">Internal Issues</h1>
       </div> */}
 
       {/* Table */}
@@ -123,6 +118,7 @@ const InternalIssues = () => {
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editInternalIssues/${internal._id}`}
+                      state={{ activeTab: "internal" }}
                       className="doc-edit-btn"
                     >
                       Edit
