@@ -86,7 +86,7 @@ function CallTreeTable() {
         <thead>
           <tr>
             <th>Title</th>
-            <th>Description</th>
+            <th>Phone Number</th>
             <th>Supervisor</th>
             <th>Actions</th>
           </tr>
