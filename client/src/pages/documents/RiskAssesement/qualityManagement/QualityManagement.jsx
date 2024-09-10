@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import RiskAssNavigation from "../../../../components/RiskAssNavigation";
+import { getCurrentUser } from "../../../../services/userApi";
 
 const QualityManagement = () => {
   const [risks, setRisks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredRisks, setFilteredRisks] = useState([]);
+  const [section, setSection] = useState("");
   const risksPerPage = 5;
 
   // Fetch all risks
@@ -15,11 +17,47 @@ const QualityManagement = () => {
       const response = await axios.get(
         "http://localhost:5000/api/qualityRisks/"
       );
+      const user = await getCurrentUser();
+      let section = user.data.section.sectionCode;
+      // if (section === "Information Technology (IT)") {
+      //   section = "ITSE";
+      // } else if (section === "Marketing") {
+      //   section = "MARC";
+      // } else if (section === "Sales") {
+      //   section = "SALE";
+      // } else if (section === "Human Resources(HR)") {
+      //   section = "HRMA";
+      // } else if (section === "Finance") {
+      //   section = "FINA";
+      // } else if (section === "Operations") {
+      //   section = "OPER";
+      // } else if (section === "Customer Service") {
+      //   section = "CUSE";
+      // }
+      // console.log(section);
       setRisks(response.data);
+      setSection(section);
+      filterRisks(response.data, section);
     } catch (error) {
       console.error(error);
     }
   };
+
+  const filterRisks = async (risks, section) => {
+    try {
+      const filtered = risks.filter((risk) => {
+        const sectionIdentifier = risk.rid.split("-")[1];
+        return sectionIdentifier === section;
+      });
+      setFilteredRisks(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    filterRisks(risks, section);
+  }, [risks, section]);
 
   useEffect(() => {
     fetchRisks();
@@ -58,109 +96,109 @@ const QualityManagement = () => {
   // Pagination logic
   const indexOfLastRisk = currentPage * risksPerPage;
   const indexOfFirstRisk = indexOfLastRisk - risksPerPage;
-  const currentRisks = risks.slice(indexOfFirstRisk, indexOfLastRisk);
+  const currentRisks = filteredRisks.slice(indexOfFirstRisk, indexOfLastRisk);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex flex-col h-full rounded-2xl bg-sky-100">
-      {/* Heading */}
+    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-xl font-bold text-indigo-900">
+          Quality Management
+        </h1>
 
-      <div className="flex items-center justify-between p-5 w-full">
-        <RiskAssNavigation />
-
-        <div className="flex justify-between items-center mt-8">
-          <h1 className="text-2xl font-bold">Quality Management</h1>
-        </div>
-
-        <Link to="/createQualityManagement">
-          <button className="bg-green-500 text-white rounded-lg font-semibold py-1 px-3">
-            Create Risk Assessment
-          </button>
+        <Link
+          to="/createQualityManagement"
+          className="btn-primary font-semibold"
+        >
+          Create Risk Assessment
         </Link>
       </div>
 
       {/* Table */}
-      <div className="p-5 overflow-y-auto h-full">
-        <table className="border-2 bg-cyan-50">
-          <thead>
+      <div className="h-full w-full overflow-auto">
+        <table className="table-fixed relative w-full py-10 bg-cyan-50">
+          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
             <tr>
-              <th className="border-2 px-2 py-2">Risk ID</th>
-              <th className="border-2 px-2 py-2">Risk owner</th>
-              <th className="border-2 px-2 py-2">Responsible Person</th>
-              <th className="border-2 px-2 py-2">Description</th>
-              <th className="border-2 px-2 py-2">Sources</th>
-              <th className="border-2 px-2 py-2">Assets</th>
-              <th className="border-2 px-2 py-2">Element</th>
-              <th className="border-2 px-2 py-2">Objectives</th>
-              <th className="border-2 px-2 py-2">Controls</th>
-              <th className="border-2 px-2 py-2">Impact</th>
-              <th className="border-2 px-2 py-2">Likelihood</th>
-              <th className="border-2 px-2 py-2">Impact Rating</th>
-              <th className="border-2 px-2 py-2">Treat Method</th>
-              <th className="border-2 px-2 py-2">Date</th>
-              <th className="border-2 px-2 py-2">New Controls</th>
-              <th className="border-2 px-2 py-2">Residual Impact</th>
-              <th className="border-2 px-2 py-2">Probability</th>
-              <th className="border-2 px-2 py-2">Residual Impact Rating</th>
-              <th className="border-2 px-2 py-2">Statement</th>
-              <th className="border-2 px-2 py-2">Actions</th>
+              <th className="w-28 doc-table-border">Risk ID</th>
+              <th className="w-28 doc-table-border">Risk owner</th>
+              <th className="w-28 doc-table-border">Responsible Person</th>
+              <th className="w-28 doc-table-border">Description</th>
+              <th className="w-28 doc-table-border">Sources</th>
+              <th className="w-28 doc-table-border">Assets</th>
+              <th className="w-28 doc-table-border">Element</th>
+              <th className="w-28 doc-table-border">Objectives</th>
+              <th className="w-28 doc-table-border">Controls</th>
+              <th className="w-28 doc-table-border">Impact</th>
+              <th className="w-28 doc-table-border">Likelihood</th>
+              <th className="w-28 doc-table-border">Impact Rating</th>
+              <th className="w-28 doc-table-border">Treat Method</th>
+              <th className="w-28 doc-table-border">Date</th>
+              <th className="w-28 doc-table-border">New Controls</th>
+              <th className="w-28 doc-table-border">Residual Impact</th>
+              <th className="w-28 doc-table-border">Probability</th>
+              <th className="w-28 doc-table-border">Residual Impact Rating</th>
+              <th className="w-28 doc-table-border">Statement</th>
+              <th className="w-28 doc-table-border">Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentRisks.map((r) => (
               <tr key={r._id}>
-                <td className="border-2 text-normal px-2">{r.rid}</td>
-                <td className="border-2 text-normal px-2">{r.owner}</td>
-                <td className="border-2 text-normal px-2">
+                <td className="py-2 px-4 w-28 doc-table-border">{r.rid}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">{r.owner}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.responsibility}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.description}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">{r.sources}</td>
-                <td className="border-2 text-normal px-4 py-3">{r.assets}</td>
-                <td className="border-2 text-normal px-4 py-3">{r.element}</td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">{r.sources}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">{r.assets}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">{r.element}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.objectives}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">{r.controls}</td>
-                <td className="border-2 text-normal px-4 py-3">{r.impact}</td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {r.controls}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">{r.impact}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.likelihood}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.impactRating}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.treatMethod}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">{r.date}</td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">{r.date}</td>
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.newControls}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.residualImpact}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.probability}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.residualImpactRating}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
+                <td className="py-2 px-4 w-28 doc-table-border">
                   {r.statement}
                 </td>
-                <td className="border-2 text-normal px-4 py-3">
-                  <div className="flex gap-3">
-                    <Link to={`/editQualityManagement/${r._id}`}>
-                      <button className="px-4 py-1 rounded-lg bg-blue-600 text-white font-semibold">
-                        Edit
-                      </button>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  <div className="flex justify-center gap-2">
+                    <Link
+                      to={`/editQualityManagement/${r._id}`}
+                      className="doc-edit-btn"
+                    >
+                      Edit
                     </Link>
                     <button
                       onClick={() => deleteRisk(r._id)}
-                      className="px-4 py-1 rounded-lg bg-red-600 text-white font-semibold"
+                      className="doc-delete-btn"
                     >
                       Delete
                     </button>
@@ -170,7 +208,7 @@ const QualityManagement = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-start mt-4">
+        <div className="flex justify-center mt-4">
           {Array.from(
             { length: Math.ceil(risks.length / risksPerPage) },
             (_, i) => (

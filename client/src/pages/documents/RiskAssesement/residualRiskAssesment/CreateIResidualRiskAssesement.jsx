@@ -75,7 +75,7 @@ const CreateIResidualRiskAssesement = () => {
         const currentIndex = localStorage.getItem("currentIndex");
         const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
         localStorage.setItem("currentIndex", newIndex);
-        navigate("/residualRisk");
+        navigate("/Risk-Assessment/residualRisk");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -222,7 +222,7 @@ const CreateIResidualRiskAssesement = () => {
                 >
                   Save
                 </button>
-                <Link to="/residualRisk">
+                <Link to="/Risk-Assessment/residualRisk">
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>

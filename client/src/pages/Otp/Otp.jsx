@@ -1,13 +1,12 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Countdown from "react-countdown";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
 import backgroundImage from "../../assets/bgblue.png";
 import logo from "../../assets/SLTLogo.png";
-
-import { validateOTP } from "../../utilities/helper";
 import { useAuth } from "../../auth/AuthContext";
+import { validateOTP } from "../../utilities/helper";
 
 // Renderer for the countdown
 const renderer = ({ minutes, seconds, completed }) => {
@@ -197,6 +196,7 @@ const Otp = () => {
             type="text"
             name="otp"
             id="otp"
+            autoFocus={true}
             onChange={(e) => setOtp(e.target.value)}
             onFocus={() => setHasError(false)}
             placeholder="Enter Your OTP"

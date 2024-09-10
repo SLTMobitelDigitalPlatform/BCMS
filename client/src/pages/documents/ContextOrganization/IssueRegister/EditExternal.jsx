@@ -42,7 +42,9 @@ const EditExternal = () => {
       .put(`http://localhost:5000/externalIssue/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/externalIssues");
+        navigate("/Context-of-the-Organization/issue-register", {
+          state: { activeTab: "external" },
+        });
       })
       .catch((err) => {
         handleErrorAlert();
@@ -147,7 +149,10 @@ const EditExternal = () => {
                 >
                   Save
                 </button>
-                <Link to="/externalIssues">
+                <Link
+                  to="/Context-of-the-Organization/issue-register"
+                  state={{ activeTab: "external" }}
+                >
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>

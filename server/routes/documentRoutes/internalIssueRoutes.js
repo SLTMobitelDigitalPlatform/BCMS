@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const internalIssueController = require("../../controllers/documentController/internalIssueController");
+const internalIssueController = require("../../controllers/documentController/contextOfOrganization/internalIssueController");
 const authControllers = require("../../controllers/userControllers/authController");
 
 router.post(

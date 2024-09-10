@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getCurrentUser } from "../../../../services/userApi";
+import { getItemsInCategory } from "../../../../services/riskElementsApi";
 
 const CreateBCPRiskAssesement = () => {
   const [rid, setRid] = useState("");
@@ -27,6 +29,7 @@ const CreateBCPRiskAssesement = () => {
   const [businessContinuityOptions, setBusinessContinuityOptions] = useState(
     []
   );
+  const [riskItems, setRiskItems] = useState([]);
 
   const navigate = useNavigate();
 
@@ -34,22 +37,39 @@ const CreateBCPRiskAssesement = () => {
 
   const fetchLastRecord = async () => {
     try {
-      // Assuming your endpoint is correct and returns the last record
+      const user = await getCurrentUser();
+      let section = user.data.section.sectionCode;
+
+      // Map section names to abbreviations
+      // const sectionMap = {
+      //   "Information Technology (IT)": "ITSE",
+      //   Marketing: "MARC",
+      //   Sales: "SALE",
+      //   "Human Resources(HR)": "HRMA",
+      //   Finance: "FINA",
+      //   Operations: "OPER",
+      //   "Customer Service": "CUSE",
+      // };
+
+      // section = sectionMap[section] || section;
+
+      // Fetch the last record for the specific section
       const response = await axios.get(
-        "http://localhost:5000/api/risksBCP/last"
+        `http://localhost:5000/api/risksBCP/last/${section}`
       );
       const lastRecord = response.data;
 
-      const currentYear = new Date().getFullYear();
+      const currentYear = new Date().getFullYear().toString().slice(-2);
       let newIndex = 1;
+      let paddedIndex = String(newIndex).padStart(3, "0");
 
       if (lastRecord && lastRecord.rid) {
-        const lastIndex = parseInt(lastRecord.rid.slice(9), 10);
+        const lastIndex = parseInt(lastRecord.rid.slice(12), 10);
         newIndex = lastIndex + 1;
+        paddedIndex = String(newIndex).padStart(3, "0");
       }
-      // console.log(lastRecord);
 
-      setRid(`BCR-${currentYear}-${newIndex}`);
+      setRid(`BCR-${section}-${currentYear}${paddedIndex}`);
     } catch (error) {
       console.error("Error fetching the last record:", error);
     }
@@ -66,9 +86,22 @@ const CreateBCPRiskAssesement = () => {
     }
   };
 
+  const fetchRiskElements = async () => {
+    try {
+      const response = await getItemsInCategory("Business Continuity");
+      // console.log(response.data);
+      const riskElemets = response.data.map((item) => item.name);
+      // console.log(riskElemets);
+      setRiskItems(riskElemets);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchLastRecord();
     fetchBCObjectives();
+    fetchRiskElements();
   }, []);
 
   // Calculate Impact Rating
@@ -114,7 +147,7 @@ const CreateBCPRiskAssesement = () => {
         const currentIndex = localStorage.getItem("currentIndex");
         const newIndex = currentIndex ? parseInt(currentIndex, 10) + 1 : 1;
         localStorage.setItem("currentIndex", newIndex);
-        navigate("/bcpRisk");
+        navigate("/Risk-Assessment/bcpRisk");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -225,16 +258,24 @@ const CreateBCPRiskAssesement = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className="font-semibold mt-5">
+                  <label htmlFor="riskElement" className="font-semibold mt-5">
                     Risk Element
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Risk Element"
+                  <select
+                    id="riskElement"
                     value={element}
                     onChange={(e) => setElement(e.target.value)}
-                    className="w-[450px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {riskItems.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -400,7 +441,7 @@ const CreateBCPRiskAssesement = () => {
                 >
                   Save
                 </button>
-                <Link to="/bcpRisk">
+                <Link to="/Risk-Assessment/bcpRisk">
                   <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                     Cancel
                   </button>

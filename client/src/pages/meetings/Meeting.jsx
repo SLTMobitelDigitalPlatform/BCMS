@@ -33,7 +33,13 @@ const Meeting = () => {
       try {
         const response = await fetch("http://localhost:5000/getMeetings");
         const data = await response.json();
-        setMeetings(data);
+
+        // Sort meetings by date (ascending)
+        const sortedMeetings = data.sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+
+        setMeetings(sortedMeetings);
       } catch (error) {
         console.error("Error fetching meetings data:", error);
       }

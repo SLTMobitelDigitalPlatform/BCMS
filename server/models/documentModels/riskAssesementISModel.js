@@ -22,6 +22,13 @@ const riskISSchema = new Schema(
     probability: { type: Number, required: true },
     residualImpactRating: { type: Number, required: true },
     statement: { type: String, required: true },
+
+    newMethod: { type: String, required: false },
+    newIdntifiedControls: { type: String, required: false },
+    newDate: { type: String, required: false },
+    newImpact: { type: Number, required: false },
+    newLikelihood: { type: Number, required: false },
+    newResidualImpactRating: { type: Number, required: false },
   },
   { timestamps: true }
 );

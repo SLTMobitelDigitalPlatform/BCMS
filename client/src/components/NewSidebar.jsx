@@ -53,14 +53,7 @@ const NewSidebar = () => {
           <li className="relative">
             <button
               onClick={toggleDropdown}
-              className={`flex items-center justify-between w-full px-4 py-2 rounded-2xl focus:outline-none ${
-                location.pathname.startsWith("/risk") ||
-                location.pathname.startsWith("/VersionControls") ||
-                location.pathname.startsWith("/bcp") ||
-                location.pathname.startsWith("/bia")
-                  ? "sidebar-active"
-                  : "sidebar-hover"
-              }`}
+              className="flex items-center justify-between w-full px-4 py-2 rounded-2xl sidebar-hover transition-all duration-300"
             >
               Documents <FaChevronDown className="ml-2" />
             </button>
@@ -68,8 +61,7 @@ const NewSidebar = () => {
               <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
                 <li>
                   <NavLink
-                    to="/riskVersionControl"
-                    // className="block px-4 py-2 rounded-2xl items-center hover:dropdown-active"
+                    to="/Risk-Assessment/versionControl"
                     className={({ isActive }) =>
                       `sidebar-link ${
                         isActive ? "dropdown-active" : "dropdown-hover"
@@ -83,7 +75,7 @@ const NewSidebar = () => {
                 <hr className="my-1 border-black opacity-50" />
                 <li>
                   <NavLink
-                    to="/VersionControls"
+                    to="Context-of-the-Organization/version-control"
                     className={({ isActive }) =>
                       `sidebar-link ${
                         isActive ? "dropdown-active" : "dropdown-hover"
@@ -97,7 +89,7 @@ const NewSidebar = () => {
                 <hr className="my-1 border-black opacity-50" />
                 <li>
                   <NavLink
-                    to="/bcp"
+                    to="/Business-Continuity-Plan/bcp-form"
                     className={({ isActive }) =>
                       `sidebar-link ${
                         isActive ? "dropdown-active" : "dropdown-hover"
@@ -125,6 +117,7 @@ const NewSidebar = () => {
             )}
           </li>
           <hr className="opacity-50" />
+
           {/* Meetings */}
           <li>
             <NavLink
@@ -137,6 +130,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Calendar */}
           <li>
             <NavLink
@@ -149,6 +143,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Roles and Responsibilities */}
           <li>
             <NavLink
@@ -161,6 +156,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Policies */}
           <li>
             <NavLink
@@ -173,10 +169,11 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Call Tree */}
           <li>
             <NavLink
-              to="/"
+              to="/calltree"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
@@ -185,6 +182,7 @@ const NewSidebar = () => {
             </NavLink>
           </li>
           <hr className="opacity-50" />
+
           {/* Customers */}
           <li>
             <NavLink
@@ -203,7 +201,7 @@ const NewSidebar = () => {
       </div>
       <div className="flex gap-3 mt-3 justify-center">
         <button
-          className="px-8 py-1 bg-[#00BBF6] text-black font-semibold rounded-2xl"
+          className="px-8 py-1 bg-sky-400 hover:bg-sky-500 text-black font-semibold rounded-2xl"
           onClick={handleLogout}
         >
           Logout

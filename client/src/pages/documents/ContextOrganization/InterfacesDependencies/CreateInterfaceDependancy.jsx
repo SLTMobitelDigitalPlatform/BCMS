@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getUsers } from "../../../../services/userAPI";
 
 const CreateInterfaceDependancy = () => {
   const [processName, setProcessName] = useState("");
@@ -11,6 +12,7 @@ const CreateInterfaceDependancy = () => {
   const [medium, setMedium] = useState("");
   const [exchangeMethod, setExchangeMethod] = useState("");
   const [serviceProvidedObtained, setServiceProvidedObtained] = useState("");
+  const [externalEntityOptions, setExternalEntityOptions] = useState([]);
   const navigate = useNavigate();
 
   const handleCreateInterfaceDependancy = (e) => {
@@ -30,13 +32,28 @@ const CreateInterfaceDependancy = () => {
       .post("http://localhost:5000/interfaceDependancy/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/interfaces");
+        navigate("/Context-of-the-Organization/interfaces-and-dependencies");
       })
       .catch((error) => {
         handleErrorAlert();
         console.log(error);
       });
   };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const externalEntityOptions = response.data.map((item) => item.name);
+      // console.log(externalEntityOptions);
+      setExternalEntityOptions(externalEntityOptions);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const handleSuccessAlert = () => {
     Swal.fire({
@@ -78,16 +95,22 @@ const CreateInterfaceDependancy = () => {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold">
+                <label htmlFor="externalEntityName" className="font-semibold">
                   External Entity Name
                 </label>
-                <textarea
-                  type="text"
-                  placeholder="External Entity Name"
+                <select
+                  id="externalEntityName"
                   value={externalEntityName}
                   onChange={(e) => setExternalEntityName(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
-                />
+                >
+                  <option>Select</option>
+                  {externalEntityOptions.map((option, index) => (
+                    <option value={option} key={index}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="flex flex-col gap-2">
@@ -115,6 +138,7 @@ const CreateInterfaceDependancy = () => {
                 <option value="">Select</option>
                 <option value="Inward">Inward</option>
                 <option value="Outward">Outward</option>
+                <option value="Inward/Outward">Inward/Outward</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">
@@ -167,7 +191,7 @@ const CreateInterfaceDependancy = () => {
               >
                 Save
               </button>
-              <Link to="/interfaces">
+              <Link to="/Context-of-the-Organization/interfaces-and-dependencies">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

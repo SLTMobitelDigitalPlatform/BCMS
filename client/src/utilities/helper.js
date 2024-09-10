@@ -3,6 +3,15 @@ export const validateOTP = (otp) => {
   return regex.test(otp);
 };
 
+export const validateName = (name) => {
+  const regex = /^[a-zA-Z]+([ '-][a-zA-Z]+)*$/;
+  return regex.test(name);
+};
+
+export const validateServiceNumber = (serviceNumber) => {
+  const regex = /^\d{6}$/;
+  return regex.test(serviceNumber);
+};
 export const validateEmail = (email) => {
   const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   return regex.test(email);
@@ -11,6 +20,11 @@ export const validateEmail = (email) => {
 export const validateMobileNumber = (mobileNumber) => {
   const regex = /^(\+94|0)?7\d{8}$/;
   return regex.test(mobileNumber);
+};
+
+export const validateSectionCode = (sectionCode) => {
+  const regex = /^[A-Z]{4}$/;
+  return regex.test(sectionCode.trim());
 };
 
 export const getInitials = (name) => {
