@@ -1,12 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import BIANavigation from "../../../components/BIANavigation";
 
 const ImpactAnalysis = () => {
   const navigate = useNavigate();
 
   return (
     <div className="flex h-screen">
-   
+    
   
       <div className="impact-analysis-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto">
         {/* Header */}
@@ -21,18 +22,13 @@ const ImpactAnalysis = () => {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="tabs flex justify-center gap-4 mt-3">
-          <button className="tab text-sm font-semibold text-green-600 border-b-2 border-green-500 pb-2">Operating Sites</button>
-          <button className="tab text-sm font-semibold text-gray-400">Critical Business Functions</button>
-          <button className="tab text-sm font-semibold text-gray-400">Business Peaks and Deadlines</button>
-          <button className="tab text-sm font-semibold text-gray-400">Resources</button>
-          <button className="tab text-sm font-semibold text-gray-400">Impact Analysis</button>
-        </div>
+
+        <BIANavigation />
+
+        
 
         {/* Impact Analysis Content */}
         <div className="impact-analysis-content mt-6 px-5">
-          <h2 className="text-xl font-bold text-green-500 mb-5">Impact Analysis</h2>
 
           {/* Severity Level - Operational */}
           <div className="severity-level-table bg-white rounded-xl p-5 shadow-md">
