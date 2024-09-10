@@ -89,7 +89,7 @@ const EditRiskVersionControl = () => {
       .put(`http://localhost:5000/api/versionControlsRisk/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/riskVersionControl");
+        navigate("/Risk-Assessment/versionControl");
       })
       .catch((err) => {
         handleErrorAlert();

@@ -1,99 +1,125 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const BIANavigation = () => {
-  // State to track the active (clicked) button
-  const [activeButton, setActiveButton] = useState("");
+  const scrollContainerRef = useRef(null);
 
-  // Function to handle button clicks and set the active button
-  const handleClick = (buttonName) => {
-    setActiveButton(buttonName);
+  // Function to scroll to a specific tab
+  const scrollToTab = (tabIndex) => {
+    const tabWidth = 150; // adjust this value to match your tab width
+    const containerWidth = scrollContainerRef.current.offsetWidth;
+    const tabOffset = tabIndex * tabWidth;
+    const centerX = containerWidth / 2;
+    const currentScrollLeft = scrollContainerRef.current.scrollLeft;
+
+    const targetOffset = tabOffset - centerX;
+    if (targetOffset < 0) {
+      scrollContainerRef.current.scrollBy({
+        left: targetOffset,
+        behavior: "smooth",
+      });
+    } else {
+      scrollContainerRef.current.scrollBy({
+        left: targetOffset - currentScrollLeft,
+        behavior: "smooth",
+      });
+    }
   };
 
-  // Function to determine the button's styling based on whether it's active
-  const getButtonClass = (buttonName) => {
-    return activeButton === buttonName
-      ? "px-2 py-1 border-2 border-[#52B14A] text-[#52B14A] font-semibold rounded-lg" // Green when clicked
-      : "px-2 py-1 border-2 border-sky-600 text-sky-600 hover:text-[#52B14A] hover:border-[#52B14A] font-semibold rounded-lg"; // Default state
+  // Function to scroll left
+  const scrollLeft = () => {
+    scrollContainerRef.current.scrollBy({ left: -150, behavior: "smooth" });
   };
+
+  // Function to scroll right
+  const scrollRight = () => {
+    scrollContainerRef.current.scrollBy({ left: 150, behavior: "smooth" });
+  };
+
+  // Function to handle tab click
+  const handleTabClick = (index) => {
+    scrollToTab(index);
+  };
+
+  // Save scroll position on scroll
+  const handleScroll = () => {
+    localStorage.setItem(
+      "scrollPosition",
+      scrollContainerRef.current.scrollLeft
+    );
+  };
+
+  useEffect(() => {
+    // Restore scroll position on mount
+    const savedPosition = localStorage.getItem("scrollPosition");
+    if (savedPosition) {
+      scrollContainerRef.current.scrollLeft = parseInt(savedPosition, 10);
+    }
+
+    // Add scroll event listener
+    const container = scrollContainerRef.current;
+    container.addEventListener("scroll", handleScroll);
+
+    // Cleanup event listener on unmount
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <div>
-      <div className="flex justify-between items-center gap-4">
+    <div className="relative flex items-center">
+      {/* Left Arrow */}
+      <button
+        onClick={scrollLeft}
+        className="absolute left-0 z-10 p-2 bg-indigo-600 rounded-full text-white focus:outline-none"
+      >
+        <FaChevronLeft className="h-3 w-3" />
+      </button>
 
-        <Link to="/bia">
-          <button
-            className={getButtonClass("bia")}
-            onClick={() => handleClick("bia")}
+      {/* Navigation Links */}
+      <div
+        ref={scrollContainerRef}
+        className="flex overflow-hidden space-x-2 text-white font-semibold px-8" // Add padding to the sides to avoid overlay with buttons
+      >
+        {[
+          "BIA Form",
+          "Document Version",
+          "Operating Sites",
+          "Critical BUsiness Function",
+          "Business Peaks and Deadlines",
+          "Resources",
+          "Impact Analysis",
+          "Resources Required",
+          "Dependencies",
+          "Work Area Recovery",
+          "Manpower",
+         
+        ].map((link, idx) => (
+          <NavLink
+            key={idx}
+            to={`/Business-Continuity-Plan/${link
+              .replace(/\s+/g, "-")
+              .toLowerCase()}`}
+            className={({ isActive }) =>
+              `whitespace-nowrap px-2 py-1 rounded-lg ${
+                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              }`
+            }
+            onClick={() => handleTabClick(idx)}
           >
-            BIA Form
-          </button>
-        </Link>
-
-        <Link to="/versions">
-          <button
-            className={getButtonClass("versions")}
-            onClick={() => handleClick("versions")}
-          >
-            Document Versions
-          </button>
-        </Link>
-
-        <Link to="/operatingSites">
-          <button
-            className={getButtonClass("operatingSites")}
-            onClick={() => handleClick("operatingSites")}
-          >
-            Operating Sites
-          </button>
-        </Link>
-
-        <Link to="/criticalBusiness">
-          <button
-            className={getButtonClass("criticalBusiness")}
-            onClick={() => handleClick("criticalBusiness")}
-          >
-            Critical Business Functions
-          </button>
-        </Link>
-
-        <Link to="/peaks&deadlines">
-          <button
-            className={getButtonClass("peaks&deadlines")}
-            onClick={() => handleClick("peaks&deadlines")}
-          >
-            Business Peaks and Deadlines
-          </button>
-        </Link>
-
-        <Link to="/resources">
-          <button
-            className={getButtonClass("resources")}
-            onClick={() => handleClick("resources")}
-          >
-            Resources
-          </button>
-        </Link>
-
-        <Link to="/impact">
-          <button
-            className={getButtonClass("impact")}
-            onClick={() => handleClick("impact")}
-          >
-            Impact Analysis
-          </button>
-        </Link>
-
-        <Link to="/resourcesRequired">
-          <button
-            className={getButtonClass("resourcesRequired")}
-            onClick={() => handleClick("resourcesRequired")}
-          >
-            Resources Required
-          </button>
-        </Link>
-
+            {link}
+          </NavLink>
+        ))}
       </div>
+
+      {/* Right Arrow */}
+      <button
+        onClick={scrollRight}
+        className="absolute right-0 z-10 p-2 bg-indigo-600 rounded-full text-white focus:outline-none"
+      >
+        <FaChevronRight className="h-3 w-3" />
+      </button>
     </div>
   );
 };

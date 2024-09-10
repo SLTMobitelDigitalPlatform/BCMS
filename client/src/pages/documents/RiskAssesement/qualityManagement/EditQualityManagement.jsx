@@ -88,7 +88,7 @@ const EditQualityManagement = () => {
       .put(`http://localhost:5000/api/qualityRisks/edit/${id}`, data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/qualityManagement");
+        navigate("/Risk-Assessment/qualityManagement");
       })
       .catch((err) => {
         handleErrorAlert();
@@ -403,7 +403,7 @@ const EditQualityManagement = () => {
               <button className="px-3 py-2 w-32 rounded-lg bg-[#32a3a9] text-white">
                 Save
               </button>
-              <Link to="/qualityManagement">
+              <Link to="/Risk-Assessment/qualityManagement">
                 <button className="px-3 py-2 w-32 rounded-lg bg-[#c0426c] text-white">
                   Cancel
                 </button>
