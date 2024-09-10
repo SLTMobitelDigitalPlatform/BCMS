@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { OrgDiagram } from "basicprimitivesreact";
 import { PageFitMode, Enabled } from "basicprimitives";
+import { Link } from "react-router-dom";
 
 function TestCallTree() {
   const [items, setItems] = useState([]);
@@ -36,8 +37,11 @@ function TestCallTree() {
   };
 
   return (
-    <div className="App">
+    <div>
       <OrgDiagram centerOnCursor={true} config={config} />
+      <div className="text-white bg-blue-900 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm w-40 px-3 py-2">
+        <Link to="/calltreetable">Go to Table</Link>
+      </div>
     </div>
   );
 }
