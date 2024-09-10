@@ -24,7 +24,9 @@ const CreateMasterProducers = () => {
       .post("http://localhost:5000/proceduresAndProcess/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/masterProcedures");
+        navigate(
+          "/Context-of-the-Organization/master-of-procedures-and-process"
+        );
       })
       .catch((err) => {
         handleErrorAlert();
@@ -115,7 +117,7 @@ const CreateMasterProducers = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/masterProcedures">
+              <Link to="/Context-of-the-Organization/master-of-procedures-and-process">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>

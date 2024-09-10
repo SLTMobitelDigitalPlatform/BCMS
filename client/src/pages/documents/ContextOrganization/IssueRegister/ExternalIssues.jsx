@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 
 const ExternalIssues = () => {
   const [externalIssues, setExternalIssues] = useState([]);
+  // const tab = location.state?.tab || "internal";
 
   const fetchExternalIssues = async () => {
     try {
@@ -52,13 +53,13 @@ const ExternalIssues = () => {
   }, []);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
-      <div className="flex justify-between items-center mb-5">
+    <div>
+      {/* <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">External Issues</h1>
 
         <div className="flex items-center gap-10">
           <NavLink
-            to="/Context-of-the-Organization/internalIssues"
+            to="/Context-of-the-Organization/issue-register/internalIssues"
             className={({ isActive }) =>
               `px-2 py-1 rounded-lg text-white font-semibold ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -68,7 +69,7 @@ const ExternalIssues = () => {
             Internal Issues
           </NavLink>
           <NavLink
-            to="/Context-of-the-Organization/externalIssues"
+            to="/Context-of-the-Organization/issue-register/externalIssues"
             className={({ isActive }) =>
               `px-2 py-1 rounded-lg text-white font-semibold ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
@@ -81,9 +82,6 @@ const ExternalIssues = () => {
         <Link to="/createExternalIssue" className="btn-primary font-semibold">
           Create Record
         </Link>
-      </div>
-      {/* <div className="mt-5">
-        <h1 className="text-center text-2xl font-bold mb-3">External Issues</h1>
       </div> */}
 
       {/* Table */}
@@ -121,6 +119,7 @@ const ExternalIssues = () => {
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editExternalIssues/${external._id}`}
+                      state={{ activeTab: "external" }}
                       className="doc-edit-btn"
                     >
                       Edit

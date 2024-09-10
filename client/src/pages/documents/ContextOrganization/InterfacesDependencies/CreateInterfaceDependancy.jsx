@@ -32,7 +32,7 @@ const CreateInterfaceDependancy = () => {
       .post("http://localhost:5000/interfaceDependancy/create", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/Context-of-the-Organization/interfaces");
+        navigate("/Context-of-the-Organization/interfaces-and-dependencies");
       })
       .catch((error) => {
         handleErrorAlert();
@@ -191,7 +191,7 @@ const CreateInterfaceDependancy = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/interfaces">
+              <Link to="/Context-of-the-Organization/interfaces-and-dependencies">
                 <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
                   Cancel
                 </button>
