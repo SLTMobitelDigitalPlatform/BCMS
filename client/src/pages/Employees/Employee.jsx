@@ -199,7 +199,7 @@ const Employee = () => {
             <tbody>
               {paginatedemployeeData.length > 0 ? (
                 paginatedemployeeData.map((employee) => (
-                  <tr key={employee._id} className="hover:bg-gray-200">
+                  <tr key={employee._id} className="hover:bg-indigo-100">
                     <td className="py-2 pl-1 border border-green-500 text-blue-900 text-sm">
                       {employee.name}
                     </td>

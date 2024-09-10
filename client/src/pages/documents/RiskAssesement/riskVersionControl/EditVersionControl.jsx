@@ -122,10 +122,10 @@ const EditRiskVersionControl = () => {
       <h1 className="text-2xl font-bold text-green-500">
         Update Version Control
       </h1>
-      <div className="w-full mx-auto p-8 rounded-xl shadow-lg border-2 mt-5">
+      <div className="bg-indigo-200 w-full mx-auto p-8 rounded-2xl mt-5">
         <form onSubmit={handleEditVersion}>
           <div className="flex flex-col gap-6">
-            <div className="flex justify-between">
+            <div className="flex justify-start gap-10">
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className="font-semibold">
                   Serial Number
@@ -136,7 +136,7 @@ const EditRiskVersionControl = () => {
                   readOnly
                   value={serialNo}
                   onChange={(e) => setSerialNo(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -149,11 +149,11 @@ const EditRiskVersionControl = () => {
                   readOnly
                   value={versionNo}
                   onChange={(e) => setVersionNo(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-start gap-10">
               <div className="flex flex-col gap-2">
                 <label htmlFor="prepare" className="font-semibold">
                   Prepared By
@@ -163,7 +163,7 @@ const EditRiskVersionControl = () => {
                   placeholder="Prepared Person"
                   value={prepare}
                   onChange={(e) => setPrepare(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
                     {prepare}
@@ -184,7 +184,7 @@ const EditRiskVersionControl = () => {
                   placeholder="Approved Person"
                   value={approve}
                   onChange={(e) => setApprove(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
                     {approve}
@@ -196,27 +196,28 @@ const EditRiskVersionControl = () => {
                   ))}
                 </select>
               </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="checkedBy" className="font-semibold">
-                Checked By
-              </label>
-              <select
-                id="checkedBy"
-                value={checkedBy}
-                onChange={(e) => setCheckedBy(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
-              >
-                <option value="" disabled>
-                  {checkedBy}
-                </option>
-                {users.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="checkedBy" className="font-semibold">
+                  Checked By
+                </label>
+                <select
+                  id="checkedBy"
+                  value={checkedBy}
+                  onChange={(e) => setCheckedBy(e.target.value)}
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    {checkedBy}
                   </option>
-                ))}
-              </select>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+
             <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold">
                 Reasons for new release
@@ -239,7 +240,7 @@ const EditRiskVersionControl = () => {
                   placeholder="Approval"
                   value={isApproved}
                   onChange={(e) => setIsApproved(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
                   <option disabled>{isApproved}</option>
                   <option>Approved</option>
@@ -268,12 +269,12 @@ const EditRiskVersionControl = () => {
             <div className="flex justify-start gap-2 mt-5">
               <button
                 type="submit"
-                className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
+                className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
               >
                 Save
               </button>
               <Link to="/Risk-Assessment/versionControl">
-                <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
+                <button className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold">
                   Cancel
                 </button>
               </Link>
