@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const BCPNavigation = () => {
+const BIANavigation = () => {
   const scrollContainerRef = useRef(null);
 
   // Function to scroll to a specific tab
@@ -83,19 +83,18 @@ const BCPNavigation = () => {
         className="flex overflow-hidden space-x-2 text-white font-semibold px-8" // Add padding to the sides to avoid overlay with buttons
       >
         {[
-          "BCP Form",
-          "Document Control",
-          "Recovery Strategy",
-          "Legal Requirements",
-          "Pre-Incident Preparation",
-          "Critical Business Function",
+          "BIA Form",
+          "Document Version",
+          "Operating Sites",
+          "Critical BUsiness Function",
+          "Business Peaks and Deadlines",
+          "Resources",
+          "Impact Analysis",
           "Resources Required",
           "Dependencies",
-          "Vital Records",
           "Work Area Recovery",
           "Manpower",
-          "Recovery and Resumption",
-          "Embedded Documents",
+         
         ].map((link, idx) => (
           <NavLink
             key={idx}
@@ -103,7 +102,7 @@ const BCPNavigation = () => {
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
             className={({ isActive }) =>
-              `whitespace-nowrap px-2 py-1 rounded ${
+              `whitespace-nowrap px-2 py-1 rounded-lg ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
               }`
             }
@@ -125,4 +124,4 @@ const BCPNavigation = () => {
   );
 };
 
-export default BCPNavigation;
+export default BIANavigation;

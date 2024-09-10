@@ -10,7 +10,7 @@ const CreateRiskVersionControl = () => {
   const [checkedBy, setCheckedBy] = useState("");
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
-  const [isApproved, setIsApproved] = useState("");
+  const [isApproved, setIsApproved] = useState("Pending");
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUsers] = useState([]);
   const navigate = useNavigate();
@@ -108,7 +108,7 @@ const CreateRiskVersionControl = () => {
       .post("http://localhost:5000/api/versionControlsRisk/add", data)
       .then(() => {
         handleSuccessAlert();
-        navigate("/riskVersionControl");
+        navigate("/Risk-Assessment/versionControl");
       })
       .catch((err) => {
         handleErrorAlert();
