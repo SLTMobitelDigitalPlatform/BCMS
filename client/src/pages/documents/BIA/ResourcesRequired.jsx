@@ -1,4 +1,5 @@
 import React from 'react';
+import BIANavigation from "../../../components/BIANavigation";
 
 const ResourcesRequired = () => {
   return (
@@ -19,14 +20,8 @@ const ResourcesRequired = () => {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="tabs flex justify-center gap-4 mt-3">
-          <button className="tab text-sm font-semibold text-gray-400">Operating Sites</button>
-          <button className="tab text-sm font-semibold text-gray-400">Critical Business Functions</button>
-          <button className="tab text-sm font-semibold text-gray-400">Business Peaks and Deadlines</button>
-          <button className="tab text-sm font-semibold text-gray-400">Resources</button>
-          <button className="tab text-sm font-semibold text-green-600 border-b-2 border-green-500 pb-2">Resources Required</button>
-        </div>
+    
+        <BIANavigation />
 
         {/* Table - Resources Required */}
         <div className="resources-content mt-6 px-5">

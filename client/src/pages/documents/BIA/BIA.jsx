@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import BIANavigation from "../../../components/BIANavigation";
 
 const BIA = () => {
   const [sectionName, setSectionName] = useState("");
@@ -65,6 +66,8 @@ const BIA = () => {
         <h1 className="text-2xl sm:text-3xl font-bold text-green-500">Business Impact Analysis</h1>
       </div>
 
+      <BIANavigation />
+
       <div className="bg-cyan-50 w-full h-full p-3 rounded-2xl mt-5">
         <form onSubmit={handleSubmit} className="bia-form flex flex-col gap-6">
           <div className="bia-form-group flex gap-10">
@@ -122,16 +125,12 @@ const BIA = () => {
             <label htmlFor="changesLastReview" className="font-semibold">Changes of the last review</label>
             <input type="text" id="changesLastReview" className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
               value={changesLastReview} onChange={(e) => setChangesLastReview(e.target.value)} placeholder="Please enter the changes" />
+               <button type="submit" className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold">
+              Submit
+            </button>
           </div>
 
-          <div className="flex justify-start gap-2 mt-5">
-            <button type="submit" className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold">
-              Save
-            </button>
-            <button type="button" className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold" onClick={() => navigate("/bia")}>
-              Cancel
-            </button>
-          </div>
+          
         </form>
       </div>
     </div>
