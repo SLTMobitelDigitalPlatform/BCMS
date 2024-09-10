@@ -209,7 +209,7 @@ const RiskElements = () => {
           </button>
         ))}
       </div>
-      <div className="flex-1 overflow-y-auto border-2 border-indigo-600 mb-2">
+      <div className="flex-1 overflow-y-auto border-2 border-green-500 mb-2 bg-cyan-50">
         {/* Items in selected category */}
         {selectedCategory &&
           categories
@@ -218,7 +218,7 @@ const RiskElements = () => {
               <div
                 key={item._id}
                 className={`flex justify-between items-center py-2 px-4 ${
-                  index !== 0 ? "border-t-2 border-indigo-600" : ""
+                  index !== 0 ? "border-t-2 border-green-500" : ""
                 }`}
               >
                 <span>{item.name}</span>
