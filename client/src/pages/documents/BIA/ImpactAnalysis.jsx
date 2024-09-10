@@ -9,7 +9,7 @@ const ImpactAnalysis = () => {
       {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
+  
       <div className="impact-analysis-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto">
         {/* Header */}
         <div className="impact-analysis-header flex justify-between items-center px-5 py-2 bg-white shadow-md rounded-t-2xl">
