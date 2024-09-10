@@ -2,6 +2,7 @@ import React from 'react';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import BIANavigation from "../../../components/BIANavigation";
 
 const BiaDocumentControl = () => {
   return (
@@ -22,15 +23,7 @@ const BiaDocumentControl = () => {
           </div>
         </header>
 
-        {/* Tab Navigation */}
-        <div className="flex space-x-4 mb-8">
-          <button className="bg-blue-200 py-2 px-4 rounded-lg">BIA Form</button>
-          <button className="bg-blue-200 py-2 px-4 rounded-lg">Document Versions</button>
-          <button className="bg-blue-200 py-2 px-4 rounded-lg">Operating Sites</button>
-          <button className="bg-blue-200 py-2 px-4 rounded-lg">Critical Business Functions</button>
-          <button className="bg-blue-200 py-2 px-4 rounded-lg">Business Peaks and Deadlines</button>
-          <button className="bg-blue-200 py-2 px-4 rounded-lg">Resources</button>
-        </div>
+        <BIANavigation />
 
         {/* Document Control Table */}
         <div className="bg-white rounded-xl shadow-lg p-6">
