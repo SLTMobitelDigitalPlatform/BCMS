@@ -98,7 +98,7 @@ const BIANavigation = () => {
         ].map((link, idx) => (
           <NavLink
             key={idx}
-            to={`/Business-Continuity-Plan/${link
+            to={`/Business-Impact-Analysis/${link
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
             className={({ isActive }) =>

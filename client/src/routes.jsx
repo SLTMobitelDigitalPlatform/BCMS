@@ -4,10 +4,7 @@ import Profile from "./components/Profile";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
 import Customer from "./pages/Customers/Customer";
-import BIA from "./pages/documents/BIA/BIA";
-import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
-import ImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
-import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+
 import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
@@ -93,6 +90,13 @@ import InterestedParties from "./pages/documents/ContextOrganization/interestedP
 import IssueRegister from "./pages/documents/ContextOrganization/IssueRegister/IssueRegister";
 import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
 import Section from "./pages/sections/Section";
+
+// BIA
+import BiaForm from "./pages/documents/BIA/BiaForm";
+import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+import ImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
+import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+import PeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/ViewPeak";
 
 const router = createBrowserRouter([
   {
@@ -346,11 +350,12 @@ const router = createBrowserRouter([
         ],
       },
 
-      //? --------------------------------- BIA -------------------------------------
-      { path: "bia", element: <BIA /> },
+      // BIA
+      {path: "biaForm", element: <BiaForm /> },
       {path: "BiaDocumentControl",element: <BiaDocumentControl/>},
       {path: "ImpactAnalysis",element: <ImpactAnalysis/>},
       {path: "BiaResourcesRequired",element: <BiaResourcesRequired />},
+      {path: "peaks&deadlines", element: <PeaksAndDeadlines /> },
 
       // Roles
       { path: "roles", element: <Roles /> },
