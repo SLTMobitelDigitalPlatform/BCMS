@@ -92,11 +92,18 @@ import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmen
 import Section from "./pages/sections/Section";
 
 // BIA
+import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BiaForm";
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
-import ImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
+//import BiaOperatingSites from "./pages/documents/BIA/*";
+//import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
+import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/ViewPeak";
+//import BiaResources from "./pages/documents/BIA/*";
+import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
-import PeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/ViewPeak";
+//import BiaDependencies from "./pages/documents/BIA/*";
+//import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
+//import BiaManpower from "./pages/documents/BIA/*";
 
 const router = createBrowserRouter([
   {
@@ -350,12 +357,24 @@ const router = createBrowserRouter([
         ],
       },
 
-      // BIA
-      {path: "biaForm", element: <BiaForm /> },
-      {path: "BiaDocumentControl",element: <BiaDocumentControl/>},
-      {path: "ImpactAnalysis",element: <ImpactAnalysis/>},
-      {path: "BiaResourcesRequired",element: <BiaResourcesRequired />},
-      {path: "peaks&deadlines", element: <PeaksAndDeadlines /> },
+      // BIA (Business Impact Analysis)
+      {
+        path: "Business-Impact-Analysis",
+        element: <BiaLayout/>,
+        children: [
+          { path: "bia-form", element: <BiaForm /> },
+          { path: "document-version", element: <BiaDocumentControl /> },
+          //{ path: "operating-sites", element: <BiaOperatingSites /> },
+          // { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
+          { path: "business-peaks-and-deadlines", element: <BiaPeaksAndDeadlines /> },
+          //{ path: "resources", element: <BiaResources /> },
+          { path: "impact-analysis", element: <BiaImpactAnalysis /> },
+          { path: "resources-required", element: <BiaResourcesRequired /> },
+          //{ path: "dependencies", element: <BiaDependencies /> },     
+          //{ path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
+          //{ path: "manpower", element: <BiaManpower /> },
+        ],
+      },
 
       // Roles
       { path: "roles", element: <Roles /> },

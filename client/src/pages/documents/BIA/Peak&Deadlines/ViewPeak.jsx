@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import BIANavigation from "../../../../components/BIANavigation";
 
 const PeaksAndDeadlines = () => {
   const [peaksAndDeadlines, setPeaksAndDeadlines] = useState([]);
@@ -57,12 +56,7 @@ const PeaksAndDeadlines = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
-      <h1 className="text-3xl mb-5 font-bold text-green-500">
-        Business Impact Analysis
-      </h1>
-      <BIANavigation />
-
+    <div className="bia-container w-full h-full bg-sky-100 flex flex-col rounded-2xl ">
       <div className="p-5 h-full bg-sky-100 rounded-2xl mt-5">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-blue-900">Business Peaks and Deadlines</h1>
