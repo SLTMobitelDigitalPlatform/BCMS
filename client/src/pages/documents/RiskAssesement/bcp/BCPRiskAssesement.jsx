@@ -132,7 +132,7 @@ const BCPRiskAssesement = () => {
               <th className="w-28 doc-table-border">Residual Impact</th>
               <th className="w-28 doc-table-border">Probability</th>
               <th className="w-28 doc-table-border">Residual Impact Rating</th>
-              <th className="w-28 doc-table-border">Statement</th>
+              <th className="w-28 doc-table-border">Status</th>
               <th className="w-28 doc-table-border">Actions</th>
             </tr>
           </thead>
@@ -179,9 +179,7 @@ const BCPRiskAssesement = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   {r.residualImpactRating}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  {r.statement}
-                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">{r.status}</td>
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link to={`/editBCPRisk/${r._id}`} className="doc-edit-btn">
