@@ -24,7 +24,7 @@ const CreateQualityManagement = () => {
   const [residualImpact, setResidualImpact] = useState(0);
   const [probability, setProbability] = useState(0);
   const [residualImpactRating, setResidualImpactRating] = useState(0);
-  const [statement, setStatement] = useState("");
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
   const [riskItems, setRiskItems] = useState([]);
@@ -129,7 +129,7 @@ const CreateQualityManagement = () => {
       residualImpact,
       probability,
       residualImpactRating,
-      statement,
+      status,
     };
 
     axios
@@ -210,7 +210,7 @@ const CreateQualityManagement = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold">
-                    Responsibility
+                    Responsible Person
                   </label>
                   <select
                     id="respomsibility"
@@ -424,16 +424,25 @@ const CreateQualityManagement = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
-                  Risk Statement
+                <label htmlFor="" className=" font-semibold mt-5">
+                  Risk Status
                 </label>
-                <textarea
-                  type="text"
-                  placeholder="Enter Statement"
-                  value={statement}
-                  onChange={(e) => setStatement(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-slate-100"
-                />
+                <select
+                  id="riskOwner"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+
+                  <option>Active</option>
+                  <option>Closed</option>
+                  <option>Proposed</option>
+                  <option>Reduced</option>
+                  <option>Inprogress</option>
+                </select>
               </div>
               <div className="flex justify-start gap-2 mt-5">
                 <button

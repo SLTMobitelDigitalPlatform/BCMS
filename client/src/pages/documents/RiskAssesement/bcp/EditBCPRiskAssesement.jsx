@@ -23,7 +23,7 @@ const EditBCPRiskAssesement = () => {
   const [residualImpact, setResidualImpact] = useState(0);
   const [probability, setProbability] = useState(0);
   const [residualImpactRating, setResidualImpactRating] = useState(0);
-  const [statement, setStatement] = useState("");
+  const [status, setStatus] = useState("");
 
   const [businessContinuityOptions, setBusinessContinuityOptions] = useState(
     []
@@ -57,7 +57,7 @@ const EditBCPRiskAssesement = () => {
         setResidualImpact(res.data.residualImpact);
         setProbability(res.data.probability);
         setResidualImpactRating(res.data.residualImpactRating);
-        setStatement(res.data.statement);
+        setStatus(res.data.status);
       })
       .catch((err) => {
         alert("Something went wrong...");
@@ -87,7 +87,7 @@ const EditBCPRiskAssesement = () => {
       residualImpact,
       probability,
       residualImpactRating,
-      statement,
+      status,
     };
 
     axios
@@ -443,15 +443,24 @@ const EditBCPRiskAssesement = () => {
               <h1 className="text-lg font-bold mt-8">Risk Statement</h1>
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className=" font-semibold mt-5">
-                  Risk Statement
+                  Risk Status
                 </label>
-                <textarea
-                  type="text"
-                  placeholder="Enter Risk Description"
-                  value={statement}
-                  onChange={(e) => setStatement(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-slate-100"
-                />
+                <select
+                  id="riskOwner"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+
+                  <option>Active</option>
+                  <option>Closed</option>
+                  <option>Proposed</option>
+                  <option>Reduced</option>
+                  <option>Inprogress</option>
+                </select>
               </div>
             </div>
 
