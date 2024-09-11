@@ -16,6 +16,7 @@ export const useSections = () => {
       try {
         const response = await getSections();
         setSections(response.data);
+        // console.log(response.data);
       } catch (err) {
         setError("Error fetching sections data.");
         console.error(err);
