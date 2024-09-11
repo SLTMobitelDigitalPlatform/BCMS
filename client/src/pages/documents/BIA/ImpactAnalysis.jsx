@@ -23,7 +23,7 @@ const ImpactAnalysis = () => {
         </div>
 
 
-        <BIANavigation />
+           <BIANavigation />
 
         
 
@@ -42,19 +42,19 @@ const ImpactAnalysis = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td className="border p-2 bg-green-200">Insignificant</td>
+                  <td className="border p-2 bg-green-500">Insignificant</td>
                   <td className="border p-2">Some inconveniences caused but without any short or long term negative consequences</td>
                 </tr>
                 <tr>
-                  <td className="border p-2 bg-yellow-200">Minor</td>
+                  <td className="border p-2 bg-yellow-500">Minor</td>
                   <td className="border p-2">No impacts or impact is negligible</td>
                 </tr>
                 <tr>
-                  <td className="border p-2 bg-orange-200">Moderate</td>
+                  <td className="border p-2 bg-orange-500">Moderate</td>
                   <td className="border p-2">Inconveniences caused: short term negative consequences but without serious long term damage</td>
                 </tr>
                 <tr>
-                  <td className="border p-2 bg-red-200">Major</td>
+                  <td className="border p-2 bg-red-500">Major</td>
                   <td className="border p-2">Serious long term damage likely; will become catastrophic if impact is not contained</td>
                 </tr>
                 <tr>
@@ -64,7 +64,7 @@ const ImpactAnalysis = () => {
               </tbody>
             </table>
           </div>
-
+          
           {/* Severity Level - Financial */}
           <div className="severity-level-table bg-white rounded-xl p-5 shadow-md mt-6">
             <h3 className="text-lg font-semibold mb-4">Severity Level - Financial</h3>
@@ -77,19 +77,19 @@ const ImpactAnalysis = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td className="border p-2 bg-green-200">&lt; Rs.1M</td>
+                  <td className="border p-2 bg-green-500">&lt; Rs.1M</td>
                   <td className="border p-2">Revenue Loss from 0 to less than Rs.1M</td>
                 </tr>
                 <tr>
-                  <td className="border p-2 bg-yellow-200">Rs.1M - 10M</td>
+                  <td className="border p-2 bg-yellow-500">Rs.1M - 10M</td>
                   <td className="border p-2">Revenue Loss from Rs.1M to Rs.10M</td>
                 </tr>
                 <tr>
-                  <td className="border p-2 bg-orange-200">Rs.10M - 100M</td>
+                  <td className="border p-2 bg-orange-500">Rs.10M - 100M</td>
                   <td className="border p-2">Revenue Loss from Rs.10M to Rs.100M</td>
                 </tr>
                 <tr>
-                  <td className="border p-2 bg-red-200">Rs.100M - 500M</td>
+                  <td className="border p-2 bg-red-500">Rs.100M - 500M</td>
                   <td className="border p-2">Revenue Loss from Rs.100M to Rs.500M</td>
                 </tr>
                 <tr>
