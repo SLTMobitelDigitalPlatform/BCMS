@@ -13,7 +13,6 @@ const BIA = () => {
   const [dateApproved, setDateApproved] = useState("");
   const [dateLastReviewed, setDateLastReviewed] = useState("");
   const [changesLastReview, setChangesLastReview] = useState("");
- 
 
   const navigate = useNavigate();
 
@@ -121,16 +120,12 @@ const BIA = () => {
             <label htmlFor="changesLastReview" className="font-semibold">Changes of the last review</label>
             <input type="text" id="changesLastReview" className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
               value={changesLastReview} onChange={(e) => setChangesLastReview(e.target.value)} placeholder="Please enter the changes" />
+               <button type="submit" className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold">
+              Submit
+            </button>
           </div>
 
-          <div className="flex justify-start gap-2 mt-5">
-            <button type="submit" className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold">
-              Save
-            </button>
-            <button type="button" className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold" onClick={() => navigate("/bia")}>
-              Cancel
-            </button>
-          </div>
+          
         </form>
       </div>
     </div>
