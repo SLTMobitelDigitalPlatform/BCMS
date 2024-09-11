@@ -97,7 +97,7 @@ import BiaForm from "./pages/documents/BIA/BiaForm";
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
 //import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
-import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/ViewPeak";
+import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
 //import BiaResources from "./pages/documents/BIA/*";
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";

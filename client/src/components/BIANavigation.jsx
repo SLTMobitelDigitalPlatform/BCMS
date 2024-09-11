@@ -86,7 +86,7 @@ const BIANavigation = () => {
           "BIA Form",
           "Document Version",
           "Operating Sites",
-          "Critical BUsiness Function",
+          "Critical Business Function",
           "Business Peaks and Deadlines",
           "Resources",
           "Impact Analysis",

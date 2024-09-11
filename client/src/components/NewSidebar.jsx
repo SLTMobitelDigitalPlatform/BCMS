@@ -102,7 +102,7 @@ const NewSidebar = () => {
                 <hr className="my-1 border-black opacity-50" />
                 <li>
                   <NavLink
-                    to="/bia"
+                    to="/Business-Impact-Analysis/bia-form"
                     className={({ isActive }) =>
                       `sidebar-link ${
                         isActive ? "dropdown-active" : "dropdown-hover"

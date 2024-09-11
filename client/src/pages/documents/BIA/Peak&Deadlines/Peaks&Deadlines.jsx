@@ -72,10 +72,10 @@ const PeaksAndDeadlines = () => {
               <tr>
                 <th className="border-2 border-black">Name</th>
                 <th className="border-2 border-black">Description</th>
-                <th className="border-2 border-black">Time of Day</th>
-                <th className="border-2 border-black">Day of Week</th>
-                <th className="border-2 border-black">Business Day</th>
-                <th className="border-2 border-black">Calendar Day</th>
+                <th className="border-2 border-black">Time of Day</th>
+                <th className="border-2 border-black">Day of Week</th>
+                <th className="border-2 border-black">Business Day</th>
+                <th className="border-2 border-black">Calendar Day</th>
                 <th className="border-2 border-black">Month</th>
               </tr>
             </thead>
