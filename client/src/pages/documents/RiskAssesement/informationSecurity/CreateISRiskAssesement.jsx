@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { getCurrentUser } from "../../../../services/userApi";
+import { getCurrentUser, getUsers } from "../../../../services/userApi";
 import {
   getAllCategories,
   getItemsInCategory,
@@ -31,6 +31,7 @@ const CreateISRiskAssesement = () => {
   const [riskItems, setRiskItems] = useState([]);
 
   const [isOptions, setIsOptions] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const navigate = useNavigate();
 
@@ -74,14 +75,16 @@ const CreateISRiskAssesement = () => {
     }
   };
 
-  // const fetchCategory = async () => {
-  //   try {
-  //     const response = await getAllCategories();
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const users = response.data.map((user) => user.name);
+      // console.log(users);
+      setUsers(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchRiskElements = async () => {
     try {
@@ -110,7 +113,7 @@ const CreateISRiskAssesement = () => {
   useEffect(() => {
     fetchLastRecord();
     fetchISObjectives();
-    // fetchCategory();
+    fetchUsers();
     fetchRiskElements();
   }, []);
 
@@ -209,25 +212,41 @@ const CreateISRiskAssesement = () => {
                   <label htmlFor="" className="font-semibold">
                     Risk Owner
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Risk Owner"
+                  <select
+                    id="riskOwner"
                     value={owner}
                     onChange={(e) => setOwner(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold">
-                    Responsibility
+                    Responsible Person
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Responsibility"
+                  <select
+                    id="respomsibility"
                     value={responsibility}
                     onChange={(e) => setResponsibility(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -278,7 +297,6 @@ const CreateISRiskAssesement = () => {
                     className="p-2 rounded-lg bg-slate-100"
                   >
                     <option value="" disabled>
-                      {" "}
                       Select
                     </option>
                     {riskItems.map((option, index) => (

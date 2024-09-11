@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getUsers } from "../../../../services/userApi";
 
 const CreateMasterProducers = () => {
   const [processNo, setProcessNo] = useState("");
@@ -9,6 +10,28 @@ const CreateMasterProducers = () => {
   const [processKpi, setProcessKpi] = useState("");
   const [responsiblePerson, setResponsiblePerson] = useState("");
   const navigate = useNavigate();
+
+  const [users, setUsers] = useState([]);
+
+  const fethLastProcessNo = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/proceduresAndProcesses/last"
+      );
+      const lastRecord = response.data;
+
+      let newProcessNo = 1;
+      console.log(newProcessNo);
+
+      if (lastRecord && lastRecord.processNo) {
+        newProcessNo = lastRecord.processNo + 1;
+      }
+      console.log(newProcessNo);
+      setProcessNo(newProcessNo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleCreateMasterProducers = (e) => {
     e.preventDefault();
@@ -34,6 +57,21 @@ const CreateMasterProducers = () => {
       });
   };
 
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const users = response.data.map((user) => user.name);
+      // console.log(users);
+      setUsers(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+    fethLastProcessNo();
+  }, []);
   // Success Alert
   const handleSuccessAlert = () => {
     Swal.fire({
@@ -70,6 +108,7 @@ const CreateMasterProducers = () => {
                 type="number"
                 placeholder="Process No"
                 value={processNo}
+                readOnly
                 onChange={(e) => setProcessNo(e.target.value)}
                 className="w-1/2 p-2 rounded-lg bg-slate-100"
               />
@@ -102,13 +141,21 @@ const CreateMasterProducers = () => {
               <label htmlFor="" className="font-semibold">
                 Responsible Person
               </label>
-              <input
-                type="text"
-                placeholder="Responsible Person"
+              <select
+                id="respomsibility"
                 value={responsiblePerson}
                 onChange={(e) => setResponsiblePerson(e.target.value)}
-                className="w-1/2 p-2 rounded-lg bg-slate-100"
-              />
+                className="p-2 rounded-lg bg-slate-100"
+              >
+                <option value="" disabled>
+                  Select
+                </option>
+                {users.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex justify-start gap-2 mt-5">
               <button
