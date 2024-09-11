@@ -320,7 +320,10 @@ const router = createBrowserRouter([
           { path: "bcp-form", element: <BCPForm /> },
           { path: "document-control", element: <DocumentControl /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
-          { path: "legal-requirements", element: <LegalRequirements /> },
+          {
+            path: "legal-regulatory-&-contractual-requirements",
+            element: <LegalRequirements />,
+          },
           {
             path: "pre-incident-preparation",
             element: <PreIncidentPreparation />,
@@ -348,9 +351,9 @@ const router = createBrowserRouter([
 
       //? --------------------------------- BIA -------------------------------------
       { path: "bia", element: <BIA /> },
-      {path: "BiaDocumentControl",element: <BiaDocumentControl/>},
-      {path: "ImpactAnalysis",element: <ImpactAnalysis/>},
-      {path: "BiaResourcesRequired",element: <BiaResourcesRequired />},
+      { path: "BiaDocumentControl", element: <BiaDocumentControl /> },
+      { path: "ImpactAnalysis", element: <ImpactAnalysis /> },
+      { path: "BiaResourcesRequired", element: <BiaResourcesRequired /> },
 
       // Roles
       { path: "roles", element: <Roles /> },
