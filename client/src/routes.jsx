@@ -4,10 +4,7 @@ import Profile from "./components/Profile";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
 import Customer from "./pages/Customers/Customer";
-import BIA from "./pages/documents/BIA/BIA";
-import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
-import ImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
-import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+
 import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
@@ -93,6 +90,20 @@ import InterestedParties from "./pages/documents/ContextOrganization/interestedP
 import IssueRegister from "./pages/documents/ContextOrganization/IssueRegister/IssueRegister";
 import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
 import Section from "./pages/sections/Section";
+
+// BIA
+import BiaLayout from "./pages/documents/BIA/BiaLayout";
+import BiaForm from "./pages/documents/BIA/BiaForm";
+import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+//import BiaOperatingSites from "./pages/documents/BIA/*";
+//import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
+import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
+//import BiaResources from "./pages/documents/BIA/*";
+import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
+import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+//import BiaDependencies from "./pages/documents/BIA/*";
+//import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
+//import BiaManpower from "./pages/documents/BIA/*";
 
 const router = createBrowserRouter([
   {
@@ -320,7 +331,10 @@ const router = createBrowserRouter([
           { path: "bcp-form", element: <BCPForm /> },
           { path: "document-control", element: <DocumentControl /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
-          { path: "legal-requirements", element: <LegalRequirements /> },
+          {
+            path: "legal-regulatory-&-contractual-requirements",
+            element: <LegalRequirements />,
+          },
           {
             path: "pre-incident-preparation",
             element: <PreIncidentPreparation />,
@@ -346,11 +360,27 @@ const router = createBrowserRouter([
         ],
       },
 
-      //? --------------------------------- BIA -------------------------------------
-      { path: "bia", element: <BIA /> },
-      {path: "BiaDocumentControl",element: <BiaDocumentControl/>},
-      {path: "ImpactAnalysis",element: <ImpactAnalysis/>},
-      {path: "BiaResourcesRequired",element: <BiaResourcesRequired />},
+      // BIA (Business Impact Analysis)
+      {
+        path: "Business-Impact-Analysis",
+        element: <BiaLayout />,
+        children: [
+          { path: "bia-form", element: <BiaForm /> },
+          { path: "document-version", element: <BiaDocumentControl /> },
+          //{ path: "operating-sites", element: <BiaOperatingSites /> },
+          // { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
+          {
+            path: "business-peaks-and-deadlines",
+            element: <BiaPeaksAndDeadlines />,
+          },
+          //{ path: "resources", element: <BiaResources /> },
+          { path: "impact-analysis", element: <BiaImpactAnalysis /> },
+          { path: "resources-required", element: <BiaResourcesRequired /> },
+          //{ path: "dependencies", element: <BiaDependencies /> },
+          //{ path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
+          //{ path: "manpower", element: <BiaManpower /> },
+        ],
+      },
 
       // Roles
       { path: "roles", element: <Roles /> },

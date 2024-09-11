@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { getUsers } from "../../../../services/userApi";
 
 const EditMasterProducers = () => {
   const [processNo, setProcessNo] = useState(0);
@@ -10,6 +11,8 @@ const EditMasterProducers = () => {
   const [responsiblePerson, setResponsiblePerson] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios
@@ -25,6 +28,20 @@ const EditMasterProducers = () => {
       });
   }, [id]);
 
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const users = response.data.map((user) => user.name);
+      // console.log(users);
+      setUsers(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   const handleEditMasterProducers = (e) => {
     e.preventDefault();
 
@@ -80,10 +97,11 @@ const EditMasterProducers = () => {
                 <label htmlFor="" className="font-semibold">
                   Process Number
                 </label>
-                <textarea
+                <input
                   type="number"
                   placeholder="Process Number"
                   value={processNo}
+                  readOnly
                   onChange={(e) => setProcessNo(e.target.value)}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
@@ -117,13 +135,21 @@ const EditMasterProducers = () => {
               <label htmlFor="" className="font-semibold">
                 Process Owner
               </label>
-              <textarea
-                type="text"
-                placeholder="Process Owner"
+              <select
+                id="respomsibility"
                 value={responsiblePerson}
                 onChange={(e) => setResponsiblePerson(e.target.value)}
-                className="w-full p-2 rounded-lg bg-slate-100"
-              />
+                className="p-2 rounded-lg bg-slate-100"
+              >
+                <option value="" disabled>
+                  Select
+                </option>
+                {users.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="flex justify-start gap-2 mt-5">

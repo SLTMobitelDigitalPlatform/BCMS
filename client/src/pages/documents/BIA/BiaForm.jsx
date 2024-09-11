@@ -61,13 +61,8 @@ const BIA = () => {
   };
 
   return (
-    <div className="bia-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5">
-      <div className="bia-header">
-        <h1 className="text-2xl sm:text-3xl font-bold text-green-500">Business Impact Analysis</h1>
-      </div>
-
-      <BIANavigation />
-
+    <div className="bia-container w-full h-full bg-sky-100 flex flex-col rounded-2xl ">
+         
       <div className="bg-cyan-50 w-full h-full p-3 rounded-2xl mt-5">
         <form onSubmit={handleSubmit} className="bia-form flex flex-col gap-6">
           <div className="bia-form-group flex gap-10">

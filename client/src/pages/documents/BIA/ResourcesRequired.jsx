@@ -1,31 +1,20 @@
-import React from 'react';
+import React from "react";
 import BIANavigation from "../../../components/BIANavigation";
 
 const ResourcesRequired = () => {
   return (
     <div className="flex h-screen">
-   
-
       {/* Main Content */}
       <div className="resources-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto">
         {/* Header */}
-        <div className="resources-header flex justify-between items-center px-5 py-2 bg-white shadow-md rounded-t-2xl">
-          <h1 className="text-2xl sm:text-3xl font-bold text-green-500">Business Impact Analysis</h1>
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search"
-              className="p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-        </div>
 
-    
-        <BIANavigation />
+        <header className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold text-blue-900">Resources Required</h1>
+        </header>
 
         {/* Table - Resources Required */}
         <div className="resources-content mt-6 px-5">
-          <h2 className="text-xl font-bold text-green-500 mb-5">Resources Required</h2>
+          
 
           <div className="table-container bg-white rounded-xl p-5 shadow-md overflow-x-auto">
             <table className="w-full border-collapse">
@@ -68,7 +57,7 @@ const ResourcesRequired = () => {
       </div>
     </div>
   );
-}
+};
 
 // Sidebar Component
 const Sidebar = () => (
@@ -77,14 +66,28 @@ const Sidebar = () => (
       <img src="logo.png" alt="Logo" />
     </div>
     <nav className="nav flex flex-col gap-3">
-      <a href="#" className="font-semibold">Employee</a>
-      <a href="#" className="font-semibold">Documents</a>
-      <a href="#" className="font-semibold">Meetings</a>
-      <a href="#" className="font-semibold">Calendar</a>
-      <a href="#" className="font-semibold">Risk Management</a>
-      <a href="#" className="font-semibold">Roles & Responsibilities</a>
+      <a href="#" className="font-semibold">
+        Employee
+      </a>
+      <a href="#" className="font-semibold">
+        Documents
+      </a>
+      <a href="#" className="font-semibold">
+        Meetings
+      </a>
+      <a href="#" className="font-semibold">
+        Calendar
+      </a>
+      <a href="#" className="font-semibold">
+        Risk Management
+      </a>
+      <a href="#" className="font-semibold">
+        Roles & Responsibilities
+      </a>
     </nav>
-    <button className="bg-cyan-600 text-white p-2 mt-10 rounded">Log Out</button>
+    <button className="bg-cyan-600 text-white p-2 mt-10 rounded">
+      Log Out
+    </button>
   </div>
 );
 
