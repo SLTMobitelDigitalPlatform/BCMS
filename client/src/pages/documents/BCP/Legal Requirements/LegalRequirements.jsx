@@ -1,5 +1,5 @@
 const LegalRequirements = () => {
-  return <div>LegalRequirements</div>;
+  return <div>Legal Regulatory & Contractual Requirements</div>;
 };
 
 export default LegalRequirements;

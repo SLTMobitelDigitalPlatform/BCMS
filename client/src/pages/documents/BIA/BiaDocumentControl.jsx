@@ -11,17 +11,10 @@ const BiaDocumentControl = () => {
       <div className="flex-1 p-6">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-green-600">
-            Business Impact Analysis
-          </h1>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search"
-              className="p-2 rounded-full bg-gray-100 border-2 border-green-300"
-            />
-          </div>
-        </header>
+
+          <h1 className="text-2xl font-bold text-blue-900">Document Control</h1>
+        </header>        
+
 
         {/* Document Control Table */}
         <div className="bg-white rounded-xl shadow-lg p-6">
