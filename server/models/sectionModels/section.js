@@ -16,7 +16,7 @@ const sectionSchema = new mongoose.Schema(
     sectionCode: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
       trim: true,
     },
     // users: [
