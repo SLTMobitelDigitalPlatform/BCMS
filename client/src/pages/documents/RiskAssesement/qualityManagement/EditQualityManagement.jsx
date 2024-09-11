@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getItemsInCategory } from "../../../../services/riskElementsApi";
+import { getUsers } from "../../../../services/userApi";
 
 const EditQualityManagement = () => {
   const [rid, setRid] = useState("");
@@ -28,6 +29,7 @@ const EditQualityManagement = () => {
   const { id } = useParams();
 
   const [riskItems, setRiskItems] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios
@@ -106,8 +108,21 @@ const EditQualityManagement = () => {
       console.log(error);
     }
   };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const users = response.data.map((user) => user.name);
+      // console.log(users);
+      setUsers(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchRiskElements();
+    fetchUsers();
   }, []);
   // Calculate Impact Rating
   useEffect(() => {
@@ -163,25 +178,41 @@ const EditQualityManagement = () => {
                   <label htmlFor="" className=" font-semibold mt-5">
                     Risk Owner
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Risk Owner"
+                  <select
+                    id="riskOwner"
                     value={owner}
                     onChange={(e) => setOwner(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className=" font-semibold mt-5">
                     Responsibility
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Risk Owner"
+                  <select
+                    id="respomsibility"
                     value={responsibility}
                     onChange={(e) => setResponsibility(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-col gap-2">

@@ -21,6 +21,7 @@ const riskBCPSchema = new Schema(
     residualImpact: { type: Number, required: true },
     probability: { type: Number, required: true },
     residualImpactRating: { type: Number, required: true },
+    statement: { type: String, required: true },
 
     newMethod: { type: String, required: false },
     newIdntifiedControls: { type: String, required: false },

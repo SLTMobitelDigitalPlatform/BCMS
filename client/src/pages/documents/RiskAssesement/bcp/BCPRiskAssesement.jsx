@@ -47,6 +47,7 @@ const BCPRiskAssesement = () => {
         const sectionIdentifier = risk.rid.split("-")[1];
         return sectionIdentifier === section;
       });
+      console.log(filtered);
       setFilteredRisks(filtered);
     } catch (error) {
       console.log(error);
