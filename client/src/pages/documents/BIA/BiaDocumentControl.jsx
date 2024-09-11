@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
@@ -7,13 +7,13 @@ import BIANavigation from "../../../components/BIANavigation";
 const BiaDocumentControl = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
-    
-
       {/* Main Content */}
       <div className="flex-1 p-6">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-green-600">Business Impact Analysis</h1>
+          <h1 className="text-3xl font-bold text-green-600">
+            Business Impact Analysis
+          </h1>
           <div className="relative">
             <input
               type="text"
@@ -23,11 +23,11 @@ const BiaDocumentControl = () => {
           </div>
         </header>
 
-        <BIANavigation />
-
         {/* Document Control Table */}
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-center mb-6">Document Control</h2>
+          <h2 className="text-xl font-semibold text-center mb-6">
+            Document Control
+          </h2>
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-blue-100">

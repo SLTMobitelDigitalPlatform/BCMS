@@ -196,7 +196,7 @@ const EditQualityManagement = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className=" font-semibold mt-5">
-                    responsible Person
+                    Responsible Person
                   </label>
                   <select
                     id="respomsibility"
