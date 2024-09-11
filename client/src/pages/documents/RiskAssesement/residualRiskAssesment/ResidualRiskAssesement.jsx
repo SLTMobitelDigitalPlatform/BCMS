@@ -15,6 +15,18 @@ const ResidualRiskAssesement = () => {
 
   const risksPerPage = 10;
 
+  const getRatingStyle = (rating) => {
+    if (rating == null) {
+      return null;
+    } else if (rating >= 12) {
+      return { backgroundColor: "red", color: "black" };
+    } else if (rating >= 6) {
+      return { backgroundColor: "orange", color: "black" };
+    } else {
+      return { backgroundColor: "green", color: "white" };
+    }
+  };
+
   const fetchBCPRisks = async () => {
     try {
       const bcpResponse = await axios.get(
@@ -131,7 +143,10 @@ const ResidualRiskAssesement = () => {
             {currentRisks.map((r) => (
               <tr key={r._id}>
                 <td className="py-2 px-4 w-28 doc-table-border">{r.rid}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td
+                  className="py-2 px-4 w-28 doc-table-border"
+                  style={getRatingStyle(r.residualImpactRating)}
+                >
                   {r.residualImpactRating}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-border">
@@ -147,7 +162,10 @@ const ResidualRiskAssesement = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   {r.newLikelihood}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td
+                  className="py-2 px-4 w-28 doc-table-border"
+                  style={getRatingStyle(r.newResidualImpactRating)}
+                >
                   {r.newResidualImpactRating}
                 </td>
 
