@@ -210,7 +210,7 @@ const CreateQualityManagement = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold">
-                    Responsibility
+                    Responsible Person
                   </label>
                   <select
                     id="respomsibility"
