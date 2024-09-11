@@ -11,21 +11,9 @@ const ImpactAnalysis = () => {
   
       <div className="impact-analysis-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto">
         {/* Header */}
-        <div className="impact-analysis-header flex justify-between items-center px-5 py-2 bg-white shadow-md rounded-t-2xl">
-          <h1 className="text-2xl sm:text-3xl font-bold text-green-500">Business Impact Analysis</h1>
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search"
-              className="p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-        </div>
-
-
-        <BIANavigation />
-
-        
+        <header className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold text-blue-900">Impact Analysis</h1>
+        </header>      
 
         {/* Impact Analysis Content */}
         <div className="impact-analysis-content mt-6 px-5">

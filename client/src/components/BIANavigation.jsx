@@ -86,7 +86,7 @@ const BIANavigation = () => {
           "BIA Form",
           "Document Version",
           "Operating Sites",
-          "Critical BUsiness Function",
+          "Critical Business Function",
           "Business Peaks and Deadlines",
           "Resources",
           "Impact Analysis",
@@ -98,7 +98,7 @@ const BIANavigation = () => {
         ].map((link, idx) => (
           <NavLink
             key={idx}
-            to={`/Business-Continuity-Plan/${link
+            to={`/Business-Impact-Analysis/${link
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
             className={({ isActive }) =>
