@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axiosInstance from "../services/axiosInstance";
 
 export const useRoles = () => {
   const [roles, setRoles] = useState([]);
@@ -8,7 +9,7 @@ export const useRoles = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await getRoles();
+        const response = await axiosInstance.get("/getRole");
         setRoles(response.data);
       } catch (err) {
         setError("Error fetching roles data.");
@@ -17,7 +18,9 @@ export const useRoles = () => {
         setLoading(false);
       }
     };
+
     fetchRoles();
   }, []);
+
   return { roles, loading, error };
 };

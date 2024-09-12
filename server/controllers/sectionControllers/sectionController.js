@@ -26,10 +26,17 @@ const getSectionById = async (req, res) => {
 };
 
 const createSection = async (req, res) => {
+  const { sectionCode, name } = req.body;
+
   try {
-    const section = new Section(req.body);
+    const existingSection = await Section.findOne({ sectionCode });
+    if (existingSection) {
+      return res.status(400).json({ message: "Section code already exists." });
+    }
+
+    const section = new Section({ sectionCode, name });
     await section.save();
-    res.status(200).json(section);
+    res.status(201).json(section);
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
