@@ -26,11 +26,13 @@ function TestCallTree() {
         parent: item.parent ? item.parent._id : null,
         title: item.title,
         description: item.description,
+        personName: item.personName,
+        mobileNumber: item.mobileNumber,
         image:
           item.image ||
           "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109",
       }));
-
+      console.log(formattedItems);
       setItems(formattedItems);
     } catch (error) {
       console.error("Error fetching data:", error);

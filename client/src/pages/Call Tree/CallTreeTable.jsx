@@ -9,17 +9,17 @@ function CallTreeTable() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    personName: "",
+    mobileNumber: "",
     parent: null,
     section: "",
   });
 
-  // Fetch call tree items and available parent nodes
   useEffect(() => {
     fetchItems();
     fetchParents();
   }, []);
 
-  // Fetch items filtered by the user's section
   const fetchItems = async () => {
     const loggedInUser = await getCurrentUser();
     const userSection = loggedInUser.data.section._id;
@@ -31,7 +31,6 @@ function CallTreeTable() {
     setItems(data);
   };
 
-  // Fetch available parent nodes (also filtered by section)
   const fetchParents = async () => {
     try {
       const loggedInUser = await getCurrentUser();
@@ -59,27 +58,31 @@ function CallTreeTable() {
 
     const updatedFormData = {
       ...formData,
-      section: userSection, // Ensure section is included in formData
+      section: userSection,
     };
 
     if (isEditing) {
-      // Update the existing node
       await fetch(`http://localhost:5000/callTree/edit/${editId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedFormData),
       });
     } else {
-      // Create a new node
       await fetch("http://localhost:5000/callTree/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedFormData),
       });
     }
-    setFormData({ title: "", description: "", parent: null });
+    setFormData({
+      title: "",
+      description: "",
+      personName: "",
+      mobileNumber: "",
+      parent: null,
+    });
     setIsEditing(false);
-    fetchItems(); // Refresh data
+    fetchItems();
   };
 
   const handleEdit = (item) => {
@@ -88,6 +91,8 @@ function CallTreeTable() {
     setFormData({
       title: item.title,
       description: item.description,
+      personName: item.personName,
+      mobileNumber: item.mobileNumber,
       parent: item.parent ? item.parent._id : null,
     });
   };
@@ -96,7 +101,7 @@ function CallTreeTable() {
     await fetch(`http://localhost:5000/callTree/delete/${id}`, {
       method: "DELETE",
     });
-    fetchItems(); // Refresh data
+    fetchItems();
   };
 
   return (
@@ -119,6 +124,24 @@ function CallTreeTable() {
             value={formData.description}
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })
+            }
+          />
+          <input
+            className="w-[200px] p-2 rounded-lg bg-slate-100"
+            type="text"
+            placeholder="Person Name"
+            value={formData.personName}
+            onChange={(e) =>
+              setFormData({ ...formData, personName: e.target.value })
+            }
+          />
+          <input
+            className="w-[200px] p-2 rounded-lg bg-slate-100"
+            type="text"
+            placeholder="Mobile Number"
+            value={formData.mobileNumber}
+            onChange={(e) =>
+              setFormData({ ...formData, mobileNumber: e.target.value })
             }
           />
           <select
@@ -153,6 +176,8 @@ function CallTreeTable() {
           <tr>
             <th>Title</th>
             <th>Description</th>
+            <th>Name</th>
+            <th>Mobile Number</th>
             <th>Supervisor</th>
             <th>Actions</th>
           </tr>
@@ -162,6 +187,8 @@ function CallTreeTable() {
             <tr key={item._id}>
               <td>{item.title}</td>
               <td>{item.description}</td>
+              <td>{item.personName}</td>
+              <td>{item.mobileNumber}</td>
               <td>{item.parent?.title || "No Supervisor"}</td>
               <td>
                 <button

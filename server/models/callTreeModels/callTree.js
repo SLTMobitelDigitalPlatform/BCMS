@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const callTreeSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
+  personName: { type: String, required: false },
+  mobileNumber: { type: String, required: false },
   image: { type: String },
   parent: {
     type: mongoose.Schema.Types.ObjectId,
