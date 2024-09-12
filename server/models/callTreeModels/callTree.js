@@ -4,7 +4,11 @@ const Schema = mongoose.Schema;
 const callTreeSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  personName: { type: String, required: false },
+  personName: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: false,
+  },
   mobileNumber: { type: String, required: false },
   image: { type: String },
   parent: {

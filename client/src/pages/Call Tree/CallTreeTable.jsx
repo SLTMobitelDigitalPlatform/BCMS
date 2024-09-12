@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getCurrentUser } from "../../services/userAPI";
+import { getCurrentUser, getUsers } from "../../services/userAPI";
 
 function CallTreeTable() {
   const [items, setItems] = useState([]);
   const [parent, setParent] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -15,9 +16,24 @@ function CallTreeTable() {
     section: "",
   });
 
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const users = response.data.map((user) => ({
+        userId: user._id,
+        userName: user.name,
+      }));
+      console.log(users);
+      setUsers(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchItems();
     fetchParents();
+    fetchUsers();
   }, []);
 
   const fetchItems = async () => {
@@ -28,6 +44,7 @@ function CallTreeTable() {
       `http://localhost:5000/callTree?section=${userSection}`
     );
     const data = await response.json();
+    console.log(data);
     setItems(data);
   };
 
@@ -53,36 +70,44 @@ function CallTreeTable() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // First ensure the form data is up-to-date before submission
     const loggedInUser = await getCurrentUser();
     const userSection = loggedInUser.data.section._id;
 
     const updatedFormData = {
       ...formData,
       section: userSection,
+      parent: formData.parent === "" ? null : formData.parent, // Ensure parent is null if not selected
     };
 
-    if (isEditing) {
-      await fetch(`http://localhost:5000/callTree/edit/${editId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedFormData),
+    try {
+      if (isEditing) {
+        await fetch(`http://localhost:5000/callTree/edit/${editId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedFormData),
+        });
+      } else {
+        await fetch("http://localhost:5000/callTree/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedFormData),
+        });
+      }
+
+      // Clear the form and reset the state
+      setFormData({
+        title: "",
+        description: "",
+        personName: "",
+        mobileNumber: "",
+        parent: null, // Reset parent to null after submission
       });
-    } else {
-      await fetch("http://localhost:5000/callTree/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedFormData),
-      });
+      setIsEditing(false);
+      fetchItems(); // Refresh the items list after submission
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
-    setFormData({
-      title: "",
-      description: "",
-      personName: "",
-      mobileNumber: "",
-      parent: null,
-    });
-    setIsEditing(false);
-    fetchItems();
   };
 
   const handleEdit = (item) => {
@@ -91,7 +116,7 @@ function CallTreeTable() {
     setFormData({
       title: item.title,
       description: item.description,
-      personName: item.personName,
+      personName: item.personName._id,
       mobileNumber: item.mobileNumber,
       parent: item.parent ? item.parent._id : null,
     });
@@ -126,7 +151,7 @@ function CallTreeTable() {
               setFormData({ ...formData, description: e.target.value })
             }
           />
-          <input
+          {/* <input
             className="w-[200px] p-2 rounded-lg bg-slate-100"
             type="text"
             placeholder="Person Name"
@@ -134,7 +159,26 @@ function CallTreeTable() {
             onChange={(e) =>
               setFormData({ ...formData, personName: e.target.value })
             }
-          />
+          /> */}
+          <select
+            className="w-[200px] p-2 rounded-lg bg-slate-100"
+            type="text"
+            id="personName"
+            placeholder="Name"
+            value={formData.personName}
+            onChange={(e) =>
+              setFormData({ ...formData, personName: e.target.value })
+            }
+          >
+            <option value="" disabled>
+              Name
+            </option>
+            {users.map((option) => (
+              <option key={option.userId} value={option.userId}>
+                {option.userName}
+              </option>
+            ))}
+          </select>
           <input
             className="w-[200px] p-2 rounded-lg bg-slate-100"
             type="text"
@@ -146,10 +190,9 @@ function CallTreeTable() {
           />
           <select
             className="w-[200px] p-2 rounded-lg bg-slate-100"
-            type="text"
             id="parent"
             placeholder="Supervisor"
-            value={formData.parent}
+            value={formData.parent || ""}
             onChange={(e) =>
               setFormData({ ...formData, parent: e.target.value })
             }
@@ -163,6 +206,7 @@ function CallTreeTable() {
               </option>
             ))}
           </select>
+
           <button
             type="submit"
             className="p-2 w-32 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold"
@@ -187,7 +231,7 @@ function CallTreeTable() {
             <tr key={item._id}>
               <td>{item.title}</td>
               <td>{item.description}</td>
-              <td>{item.personName}</td>
+              <td>{item.personName?.name || "No Name"}</td>
               <td>{item.mobileNumber}</td>
               <td>{item.parent?.title || "No Supervisor"}</td>
               <td>
