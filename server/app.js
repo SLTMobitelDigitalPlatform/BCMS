@@ -5,7 +5,6 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
-
 require("./db/connectToDb");
 
 const router = require("./routes/userRoutes/userRoutes");
