@@ -2,7 +2,13 @@ const CallTree = require("../../models/callTreeModels/callTree");
 
 const getCallTreee = async (req, res) => {
   try {
-    const callTree = await CallTree.find().populate("parent").exec();
+    const { section } = req.query; // Get section from query params
+    if (!section) {
+      return res.status(400).json({ message: "Section ID is required" });
+    }
+    const callTree = await CallTree.find({ section }) // Filter by section
+      .populate("parent")
+      .exec();
     res.status(200).json(callTree);
   } catch (error) {
     res.status(500).json({ message: error.message });

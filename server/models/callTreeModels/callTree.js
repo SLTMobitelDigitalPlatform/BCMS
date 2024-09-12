@@ -1,19 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const callTreeSchema = new mongoose.Schema({
-//   label: String,
-//   mobileNumber: String,
-//   children: [
-//     {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "CallTree",
-//     },
-//   ],
-// });
-
-// const CallTree = mongoose.model("CallTree", callTreeSchema);
-// module.exports = CallTree;
-
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -25,7 +9,12 @@ const callTreeSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "CallTree",
     default: null,
-  }, // Ref to parent node
+  },
+  section: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Section",
+    required: false,
+  },
 });
 
 const CallTree = mongoose.model("CallTree", callTreeSchema);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getCurrentUser } from "../../services/userAPI";
 
 function CallTreeTable() {
   const [items, setItems] = useState([]);
@@ -8,23 +9,37 @@ function CallTreeTable() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    parent: "",
+    parent: null,
+    section: "",
   });
 
+  // Fetch call tree items and available parent nodes
   useEffect(() => {
     fetchItems();
     fetchParents();
   }, []);
 
+  // Fetch items filtered by the user's section
   const fetchItems = async () => {
-    const response = await fetch("http://localhost:5000/callTree");
+    const loggedInUser = await getCurrentUser();
+    const userSection = loggedInUser.data.section._id;
+
+    const response = await fetch(
+      `http://localhost:5000/callTree?section=${userSection}`
+    );
     const data = await response.json();
     setItems(data);
   };
 
+  // Fetch available parent nodes (also filtered by section)
   const fetchParents = async () => {
     try {
-      const response = await fetch("http://localhost:5000/callTree");
+      const loggedInUser = await getCurrentUser();
+      const userSection = loggedInUser.data.section._id;
+
+      const response = await fetch(
+        `http://localhost:5000/callTree?section=${userSection}`
+      );
       const data = await response.json();
       const parentNames = data.map((parent) => ({
         id: parent._id,
@@ -38,22 +53,31 @@ function CallTreeTable() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const loggedInUser = await getCurrentUser();
+    const userSection = loggedInUser.data.section._id;
+
+    const updatedFormData = {
+      ...formData,
+      section: userSection, // Ensure section is included in formData
+    };
+
     if (isEditing) {
       // Update the existing node
       await fetch(`http://localhost:5000/callTree/edit/${editId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
     } else {
       // Create a new node
       await fetch("http://localhost:5000/callTree/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
     }
-    setFormData({ title: "", description: "", parent: "" });
+    setFormData({ title: "", description: "", parent: null });
     setIsEditing(false);
     fetchItems(); // Refresh data
   };
@@ -64,7 +88,7 @@ function CallTreeTable() {
     setFormData({
       title: item.title,
       description: item.description,
-      parent: item.parent ? item.parent._id : "",
+      parent: item.parent ? item.parent._id : null,
     });
   };
 
