@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { registerUser, updateUser } from "../../services/userApi";
+import { registerUser, updateUser } from "../../services/userAPI";
 import {
   validateEmail,
   validateMobileNumber,
