@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import BIANavigation from "../../../components/BIANavigation";
 
 const ImpactAnalysis = () => {
@@ -7,8 +7,6 @@ const ImpactAnalysis = () => {
 
   return (
     <div className="flex h-screen">
-    
-  
       <div className="impact-analysis-container w-full h-full bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto">
         {/* Header */}
         <div className="impact-analysis-header flex justify-between items-center px-5 py-2 bg-white shadow-md rounded-t-2xl">
@@ -29,15 +27,20 @@ const ImpactAnalysis = () => {
 
         {/* Impact Analysis Content */}
         <div className="impact-analysis-content mt-6 px-5">
-
           {/* Severity Level - Operational */}
           <div className="severity-level-table bg-white rounded-xl p-5 shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Severity Level - Operational</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Severity Level - Operational
+            </h3>
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="border p-2 bg-gray-100 text-left">Severity Level</th>
-                  <th className="border p-2 bg-gray-100 text-left">Description</th>
+                  <th className="border p-2 bg-gray-100 text-left">
+                    Severity Level
+                  </th>
+                  <th className="border p-2 bg-gray-100 text-left">
+                    Description
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -59,20 +62,28 @@ const ImpactAnalysis = () => {
                 </tr>
                 <tr>
                   <td className="border p-2 bg-black text-white">Severe</td>
-                  <td className="border p-2">Irreparable damage to organization</td>
+                  <td className="border p-2">
+                    Irreparable damage to organization
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
-
+          
           {/* Severity Level - Financial */}
           <div className="severity-level-table bg-white rounded-xl p-5 shadow-md mt-6">
-            <h3 className="text-lg font-semibold mb-4">Severity Level - Financial</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              Severity Level - Financial
+            </h3>
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="border p-2 bg-gray-100 text-left">Severity Level</th>
-                  <th className="border p-2 bg-gray-100 text-left">Description</th>
+                  <th className="border p-2 bg-gray-100 text-left">
+                    Severity Level
+                  </th>
+                  <th className="border p-2 bg-gray-100 text-left">
+                    Description
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -93,8 +104,12 @@ const ImpactAnalysis = () => {
                   <td className="border p-2">Revenue Loss from Rs.100M to Rs.500M</td>
                 </tr>
                 <tr>
-                  <td className="border p-2 bg-black text-white">&gt; Rs.500M</td>
-                  <td className="border p-2">Revenue Loss greater than Rs.500M</td>
+                  <td className="border p-2 bg-black text-white">
+                    &gt; Rs.500M
+                  </td>
+                  <td className="border p-2">
+                    Revenue Loss greater than Rs.500M
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -103,7 +118,7 @@ const ImpactAnalysis = () => {
       </div>
     </div>
   );
-}
+};
 
 // Sidebar Component
 const Sidebar = () => (
@@ -112,14 +127,28 @@ const Sidebar = () => (
       <img src="logo.png" alt="Logo" />
     </div>
     <nav className="nav flex flex-col gap-3">
-      <a href="#" className="font-semibold">Employee</a>
-      <a href="#" className="font-semibold">Documents</a>
-      <a href="#" className="font-semibold">Meetings</a>
-      <a href="#" className="font-semibold">Calendar</a>
-      <a href="#" className="font-semibold">Risk Management</a>
-      <a href="#" className="font-semibold">Roles & Responsibilities</a>
+      <a href="#" className="font-semibold">
+        Employee
+      </a>
+      <a href="#" className="font-semibold">
+        Documents
+      </a>
+      <a href="#" className="font-semibold">
+        Meetings
+      </a>
+      <a href="#" className="font-semibold">
+        Calendar
+      </a>
+      <a href="#" className="font-semibold">
+        Risk Management
+      </a>
+      <a href="#" className="font-semibold">
+        Roles & Responsibilities
+      </a>
     </nav>
-    <button className="bg-cyan-600 text-white p-2 mt-10 rounded">Log Out</button>
+    <button className="bg-cyan-600 text-white p-2 mt-10 rounded">
+      Log Out
+    </button>
   </div>
 );
 

@@ -18,6 +18,7 @@ export const useSections = () => {
     setLoading(false);
   };
 
+
   // Add section
   const addSection = async (sectionData) => {
     try {

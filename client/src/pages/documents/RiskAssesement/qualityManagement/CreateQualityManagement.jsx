@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { getCurrentUser } from "../../../../services/userApi";
+import { getCurrentUser, getUsers } from "../../../../services/userApi";
 import { getItemsInCategory } from "../../../../services/riskElementsApi";
 
 const CreateQualityManagement = () => {
@@ -24,10 +24,11 @@ const CreateQualityManagement = () => {
   const [residualImpact, setResidualImpact] = useState(0);
   const [probability, setProbability] = useState(0);
   const [residualImpactRating, setResidualImpactRating] = useState(0);
-  const [statement, setStatement] = useState("");
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
 
   const [riskItems, setRiskItems] = useState([]);
+  const [users, setUsers] = useState([]);
   // Auto increment ID
   const fetchLastRecord = async () => {
     try {
@@ -68,7 +69,16 @@ const CreateQualityManagement = () => {
       console.error("Error fetching the last record:", error);
     }
   };
-
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      const users = response.data.map((user) => user.name);
+      // console.log(users);
+      setUsers(users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const fetchRiskElements = async () => {
     try {
       const response = await getItemsInCategory("Quality");
@@ -84,6 +94,7 @@ const CreateQualityManagement = () => {
   useEffect(() => {
     fetchLastRecord();
     fetchRiskElements();
+    fetchUsers();
   }, []);
 
   // Calculate Impact Rating
@@ -118,7 +129,7 @@ const CreateQualityManagement = () => {
       residualImpact,
       probability,
       residualImpactRating,
-      statement,
+      status,
     };
 
     axios
@@ -181,25 +192,41 @@ const CreateQualityManagement = () => {
                   <label htmlFor="" className="font-semibold">
                     Risk Owner
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Risk Owner"
+                  <select
+                    id="riskOwner"
                     value={owner}
                     onChange={(e) => setOwner(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label htmlFor="" className="font-semibold">
-                    Responsibility
+                    Responsible Person
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Responsibility"
+                  <select
+                    id="respomsibility"
                     value={responsibility}
                     onChange={(e) => setResponsibility(e.target.value)}
-                    className="w-[300px] p-2 rounded-lg bg-slate-100"
-                  />
+                    className="p-2 rounded-lg bg-slate-100"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    {users.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
@@ -397,16 +424,25 @@ const CreateQualityManagement = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold mt-5">
-                  Risk Statement
+                <label htmlFor="" className=" font-semibold mt-5">
+                  Risk Status
                 </label>
-                <textarea
-                  type="text"
-                  placeholder="Enter Statement"
-                  value={statement}
-                  onChange={(e) => setStatement(e.target.value)}
-                  className="w-full p-2 rounded-lg bg-slate-100"
-                />
+                <select
+                  id="riskOwner"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+
+                  <option>Active</option>
+                  <option>Closed</option>
+                  <option>Proposed</option>
+                  <option>Reduced</option>
+                  <option>Inprogress</option>
+                </select>
               </div>
               <div className="flex justify-start gap-2 mt-5">
                 <button
