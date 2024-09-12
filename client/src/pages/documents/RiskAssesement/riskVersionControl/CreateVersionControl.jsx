@@ -10,6 +10,7 @@ const CreateRiskVersionControl = () => {
   const [checkedBy, setCheckedBy] = useState("");
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
+  const [isChecked, setIsChecked] = useState("Pending");
   const [isApproved, setIsApproved] = useState("Pending");
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUsers] = useState([]);
@@ -102,6 +103,7 @@ const CreateRiskVersionControl = () => {
       approve,
       reasons,
       isApproved,
+      isChecked,
     };
 
     axios

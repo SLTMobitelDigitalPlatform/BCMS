@@ -12,6 +12,7 @@ const CreateVersionControl = () => {
   const [reasons, setReasons] = useState("");
   const [users, setUsers] = useState([]);
   const [isApproved, setIsApproved] = useState("Pending");
+  const [isChecked, setIsChecked] = useState("Pending");
   const navigate = useNavigate();
 
   const fetchLastVersion = async () => {
@@ -84,6 +85,7 @@ const CreateVersionControl = () => {
       approve,
       reasons,
       isApproved,
+      isChecked,
     };
 
     axios
