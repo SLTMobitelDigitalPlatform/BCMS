@@ -54,12 +54,12 @@ function TestCallTree() {
 
   return (
     <div>
-      <OrgDiagram centerOnCursor={true} config={config} />
       <Link to="/calltreetable">
         <div className="text-white bg-blue-900 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm w-40 px-3 py-2">
           Go to Table
         </div>
       </Link>
+      <OrgDiagram centerOnCursor={true} config={config} />
     </div>
   );
 }
