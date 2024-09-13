@@ -4,17 +4,16 @@ import { useAuth } from "../auth/AuthContext";
 import { FaChevronDown } from "react-icons/fa";
 
 const NewSidebar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [documentDropdown, setDocumentDropdown] = useState(false);
+  const [managementDropdown, setManagementDropdown] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const toggleDocumentDropdown = () => {
+    setDocumentDropdown(!documentDropdown);
   };
 
-  //   const [activeDropdownItem, setActiveDropdownItem] = useState(null);
-
-  //   const handleDropdownItemClick = (item) => {
-  //     setActiveDropdownItem(item);
-  //   };
+  const toggleManagementDropdown = () => {
+    setManagementDropdown(!managementDropdown);
+  };
 
   const { logout } = useAuth();
   const handleLogout = async () => {
@@ -33,88 +32,150 @@ const NewSidebar = () => {
       <div className="text-4xl text-center font-bold text-sky-400">
         <NavLink to={"/profile"}>BCMS</NavLink>
       </div>
-      {/* <p>/document/!doc name!/!doc section!</p> */}
+
       <div>
         <ul className="text-base font-semibold flex flex-col gap-2 text-left">
-          {/* Employees */}
-          <li>
-            <NavLink
-              to="/employee"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
-              }
+          {/* System Management */}
+          <li className="relative">
+            <div
+              tabIndex={0}
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget))
+                  setManagementDropdown(false);
+              }}
             >
-              Employee
-            </NavLink>
+              <button
+                onClick={toggleManagementDropdown}
+                className="flex items-center justify-between w-full px-4 py-2 rounded-2xl sidebar-hover transition-all duration-300"
+              >
+                System Management <FaChevronDown className="ml-2" />
+              </button>
+              {managementDropdown && (
+                <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
+                  <li>
+                    <NavLink
+                      to="/employee"
+                      className={({ isActive }) =>
+                        `sidebar-link ${
+                          isActive ? "dropdown-active" : "dropdown-hover"
+                        }`
+                      }
+                      onClick={toggleManagementDropdown}
+                    >
+                      Employees
+                    </NavLink>
+                  </li>
+                  <hr className="my-1 border-black opacity-50" />
+                  <li>
+                    <NavLink
+                      to="/teams"
+                      className={({ isActive }) =>
+                        `sidebar-link ${
+                          isActive ? "dropdown-active" : "dropdown-hover"
+                        }`
+                      }
+                      onClick={toggleManagementDropdown}
+                    >
+                      Teams
+                    </NavLink>
+                  </li>
+                  <hr className="my-1 border-black opacity-50" />
+                  <li>
+                    <NavLink
+                      to="/customers"
+                      className={({ isActive }) =>
+                        `sidebar-link ${
+                          isActive ? "dropdown-active" : "dropdown-hover"
+                        }`
+                      }
+                      onClick={toggleManagementDropdown}
+                    >
+                      Customers
+                    </NavLink>
+                  </li>
+                  <hr className="my-1 border-black opacity-50" />
+                </ul>
+              )}
+            </div>
           </li>
           <hr className="opacity-50" />
 
           {/* Documents */}
           <li className="relative">
-            <button
-              onClick={toggleDropdown}
-              className="flex items-center justify-between w-full px-4 py-2 rounded-2xl sidebar-hover transition-all duration-300"
+            <div
+              tabIndex={0}
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget))
+                  setDocumentDropdown(false);
+              }}
             >
-              Documents <FaChevronDown className="ml-2" />
-            </button>
-            {isDropdownOpen && (
-              <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
-                <li>
-                  <NavLink
-                    to="/Risk-Assessment/versionControl"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={toggleDropdown}
-                  >
-                    Risk Assessment
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="Context-of-the-Organization/version-control"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={toggleDropdown}
-                  >
-                    Context of the Organization
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="/Business-Continuity-Plan/bcp-form"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                  >
-                    BCP
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="/Business-Impact-Analysis/bia-form"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                  >
-                    BIA
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-              </ul>
-            )}
+              <button
+                onClick={toggleDocumentDropdown}
+                className="flex items-center justify-between w-full px-4 py-2 rounded-2xl sidebar-hover transition-all duration-300"
+              >
+                System Documents <FaChevronDown className="ml-2" />
+              </button>
+              {documentDropdown && (
+                <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
+                  <li>
+                    <NavLink
+                      to="/Risk-Assessment/versionControl"
+                      className={({ isActive }) =>
+                        `sidebar-link ${
+                          isActive ? "dropdown-active" : "dropdown-hover"
+                        }`
+                      }
+                      onClick={toggleDocumentDropdown}
+                    >
+                      Risk Assessment
+                    </NavLink>
+                  </li>
+                  <hr className="my-1 border-black opacity-50" />
+                  <li>
+                    <NavLink
+                      to="Context-of-the-Organization/version-control"
+                      className={({ isActive }) =>
+                        `sidebar-link ${
+                          isActive ? "dropdown-active" : "dropdown-hover"
+                        }`
+                      }
+                      onClick={toggleDocumentDropdown}
+                    >
+                      Context of the Organization
+                    </NavLink>
+                  </li>
+                  <hr className="my-1 border-black opacity-50" />
+                  <li>
+                    <NavLink
+                      to="/Business-Continuity-Plan/bcp-form"
+                      className={({ isActive }) =>
+                        `sidebar-link ${
+                          isActive ? "dropdown-active" : "dropdown-hover"
+                        }`
+                      }
+                      onClick={toggleDocumentDropdown}
+                    >
+                      BCP
+                    </NavLink>
+                  </li>
+                  <hr className="my-1 border-black opacity-50" />
+                  <li>
+                    <NavLink
+                      to="/Business-Impact-Analysis/bia-form"
+                      className={({ isActive }) =>
+                        `sidebar-link ${
+                          isActive ? "dropdown-active" : "dropdown-hover"
+                        }`
+                      }
+                      onClick={toggleDocumentDropdown}
+                    >
+                      BIA
+                    </NavLink>
+                  </li>
+                  <hr className="my-1 border-black opacity-50" />
+                </ul>
+              )}
+            </div>
           </li>
           <hr className="opacity-50" />
 
@@ -144,19 +205,6 @@ const NewSidebar = () => {
           </li>
           <hr className="opacity-50" />
 
-          {/* Roles and Responsibilities */}
-          <li>
-            <NavLink
-              to="/roles"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
-              }
-            >
-              Roles and Responsibilities
-            </NavLink>
-          </li>
-          <hr className="opacity-50" />
-
           {/* Policies */}
           <li>
             <NavLink
@@ -165,11 +213,10 @@ const NewSidebar = () => {
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
             >
-              Policies
+              Policies and Guidelines
             </NavLink>
           </li>
           <hr className="opacity-50" />
-
           {/* Call Tree */}
           <li>
             <NavLink
@@ -179,21 +226,6 @@ const NewSidebar = () => {
               }
             >
               Call Tree
-            </NavLink>
-          </li>
-          <hr className="opacity-50" />
-
-          {/* Customers */}
-          <li>
-            <NavLink
-              to="/customers"
-              className={({ isActive }) =>
-                `block px-4 py-2 rounded-2xl items-center ${
-                  isActive ? "sidebar-active" : "sidebar-hover"
-                }`
-              }
-            >
-              Customer
             </NavLink>
           </li>
           <hr className="opacity-50" />

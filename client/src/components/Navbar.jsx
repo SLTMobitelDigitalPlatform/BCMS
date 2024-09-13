@@ -45,16 +45,10 @@ const Navbar = () => {
           to="/about-us"
           className="text-black hover:text-blue-600 font-bold"
         >
-          About
+          Organizational Documents
         </Link>
         <Link to="/roles" className="text-black hover:text-blue-600 font-bold">
           Roles and Responsibilities
-        </Link>
-        <Link
-          to="/contact-us"
-          className="text-black hover:text-blue-600 font-bold"
-        >
-          Contact
         </Link>
         <Link
           to="/sections"
