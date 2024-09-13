@@ -26,44 +26,13 @@ const CreateMeeting = () => {
   }, []);
 
   const handleAttendeeChange = (selectedOptions) => {
-    if (selectedOptions.length > 0) {
-      setAttendees(selectedOptions.map((option) => ({ _id: option.value })));
-    } else {
-      setAttendees([]);
-    }
-  };
+    setAttendees(selectedOptions);
+  }; 
 
   const attendeeOptions = employees.map((employee) => ({
     value: employee._id,
     label: employee.name,
-  }));
-
-  // select attendees from all employees
-  // const handleAttendeeClick = (employeeId) => {
-  //   console.log("Employees:", employees);
-  //   console.log("Employee ID:", employeeId);
-  //   if (employees.length === 0) {
-  //     console.error("No employees data available.");
-  //     return;
-  //   }
-  //   const selectedEmployee = employees.find(
-  //     (employee) => employee._id === employeeId
-  //   );
-  //   if (!selectedEmployee) {
-  //     console.error(`Employee with ID ${employeeId} not found.`);
-  //     return;
-  //   }
-  //   setAttendees((prevAttendees) => {
-  //     if (prevAttendees.some((attendee) => attendee._id === employeeId)) {
-  //       console.warn(
-  //         `Employee with ID ${employeeId} already added as an attendee.`
-  //       );
-  //       return prevAttendees;
-  //     }
-  //     return [...prevAttendees, selectedEmployee];
-  //   });
-  //   console.log(selectedEmployee);
-  // };
+  }));  
 
   // select chairperson from all employees
   const handleChairedByClick = (employeeId) => {
@@ -91,7 +60,7 @@ const CreateMeeting = () => {
         date: date,
         startTime: startTime,
         endTime: endTime,
-        attendees: attendees.map((attendee) => attendee._id),
+        attendees: attendees.map((attendee) => attendee.value),
         chairedBy: chairedBy,
       }),
     })
@@ -112,7 +81,7 @@ const CreateMeeting = () => {
 
   // Delete attendee from the list
   const removeAttendee = (employeeId) => {
-    setAttendees(attendees.filter((attendee) => attendee._id !== employeeId));
+    setAttendees(attendees.filter((attendee) => attendee.value !== employeeId));
   };
 
   return (
@@ -262,14 +231,15 @@ const CreateMeeting = () => {
                   Attendees
                 </label>
                 <div className="mt-2">
-                  <Select
-                    isMulti
-                    value={attendees}
-                    onChange={handleAttendeeChange}
-                    options={attendeeOptions}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                  />
+                <Select
+                  isMulti
+                  value={attendees}
+                  onChange={handleAttendeeChange}
+                  options={attendeeOptions}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                />
+
                 </div>
             </div>
 
@@ -279,7 +249,6 @@ const CreateMeeting = () => {
         <div className="relative overflow-x-auto pb-5 mt-5 mx-10">
           <table className="table table-xs w-full text-center mt-10 border border-[#52B14A]">
             <thead className="bg-[#00bbf6] h-10">
-
               <tr>
                 <th></th>
                 <th>Name</th>
@@ -287,28 +256,25 @@ const CreateMeeting = () => {
                 <th>Section</th>
                 <th></th>
               </tr>
-
             </thead>
-            
             <tbody>
               {attendees.map((attendee, i) => {
-                const fullAttendee = employees.find((emp) => emp._id === attendee._id); // Match attendee's ID with employee data
+                const fullAttendee = employees.find((emp) => emp._id === attendee.value); // Match attendee's ID with employee data
                 if (!fullAttendee) return null; // If employee data is missing, skip rendering
                 return (
                   <tr
-                    key={attendee._id}
-                    value={attendee._id}
+                    key={attendee.value}
                     className="bg-cyan-50 border-b border-[#52B14A] dark:bg-white dark:border-gray-700 hover:bg-cyan-100 dark:hover:bg-gray-100"
                   >
                     <td>{i + 1}</td>
                     <td>{fullAttendee.name}</td>
                     <td>{fullAttendee.designation}</td>
-                    <td>{fullAttendee.section?.name}</td> {/* Changed to safely access section name */}
+                    <td>{fullAttendee.section?.name || "N/A"}</td> {/* Changed to safely access section name */}
                     <td>
                       <button
                         type="button"
                         className="ms-auto -mx-1.5 -my-1.5 text-red-500 hover:text-red-700 rounded-lg focus:ring-1 focus:ring-red-300 p-1 hover:bg-red-100 inline-flex items-center justify-center h-6 w-6 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                        onClick={() => removeAttendee(attendee._id)}
+                        onClick={() => removeAttendee(attendee.value)}
                       >
                         <span className="sr-only">Close</span>
                         <svg
@@ -332,9 +298,9 @@ const CreateMeeting = () => {
                 );
               })}
             </tbody>
-
           </table>
         </div>
+
         <div className=" border-gray-900/10 mt-4 flex items-center justify-center gap-x-6">
           <button
             type="submit"
