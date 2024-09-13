@@ -34,7 +34,7 @@ const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/e
 const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
 
 const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
-
+const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
 const PORT = 5000;
@@ -69,7 +69,8 @@ app.use(
   routerRiskElements,
   routerExternalParty,
   routerInternalParty,
-  routerCallTree
+  routerCallTree,
+  routerTeam
 );
 
 // Create uploads directory if it doesn't exist
