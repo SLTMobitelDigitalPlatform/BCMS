@@ -18,7 +18,6 @@ export const useSections = () => {
     setLoading(false);
   };
 
-
   // Add section
   const addSection = async (sectionData) => {
     try {
@@ -81,10 +80,10 @@ export const useSections = () => {
 
   return {
     // section,
-    fetchSections,
     sections,
     loading,
     error,
+    fetchSections,
     addSection,
     editSection,
     removeSection,
