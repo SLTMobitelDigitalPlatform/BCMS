@@ -169,7 +169,7 @@ const CreateVersionControl = () => {
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
-                    Select
+                    Select Prepared Person
                   </option>
                   {users.map((option, index) => (
                     <option key={index} value={option}>
@@ -191,7 +191,7 @@ const CreateVersionControl = () => {
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
-                    Select
+                    Select Approved Person
                   </option>
                   {users.map((option, index) => (
                     <option key={index} value={option}>
@@ -213,7 +213,7 @@ const CreateVersionControl = () => {
                 className="w-[500px] p-2 rounded-lg bg-slate-100"
               >
                 <option value="" disabled>
-                  Select
+                  Select Checked Person
                 </option>
                 {users.map((option, index) => (
                   <option key={index} value={option}>
