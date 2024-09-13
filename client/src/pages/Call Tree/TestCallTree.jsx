@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { OrgDiagram } from "basicprimitivesreact";
 import { PageFitMode, Enabled } from "basicprimitives";
 import { Link } from "react-router-dom";

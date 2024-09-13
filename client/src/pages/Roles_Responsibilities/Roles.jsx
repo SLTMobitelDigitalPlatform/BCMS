@@ -4,16 +4,22 @@ import { useUsers } from "../../hooks/useUsers";
 import { useEffect } from "react";
 
 const Roles = () => {
-  const { roles, loading: rolesLoading, error: rolesError } = useRoles();
   const {
-    fetchUserDetails,
+    roles,
+    loading: rolesLoading,
+    error: rolesError,
+    fetchRoles,
+  } = useRoles();
+  const {
     user,
     loading: userLoading,
     error: userError,
+    fetchUserDetails,
   } = useUsers();
 
   useEffect(() => {
     fetchUserDetails();
+    fetchRoles();
   }, []);
 
   if (rolesLoading || userLoading) return <div>Loading...</div>;

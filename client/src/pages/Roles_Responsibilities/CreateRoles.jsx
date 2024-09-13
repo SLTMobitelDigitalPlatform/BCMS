@@ -1,27 +1,39 @@
 import { useState } from "react";
+import { useRoles } from "../../hooks/useRoles";
 
 const CreateRoles = () => {
   const [roles, setRoles] = useState("");
   const [responsibilities, setResponsibilities] = useState("");
+  const { createRole } = useRoles();
 
   //Store form data in database
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch("http://localhost:5000/createRole", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        roles: roles,
-        responsibilities: responsibilities,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        alert("Data sent successfully:", data);
-      })
-      .catch((error) => console.error("Error sending data:", error));
+    const roleData = {
+      roles: roles,
+      responsibilities: responsibilities,
+    };
+
+    try {
+      await createRole(roleData);
+    } catch (error) {
+      console.error("Error creating role:", error);
+    }
+    // fetch("http://localhost:5000/createRole", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     roles: roles,
+    //     responsibilities: responsibilities,
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     alert("Data sent successfully:", data);
+    //   })
+    //   .catch((error) => console.error("Error sending data:", error));
   };
 
   return (

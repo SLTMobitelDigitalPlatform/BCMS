@@ -69,8 +69,11 @@ const Section = () => {
 
     try {
       if (addEditSectionModal.type === "add") {
-        await addSection({ sectionCode, name,
-          sectionCoordinator: coordinatorValue, });
+        await addSection({
+          sectionCode,
+          name,
+          sectionCoordinator: coordinatorValue,
+        });
         Swal.fire({
           icon: "success",
           title: "Section Added",
@@ -153,7 +156,7 @@ const Section = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="p-5 rounded-2xl w-full h-full overflow-auto bg-indigo-100">
+    <div className="px-5 pt-4 pb-20 rounded-2xl bg-indigo-100 w-full h-full overflow-hidden">
       <div className="flex items-center justify-between mb-5">
         <h1 className="text-3xl mb-3 font-bold text-green-500">Sections</h1>
         <button
@@ -262,64 +265,65 @@ const Section = () => {
         </div>
       </Modal>
 
-      <table className="table-fixed relative w-full py-10 bg-cyan-50">
-        <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
-          <tr>
-            <th className="py-2 px-4 w-20 doc-table-border">Section Code</th>
-            <th className="py-2 px-4 w-20 doc-table-border">Section Name</th>
-            <th className="py-2 px-4 w-20 doc-table-border">
-              Section Coordinator
-            </th>
-            <th className="py-2 px-4 w-20 doc-table-border">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sections.map((section) => (
-            <tr key={section._id} className="hover:bg-indigo-100">
-              <td className="py-2 px-4 w-28 doc-table-border">
-                {section.sectionCode}
-              </td>
-              <td className="py-2 px-4 w-28 doc-table-border">
-                {section.name}
-              </td>
-              <td className="py-2 px-4 w-28 doc-table-border">
-                {section.sectionCoordinator && section.sectionCoordinator.name
-                  ? section.sectionCoordinator.name
-                  : "No Coordinator Assigned"}
-              </td>
-
-              <td className="py-2 px-4 w-28 doc-table-border">
-                <div className="flex justify-center gap-2">
-                  <button
-                    className="doc-edit-btn"
-                    onClick={() => {
-                      setAddEditSectionModal({
-                        isShown: true,
-                        type: "edit",
-                        data: section,
-                      });
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="doc-delete-btn"
-                    onClick={() =>
-                      handleDeleteSection(
-                        section._id,
-                        section.name,
-                        section.sectionCode
-                      )
-                    }
-                  >
-                    Delete
-                  </button>
-                </div>
-              </td>
+      <div className="h-full w-full overflow-auto">
+        <table className="table-fixed relative w-full py-10 bg-cyan-50">
+          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+            <tr>
+              <th className="py-2 px-4 w-20 doc-table-border">Section Code</th>
+              <th className="py-2 px-4 w-20 doc-table-border">Section Name</th>
+              <th className="py-2 px-4 w-20 doc-table-border">
+                Section Coordinator
+              </th>
+              <th className="py-2 px-4 w-20 doc-table-border">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sections.map((section) => (
+              <tr key={section._id} className="hover:bg-indigo-100">
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {section.sectionCode}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {section.name}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  {section.sectionCoordinator && section.sectionCoordinator.name
+                    ? section.sectionCoordinator.name
+                    : "No Coordinator Assigned"}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">
+                  <div className="flex justify-center gap-2">
+                    <button
+                      className="doc-edit-btn"
+                      onClick={() => {
+                        setAddEditSectionModal({
+                          isShown: true,
+                          type: "edit",
+                          data: section,
+                        });
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="doc-delete-btn"
+                      onClick={() =>
+                        handleDeleteSection(
+                          section._id,
+                          section.name,
+                          section.sectionCode
+                        )
+                      }
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

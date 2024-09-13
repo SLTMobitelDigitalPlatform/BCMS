@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axiosInstance from "../services/axiosInstance";
 
 export const useAction = () => {
@@ -7,21 +7,17 @@ export const useAction = () => {
   const [error, setError] = useState(null);
 
   // Fetch action
-  useEffect(() => {
-    const fetchAction = async (meetingId) => {
-      try {
-        const response = await axiosInstance.get(
-          `/getsingleActionData/${meetingId}`
-        );
-        setAction(response.data);
-      } catch (err) {
-        setError("Error fetching actions data.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAction();
-  }, []);
+  const fetchAction = async (meetingId) => {
+    try {
+      const response = await axiosInstance.get(
+        `/getsingleActionData/${meetingId}`
+      );
+      setAction(response.data);
+    } catch (err) {
+      setError("Error fetching actions data.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 };
