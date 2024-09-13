@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../../assets/logo.png";
 import { FaSpinner } from "react-icons/fa";
-import { validateEmail } from "../../utilities/helper";
+import { validateEmail, validateServiceNumber } from "../../utilities/helper";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,7 +37,7 @@ const Login = () => {
     }
     setHasError(false);
 
-    if (!serviceNumber.trim()) {
+    if (!validateServiceNumber(serviceNumber)) {
       setHasError(true);
       setLoading(false);
       toast.error("Please enter your service number.");
@@ -115,7 +115,7 @@ const Login = () => {
             <div className="relative">
               <input
                 className={`shadow appearance-none border-2 rounded-xl w-full h-full py-2 px-4 focus:outline-none ${
-                  hasError && !serviceNumber.trim()
+                  hasError && !validateServiceNumber(serviceNumber)
                     ? "input-field-error"
                     : "input-field-border"
                 } `}

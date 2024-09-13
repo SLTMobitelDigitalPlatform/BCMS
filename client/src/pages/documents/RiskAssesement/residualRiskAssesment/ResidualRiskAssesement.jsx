@@ -15,6 +15,18 @@ const ResidualRiskAssesement = () => {
 
   const risksPerPage = 10;
 
+  const getRatingStyle = (rating) => {
+    if (rating == null) {
+      return null;
+    } else if (rating >= 12) {
+      return { backgroundColor: "red", color: "black" };
+    } else if (rating >= 6) {
+      return { backgroundColor: "orange", color: "black" };
+    } else {
+      return { backgroundColor: "green", color: "white" };
+    }
+  };
+
   const fetchBCPRisks = async () => {
     try {
       const bcpResponse = await axios.get(
@@ -102,9 +114,7 @@ const ResidualRiskAssesement = () => {
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">
-          Information Security
-        </h1>
+        <h1 className="text-xl font-bold text-indigo-900"></h1>
       </div>
 
       {/* Table */}
@@ -131,7 +141,10 @@ const ResidualRiskAssesement = () => {
             {currentRisks.map((r) => (
               <tr key={r._id}>
                 <td className="py-2 px-4 w-28 doc-table-border">{r.rid}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td
+                  className="py-2 px-4 w-28 doc-table-border"
+                  style={getRatingStyle(r.residualImpactRating)}
+                >
                   {r.residualImpactRating}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-border">
@@ -147,7 +160,10 @@ const ResidualRiskAssesement = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   {r.newLikelihood}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td
+                  className="py-2 px-4 w-28 doc-table-border"
+                  style={getRatingStyle(r.newResidualImpactRating)}
+                >
                   {r.newResidualImpactRating}
                 </td>
 

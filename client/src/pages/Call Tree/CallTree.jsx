@@ -1,5 +1,5 @@
 import { Tree, TreeNode } from "react-organizational-chart";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import data from "./data.json";
 
 const StyledNode = ({ label, mobileNumber }) => (
@@ -33,18 +33,6 @@ const renderTreeNodes = (nodeData) => {
 };
 
 const CallTree = () => {
-  // const [treeData, setTreeData] = useState(null);
-
-  // useEffect(() => {
-  //   // Fetch the data from JSON file
-  //   fetch("./data.json")
-  //     .then((response) => response.json())
-  //     .then((data) => setTreeData(data))
-  //     .catch((error) => console.error("Error fetching data:", error));
-  // }, []);
-
-  // if (!treeData) return <p>Loading...</p>;
-
   const [treeData] = useState(data);
 
   return (
@@ -60,31 +48,3 @@ const CallTree = () => {
 };
 
 export default CallTree;
-
-// return (
-//   <div className="flex justify-center">
-//     <Tree
-//       lineWidth={"2px"}
-//       lineColor={"green"}
-//       lineBorderRadius={"10px"}
-//       label={<StyledNode label="BCMS Manager" />}
-//     >
-//       <TreeNode label={<StyledNode label="BCMS Sectional Coordinator 1" />}>
-//         <TreeNode label={<StyledNode label="BCMS Coordinator 1" />} />
-//         <TreeNode label={<StyledNode label="BCMS Coordinator 2" />} />
-//       </TreeNode>
-//       <TreeNode label={<StyledNode label="BCMS Sectional Coordinator 2" />}>
-//         <TreeNode label={<StyledNode label="BCMS Coordinator" />}>
-//           <TreeNode label={<StyledNode label="BCMS Employee 1" />} />
-//           <TreeNode label={<StyledNode label="BCMS Employee 2" />} />
-//           <TreeNode label={<StyledNode label="BCMS Employee 3" />} />
-//         </TreeNode>
-//       </TreeNode>
-//       <TreeNode label={<StyledNode label="BCMS Sectional Coordinator 3" />}>
-//         <TreeNode label={<StyledNode label="BCMS Coordinator 1" />} />
-//         <TreeNode label={<StyledNode label="BCMS Coordinator 2" />} />
-//         <TreeNode label={<StyledNode label="BCMS Coordinator 3" />} />
-//       </TreeNode>
-//     </Tree>
-//   </div>
-// );

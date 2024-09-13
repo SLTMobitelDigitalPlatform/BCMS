@@ -331,7 +331,10 @@ const router = createBrowserRouter([
           { path: "bcp-form", element: <BCPForm /> },
           { path: "document-control", element: <DocumentControl /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
-          { path: "legal-requirements", element: <LegalRequirements /> },
+          {
+            path: "legal-regulatory-&-contractual-requirements",
+            element: <LegalRequirements />,
+          },
           {
             path: "pre-incident-preparation",
             element: <PreIncidentPreparation />,
@@ -360,17 +363,20 @@ const router = createBrowserRouter([
       // BIA (Business Impact Analysis)
       {
         path: "Business-Impact-Analysis",
-        element: <BiaLayout/>,
+        element: <BiaLayout />,
         children: [
           { path: "bia-form", element: <BiaForm /> },
           { path: "document-version", element: <BiaDocumentControl /> },
           //{ path: "operating-sites", element: <BiaOperatingSites /> },
           // { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
-          { path: "business-peaks-and-deadlines", element: <BiaPeaksAndDeadlines /> },
+          {
+            path: "business-peaks-and-deadlines",
+            element: <BiaPeaksAndDeadlines />,
+          },
           //{ path: "resources", element: <BiaResources /> },
           { path: "impact-analysis", element: <BiaImpactAnalysis /> },
           { path: "resources-required", element: <BiaResourcesRequired /> },
-          //{ path: "dependencies", element: <BiaDependencies /> },     
+          //{ path: "dependencies", element: <BiaDependencies /> },
           //{ path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
           //{ path: "manpower", element: <BiaManpower /> },
         ],

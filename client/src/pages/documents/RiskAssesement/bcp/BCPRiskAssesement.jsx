@@ -90,6 +90,18 @@ const BCPRiskAssesement = () => {
     });
   };
 
+  const getRatingStyle = (rating) => {
+    if (rating == null) {
+      return null;
+    } else if (rating >= 12) {
+      return { backgroundColor: "red", color: "black" };
+    } else if (rating >= 6) {
+      return { backgroundColor: "orange", color: "black" };
+    } else {
+      return { backgroundColor: "green", color: "white" };
+    }
+  };
+
   // Pagination logic
   const indexOfLastRisk = currentPage * risksPerPage;
   const indexOfFirstRisk = indexOfLastRisk - risksPerPage;
@@ -132,7 +144,7 @@ const BCPRiskAssesement = () => {
               <th className="w-28 doc-table-border">Residual Impact</th>
               <th className="w-28 doc-table-border">Probability</th>
               <th className="w-28 doc-table-border">Residual Impact Rating</th>
-              <th className="w-28 doc-table-border">Statement</th>
+              <th className="w-28 doc-table-border">Status</th>
               <th className="w-28 doc-table-border">Actions</th>
             </tr>
           </thead>
@@ -160,7 +172,10 @@ const BCPRiskAssesement = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   {r.likelihood}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td
+                  className="py-2 px-4 w-28 doc-table-border"
+                  style={getRatingStyle(r.impactRating)}
+                >
                   {r.impactRating}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-border">
@@ -176,12 +191,13 @@ const BCPRiskAssesement = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   {r.probability}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td
+                  className="py-2 px-4 w-28 doc-table-border"
+                  style={getRatingStyle(r.residualImpactRating)}
+                >
                   {r.residualImpactRating}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  {r.statement}
-                </td>
+                <td className="py-2 px-4 w-28 doc-table-border">{r.status}</td>
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link to={`/editBCPRisk/${r._id}`} className="doc-edit-btn">
