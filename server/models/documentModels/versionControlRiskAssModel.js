@@ -9,6 +9,13 @@ const vControlRiskSchema = new Schema(
     checkedBy: { type: String, required: true },
     approve: { type: String, required: true },
     reasons: { type: String, required: true },
+    isChecked: {
+      type: String,
+      required: false,
+      enum: ["Checked", "Not Approved", "Pending"],
+      default: "Pending",
+    },
+    checkedComment: { type: String, required: false },
     isApproved: {
       type: String,
       required: false,
