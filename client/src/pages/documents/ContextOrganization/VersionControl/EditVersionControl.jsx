@@ -11,8 +11,10 @@ const EditVersionControl = () => {
   const [checkedBy, setCheckedBy] = useState("");
   const [reasons, setReasons] = useState("");
   const [comment, setComment] = useState("");
+  const [checkedComment, setCheckedComment] = useState("");
   const [users, setUsers] = useState([]);
   const [isApproved, setIsApproved] = useState("");
+  const [isChecked, setIsChecked] = useState("");
   const [loggedInUser, setLoggedInUser] = useState([]);
 
   const navigate = useNavigate();
@@ -30,6 +32,8 @@ const EditVersionControl = () => {
         setReasons(res.data.reasons);
         setComment(res.data.comment);
         setIsApproved(res.data.isApproved);
+        setCheckedComment(res.data.checkedComment);
+        setIsChecked(res.data.isChecked);
       })
       .catch((err) => {
         console.log(err);
@@ -84,6 +88,8 @@ const EditVersionControl = () => {
       reasons,
       comment,
       isApproved,
+      checkedComment,
+      isChecked,
     };
 
     axios
@@ -226,6 +232,41 @@ const EditVersionControl = () => {
                 value={reasons}
                 rows={4}
                 onChange={(e) => setReasons(e.target.value)}
+                className="w-full p-2 rounded-lg bg-slate-100"
+              />
+            </div>
+            {loggedInUser.name === checkedBy ? (
+              <div className="flex flex-col gap-2">
+                <label htmlFor="isChecked" className="font-semibold">
+                  Checking Status
+                </label>
+                <select
+                  id="isChecked"
+                  placeholder="Checked Status"
+                  value={isChecked}
+                  onChange={(e) => setIsChecked(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option disabled>{isApproved}</option>
+                  <option>Checked</option>
+                  <option>Not Approved</option>
+                  <option>Pending</option>
+                </select>
+              </div>
+            ) : (
+              ""
+            )}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="font-semibold">
+                Comments from Checked Person
+              </label>
+              <textarea
+                type="text"
+                placeholder="Reasons"
+                value={checkedComment}
+                rows={4}
+                onChange={(e) => setCheckedComment(e.target.value)}
+                readOnly={loggedInUser.name !== checkedBy}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
