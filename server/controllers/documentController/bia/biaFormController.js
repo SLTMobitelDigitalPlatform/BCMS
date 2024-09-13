@@ -1,4 +1,4 @@
-const BiaForm = require("../../../models/documentModels/bia/biaFormModel");
+const BiaForm = require("../../../models/documentModels/businessImpactAnalysis/biaFormModel");
 
 // Create a new bia form
 const createBiaForm = async (req, res) => {
