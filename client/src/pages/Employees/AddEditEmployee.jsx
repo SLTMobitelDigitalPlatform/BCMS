@@ -7,7 +7,8 @@ import {
   validateName,
   validateServiceNumber,
 } from "../../utilities/helper";
-import { getSections } from "../../services/sectionApi";
+
+import { useSections } from "../../hooks/useSections";
 
 const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
   const [name, setName] = useState(employeeData?.name || "");
@@ -20,7 +21,7 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
   const [email, setEmail] = useState(employeeData?.email || "");
   const [role, setRole] = useState(employeeData?.role || "");
   const [section, setSection] = useState(employeeData?.section || "");
-  const [sectionNames, setSectionNames] = useState([]);
+  // const [sectionNames, setSectionNames] = useState([]);
   const [contactNumber, setContactNumber] = useState(
     employeeData?.contactNumber || ""
   );
@@ -29,20 +30,7 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
 
   const [hasError, setHasError] = useState(false);
 
-  const fetchSections = async () => {
-    try {
-      const response = await getSections();
-      const sectionNames = response.data.map((section) => ({
-        id: section._id,
-        name: section.name,
-        sectionCode: section.sectionCode,
-      }));
-      console.log(sectionNames);
-      setSectionNames(sectionNames);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { sections, fetchSections } = useSections();
 
   useEffect(() => {
     fetchSections();
@@ -341,8 +329,8 @@ const AddEditEmployee = ({ employeeData, type, getAllEmployees, onClose }) => {
             <option value="" disabled>
               Select Section
             </option>
-            {sectionNames.map((option) => (
-              <option key={option.id} value={option.id}>
+            {sections.map((option) => (
+              <option key={option._id} value={option._id}>
                 {option.name}
               </option>
             ))}
