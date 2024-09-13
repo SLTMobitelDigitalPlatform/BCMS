@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import BIANavigation from "../../../components/BIANavigation";
 
 const BIA = () => {
   const [sectionName, setSectionName] = useState("");
