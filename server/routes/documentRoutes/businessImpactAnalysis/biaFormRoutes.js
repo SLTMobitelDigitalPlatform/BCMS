@@ -4,28 +4,28 @@ const router = express.Router();
 
 router.post(
   "/api/biaForms/add",
-  biaFormControllers.createVersionControl
+  biaFormControllers.createBiaForm
 );
 router.get(
   "/api/biaForms/last",
-  biaFormControllers.getLastVersion
+  biaFormControllers.getLastBiaForm
 );
 router.get(
   "/api/biaForms/",
-  biaFormControllers.getVersionControls
+  biaFormControllers.getBiaForms
 );
 router.get(
   "/api/biaForms/:id",
-  biaFormControllers.getVersionById
+  biaFormControllers.getBiaFormById
 );
 
 router.put(
   "/api/biaForms/edit/:id",
-  biaFormControllers.updateVersion
+  biaFormControllers.updateBiaForm
 );
 router.delete(
   "/api/biaForms/delete/:id",
-  biaFormControllers.deleteVersion
+  biaFormControllers.deleteBiaForm
 );
 
 module.exports = router;

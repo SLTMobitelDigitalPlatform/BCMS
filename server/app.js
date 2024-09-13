@@ -37,6 +37,9 @@ const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
 
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
+//BIA
+const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
+
 const PORT = 5000;
 
 // middleware
@@ -69,7 +72,8 @@ app.use(
   routerRiskElements,
   routerExternalParty,
   routerInternalParty,
-  routerCallTree
+  routerCallTree,
+  routerBiaForm
 );
 
 // Create uploads directory if it doesn't exist
