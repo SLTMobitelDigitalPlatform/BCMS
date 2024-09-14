@@ -14,8 +14,9 @@ export const useSections = () => {
       setSections(response.data);
     } catch (err) {
       handleError("Error fetching sections data.", err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   // Add section

@@ -101,6 +101,7 @@ import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Dea
 //import BiaResources from "./pages/documents/BIA/*";
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -223,7 +224,6 @@ const router = createBrowserRouter([
       },
 
       // * Version Controls
-      { path: "editVersion/:id", element: <EditVersionControl /> },
       { path: "createRiskVersion", element: <CreateRiskVersionControl /> },
       { path: "editISRiskVersion/:id", element: <EditRiskVersionControl /> },
 
@@ -271,8 +271,8 @@ const router = createBrowserRouter([
       },
 
       // * Version Controls
-      { path: "versionControls", element: <VersionControls /> },
       { path: "createVersion", element: <CreateVersionControl /> },
+      { path: "editVersion/:id", element: <EditVersionControl /> },
 
       // * Intersested Parties
 
@@ -355,10 +355,9 @@ const router = createBrowserRouter([
           { path: "embedded-documents", element: <EmbeddedDocuments /> },
 
           { path: "table", element: <Table /> },
-          // { path: "emdoc", element: <EmDoc /> },
-          // { path: "dependancies", element: <Dependencies /> },
         ],
       },
+      { path: "createBCP", element: <CreateBCP /> },
 
       // BIA (Business Impact Analysis)
       {
