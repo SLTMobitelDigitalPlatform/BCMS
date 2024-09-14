@@ -171,10 +171,11 @@ const CreateBCP = () => {
             >
               Save
             </button>
-            <Link to="/Business-Continuity-Plan/bcp-form">
-              <button className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold">
-                Cancel
-              </button>
+            <Link
+              to="/Business-Continuity-Plan/bcp-form"
+              className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
+            >
+              Cancel
             </Link>
           </div>
         </form>

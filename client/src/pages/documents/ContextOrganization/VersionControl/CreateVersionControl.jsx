@@ -261,10 +261,11 @@ const CreateVersionControl = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/version-control">
-                <button className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold">
-                  Cancel
-                </button>
+              <Link
+                to="/Context-of-the-Organization/version-control"
+                className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
+              >
+                Cancel
               </Link>
             </div>
           </div>
