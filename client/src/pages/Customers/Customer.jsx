@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+
 // import Modal from "react-modal";
 // import AddEditEmployee from "./AddEditEmployee";
 import { Link } from "react-router-dom";
-import { deleteCustomerByID, getCustomers } from "../../services/customerAPI";
+
 import Pagination from "./Pagination";
+import { useCustomers } from "../../hooks/useCustomers";
 
 const Customer = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,49 +17,73 @@ const Customer = () => {
   //   data: {},
   // });
 
-  const [customerData, setCustomerData] = useState([]);
+  // const [customerData, setCustomerData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  const getAllCustomers = async () => {
-    try {
-      const response = await getCustomers();
-      setCustomerData(response.data);
-    } catch (error) {
-      console.error("Error fetching customers:", error.response?.data || error);
-    }
-  };
+  const { customers, fetchCustomers, deleteCustomerByID } = useCustomers();
 
   useEffect(() => {
-    getAllCustomers();
+    fetchCustomers();
   }, []);
 
   // Handle delete action
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this entry?")) {
-      try {
-        const response = await deleteCustomerByID(id);
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
 
-        if (response.data) {
-          setCustomerData((prevCustomerData) =>
-            prevCustomerData.filter((customer) => customer._id !== id)
-          );
-          alert(response.data);
-        }
-      } catch (error) {
-        console.error(
-          "Error deleting customer:",
-          error.response?.data || error
-        );
-        alert("An error occurred while deleting the customer.");
-      } finally {
-        getAllCustomers();
+      if (result.isConfirmed) {
+        await deleteCustomerByID(id);
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Customer has been deleted.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       }
+    } catch (error) {
+      console.error("Error deleting customer:", error.response?.data || error);
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to delete customer. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
+    // if (window.confirm("Are you sure you want to delete this entry?")) {
+    //   try {
+    //     const response = await deleteCustomerByID(id);
+
+    //     if (response.data) {
+    //       setCustomerData((prevCustomerData) =>
+    //         prevCustomerData.filter((customer) => customer._id !== id)
+    //       );
+    //       alert(response.data);
+    //     }
+    //   } catch (error) {
+    //     console.error(
+    //       "Error deleting customer:",
+    //       error.response?.data || error
+    //     );
+    //     alert("An error occurred while deleting the customer.");
+    //   } finally {
+    //     getAllCustomers();
+    //   }
+    // }
   };
 
   // Updated filtering logic
-  const filteredCustomerData = customerData.filter((el) =>
+  const filteredCustomerData = customers.filter((el) =>
     Object.values(el).some((value) =>
       String(value).toLowerCase().includes(searchTerm.toLowerCase())
     )
