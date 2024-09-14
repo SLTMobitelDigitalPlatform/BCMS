@@ -105,6 +105,7 @@ import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
 import TeamList from "./pages/teams/TeamList";
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
 import AddEditTeams from "./pages/teams/AddEditTeams";
+import CreateEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/CreateEmbeddedDocuments";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -272,7 +273,7 @@ const router = createBrowserRouter([
           },
           { path: "objectives", element: <Objectives /> },
           {
-            path: "master-of-procedures-and-process",
+            path: "master-list-of-procedures/process",
             element: <MasterProcedures />,
           },
         ],
@@ -366,6 +367,8 @@ const router = createBrowserRouter([
         ],
       },
       { path: "createBCP", element: <CreateBCP /> },
+
+      { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
 
       // BIA (Business Impact Analysis)
       {

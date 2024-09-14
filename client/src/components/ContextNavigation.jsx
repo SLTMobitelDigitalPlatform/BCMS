@@ -23,7 +23,7 @@ const ContextNavigation = () => {
   //   { name: "Objectives", path: "/Context-of-the-Organization/objectives" },
   //   {
   //     name: "Master of Procedures and Process",
-  //     path: "/Context-of-the-Organization/master-of-procedures-and-process",
+  //     path: "/Context-of-the-Organization/master-list-of-procedures/process",
   //   },
   // ];
 
@@ -36,7 +36,7 @@ const ContextNavigation = () => {
           "Issue Register",
           "Interfaces and Dependencies",
           "Objectives",
-          "Master of Procedures and Process",
+          "Master List of Procedures/Process",
         ].map((link, idx) => (
           <NavLink
             key={idx}
