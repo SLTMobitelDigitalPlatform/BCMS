@@ -65,6 +65,7 @@ const UpdateMeeting = () => {
             comment: "",
           };
         });
+
         setAttendeesData(mappedAttendees);
       } catch (error) {
         console.error("Error fetching attendees data:", error);
@@ -80,6 +81,7 @@ const UpdateMeeting = () => {
           },
         });
         const data = await response.json();
+
         setEmployees(data);
       } catch (error) {
         console.error("Error fetching employees data:", error);
@@ -552,42 +554,55 @@ const UpdateMeeting = () => {
                   </tr>
                 </thead>
                 <tbody className="py-20">
-                  {attendeesData.map((attendee, i) => (
-                    <tr
-                      key={i}
-                      className=" border-b border-[#52B14A] text-[#003874] dark:border-gray-700 hover:bg-cyan-100 dark:hover:bg-gray-100"
-                    >
-                      <th className="pl-2">{i + 1}</th>
-                      <td>{attendee.name}</td>
-                      <td>{attendee.designation}</td>
-                      <td>{attendee.section.name}</td>
-                      <td>
-                        <select
-                          className="block w-full rounded-md border-0 py-1.5 text-[#003E81] shadow-sm ring-1 ring-inset ring-[#52B14A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
-                          value={attendee.attended}
-                          onChange={(e) =>
-                            handleAttendeeChange(i, "attended", e.target.value)
-                          }
+                  {attendeesData &&
+                    attendeesData.map((attendee, i) =>
+                      attendee && attendee.section.name ? (
+                        <tr
+                          key={i}
+                          className=" border-b border-[#52B14A] text-[#003874] dark:border-gray-700 hover:bg-cyan-100 dark:hover:bg-gray-100"
                         >
-                          <option value="">Select Attendance</option>
-                          <option value="Present">Present</option>
-                          <option value="Absent">Absent</option>
-                          <option value="Excused">Excused</option>
-                        </select>
-                      </td>
-                      <td>
-                        <textarea
-                          type="text"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm "
-                          rows={1}
-                          value={attendee.reason}
-                          onChange={(e) =>
-                            handleAttendeeChange(i, "reason", e.target.value)
-                          }
-                        />
-                      </td>
-                    </tr>
-                  ))}
+                          <th className="pl-2">{i + 1}</th>
+                          <td>{attendee.name}</td>
+                          <td>{attendee.designation}</td>
+                          <td>{attendee.section.name}</td>
+                          <td>
+                            <select
+                              className="block w-full rounded-md border-0 py-1.5 text-[#003E81] shadow-sm ring-1 ring-inset ring-[#52B14A] placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+                              value={attendee.attended}
+                              onChange={(e) =>
+                                handleAttendeeChange(
+                                  i,
+                                  "attended",
+                                  e.target.value
+                                )
+                              }
+                            >
+                              <option value="">Select Attendance</option>
+                              <option value="Present">Present</option>
+                              <option value="Absent">Absent</option>
+                              <option value="Excused">Excused</option>
+                            </select>
+                          </td>
+                          <td>
+                            <textarea
+                              type="text"
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm "
+                              rows={1}
+                              value={attendee.reason}
+                              onChange={(e) =>
+                                handleAttendeeChange(
+                                  i,
+                                  "reason",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                        </tr>
+                      ) : (
+                        <div>No Data</div>
+                      )
+                    )}
                 </tbody>
               </table>
               <div className="flex justify-center mb-5">
