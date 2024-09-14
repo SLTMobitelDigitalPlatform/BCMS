@@ -38,6 +38,7 @@ const Teams = ({ fetchTeams }) => {
           const response = await getTeamById(teamId);
           setFormData({
             ...response.data,
+            section: response.data.section._id,
             teamLeader: response.data.teamLeader._id,
             teamMembers: response.data.teamMembers.map((member) => member._id),
           });

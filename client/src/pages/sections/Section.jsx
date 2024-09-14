@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { useSections } from "../../hooks/useSections";
 import { validateSectionCode } from "../../utilities/helper";
 import Swal from "sweetalert2";
-import { getUsers } from "../../services/userApi";
+import { getUsers } from "../../services/userAPI";
 
 Modal.setAppElement("#root");
 
