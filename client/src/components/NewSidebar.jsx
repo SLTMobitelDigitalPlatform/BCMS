@@ -68,7 +68,7 @@ const NewSidebar = () => {
                   <hr className="my-1 border-black opacity-50" />
                   <li>
                     <NavLink
-                      to="/teams"
+                      to="/teams/teamList"
                       className={({ isActive }) =>
                         `sidebar-link ${
                           isActive ? "dropdown-active" : "dropdown-hover"
