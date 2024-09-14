@@ -93,7 +93,7 @@ import Section from "./pages/sections/Section";
 
 // BIA
 import BiaLayout from "./pages/documents/BIA/BiaLayout";
-import BiaForm from "./pages/documents/BIA/BiaForm";
+import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
 //import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
