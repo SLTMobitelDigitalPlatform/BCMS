@@ -101,6 +101,8 @@ import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Dea
 //import BiaResources from "./pages/documents/BIA/*";
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+import Teams from "./pages/teams/Teams";
+import TeamList from "./pages/teams/TeamList";
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
@@ -178,6 +180,11 @@ const router = createBrowserRouter([
       },
       // Employee Table
       { path: "employee", element: <Employee /> },
+
+      //Teams
+      { path: "teams", element: <Teams /> },
+      { path: "teams/teamList", element: <TeamList /> },
+      { path: "teams/:teamId", element: <Teams /> },
 
       // Customer Table
       { path: "customers", element: <Customer /> },
@@ -390,7 +397,7 @@ const router = createBrowserRouter([
 
   {
     path: "*",
-    element: <ErrorPage />,
+    // element: <ErrorPage />,
   },
 ]);
 
