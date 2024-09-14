@@ -38,7 +38,7 @@ const BCPForm = () => {
           </thead>
           <tbody>
             {businessContinuityPlans.map((bcp) => (
-              <tr key={bcp.id} className="hover:bg-indigo-100">
+              <tr key={bcp._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {bcp.serialNo}
                 </td>

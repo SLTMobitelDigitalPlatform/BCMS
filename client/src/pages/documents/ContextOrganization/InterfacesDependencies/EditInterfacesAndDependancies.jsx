@@ -1,18 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 import Swal from "sweetalert2";
-import { getUsers } from "../../../../services/userAPI";
+import { useUsers } from "../../../../hooks/useUsers";
 
 const EditInterfacesAndDependancies = () => {
-  const [processName, setProcessName] = useState("");
-  const [externalEntityName, setExternalEntityName] = useState("");
-  const [informationExchanged, setInformationExchanged] = useState("");
-  const [inwardOutward, setInwardOutWard] = useState("");
-  const [medium, setMedium] = useState("");
-  const [exchangeMethod, setExchangeMethod] = useState("");
-  const [serviceProvidedObtained, setServiceProvidedObtained] = useState("");
-  const [externalEntityOptions, setExternalEntityOptions] = useState([]);
+  // const [processName, setProcessName] = useState("");
+  // const [externalEntityName, setExternalEntityName] = useState("");
+  // const [informationExchanged, setInformationExchanged] = useState("");
+  // const [inwardOutward, setInwardOutWard] = useState("");
+  // const [medium, setMedium] = useState("");
+  // const [exchangeMethod, setExchangeMethod] = useState("");
+  // const [serviceProvidedObtained, setServiceProvidedObtained] = useState("");
+  // const [externalEntityOptions, setExternalEntityOptions] = useState([]);
+  const [formData, setFormData] = useState({
+    processName: "",
+    externalEntityName: "",
+    informationExchanged: "",
+    inwardOutward: "",
+    medium: "",
+    exchangeMethod: "",
+    serviceProvidedObtained: "",
+  });
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -20,34 +30,34 @@ const EditInterfacesAndDependancies = () => {
     axios
       .get(`http://localhost:5000/interfaceDependancy/${id}`)
       .then((res) => {
-        setProcessName(res.data.processName);
-        setExternalEntityName(res.data.externalEntityName);
-        setInformationExchanged(res.data.informationExchanged);
-        setInwardOutWard(res.data.inwardOutward);
-        setMedium(res.data.medium);
-        setExchangeMethod(res.data.exchangeMethod);
-        setServiceProvidedObtained(res.data.serviceProvidedObtained);
+        formData.processName = res.data.processName;
+        formData.externalEntityName = res.data.externalEntityName;
+        formData.informationExchanged = res.data.informationExchanged;
+        formData.inwardOutward = res.data.inwardOutward;
+        formData.medium = res.data.medium;
+        formData.exchangeMethod = res.data.exchangeMethod;
+        formData.serviceProvidedObtained = res.data.serviceProvidedObtained;
       })
       .catch((err) => {
         console.log(err);
       });
   }, [id]);
 
-  const handleEditInterface = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const data = {
-      processName,
-      externalEntityName,
-      informationExchanged,
-      inwardOutward,
-      medium,
-      exchangeMethod,
-      serviceProvidedObtained,
-    };
+    // const data = {
+    //   processName,
+    //   externalEntityName,
+    //   informationExchanged,
+    //   inwardOutward,
+    //   medium,
+    //   exchangeMethod,
+    //   serviceProvidedObtained,
+    // };
 
     axios
-      .put(`http://localhost:5000/interfaceDependancy/edit/${id}`, data)
+      .put(`http://localhost:5000/interfaceDependancy/edit/${id}`, formData)
       .then(() => {
         handleSuccessAlert();
         navigate("/Context-of-the-Organization/interfaces-and-dependencies");
@@ -58,20 +68,36 @@ const EditInterfacesAndDependancies = () => {
       });
   };
 
-  const fetchUsers = async () => {
-    try {
-      const response = await getUsers();
-      const externalEntityOptions = response.data.map((item) => item.name);
-      // console.log(externalEntityOptions);
-      setExternalEntityOptions(externalEntityOptions);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchUsers = async () => {
+  //   try {
+  //     const response = await getUsers();
+  //     const externalEntityOptions = response.data.map((item) => item.name);
+  //     // console.log(externalEntityOptions);
+  //     setExternalEntityOptions(externalEntityOptions);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const { sortedUsers, loading, error, fetchUsers } = useUsers();
 
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSelectChange = (selectedOption, name) => {
+    setFormData({
+      ...formData,
+      [name]: selectedOption ? selectedOption.value : "",
+    });
+  };
 
   // Success Alert
   const handleSuccessAlert = () => {
@@ -93,128 +119,142 @@ const EditInterfacesAndDependancies = () => {
     });
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
-    <div className="w-full rounded-2xl bg-sky-100 p-5 h-full overflow-auto">
-      <h1 className="text-2xl font-bold">Edit Objective</h1>
-      <div className="w-full mt-10 rounded-2xl">
-        <form onSubmit={handleEditInterface}>
-          <div className="flex flex-col gap-6">
-            <div className="flex justify-between">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="" className="font-semibold">
-                  Process Name
-                </label>
-                <textarea
-                  type="text"
-                  placeholder="Process Name"
-                  value={processName}
-                  onChange={(e) => setProcessName(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="externalEntityName" className="font-semibold">
-                  External Entity Name
-                </label>
-                <select
-                  id="externalEntityName"
-                  value={externalEntityName}
-                  onChange={(e) => setExternalEntityName(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
-                >
-                  <option>{externalEntityName}</option>
-                  {externalEntityOptions.map((option, index) => (
-                    <option value={option} key={index}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="" className="font-semibold">
-                Information Exchanged
+    <div className="flex flex-col w-full h-full">
+      <h1 className="text-2xl font-bold text-green-500">
+        Edit Interfaces and Dependencies
+      </h1>
+      <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
+        <form onSubmit={handleSubmit} className="space-y-10">
+          <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label htmlFor="processName" className="font-semibold">
+                Process Name
               </label>
-              <textarea
+              <input
                 type="text"
-                placeholder="Information Exchanged"
-                value={informationExchanged}
-                onChange={(e) => setInformationExchanged(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
+                id="processName"
+                name="processName"
+                placeholder="Process Name"
+                value={formData.processName}
+                onChange={handleChange}
+                className="p-2 w-full rounded"
               />
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">External Entity Name</label>
+              <Select
+                options={sortedUsers}
+                name="externalEntityName"
+                value={sortedUsers.find(
+                  (user) => user.value === formData.externalEntityName
+                )}
+                onChange={(option) =>
+                  handleSelectChange(option, "externalEntityName")
+                }
+                isClearable={true}
+                placeholder="Select External Entity Name"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label htmlFor="informationExchanged" className="font-semibold">
+                Information Exchanged
+              </label>
+              <input
+                type="text"
+                id="informationExchanged"
+                name="informationExchanged"
+                placeholder="Information Exchanged"
+                value={formData.informationExchanged}
+                onChange={handleChange}
+                className="p-2 rounded"
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-full">
               <label htmlFor="inwardOutward" className="font-semibold">
-                Inworld/Outworld
+                Inward/Outward
               </label>
               <select
                 id="inwardOutward"
-                value={inwardOutward}
-                onChange={(e) => setInwardOutWard(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
+                name="inwardOutward"
+                value={formData.inwardOutward}
+                onChange={handleChange}
+                className="p-2 rounded"
               >
-                <option value="">Select</option>
+                <option value="" disabled>
+                  Select
+                </option>
                 <option value="Inward">Inward</option>
                 <option value="Outward">Outward</option>
                 <option value="Inward/Outward">Inward/Outward</option>
               </select>
             </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="" className="font-semibold">
+          </div>
+          <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label htmlFor="medium" className="font-semibold">
                 Medium
               </label>
-              <textarea
+              <input
                 type="text"
+                id="medium"
+                name="medium"
                 placeholder="Medium"
-                value={medium}
-                onChange={(e) => setMedium(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
+                value={formData.medium}
+                onChange={handleChange}
+                className="p-2 rounded"
               />
             </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="" className="font-semibold">
+            <div className="flex flex-col gap-2 w-full">
+              <label htmlFor="exchangeMethod" className="font-semibold">
                 Exchange Method
               </label>
-              <textarea
+              <input
                 type="text"
+                id="exchangeMethod"
+                name="exchangeMethod"
                 placeholder="Exchange Method"
-                value={exchangeMethod}
-                onChange={(e) => setExchangeMethod(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
+                value={formData.exchangeMethod}
+                onChange={handleChange}
+                className="p-2 rounded"
               />
             </div>
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="serviceProvidedObtained"
-                className="font-semibold"
-              >
-                Service provided/obtained
-              </label>
-              <select
-                id="serviceProvidedObtained"
-                value={serviceProvidedObtained}
-                onChange={(e) => setServiceProvidedObtained(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
-              >
-                <option value="">Select</option>
-                <option value="Provided">Provided</option>
-                <option value="Obtained">Obtained</option>
-              </select>
-            </div>
+          </div>
+          <div className="flex flex-col gap-2 w-1/2 pr-4">
+            <label htmlFor="serviceProvidedObtained" className="font-semibold">
+              Service provided/obtained
+            </label>
+            <select
+              id="serviceProvidedObtained"
+              name="serviceProvidedObtained"
+              value={formData.serviceProvidedObtained}
+              onChange={handleChange}
+              className="p-2 rounded"
+            >
+              <option value="">Select</option>
+              <option value="Provided">Provided</option>
+              <option value="Obtained">Obtained</option>
+            </select>
+          </div>
 
-            <div className="flex justify-start gap-2 mt-5">
-              <button
-                type="submit"
-                className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
-              >
-                Save
-              </button>
-              <Link to="/Context-of-the-Organization/interfaces-and-dependencies">
-                <button className="p-2 w-32 bg-red-500 text-white rounded-lg font-semibold">
-                  Cancel
-                </button>
-              </Link>
-            </div>
+          <div className="flex justify-start gap-2">
+            <button
+              type="submit"
+              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+            >
+              Save
+            </button>
+            <Link
+              to="/Context-of-the-Organization/interfaces-and-dependencies"
+              className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
+            >
+              Cancel
+            </Link>
           </div>
         </form>
       </div>

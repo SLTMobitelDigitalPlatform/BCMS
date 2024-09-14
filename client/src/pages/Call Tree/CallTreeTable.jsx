@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getCurrentUser, getUsers } from "../../services/userAPI";
+import { useUsers } from "../../hooks/useUsers";
 
 function CallTreeTable() {
   const [items, setItems] = useState([]);
   const [parent, setParent] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -16,29 +17,33 @@ function CallTreeTable() {
     section: "",
   });
 
-  const fetchUsers = async () => {
-    try {
-      const response = await getUsers();
-      const users = response.data.map((user) => ({
-        userId: user._id,
-        userName: user.name,
-      }));
-      console.log(users);
-      setUsers(users);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { user, users, fetchUsers, fetchUserDetails } = useUsers();
+
+  // const fetchUsers = async () => {
+  //   try {
+  //     const response = await getUsers();
+  //     const users = response.data.map((user) => ({
+  //       userId: user._id,
+  //       userName: user.name,
+  //     }));
+  //     console.log(users);
+  //     setUsers(users);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchItems();
     fetchParents();
     fetchUsers();
+    fetchUserDetails();
   }, []);
 
   const fetchItems = async () => {
     const loggedInUser = await getCurrentUser();
     const userSection = loggedInUser.data.section._id;
+    // const userSection = user?.data?.section?._id;
 
     const response = await fetch(
       `http://localhost:5000/callTree?section=${userSection}`
@@ -52,6 +57,7 @@ function CallTreeTable() {
     try {
       const loggedInUser = await getCurrentUser();
       const userSection = loggedInUser.data.section._id;
+      // const userSection = user?.data?.section?._id;
 
       const response = await fetch(
         `http://localhost:5000/callTree?section=${userSection}`
@@ -73,6 +79,7 @@ function CallTreeTable() {
     // First ensure the form data is up-to-date before submission
     const loggedInUser = await getCurrentUser();
     const userSection = loggedInUser.data.section._id;
+    // const userSection = user?.data?.section?._id;
 
     const updatedFormData = {
       ...formData,
@@ -173,9 +180,9 @@ function CallTreeTable() {
             <option value="" disabled>
               Name
             </option>
-            {users.map((option) => (
-              <option key={option.userId} value={option.userId}>
-                {option.userName}
+            {users.map((user) => (
+              <option key={user._id} value={user._id}>
+                {user.name}
               </option>
             ))}
           </select>
