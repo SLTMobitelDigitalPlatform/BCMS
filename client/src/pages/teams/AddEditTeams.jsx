@@ -5,7 +5,7 @@ import { createTeam, EditTeam, getTeamById } from "../../services/teamAPI";
 import Select from "react-select";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
-const Teams = ({ fetchTeams }) => {
+const AddEditTeams = ({ fetchTeams }) => {
   const { teamId } = useParams(); // Get teamId from URL
   const isEditing = !!teamId; // Check if editing based on URL
   const [formData, setFormData] = useState({
@@ -170,4 +170,4 @@ const Teams = ({ fetchTeams }) => {
   );
 };
 
-export default Teams;
+export default AddEditTeams;
