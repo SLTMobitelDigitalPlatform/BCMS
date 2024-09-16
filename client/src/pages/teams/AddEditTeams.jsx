@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { getSections } from "../../services/sectionApi";
-import { getUsers } from "../../services/userAPI";
-import { createTeam, EditTeam, getTeamById } from "../../services/teamAPI";
+import { getUsers } from "../../services/userApi";
+import {
+  createTeam,
+  EditTeam,
+  getLastTeam,
+  getTeamById,
+} from "../../services/teamAPI";
 import Select from "react-select";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 const AddEditTeams = ({ fetchTeams }) => {
   const { teamId } = useParams(); // Get teamId from URL
   const isEditing = !!teamId; // Check if editing based on URL
+
   const [formData, setFormData] = useState({
+    teamNo: "",
     teamName: "",
     section: "",
     teamLeader: "",
@@ -30,7 +37,20 @@ const AddEditTeams = ({ fetchTeams }) => {
         console.log(error);
       }
     };
+    const createTeamNo = async () => {
+      try {
+        const lastTeam = await getLastTeam();
+        let lastTeamNo = lastTeam?.data?.teamNo
+          ? parseInt(lastTeam.data.teamNo, 10)
+          : 0;
+        let newTeamNo = (lastTeamNo + 1).toString().padStart(3, "0");
+        setFormData((prevData) => ({ ...prevData, teamNo: newTeamNo }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchData();
+    createTeamNo();
 
     if (isEditing) {
       const loadTeamData = async () => {
@@ -67,6 +87,18 @@ const AddEditTeams = ({ fetchTeams }) => {
         {isEditing ? "Edit Team" : "Create a New Team"}
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="form-group">
+          <label className="block text-sm font-medium mb-1">Team Number</label>
+          <input
+            type="text"
+            value={formData.teamNo}
+            onChange={(e) =>
+              setFormData({ ...formData, teamNo: e.target.value })
+            }
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            readOnly
+          />
+        </div>
         <div className="form-group">
           <label className="block text-sm font-medium mb-1">Team Name</label>
           <input

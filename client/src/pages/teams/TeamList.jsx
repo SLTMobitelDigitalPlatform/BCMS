@@ -114,6 +114,7 @@ const TeamList = () => {
           <tbody>
             {teams.map((team) => (
               <tr key={team._id} className="border-t">
+                <td className="py-3 px-4">{team.teamNo}</td>
                 <td className="py-3 px-4">{team.teamName}</td>
                 <td className="py-3 px-4">{team.teamLeader.name}</td>
                 <td className="py-3 px-4">{formatDate(team.dateCreated)}</td>
