@@ -12,6 +12,7 @@ const TeamList = () => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [responsibilities, setResponsibilities] = useState({});
   const [isViewOnly, setIsViewOnly] = useState(false); // New state to control view-only mode
+  const [activeTab, setActiveTab] = useState("Approved"); // New state for tab management
   const navigate = useNavigate();
 
   const fetchTeams = async () => {
@@ -37,14 +38,12 @@ const TeamList = () => {
     setSelectedTeam(team);
 
     const initialResponsibilities = {};
-    // Loop through each responsibility object
     team.responsibilities.forEach((responsibilityObj) => {
       const memberId = responsibilityObj.memberId._id; // Access member ID from the memberId object
       initialResponsibilities[memberId] =
         responsibilityObj.responsibility || ""; // Store the responsibility text
     });
 
-    console.log(team);
     setResponsibilities(initialResponsibilities);
     setIsViewOnly(viewOnly); // Set the modal to view-only if true
     setShowModal(true);
@@ -80,6 +79,10 @@ const TeamList = () => {
     fetchTeams();
   }, []);
 
+  const filteredTeams = (status) => {
+    return teams.filter((team) => team.isTeamApproved === status);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
@@ -91,12 +94,49 @@ const TeamList = () => {
           Create Team
         </Link>
       </div>
+
+      <div className="mb-4">
+        <div className="flex space-x-4">
+          <button
+            className={`px-4 py-2 rounded ${
+              activeTab === "Approved"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+            }`}
+            onClick={() => setActiveTab("Approved")}
+          >
+            Approved Teams
+          </button>
+          <button
+            className={`px-4 py-2 rounded ${
+              activeTab === "Not Approved"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+            }`}
+            onClick={() => setActiveTab("Not Approved")}
+          >
+            Not Approved Teams
+          </button>
+          <button
+            className={`px-4 py-2 rounded ${
+              activeTab === "Pending" ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setActiveTab("Pending")}
+          >
+            Pending Teams
+          </button>
+        </div>
+      </div>
+
       {teams.length === 0 ? (
         <p className="text-center text-gray-600">No teams found.</p>
       ) : (
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
+              <th className="text-left py-3 px-4 font-semibold text-sm">
+                Team Number
+              </th>
               <th className="text-left py-3 px-4 font-semibold text-sm">
                 Team Name
               </th>
@@ -112,7 +152,13 @@ const TeamList = () => {
             </tr>
           </thead>
           <tbody>
-            {teams.map((team) => (
+            {filteredTeams(
+              activeTab === "Approved"
+                ? "Approved"
+                : activeTab === "Not Approved"
+                ? "Not Approved"
+                : "Pending"
+            ).map((team) => (
               <tr key={team._id} className="border-t">
                 <td className="py-3 px-4">{team.teamNo}</td>
                 <td className="py-3 px-4">{team.teamName}</td>
