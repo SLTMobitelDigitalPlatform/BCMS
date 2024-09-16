@@ -31,3 +31,13 @@ export const updateTeamResponsibilities = async (teamId, responsibilities) => {
   });
   return response;
 };
+
+export const getLastTeam = async () => {
+  try {
+    const response = await axiosInstance.get("/teams/last");
+    return response;
+  } catch (error) {
+    console.error("Error fetching the last team:", error);
+    throw error;
+  }
+};

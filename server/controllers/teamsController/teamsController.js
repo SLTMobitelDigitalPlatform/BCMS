@@ -77,6 +77,15 @@ const updateResponsibilities = async (req, res) => {
   }
 };
 
+const getLastTeam = async (req, res) => {
+  try {
+    const lastTeam = await Team.findOne().sort({ _id: -1 });
+    res.status(200).json(lastTeam);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createTeam,
   getAllTeams,
@@ -84,4 +93,5 @@ module.exports = {
   EditTeam,
   DeleteTeam,
   updateResponsibilities,
+  getLastTeam,
 };

@@ -11,6 +11,7 @@ const TeamList = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [responsibilities, setResponsibilities] = useState({});
+  const [isViewOnly, setIsViewOnly] = useState(false); // New state to control view-only mode
   const navigate = useNavigate();
 
   const fetchTeams = async () => {
@@ -32,13 +33,20 @@ const TeamList = () => {
     }
   };
 
-  const openModal = (team) => {
+  const openModal = (team, viewOnly = false) => {
     setSelectedTeam(team);
+
     const initialResponsibilities = {};
-    team.teamMembers.forEach((member) => {
-      initialResponsibilities[member._id] = "";
+    // Loop through each responsibility object
+    team.responsibilities.forEach((responsibilityObj) => {
+      const memberId = responsibilityObj.memberId._id; // Access member ID from the memberId object
+      initialResponsibilities[memberId] =
+        responsibilityObj.responsibility || ""; // Store the responsibility text
     });
+
+    console.log(team);
     setResponsibilities(initialResponsibilities);
+    setIsViewOnly(viewOnly); // Set the modal to view-only if true
     setShowModal(true);
   };
 
@@ -62,6 +70,10 @@ const TeamList = () => {
     } catch (error) {
       console.error("Error updating responsibilities:", error);
     }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toISOString().split("T")[0];
   };
 
   useEffect(() => {
@@ -91,6 +103,9 @@ const TeamList = () => {
               <th className="text-left py-3 px-4 font-semibold text-sm">
                 Team Leader
               </th>
+              <th className="text-left py-3 px-4 font-semibold text-sm">
+                Date Created
+              </th>
               <th className="text-center py-3 px-4 font-semibold text-sm">
                 Actions
               </th>
@@ -99,8 +114,10 @@ const TeamList = () => {
           <tbody>
             {teams.map((team) => (
               <tr key={team._id} className="border-t">
+                <td className="py-3 px-4">{team.teamNo}</td>
                 <td className="py-3 px-4">{team.teamName}</td>
                 <td className="py-3 px-4">{team.teamLeader.name}</td>
+                <td className="py-3 px-4">{formatDate(team.dateCreated)}</td>
                 <td className="py-3 px-4 text-center space-x-2">
                   <button
                     className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
@@ -115,10 +132,16 @@ const TeamList = () => {
                     Edit
                   </button>
                   <button
-                    className="bg-purple-500 text-white py-1 px-3 rounded hover:bg-purple-600"
+                    className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-900"
                     onClick={() => openModal(team)}
                   >
                     Add Responsibilities
+                  </button>
+                  <button
+                    className="bg-cyan-500 text-white py-1 px-3 rounded hover:bg-cyan-900"
+                    onClick={() => openModal(team, true)} // Open in view-only mode
+                  >
+                    View
                   </button>
                 </td>
               </tr>
@@ -131,7 +154,9 @@ const TeamList = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
             <h3 className="text-lg font-bold mb-4">
-              Add Responsibilities for {selectedTeam.teamName}
+              {isViewOnly
+                ? `Responsibilities for ${selectedTeam.teamName}`
+                : `Add/Edit Responsibilities for ${selectedTeam.teamName}`}
             </h3>
             <form onSubmit={(e) => e.preventDefault()}>
               {selectedTeam.teamMembers.map((member) => (
@@ -141,26 +166,30 @@ const TeamList = () => {
                   </label>
                   <textarea
                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                    value={responsibilities[member._id]}
+                    value={responsibilities[member._id]} // Pre-filled with previous responsibility value
                     onChange={(e) =>
                       handleResponsibilityChange(member._id, e.target.value)
                     }
                     placeholder={`Enter responsibility for ${member.name}`}
+                    readOnly={isViewOnly} // Set read-only if viewing
                   />
                 </div>
               ))}
+
               <div className="flex justify-end space-x-2">
-                <button
-                  className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
+                {!isViewOnly && (
+                  <button
+                    className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </button>
+                )}
                 <button
                   className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
                   onClick={() => setShowModal(false)}
                 >
-                  Cancel
+                  {isViewOnly ? "Close" : "Cancel"}
                 </button>
               </div>
             </form>
