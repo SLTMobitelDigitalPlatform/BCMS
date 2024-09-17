@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import Swal from "sweetalert2";
@@ -14,6 +15,7 @@ const EditEmbeddedDocuments = () => {
     owner: "",
   });
 
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -51,6 +53,7 @@ const EditEmbeddedDocuments = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
       await updateEmbeddedDocument(id, formData);
       handleSuccessAlert();
@@ -58,6 +61,8 @@ const EditEmbeddedDocuments = () => {
     } catch (error) {
       handleErrorAlert();
       console.log(error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -95,7 +100,12 @@ const EditEmbeddedDocuments = () => {
     });
   };
 
-  if (usersLoading || embeddedDocumentLoading) return <div>Loading...</div>;
+  if (usersLoading || embeddedDocumentLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
   if (embeddedDocumentError || usersError)
     return <div>Error loading data.</div>;
 
@@ -175,9 +185,16 @@ const EditEmbeddedDocuments = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/embedded-documents"

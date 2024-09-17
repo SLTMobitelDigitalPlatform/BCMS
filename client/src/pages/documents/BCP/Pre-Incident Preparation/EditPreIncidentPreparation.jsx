@@ -1,36 +1,50 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Select from "react-select";
-import Swal from "sweetalert2";
-import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
-import { useUsers } from "../../../../hooks/useUsers";
 import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
 
-const CreateEmbeddedDocuments = () => {
+const EditPreIncidentPreparation = () => {
   const [formData, setFormData] = useState({
-    number: "",
-    description: "",
-    responsiblePerson: "",
-    physicalLocation: "",
-    owner: "",
+    preIncidentMeasures: "",
+    frequencyOrSchedule: "",
+    frequencyOrScheduleResponsibility: "",
   });
+
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
-  const { addEmbeddedDocument } = useEmbeddedDocuments();
+  const {
+    preIncidentPreparation,
+    loading,
+    error,
+    fetchPreIncidentPreparationById,
+    updatePreIncidentPreparation,
+  } = usePreIncidentPreparation();
 
   useEffect(() => {
-    fetchUsers();
+    fetchPreIncidentPreparationById(id);
   }, []);
+
+  useEffect(() => {
+    if (preIncidentPreparation) {
+      setFormData({
+        preIncidentMeasures: preIncidentPreparation.preIncidentMeasures || "",
+        frequencyOrSchedule: preIncidentPreparation.frequencyOrSchedule || "",
+        frequencyOrScheduleResponsibility:
+          preIncidentPreparation.frequencyOrScheduleResponsibility || "",
+      });
+    }
+  }, [preIncidentPreparation]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await addEmbeddedDocument(formData);
+      await updatePreIncidentPreparation(id, formData);
       handleSuccessAlert();
-      navigate("/Business-Continuity-Plan/embedded-documents");
+      navigate("/Business-Continuity-Plan/pre-incident-preparation");
     } catch (error) {
       handleErrorAlert();
       console.log(error);
@@ -44,7 +58,7 @@ const CreateEmbeddedDocuments = () => {
     Swal.fire({
       position: "top-end",
       icon: "success",
-      title: "Record Added Successfully",
+      title: "Record Updated Successfully",
       showConfirmButton: false,
       timer: 2000,
     });
@@ -66,13 +80,6 @@ const CreateEmbeddedDocuments = () => {
     });
   };
 
-  const handleSelectChange = (selectedOption, name) => {
-    setFormData({
-      ...formData,
-      [name]: selectedOption ? selectedOption.value : "",
-    });
-  };
-
   if (loading)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -84,72 +91,43 @@ const CreateEmbeddedDocuments = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Embedded Document
+        Edit Pre-Incident Preparation
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Number</label>
+            <label className="font-semibold">Pre-Incident Measures</label>
             <input
               type="text"
-              name="number"
-              value={formData.number}
+              name="preIncidentMeasures"
+              value={formData.preIncidentMeasures}
               onChange={handleChange}
-              placeholder="Enter number"
+              placeholder="Enter Pre-Incident Measures"
+              className="p-2 w-full rounded"
+            />
+          </div>
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">Frequency / Schedule</label>
+            <input
+              type="text"
+              name="frequencyOrSchedule"
+              value={formData.frequencyOrSchedule}
+              onChange={handleChange}
+              placeholder="Enter Frequency / Schedule"
               className="p-2 w-full rounded"
             />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Description</label>
+            <label className="font-semibold">
+              Frequency / Schedule Responsibility
+            </label>
             <input
               type="text"
-              name="description"
-              value={formData.description}
+              name="frequencyOrScheduleResponsibility"
+              value={formData.frequencyOrScheduleResponsibility}
               onChange={handleChange}
-              placeholder="Enter description"
-              className="p-2 w-full rounded"
-            />
-          </div>
-
-          <div className="flex justify-between gap-10">
-            <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Responsible Person</label>
-              <Select
-                options={sortedUsers}
-                value={sortedUsers.find(
-                  (user) => user.value === formData.responsiblePerson
-                )}
-                onChange={(option) =>
-                  handleSelectChange(option, "responsiblePerson")
-                }
-                isClearable={true}
-                placeholder="Select Responsible Person"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Owner</label>
-              <Select
-                options={sortedUsers}
-                value={sortedUsers.find(
-                  (user) => user.value === formData.owner
-                )}
-                onChange={(option) => handleSelectChange(option, "owner")}
-                isClearable={true}
-                placeholder="Select Owner"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Physical Location of Item</label>
-            <input
-              type="text"
-              name="physicalLocation"
-              value={formData.physicalLocation}
-              onChange={handleChange}
-              placeholder="Enter physical location of item"
+              placeholder="Enter Frequency / Schedule Responsibility"
               className="p-2 w-full rounded"
             />
           </div>
@@ -169,7 +147,7 @@ const CreateEmbeddedDocuments = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/embedded-documents"
+              to="/Business-Continuity-Plan/pre-incident-preparation"
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
@@ -181,4 +159,4 @@ const CreateEmbeddedDocuments = () => {
   );
 };
 
-export default CreateEmbeddedDocuments;
+export default EditPreIncidentPreparation;
