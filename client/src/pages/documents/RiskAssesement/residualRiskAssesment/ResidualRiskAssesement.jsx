@@ -114,7 +114,9 @@ const ResidualRiskAssesement = () => {
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900"></h1>
+      <h1 className="text-xl font-bold text-indigo-900">
+          Residual Risk Assessment
+        </h1>
       </div>
 
       {/* Table */}
