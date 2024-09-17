@@ -107,6 +107,7 @@ import CreateCriticalBusinessFunction from "./pages/documents/BCP/Critical Busin
 import CreateRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/CreateRecoveryStrategy";
 import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/CreateLegalRequirements";
 import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
+import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -395,7 +396,7 @@ const router = createBrowserRouter([
       // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
 
       { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
-      // { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
+      { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
 
       // BIA (Business Impact Analysis)
       {

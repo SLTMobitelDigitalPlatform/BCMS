@@ -37,6 +37,15 @@ const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
 const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
+// Risk Assessment Routes
+
+// Context of the Organization Routes
+
+// Business Continuity Plan Routes
+const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
+
+// Business Impact Analysis Routes
+
 const PORT = 5000;
 
 // middleware
@@ -70,7 +79,8 @@ app.use(
   routerExternalParty,
   routerInternalParty,
   routerCallTree,
-  routerTeam
+  routerTeam,
+  embeddedDocumentRoutes
 );
 
 // Create uploads directory if it doesn't exist
