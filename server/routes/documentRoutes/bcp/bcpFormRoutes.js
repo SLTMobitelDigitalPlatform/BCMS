@@ -1,32 +1,25 @@
 const express = require("express");
-const bcpFormController = require("../../../controllers/documentController/bcp/bcpFormController");
-const authControllers = require("../../controllers/userControllers/authController");
+const {
+  createBCPForm,
+  getBCPForms,
+  getLastbcpForm,
+  getbcpFormById,
+  updatebcpForm,
+  deletebcpForm,
+} = require("../../../controllers/documentController/bcp/bcpFormController");
+
 const router = express.Router();
 
-router.post(
-  "/api/businessContinuityPlanBCPForm/add",
-  bcpFormController.createBCPForm
-);
-router.get(
-  "/api/businessContinuityPlanBCPForm/last",
-  bcpFormController.getLastbcpForm
-);
-router.get(
-  "/api/businessContinuityPlanBCPForms/",
-  bcpFormController.getBCPForms
-);
-router.get(
-  "/api/businessContinuityPlanBCPForm/:id",
-  bcpFormController.getbcpFormById
-);
+router.post("/api/bcpBCPForm/add", createBCPForm);
 
-router.put(
-  "/api/businessContinuityPlanBCPForm/edit/:id",
-  bcpFormController.updatebcpForm
-);
-router.delete(
-  "/api/businessContinuityPlanBCPForm/delete/:id",
-  bcpFormController.deletebcpForm
-);
+router.get("/api/bcpBCPForm/", getBCPForms);
+
+router.get("/api/bcpBCPForm/last", getLastbcpForm);
+
+router.get("/api/bcpBCPForm/:id", getbcpFormById);
+
+router.put("/api/bcpBCPForm/edit/:id", updatebcpForm);
+
+router.delete("/api/bcpBCPForm/delete/:id", deletebcpForm);
 
 module.exports = router;

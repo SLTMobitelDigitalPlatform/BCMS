@@ -42,6 +42,7 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 // Context of the Organization Routes
 
 // Business Continuity Plan Routes
+const bcpFormRoutes = require("./routes/documentRoutes/bcp/bcpFormRoutes");
 const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
 
 // Business Impact Analysis Routes
@@ -80,6 +81,7 @@ app.use(
   routerInternalParty,
   routerCallTree,
   routerTeam,
+  bcpFormRoutes,
   embeddedDocumentRoutes
 );
 
