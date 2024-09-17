@@ -3,9 +3,30 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Profile from "./components/Profile";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
+import CallTree from "./pages/Call Tree/CallTree";
+import CallTreeTable from "./pages/Call Tree/CallTreeTable";
+import TestCallTree from "./pages/Call Tree/TestCallTree";
 import Customer from "./pages/Customers/Customer";
-
+import BCPForm from "./pages/documents/BCP/BCPForm/BCPForm";
+import BusinessContinuityPlanLayout from "./pages/documents/BCP/BusinessContinuityPlanLayout";
+import CriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CriticalBusinessFunction";
+import Dependencies from "./pages/documents/BCP/Dependencies/Dependencies";
+import DocumentControl from "./pages/documents/BCP/Document Control/DocumentControl";
+import EmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EmbeddedDocuments";
+import LegalRequirements from "./pages/documents/BCP/Legal Requirements/LegalRequirements";
+import Manpower from "./pages/documents/BCP/Manpower/Manpower";
+import PreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/PreIncidentPreparation";
+import RecoveryAndResumption from "./pages/documents/BCP/Recovery and Resumption/RecoveryAndResumption";
+import RecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/RecoveryStrategy";
+import ResourcesRequired from "./pages/documents/BCP/Resources Required/ResourcesRequired";
+import VitalRecords from "./pages/documents/BCP/Vital Records/VitalRecords";
+import WorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/WorkAreaRecovery";
 import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
+import CreateExternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateExternalParty";
+import CreateInternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateInternalParty";
+import EditExternalParty from "./pages/documents/ContextOrganization/interestedParties/EditExternalParty";
+import EditInternalParty from "./pages/documents/ContextOrganization/interestedParties/EditInternalParty";
+import InterestedParties from "./pages/documents/ContextOrganization/interestedParties/InterestedParties";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
 import InterfacesDependencies from "./pages/documents/ContextOrganization/InterfacesDependencies/InterfacesDependencies";
@@ -13,6 +34,7 @@ import CreateExternalIssue from "./pages/documents/ContextOrganization/IssueRegi
 import CreateInternalIssue from "./pages/documents/ContextOrganization/IssueRegister/CreateInternalIssue";
 import EditExternal from "./pages/documents/ContextOrganization/IssueRegister/EditExternal";
 import EditInternal from "./pages/documents/ContextOrganization/IssueRegister/EditInternal";
+import IssueRegister from "./pages/documents/ContextOrganization/IssueRegister/IssueRegister";
 import CreateMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/CreateMasterProducers";
 import EditMasterProducers from "./pages/documents/ContextOrganization/MasterProcedures/EditMasterProducers";
 import MasterProcedures from "./pages/documents/ContextOrganization/MasterProcedures/MasterProcedures";
@@ -34,6 +56,8 @@ import QualityManagement from "./pages/documents/RiskAssesement/qualityManagemen
 import CreateIResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/CreateIResidualRiskAssesement";
 import EditResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/EditResidualRiskAssesement";
 import ResidualRiskAssesement from "./pages/documents/RiskAssesement/residualRiskAssesment/ResidualRiskAssesement";
+import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
+import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
 import CreateRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/CreateVersionControl";
 import EditRiskVersionControl from "./pages/documents/RiskAssesement/riskVersionControl/EditVersionControl";
 import RiskVersionControls from "./pages/documents/RiskAssesement/riskVersionControl/RiskVersionControl";
@@ -59,42 +83,12 @@ import Otp from "./pages/Otp/Otp";
 import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
-
-import CallTree from "./pages/Call Tree/CallTree";
-import Table from "./pages/documents/BCP/table";
-import CreateExternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateExternalParty";
-import CreateInternalParty from "./pages/documents/ContextOrganization/interestedParties/CreateInternalParty";
-import EditExternalParty from "./pages/documents/ContextOrganization/interestedParties/EditExternalParty";
-import EditInternalParty from "./pages/documents/ContextOrganization/interestedParties/EditInternalParty";
-import RiskElements from "./pages/documents/RiskAssesement/riskElements/RiskElements";
-// import Dependencies from "./pages/documents/BCP/Dependencies";
-// import Document from "./pages/documents/BCP/Document";
-// import EmDoc from "./pages/documents/BCP/EmDoc";
-import CallTreeTable from "./pages/Call Tree/CallTreeTable";
-import TestCallTree from "./pages/Call Tree/TestCallTree";
-import BCPForm from "./pages/documents/BCP/BCPForm/BCPForm";
-import BusinessContinuityPlanLayout from "./pages/documents/BCP/BusinessContinuityPlanLayout";
-import CriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CriticalBusinessFunction";
-import Dependencies from "./pages/documents/BCP/Dependencies/Dependencies";
-import DocumentControl from "./pages/documents/BCP/Document Control/DocumentControl";
-import EmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EmbeddedDocuments";
-import LegalRequirements from "./pages/documents/BCP/Legal Requirements/LegalRequirements";
-import Manpower from "./pages/documents/BCP/Manpower/Manpower";
-import PreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/PreIncidentPreparation";
-import RecoveryAndResumption from "./pages/documents/BCP/Recovery and Resumption/RecoveryAndResumption";
-import RecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/RecoveryStrategy";
-import ResourcesRequired from "./pages/documents/BCP/Resources Required/ResourcesRequired";
-import VitalRecords from "./pages/documents/BCP/Vital Records/VitalRecords";
-import WorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/WorkAreaRecovery";
-import InterestedParties from "./pages/documents/ContextOrganization/interestedParties/InterestedParties";
-import IssueRegister from "./pages/documents/ContextOrganization/IssueRegister/IssueRegister";
-import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
 import Section from "./pages/sections/Section";
 
 // BIA
-import BiaLayout from "./pages/documents/BIA/BiaLayout";
-import BiaForm from "./pages/documents/BIA/BiaForm";
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+import BiaForm from "./pages/documents/BIA/BiaForm";
+import BiaLayout from "./pages/documents/BIA/BiaLayout";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
 //import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
@@ -102,12 +96,17 @@ import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Dea
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
 
-import TeamList from "./pages/teams/TeamList";
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
-import AddEditTeams from "./pages/teams/AddEditTeams";
 import CreateEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/CreateEmbeddedDocuments";
-import CreateWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/CreateWorkAreaRecovery";
+import CreateResourcesRequired from "./pages/documents/BCP/Resources Required/CreateResourcesRequired";
 import CreateVitalRecords from "./pages/documents/BCP/Vital Records/CreateVitalRecords";
+import CreateWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/CreateWorkAreaRecovery";
+import AddEditTeams from "./pages/teams/AddEditTeams";
+import TeamList from "./pages/teams/TeamList";
+import CreateCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CreateCriticalBusinessFunction";
+import CreateRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/CreateRecoveryStrategy";
+import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/CreateLegalRequirements";
+import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -364,20 +363,39 @@ const router = createBrowserRouter([
             element: <RecoveryAndResumption />,
           },
           { path: "embedded-documents", element: <EmbeddedDocuments /> },
-
-          { path: "table", element: <Table /> },
         ],
       },
       { path: "createBCP", element: <CreateBCP /> },
 
-      { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
-      // { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
+      { path: "createRecoveryStrategy", element: <CreateRecoveryStrategy /> },
+      // {path:"editRecoveryStrategy/:id",element:<EditRecoveryStrategy/>},
+
+      { path: "createLegalRequirements", element: <CreateLegalRequirements /> },
+      // {path:"editLegalRequirements/:id",element:<EditLegalRequirements/>},
+
+      {
+        path: "createPreIncidentPreparation",
+        element: <CreatePreIncidentPreparation />,
+      },
+      // {path:"editPreIncidentPreparation/:id",element:<EditPreIncidentPreparation/>},
+
+      {
+        path: "createCriticalBusinessFunction",
+        element: <CreateCriticalBusinessFunction />,
+      },
+      // {path:"editCriticalBusinessFunction/:id",element:<EditCriticalBusinessFunction/>},
+
+      { path: "createResourcesRequired", element: <CreateResourcesRequired /> },
+      // {path:"editResourcesRequired/:id",element:<EditResourcesRequired/>},
 
       { path: "createVitalRecord", element: <CreateVitalRecords /> },
       // {path:"editVitalRecords/:id",element:<EditVitalRecords/>},
 
       { path: "createWorkAreaRecovery", element: <CreateWorkAreaRecovery /> },
       // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
+
+      { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
+      // { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
 
       // BIA (Business Impact Analysis)
       {
