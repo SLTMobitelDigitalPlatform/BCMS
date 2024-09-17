@@ -91,9 +91,9 @@ const BCPNavigation = () => {
         showDots={false}
         autoPlay={false}
         arrows={false}
+        keyBoardControl={true}
         containerClass="w-full mx-8"
         itemClass="mx-2 max-w-fit "
-        keyBoardControl={true}
       >
         {links.map((link, idx) => (
           <NavLink

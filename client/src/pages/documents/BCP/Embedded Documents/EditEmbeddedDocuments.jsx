@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 import { useUsers } from "../../../../hooks/useUsers";
 
-const CreateEmbeddedDocuments = () => {
+const EditEmbeddedDocuments = () => {
   const [formData, setFormData] = useState({
     number: "",
     description: "",
@@ -15,19 +15,44 @@ const CreateEmbeddedDocuments = () => {
   });
 
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
-  const { addEmbeddedDocument } = useEmbeddedDocuments();
+  const {
+    sortedUsers,
+    loading: usersLoading,
+    error: usersError,
+    fetchUsers,
+  } = useUsers();
+  const {
+    embeddedDocument,
+    loading: embeddedDocumentLoading,
+    error: embeddedDocumentError,
+    fetchEmbeddedDocumentById,
+    updateEmbeddedDocument,
+  } = useEmbeddedDocuments();
 
   useEffect(() => {
     fetchUsers();
+    fetchEmbeddedDocumentById(id);
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // Update formData when embeddedDocument is fetched
+  useEffect(() => {
+    if (embeddedDocument) {
+      setFormData({
+        number: embeddedDocument.number || "",
+        description: embeddedDocument.description || "",
+        responsiblePerson: embeddedDocument.responsiblePerson || "",
+        physicalLocation: embeddedDocument.physicalLocation || "",
+        owner: embeddedDocument.owner || "",
+      });
+    }
+  }, [embeddedDocument]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      addEmbeddedDocument(formData);
+      await updateEmbeddedDocument(id, formData);
       handleSuccessAlert();
       navigate("/Business-Continuity-Plan/embedded-documents");
     } catch (error) {
@@ -41,7 +66,7 @@ const CreateEmbeddedDocuments = () => {
     Swal.fire({
       position: "top-end",
       icon: "success",
-      title: "Record Added Successfully",
+      title: "Record Updated Successfully",
       showConfirmButton: false,
       timer: 2000,
     });
@@ -70,13 +95,14 @@ const CreateEmbeddedDocuments = () => {
     });
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (usersLoading || embeddedDocumentLoading) return <div>Loading...</div>;
+  if (embeddedDocumentError || usersError)
+    return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Embedded Document
+        Edit Embedded Document
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -166,4 +192,4 @@ const CreateEmbeddedDocuments = () => {
   );
 };
 
-export default CreateEmbeddedDocuments;
+export default EditEmbeddedDocuments;
