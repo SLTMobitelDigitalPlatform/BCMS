@@ -59,9 +59,10 @@ const BCPForm = () => {
               <th className="w-20 doc-table-border">Date</th>
               <th className="w-36 doc-table-border">Template</th>
               <th className="w-36 doc-table-border">Legal Entity</th>
-              <th className="w-36 doc-table-border">Approver</th>
-              <th className="w-36 doc-table-border">Maintainer</th>
-              <th className="w-36 doc-table-border">Date Approved</th>
+              <th className="w-28 doc-table-border">Approver</th>
+              <th className="w-28 doc-table-border">Maintainer</th>
+              <th className="w-28 doc-table-border">Viewers</th>
+              <th className="w-28 doc-table-border">Date Approved</th>
               <th className="w-28 doc-table-border">Date Last Reviewed</th>
               <th className="w-28 doc-table-border">
                 Date Due for Next Review
@@ -73,25 +74,34 @@ const BCPForm = () => {
             {businessContinuityPlans.map((bcp) => (
               <tr key={bcp._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bcp.serialNo}
+                  {bcp.planNo}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bcp.versionNo}
+                  {bcp.date}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.prepare}
+                  {bcp.template}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.checkedBy}
+                  {bcp.legalEntity}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.approve}
+                  {bcp.approver}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.reasons}
+                  {bcp.maintainer}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.isApproved}
+                  {bcp.viewers}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {bcp.dateApproved}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {bcp.dateLastReviewed}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {bcp.dateDueForNextReview}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
