@@ -1,10 +1,33 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 
 const EmbeddedDocuments = () => {
-  const [embeddedDocuments, setEmbeddedDocuments] = useState([]);
+  // const [embeddedDocuments, setEmbeddedDocuments] = useState([]);
 
-  const deleteEmbeddedDocument = async (id) => {};
+  const {
+    embeddedDocuments,
+    loading,
+    error,
+    fetchEmbeddedDocuments,
+    deleteEmbeddedDocument,
+  } = useEmbeddedDocuments();
+
+  useEffect(() => {
+    fetchEmbeddedDocuments();
+  }, []);
+
+  const deleteEmbeddedDoc = async (id) => {
+    try {
+      await deleteEmbeddedDocument(id);
+      fetchEmbeddedDocuments();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -63,7 +86,7 @@ const EmbeddedDocuments = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deleteEmbeddedDocument(embedDoc._id)}
+                      onClick={() => deleteEmbeddedDoc(embedDoc._id)}
                     >
                       Delete
                     </button>
