@@ -37,9 +37,28 @@ const updateRoles = (req, res) => {
     .then(() => res.json("Roles updated successfully"))
     .catch((err) => res.status(400).json("Error: " + err));
 };
+//Delete role
+const deleteRole = (req, res) => {
+  const { id } = req.params; // Extract role ID from the request params
+
+  // Find and delete the role by its ID
+  Role.findByIdAndDelete(id)
+    .then((deletedRole) => {
+      if (!deletedRole) {
+        return res.status(404).json({ message: "Role not found" });
+      }
+      res.status(200).json({ message: "Role deleted successfully", deletedRole });
+    })
+    .catch((error) => {
+      console.error("Error deleting role:", error);
+      res.status(500).json({ message: "Server error" });
+    });
+};
+
 
 module.exports = {
   createRole,
   getRoles,
+  deleteRole,
   updateRoles,
 };
