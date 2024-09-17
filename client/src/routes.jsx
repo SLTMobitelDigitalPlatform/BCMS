@@ -106,6 +106,8 @@ import TeamList from "./pages/teams/TeamList";
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
 import AddEditTeams from "./pages/teams/AddEditTeams";
 import CreateEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/CreateEmbeddedDocuments";
+import CreateWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/CreateWorkAreaRecovery";
+import CreateVitalRecords from "./pages/documents/BCP/Vital Records/CreateVitalRecords";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -341,7 +343,7 @@ const router = createBrowserRouter([
           { path: "document-control", element: <DocumentControl /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
           {
-            path: "legal-regulatory-&-contractual-requirements",
+            path: "legal,-regulatory-&-contractual-requirements",
             element: <LegalRequirements />,
           },
           {
@@ -369,6 +371,13 @@ const router = createBrowserRouter([
       { path: "createBCP", element: <CreateBCP /> },
 
       { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
+      // { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
+
+      { path: "createVitalRecord", element: <CreateVitalRecords /> },
+      // {path:"editVitalRecords/:id",element:<EditVitalRecords/>},
+
+      { path: "createWorkAreaRecovery", element: <CreateWorkAreaRecovery /> },
+      // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
 
       // BIA (Business Impact Analysis)
       {
