@@ -4,7 +4,7 @@ import Profile from "./components/Profile";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
 import Customer from "./pages/Customers/Customer";
-import BIA from "./pages/documents/BIA/BIA";
+
 import ContextOfTheOrganizationLayout from "./pages/documents/ContextOrganization/ContextOfTheOrganizationLayout";
 import CreateInterfaceDependancy from "./pages/documents/ContextOrganization/InterfacesDependencies/createInterfaceDependancy";
 import EditInterfacesAndDependancies from "./pages/documents/ContextOrganization/InterfacesDependencies/EditInterfacesAndDependancies";
@@ -91,6 +91,27 @@ import IssueRegister from "./pages/documents/ContextOrganization/IssueRegister/I
 import RiskAssessmentLayout from "./pages/documents/RiskAssesement/RiskAssessmentLayout";
 import Section from "./pages/sections/Section";
 
+// BIA
+import BiaLayout from "./pages/documents/BIA/BiaLayout";
+import BiaForm from "./pages/documents/BIA/BiaForm";
+import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+//import BiaOperatingSites from "./pages/documents/BIA/*";
+//import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
+import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
+//import BiaResources from "./pages/documents/BIA/*";
+import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
+import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+
+import TeamList from "./pages/teams/TeamList";
+import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
+import AddEditTeams from "./pages/teams/AddEditTeams";
+import CreateEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/CreateEmbeddedDocuments";
+import CreateWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/CreateWorkAreaRecovery";
+import CreateVitalRecords from "./pages/documents/BCP/Vital Records/CreateVitalRecords";
+//import BiaDependencies from "./pages/documents/BIA/*";
+//import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
+//import BiaManpower from "./pages/documents/BIA/*";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -164,6 +185,11 @@ const router = createBrowserRouter([
       // Employee Table
       { path: "employee", element: <Employee /> },
 
+      //Teams
+      { path: "teams", element: <AddEditTeams /> },
+      { path: "teams/teamList", element: <TeamList /> },
+      { path: "teams/:teamId", element: <AddEditTeams /> },
+
       // Customer Table
       { path: "customers", element: <Customer /> },
 
@@ -209,7 +235,6 @@ const router = createBrowserRouter([
       },
 
       // * Version Controls
-      { path: "editVersion/:id", element: <EditVersionControl /> },
       { path: "createRiskVersion", element: <CreateRiskVersionControl /> },
       { path: "editISRiskVersion/:id", element: <EditRiskVersionControl /> },
 
@@ -250,15 +275,15 @@ const router = createBrowserRouter([
           },
           { path: "objectives", element: <Objectives /> },
           {
-            path: "master-of-procedures-and-process",
+            path: "master-list-of-procedures/process",
             element: <MasterProcedures />,
           },
         ],
       },
 
       // * Version Controls
-      { path: "versionControls", element: <VersionControls /> },
       { path: "createVersion", element: <CreateVersionControl /> },
+      { path: "editVersion/:id", element: <EditVersionControl /> },
 
       // * Intersested Parties
 
@@ -317,7 +342,10 @@ const router = createBrowserRouter([
           { path: "bcp-form", element: <BCPForm /> },
           { path: "document-control", element: <DocumentControl /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
-          { path: "legal-requirements", element: <LegalRequirements /> },
+          {
+            path: "legal,-regulatory-&-contractual-requirements",
+            element: <LegalRequirements />,
+          },
           {
             path: "pre-incident-preparation",
             element: <PreIncidentPreparation />,
@@ -338,13 +366,40 @@ const router = createBrowserRouter([
           { path: "embedded-documents", element: <EmbeddedDocuments /> },
 
           { path: "table", element: <Table /> },
-          // { path: "emdoc", element: <EmDoc /> },
-          // { path: "dependancies", element: <Dependencies /> },
         ],
       },
+      { path: "createBCP", element: <CreateBCP /> },
 
-      //? --------------------------------- BIA -------------------------------------
-      { path: "bia", element: <BIA /> },
+      { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
+      // { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
+
+      { path: "createVitalRecord", element: <CreateVitalRecords /> },
+      // {path:"editVitalRecords/:id",element:<EditVitalRecords/>},
+
+      { path: "createWorkAreaRecovery", element: <CreateWorkAreaRecovery /> },
+      // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
+
+      // BIA (Business Impact Analysis)
+      {
+        path: "Business-Impact-Analysis",
+        element: <BiaLayout />,
+        children: [
+          { path: "bia-form", element: <BiaForm /> },
+          { path: "document-version", element: <BiaDocumentControl /> },
+          //{ path: "operating-sites", element: <BiaOperatingSites /> },
+          // { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
+          {
+            path: "business-peaks-and-deadlines",
+            element: <BiaPeaksAndDeadlines />,
+          },
+          //{ path: "resources", element: <BiaResources /> },
+          { path: "impact-analysis", element: <BiaImpactAnalysis /> },
+          { path: "resources-required", element: <BiaResourcesRequired /> },
+          //{ path: "dependencies", element: <BiaDependencies /> },
+          //{ path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
+          //{ path: "manpower", element: <BiaManpower /> },
+        ],
+      },
 
       // Roles
       { path: "roles", element: <Roles /> },
@@ -355,7 +410,7 @@ const router = createBrowserRouter([
 
   {
     path: "*",
-    element: <ErrorPage />,
+    // element: <ErrorPage />,
   },
 ]);
 

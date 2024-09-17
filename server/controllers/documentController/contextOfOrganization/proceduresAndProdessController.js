@@ -75,10 +75,21 @@ const deleteProceduresAndProcess = async (req, res) => {
   }
 };
 
+const getLastVersion = async (req, res) => {
+  try {
+    const lastVersion = await ProceduresAndProcess.findOne().sort({ _id: -1 });
+
+    res.status(200).json(lastVersion);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getProceduresAndProcess,
   getProceduresAndProcessById,
   createProceduresAndProcess,
   updateProceduresAndProcess,
   deleteProceduresAndProcess,
+  getLastVersion,
 };

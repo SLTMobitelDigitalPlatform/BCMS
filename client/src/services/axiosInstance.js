@@ -45,6 +45,6 @@ export default axiosInstance;
 //   getUserById: (id) => api.get(`/user/${id}`),
 // };
 
-// // Add more APIs like customerAPI, documentAPI, etc.
+// // Add more APIs like , documentAPI, etc.
 
 // export { meetingAPI, userAPI };

@@ -13,7 +13,9 @@ const EditRiskVersionControl = () => {
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState([]);
   const [isApproved, setIsApproved] = useState("");
+  const [isChecked, setIsChecked] = useState("");
   const [comment, setComment] = useState("");
+  const [checkedComment, setCheckedComment] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -28,7 +30,9 @@ const EditRiskVersionControl = () => {
         setApprove(res.data.approve);
         setReasons(res.data.reasons);
         setIsApproved(res.data.isApproved);
+        setIsChecked(res.data.isChecked);
         setComment(res.data.comment);
+        setCheckedComment(res.data.checkedComment);
       })
       .catch((err) => {
         console.log(err);
@@ -82,7 +86,9 @@ const EditRiskVersionControl = () => {
       approve,
       reasons,
       isApproved,
+      isChecked,
       comment,
+      checkedComment,
     };
 
     axios
@@ -230,6 +236,41 @@ const EditRiskVersionControl = () => {
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
+            {loggedInUser.name === checkedBy ? (
+              <div className="flex flex-col gap-2">
+                <label htmlFor="isChecked" className="font-semibold">
+                  Checking Status
+                </label>
+                <select
+                  id="isChecked"
+                  placeholder="Checked Status"
+                  value={isChecked}
+                  onChange={(e) => setIsChecked(e.target.value)}
+                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option disabled>{isApproved}</option>
+                  <option>Checked</option>
+                  <option>Not Approved</option>
+                  <option>Pending</option>
+                </select>
+              </div>
+            ) : (
+              ""
+            )}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="" className="font-semibold">
+                Comments from Checked Person
+              </label>
+              <textarea
+                type="text"
+                placeholder="Reasons"
+                value={checkedComment}
+                rows={4}
+                onChange={(e) => setCheckedComment(e.target.value)}
+                readOnly={loggedInUser.name !== checkedBy}
+                className="w-full p-2 rounded-lg bg-slate-100"
+              />
+            </div>
             {loggedInUser.name === approve ? (
               <div className="flex flex-col gap-2">
                 <label htmlFor="isapprove" className="font-semibold">
@@ -253,7 +294,7 @@ const EditRiskVersionControl = () => {
             )}
             <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold">
-                Comments
+                Comments from the Person for Approval
               </label>
               <textarea
                 type="text"

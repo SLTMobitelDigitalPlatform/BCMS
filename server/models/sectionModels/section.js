@@ -8,24 +8,16 @@ const sectionSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+    sectionCoordinator: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
     sectionCode: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
-    users: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    designations: [
-      {
-        title: { type: String, required: false },
-        hierarchyLevel: { type: Number, required: false }, // Lower number = higher rank
-      },
-    ],
   },
   { timestamps: true }
 );

@@ -103,7 +103,7 @@ const UpdateEvent = () => {
     try {
       const updatedEvent = {
         ...values,
-        attendees: attendees.map((attendee) => attendee._id),
+        attendees: attendees.map((attendee) => attendee.value),
       };
       await axios.put(`http://localhost:5000/events/${id}`, updatedEvent);
       navigate("/calendar");

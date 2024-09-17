@@ -18,6 +18,11 @@ router.get(
   proceduresAndProdessController.getProceduresAndProcessById
 );
 
+router.get(
+  "/proceduresAndProcesses/last",
+  proceduresAndProdessController.getLastVersion
+);
+
 router.put(
   "/proceduresAndProcess/edit/:id",
   proceduresAndProdessController.updateProceduresAndProcess

@@ -12,6 +12,7 @@ const CreateVersionControl = () => {
   const [reasons, setReasons] = useState("");
   const [users, setUsers] = useState([]);
   const [isApproved, setIsApproved] = useState("Pending");
+  const [isChecked, setIsChecked] = useState("Pending");
   const navigate = useNavigate();
 
   const fetchLastVersion = async () => {
@@ -84,6 +85,7 @@ const CreateVersionControl = () => {
       approve,
       reasons,
       isApproved,
+      isChecked,
     };
 
     axios
@@ -167,7 +169,7 @@ const CreateVersionControl = () => {
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
-                    Select
+                    Select Prepared Person
                   </option>
                   {users.map((option, index) => (
                     <option key={index} value={option}>
@@ -189,7 +191,7 @@ const CreateVersionControl = () => {
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
-                    Select
+                    Select Approved Person
                   </option>
                   {users.map((option, index) => (
                     <option key={index} value={option}>
@@ -211,7 +213,7 @@ const CreateVersionControl = () => {
                 className="w-[500px] p-2 rounded-lg bg-slate-100"
               >
                 <option value="" disabled>
-                  Select
+                  Select Checked Person
                 </option>
                 {users.map((option, index) => (
                   <option key={index} value={option}>
@@ -259,10 +261,11 @@ const CreateVersionControl = () => {
               >
                 Save
               </button>
-              <Link to="/Context-of-the-Organization/version-control">
-                <button className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold">
-                  Cancel
-                </button>
+              <Link
+                to="/Context-of-the-Organization/version-control"
+                className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
+              >
+                Cancel
               </Link>
             </div>
           </div>

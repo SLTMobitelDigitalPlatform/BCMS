@@ -1,42 +1,30 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useRoles } from "../../hooks/useRoles";
+import { useUsers } from "../../hooks/useUsers";
+import { useEffect } from "react";
 
 const Roles = () => {
-  const [roles, setRoles] = useState([]);
-  const [user, setUser] = useState(null);
+  const {
+    roles,
+    loading: rolesLoading,
+    error: rolesError,
+    fetchRoles,
+  } = useRoles();
+  const {
+    user,
+    loading: userLoading,
+    error: userError,
+    fetchUserDetails,
+  } = useUsers();
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get("http://localhost:5000/currentuser", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUser(response.data);
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-
-    const fetchRoles = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/getRole");
-        const data = await response.json();
-        // console.log("Fetched role data:", data);
-        setRoles(data);
-      } catch (error) {
-        console.error("Error fetching role data:", error);
-      }
-    };
-
     fetchUserDetails();
     fetchRoles();
   }, []);
+
+  if (rolesLoading || userLoading) return <div>Loading...</div>;
+  if (rolesError) return <div>{rolesError}</div>;
+  if (userError) return <div>{userError}</div>;
 
   return (
     <div className="flex flex-col gap-x-10 h-full">
@@ -61,7 +49,7 @@ const Roles = () => {
           " "
         )}
       </div>
-      {/* <div className="bg-cyan-50 p-3 mt-5 rounded-2xl px-5 border"> */}
+
       {/* Table */}
       <div className="relative overflow-y-auto rounded-b-2xl mt-5">
         <table className="table-fixed w-full min-w-full bg-cyan-50 border-green-500">
@@ -93,10 +81,7 @@ const Roles = () => {
           </tbody>
         </table>
       </div>
-      {/* </div> */}
     </div>
-    // </div>
-    // </div>
   );
 };
 

@@ -10,6 +10,7 @@ const CreateRiskVersionControl = () => {
   const [checkedBy, setCheckedBy] = useState("");
   const [approve, setApprove] = useState("");
   const [reasons, setReasons] = useState("");
+  const [isChecked, setIsChecked] = useState("Pending");
   const [isApproved, setIsApproved] = useState("Pending");
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUsers] = useState([]);
@@ -102,6 +103,7 @@ const CreateRiskVersionControl = () => {
       approve,
       reasons,
       isApproved,
+      isChecked,
     };
 
     axios
@@ -144,7 +146,7 @@ const CreateRiskVersionControl = () => {
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleCreateVersion}>
           <div className="flex flex-col gap-6">
-            <div className="flex justify-between">
+            <div className="flex justify-start gap-10">
               <div className="flex flex-col gap-2">
                 <label htmlFor="" className="font-semibold">
                   Serial Number
@@ -155,7 +157,7 @@ const CreateRiskVersionControl = () => {
                   value={serialNo}
                   readOnly
                   onChange={(e) => setSerialNo(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -168,11 +170,11 @@ const CreateRiskVersionControl = () => {
                   value={versionNo}
                   readOnly
                   onChange={(e) => setVersionNo(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-start gap-10">
               <div className="flex flex-col gap-2">
                 <label htmlFor="prepare" className="font-semibold">
                   Prepared By
@@ -182,7 +184,7 @@ const CreateRiskVersionControl = () => {
                   placeholder="Prepared Person"
                   value={prepare}
                   onChange={(e) => setPrepare(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
                     Select
@@ -203,7 +205,7 @@ const CreateRiskVersionControl = () => {
                   placeholder="Approved Person"
                   value={approve}
                   onChange={(e) => setApprove(e.target.value)}
-                  className="w-[500px] p-2 rounded-lg bg-slate-100"
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
                     Select
@@ -215,27 +217,27 @@ const CreateRiskVersionControl = () => {
                   ))}
                 </select>
               </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="prepare" className="font-semibold">
-                Checked By
-              </label>
-              <select
-                id="prepare"
-                placeholder="Prepared Person"
-                value={checkedBy}
-                onChange={(e) => setCheckedBy(e.target.value)}
-                className="w-[500px] p-2 rounded-lg bg-slate-100"
-              >
-                <option value="" disabled>
-                  Select
-                </option>
-                {users.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
+              <div className="flex flex-col gap-2">
+                <label htmlFor="prepare" className="font-semibold">
+                  Checked By
+                </label>
+                <select
+                  id="prepare"
+                  placeholder="Prepared Person"
+                  value={checkedBy}
+                  onChange={(e) => setCheckedBy(e.target.value)}
+                  className="w-[300px] p-2 rounded-lg bg-slate-100"
+                >
+                  <option value="" disabled>
+                    Select
                   </option>
-                ))}
-              </select>
+                  {users.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold">
@@ -260,7 +262,7 @@ const CreateRiskVersionControl = () => {
                       placeholder="Approval"
                       value={isApproved}
                       onChange={(e) => setIsApproved(e.target.value)}
-                      className="w-[500px] p-2 rounded-lg bg-slate-100"
+                      className="w-[300px] p-2 rounded-lg bg-slate-100"
                     >
                       <option disabled>{isApproved}</option>
                       <option>Approved</option>
