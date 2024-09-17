@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
 
 const CreatePreIncidentPreparation = () => {
   const [formData, setFormData] = useState({
@@ -8,10 +11,44 @@ const CreatePreIncidentPreparation = () => {
     frequencyOrScheduleResponsibility: "",
   });
 
-  const handleSubmit = (e) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+
+  const { error, addPreIncidentPreparation } = usePreIncidentPreparation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Submit the form data to backend or API
+    setIsSaving(true);
+    try {
+      await addPreIncidentPreparation(formData);
+      handleSuccessAlert();
+      navigate("/Business-Continuity-Plan/pre-incident-preparation");
+    } catch (error) {
+      handleErrorAlert();
+      console.log(error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Success Alert
+  const handleSuccessAlert = () => {
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Record Added Successfully",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  };
+
+  // Error Alert
+  const handleErrorAlert = () => {
+    Swal.fire({
+      title: "Something Went Wrong",
+      text: "Fix it and try again",
+      icon: "error",
+    });
   };
 
   const handleChange = (e) => {
@@ -20,6 +57,14 @@ const CreatePreIncidentPreparation = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  // if (loading)
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+  //     </div>
+  //   );
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -68,9 +113,16 @@ const CreatePreIncidentPreparation = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/pre-incident-preparation"

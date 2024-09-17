@@ -109,6 +109,7 @@ import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/Cr
 import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
 import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
 import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
+import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -380,7 +381,10 @@ const router = createBrowserRouter([
         path: "createPreIncidentPreparation",
         element: <CreatePreIncidentPreparation />,
       },
-      // {path:"editPreIncidentPreparation/:id",element:<EditPreIncidentPreparation/>},
+      {
+        path: "editPreIncidentPreparation/:id",
+        element: <EditPreIncidentPreparation />,
+      },
 
       {
         path: "createCriticalBusinessFunction",
