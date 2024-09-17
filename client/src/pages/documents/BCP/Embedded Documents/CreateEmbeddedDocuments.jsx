@@ -23,11 +23,11 @@ const CreateEmbeddedDocuments = () => {
     fetchUsers();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      addEmbeddedDocument(formData);
+      await addEmbeddedDocument(formData);
       handleSuccessAlert();
       navigate("/Business-Continuity-Plan/embedded-documents");
     } catch (error) {

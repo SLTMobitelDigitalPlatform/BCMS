@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 
 const EmbeddedDocuments = () => {
-  // const [embeddedDocuments, setEmbeddedDocuments] = useState([]);
-
   const {
     embeddedDocuments,
     loading,
