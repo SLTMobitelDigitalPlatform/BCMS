@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-const CreateWorkAreaRecovery = () => {
+const CreateResourcesRequired = () => {
   const [formData, setFormData] = useState({
-    site: "",
-    availableFrom: "",
-    availableTo: "",
-    travelDistance: "",
-    travelTime: "",
-    contactNumber: "",
+    name: "",
+    quantity: "",
+    rto: "",
+    justification: "",
+    rpo: "",
+    manualWorkaround: "",
+    operationalDuration: "",
   });
 
   const handleSubmit = (e) => {
@@ -27,30 +28,30 @@ const CreateWorkAreaRecovery = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Work Area Recovery
+        Add New Resource Required
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex justify-between gap-10">
             <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Site</label>
+              <label className="font-semibold">Name</label>
               <input
                 type="text"
-                name="site"
-                value={formData.site}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
-                placeholder="Enter Site"
+                placeholder="Enter Name"
                 className="p-2 w-full rounded"
               />
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Contact Number</label>
+              <label className="font-semibold">Quantity</label>
               <input
                 type="text"
-                name="contactNumber"
-                value={formData.contactNumber}
+                name="quantity"
+                value={formData.quantity}
                 onChange={handleChange}
-                placeholder="Enter Contact Number"
+                placeholder="Enter Quantity"
                 className="p-2 w-full rounded"
               />
             </div>
@@ -58,24 +59,24 @@ const CreateWorkAreaRecovery = () => {
 
           <div className="flex justify-between gap-10">
             <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Available From</label>
+              <label className="font-semibold">RTO</label>
               <input
                 type="text"
-                name="availableFrom"
-                value={formData.availableFrom}
+                name="rto"
+                value={formData.rto}
                 onChange={handleChange}
-                placeholder="Enter Time Available From"
+                placeholder="Enter RTO"
                 className="p-2 w-full rounded"
               />
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Available To</label>
+              <label className="font-semibold">Justification</label>
               <input
                 type="text"
-                name="availableTo"
-                value={formData.availableTo}
+                name="justification"
+                value={formData.justification}
                 onChange={handleChange}
-                placeholder="Enter Time Available To"
+                placeholder="Enter Justification"
                 className="p-2 w-full rounded"
               />
             </div>
@@ -83,27 +84,39 @@ const CreateWorkAreaRecovery = () => {
 
           <div className="flex justify-between gap-10">
             <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Travel Distance</label>
+              <label className="font-semibold">RPO</label>
               <input
                 type="text"
-                name="travelDistance"
-                value={formData.travelDistance}
+                name="rpo"
+                value={formData.rpo}
                 onChange={handleChange}
-                placeholder="Enter Time Travel Distance"
+                placeholder="Enter RPO"
                 className="p-2 w-full rounded"
               />
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Travel Time</label>
+              <label className="font-semibold">Manual Workaround</label>
               <input
                 type="text"
-                name="travelTime"
-                value={formData.travelTime}
+                name="manualWorkaround"
+                value={formData.manualWorkaround}
                 onChange={handleChange}
-                placeholder="Enter Time Travel Time"
+                placeholder="Enter Manual Workaround"
                 className="p-2 w-full rounded"
               />
             </div>
+          </div>
+
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">Operational Duration</label>
+            <input
+              type="text"
+              name="operationalDuration"
+              value={formData.operationalDuration}
+              onChange={handleChange}
+              placeholder="Enter Operational Duration"
+              className="p-2 w-full rounded"
+            />
           </div>
 
           <div className="flex justify-start gap-2">
@@ -114,7 +127,7 @@ const CreateWorkAreaRecovery = () => {
               Save
             </button>
             <Link
-              to="/Business-Continuity-Plan/work-area-recovery"
+              to="/Business-Continuity-Plan/resources-required"
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
@@ -126,4 +139,4 @@ const CreateWorkAreaRecovery = () => {
   );
 };
 
-export default CreateWorkAreaRecovery;
+export default CreateResourcesRequired;
