@@ -19,6 +19,8 @@ const NewSidebar = () => {
   const handleLogout = async () => {
     try {
       // localStorage.removeItem("token");
+      localStorage.removeItem("scrollPosition");
+      localStorage.removeItem("carouselIndex");
       logout();
       window.location.href = "/login";
     } catch (error) {
