@@ -347,7 +347,7 @@ const router = createBrowserRouter([
           { path: "document-control", element: <DocumentControl /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
           {
-            path: "legal,-regulatory-&-contractual-requirements",
+            path: "legal-regulatory-&-contractual-requirements",
             element: <LegalRequirements />,
           },
           {
