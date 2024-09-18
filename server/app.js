@@ -43,6 +43,7 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
 // Business Continuity Plan Routes
 const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
+const legalRequirementsRoutes = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
 
 // Business Impact Analysis Routes
 
@@ -80,7 +81,8 @@ app.use(
   routerInternalParty,
   routerCallTree,
   routerTeam,
-  embeddedDocumentRoutes
+  embeddedDocumentRoutes,
+  legalRequirementsRoutes
 );
 
 // Create uploads directory if it doesn't exist

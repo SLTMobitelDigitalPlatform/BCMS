@@ -10,7 +10,7 @@ const LegalRequirements = () => {
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
-          Legal, Regulatory & Contractual Requirements
+          Legal Regulatory & Contractual Requirements
         </h1>
         <Link
           to="/createLegalRequirements"
@@ -29,7 +29,7 @@ const LegalRequirements = () => {
                 Name of the Organization
               </th>
               <th className="w-20 doc-table-border">
-                Legal, Regulatory & Contractual Requirements
+                Legal Regulatory & Contractual Requirements
               </th>
               <th className="w-36 doc-table-border">Monitored By</th>
               <th className="w-28 doc-table-border">Actions</th>

@@ -13,7 +13,7 @@ const BCPNavigation = () => {
       "BCP Form",
       "Document Control",
       "Recovery Strategy",
-      "Legal, Regulatory & Contractual Requirements",
+      "Legal Regulatory & Contractual Requirements",
       "Pre-Incident Preparation",
       "Critical Business Function",
       "Resources Required",

@@ -15,7 +15,7 @@ const Table = () => {
               Name of Organization
             </th>
             <th className="border border-green-500 bg-blue-100 px-4 py-2">
-              Legal, Regulatory & Contractual Requirements
+              Legal Regulatory & Contractual Requirements
             </th>
             <th className="border border-green-500 bg-blue-100 px-4 py-2">
               Monitored By
