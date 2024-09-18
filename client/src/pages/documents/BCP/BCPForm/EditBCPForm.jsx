@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
 import { useUsers } from "../../../../hooks/useUsers";
 
-const CreateBCP = () => {
-  const today = new Date().toISOString().split("T")[0];
-
+const EditBCPForm = () => {
   const [formData, setFormData] = useState({
     planNo: "",
-    date: today,
+    date: "",
     template: "",
     legalEntity: "",
     approver: "",
@@ -22,114 +20,50 @@ const CreateBCP = () => {
   });
 
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
-  const { fetchLastBCPForm, addBCPForm } = useBCPForm();
+  const {
+    sortedUsers,
+    loading: usersLoading,
+    error: usersError,
+    fetchUsers,
+  } = useUsers();
 
-  // Create Plan Number
-  const createPlanNo = async () => {
-    try {
-      const response = await fetchLastBCPForm();
-
-      // Check if response and response.data are valid
-      if (response && response.data) {
-        const lastRecord = response.data;
-
-        // Extract plan number from the last record
-        let lastPlanNo = lastRecord?.planNo || "P000"; // if no records, default to P000
-
-        // Increment the numeric part of the plan number
-        let numericPart = parseInt(lastPlanNo.slice(1)) + 1;
-
-        // Format the new plan number as P001, P002, etc.
-        let newPlanNo = `P${numericPart.toString().padStart(3, "0")}`;
-
-        // Update formData with the new plan number
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          planNo: newPlanNo,
-        }));
-      } else {
-        // If no previous record, set the first plan number
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          planNo: "P001", // First plan number
-        }));
-      }
-    } catch (error) {
-      console.error("Error creating plan number:", error);
-    }
-  };
+  const {
+    businessContinuityPlan,
+    loading: bcpLoading,
+    error: bcpError,
+    fetchBCPFormById,
+    updateBCPForm,
+  } = useBCPForm();
 
   useEffect(() => {
     fetchUsers();
-    fetchLastBCPForm();
-    createPlanNo();
+    fetchBCPFormById(id);
   }, []);
 
-  // const [loggedInUser, setLoggedInUsers] = useState([]);
-
-  // const fetchLastBCPForm = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "http://localhost:5000/api/businessContinuityPlanBCPForm/last"
-  //     );
-  //     const lastRecord = response.data;
-
-  //     const baseYear = 2024;
-  //     const currentYear = new Date().getFullYear();
-  //     const yearOffset = currentYear - baseYear + 1;
-
-  //     let newVersionNo = `${yearOffset}.0`;
-  //     let newSerialNo = 1;
-  //     // console.log(newVersionNo);
-  //     let lastVersionYearOffset;
-  //     let lastIndex;
-
-  //     if (lastRecord && lastRecord.versionNo) {
-  //       lastVersionYearOffset = parseInt(
-  //         lastRecord.versionNo.split(".")[0],
-  //         10
-  //       );
-  //       lastIndex = parseInt(lastRecord.versionNo.split(".")[1], 10);
-  //       newSerialNo = lastRecord.serialNo + 1;
-  //     }
-
-  //     if (lastVersionYearOffset === yearOffset) {
-  //       newVersionNo = `${yearOffset}.${lastIndex + 1}`;
-  //     }
-
-  //     // console.log(newVersionNo);
-  //     setPlanNo(newVersionNo);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const fetchLoggedInUser = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.get("http://localhost:5000/currentuser", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     // console.log(response.data.name);
-
-  //     setLoggedInUsers(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching user details:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchLastBCPForm();
-  //   fetchLoggedInUser();
-  // }, []);
+  // Update formData when embeddedDocument is fetched
+  useEffect(() => {
+    if (businessContinuityPlan) {
+      setFormData({
+        planNo: businessContinuityPlan.planNo || "",
+        date: businessContinuityPlan.date || "",
+        template: businessContinuityPlan.template || "",
+        legalEntity: businessContinuityPlan.legalEntity || "",
+        approver: businessContinuityPlan.approver || "",
+        maintainer: businessContinuityPlan.maintainer || "",
+        viewers: businessContinuityPlan.viewers || [],
+        dateApproved: businessContinuityPlan.dateApproved || "",
+        dateLastReviewed: businessContinuityPlan.dateLastReviewed || "",
+        dateDueForNextReview: businessContinuityPlan.dateDueForNextReview || "",
+      });
+    }
+  }, [businessContinuityPlan]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addBCPForm(formData);
+      await updateBCPForm(id, formData);
       handleSuccessAlert();
       navigate("/Business-Continuity-Plan/bcp-form");
     } catch (error) {
@@ -143,11 +77,12 @@ const CreateBCP = () => {
     Swal.fire({
       position: "top-end",
       icon: "success",
-      title: "Record Added Successfully",
+      title: "Record Updated Successfully",
       showConfirmButton: false,
       timer: 2000,
     });
   };
+
   // Error Alert
   const handleErrorAlert = () => {
     Swal.fire({
@@ -158,10 +93,9 @@ const CreateBCP = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === "viewers" ? value.split(",") : value, // Split viewers by commas
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -172,8 +106,8 @@ const CreateBCP = () => {
     });
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (usersLoading || bcpLoading) return <div>Loading...</div>;
+  if (bcpError || usersError) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -325,4 +259,4 @@ const CreateBCP = () => {
   );
 };
 
-export default CreateBCP;
+export default EditBCPForm;

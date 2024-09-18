@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
+import { FaSpinner } from "react-icons/fa";
 
 const EmbeddedDocuments = () => {
-  // const [embeddedDocuments, setEmbeddedDocuments] = useState([]);
-
   const {
     embeddedDocuments,
     loading,
@@ -20,13 +19,17 @@ const EmbeddedDocuments = () => {
   const deleteEmbeddedDoc = async (id) => {
     try {
       await deleteEmbeddedDocument(id);
-      fetchEmbeddedDocuments();
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
   if (error) return <div>{error}</div>;
 
   return (

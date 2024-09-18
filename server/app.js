@@ -32,7 +32,6 @@ const routerRiskQuality = require("./routes/documentRoutes/qualityManagementRout
 const routerRiskElements = require("./routes/documentRoutes/riskAssesment/riskElementRoutes");
 const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/externalPartyRoutes");
 const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
-
 const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
 const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
@@ -42,10 +41,16 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 // Context of the Organization Routes
 
 // Business Continuity Plan Routes
-const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
-const legalRequirementsRoutes = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
+const routerBCPForm = require("./routes/documentRoutes/bcp/bcpFormRoutes");
+const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
+const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
+const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
+const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
+const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
+
 
 // Business Impact Analysis Routes
+const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
 
 const PORT = 5000;
 
@@ -81,8 +86,15 @@ app.use(
   routerInternalParty,
   routerCallTree,
   routerTeam,
-  embeddedDocumentRoutes,
-  legalRequirementsRoutes
+
+  routerBCPForm,
+  routerPreIncidentPreparation,
+  routerResourcesRequired,
+  routerVitalRecords,
+  routerEmbeddedDocument,
+  routerBiaForm,
+  routerlegalRequirements
+
 );
 
 // Create uploads directory if it doesn't exist

@@ -87,8 +87,8 @@ import Section from "./pages/sections/Section";
 
 // BIA
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
-import BiaForm from "./pages/documents/BIA/BiaForm";
 import BiaLayout from "./pages/documents/BIA/BiaLayout";
+import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
 //import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
@@ -108,6 +108,10 @@ import CreateRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/Crea
 import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/CreateLegalRequirements";
 import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
 import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
+import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
+import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
+import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
+import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -367,6 +371,7 @@ const router = createBrowserRouter([
         ],
       },
       { path: "createBCP", element: <CreateBCP /> },
+      { path: "editBCP/:id", element: <EditBCPForm /> },
 
       { path: "createRecoveryStrategy", element: <CreateRecoveryStrategy /> },
       // {path:"editRecoveryStrategy/:id",element:<EditRecoveryStrategy/>},
@@ -378,7 +383,10 @@ const router = createBrowserRouter([
         path: "createPreIncidentPreparation",
         element: <CreatePreIncidentPreparation />,
       },
-      // {path:"editPreIncidentPreparation/:id",element:<EditPreIncidentPreparation/>},
+      {
+        path: "editPreIncidentPreparation/:id",
+        element: <EditPreIncidentPreparation />,
+      },
 
       {
         path: "createCriticalBusinessFunction",
@@ -387,10 +395,10 @@ const router = createBrowserRouter([
       // {path:"editCriticalBusinessFunction/:id",element:<EditCriticalBusinessFunction/>},
 
       { path: "createResourcesRequired", element: <CreateResourcesRequired /> },
-      // {path:"editResourcesRequired/:id",element:<EditResourcesRequired/>},
+      { path: "editResourcesRequired/:id", element: <EditResourcesRequired /> },
 
       { path: "createVitalRecord", element: <CreateVitalRecords /> },
-      // {path:"editVitalRecords/:id",element:<EditVitalRecords/>},
+      { path: "editVitalRecords/:id", element: <EditVitalRecords /> },
 
       { path: "createWorkAreaRecovery", element: <CreateWorkAreaRecovery /> },
       // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},

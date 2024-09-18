@@ -1,10 +1,20 @@
-import { useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
 
 const BCPForm = () => {
-  const [businessContinuityPlans, setBusinessContinuityPlans] = useState([]);
+  const {
+    businessContinuityPlans,
+    loading,
+    error,
+    fetchBCPForms,
+    deleteBCPForm,
+  } = useBCPForm();
+
+  useEffect(() => {
+    fetchBCPForms();
+  }, []);
 
   const deleteBusinessContinuityPlan = async (id) => {
     Swal.fire({
@@ -18,14 +28,7 @@ const BCPForm = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(
-            `http://localhost:5000/api/businessContinuityPlans/delete/${id}`
-          );
-          setVersionControls(
-            businessContinuityPlans.filter(
-              (businessContinuityPlans) => businessContinuityPlans._id !== id
-            )
-          );
+          await deleteBCPForm(id);
           Swal.fire("Deleted!", "Version Control has been deleted.", "success");
         } catch (error) {
           console.error(error);
@@ -38,6 +41,9 @@ const BCPForm = () => {
       }
     });
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">

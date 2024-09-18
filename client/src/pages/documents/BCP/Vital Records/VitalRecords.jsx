@@ -1,12 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Select from "react-select";
-import { useUsers } from "../../../../hooks/useUsers";
+import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const VitalRecords = () => {
-  const [vitalRecord, setVitalRecord] = useState([]);
+  const { vitalRecords, loading, error, fetchVitalRecords, deleteVitalRecord } =
+    useVitalRecords();
 
-  const deleteWorkAreaRecovery = async (id) => {};
+  useEffect(() => {
+    fetchVitalRecords();
+  }, []);
+
+  const deleteVitalRec = async (id, name) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete Vital Record "${name}". This action cannot be undone.`,
+      "Yes, delete it!",
+      `Vital Record "${name}" deleted successfully!`,
+      `Error deleting Vital Record "${name}"`,
+      async () => await deleteVitalRecord(id)
+    );
+  };
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -36,7 +59,7 @@ const VitalRecords = () => {
             </tr>
           </thead>
           <tbody>
-            {vitalRecord.map((vitalRec) => (
+            {vitalRecords.map((vitalRec) => (
               <tr key={vitalRec._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {vitalRec.name}
@@ -72,7 +95,9 @@ const VitalRecords = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deleteWorkAreaRecovery(vitalRec._id)}
+                      onClick={() =>
+                        deleteVitalRec(vitalRec._id, vitalRec.name)
+                      }
                     >
                       Delete
                     </button>

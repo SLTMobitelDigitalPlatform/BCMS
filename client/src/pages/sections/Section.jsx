@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useSections } from "../../hooks/useSections";
-import { validateSectionCode } from "../../utilities/helper";
-import Swal from "sweetalert2";
 import { getUsers } from "../../services/userAPI";
+import { deleteAlert, errorAlert, successAlert } from "../../utilities/alert";
+import { validateSectionCode } from "../../utilities/helper";
 
 Modal.setAppElement("#root");
 
@@ -74,22 +74,20 @@ const Section = () => {
           name,
           sectionCoordinator: coordinatorValue,
         });
-        Swal.fire({
-          icon: "success",
-          title: "Section Added",
-          text: `The section "${name}" with code "${sectionCode}" has been successfully added!`,
-        });
+        successAlert(
+          "Section Added",
+          `The section "${name}" with code "${sectionCode}" has been successfully added!`
+        );
       } else {
         await editSection(addEditSectionModal.data._id, {
           sectionCode,
           name,
           sectionCoordinator: coordinatorValue,
         });
-        Swal.fire({
-          icon: "success",
-          title: "Section Updated",
-          text: `The section "${name}" with code "${sectionCode}" has been successfully updated!`,
-        });
+        successAlert(
+          "Section Updated",
+          `The section "${name}" with code "${sectionCode}" has been successfully updated!`
+        );
       }
 
       setAddEditSectionModal({
@@ -100,45 +98,23 @@ const Section = () => {
     } catch (error) {
       console.error("Error saving section", error.response?.data || error);
 
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text:
-          error.response?.data?.message ||
-          "There was an issue saving the section.",
-      });
+      errorAlert(
+        "Error",
+        error.response?.data?.message || "Error saving section"
+      );
     }
   };
 
   // Delete section
   const handleDeleteSection = async (id, sectionName, sectionCode) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You are about to delete the section "${sectionName}" with code "${sectionCode}". This action cannot be undone.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await removeSection(id);
-          Swal.fire(
-            "Deleted!",
-            `Section "${sectionName}" with code "${sectionCode}" has been deleted.`,
-            "success"
-          );
-        } catch (error) {
-          console.error("Error deleting section:", error);
-          Swal.fire(
-            "Error!",
-            "There was an issue deleting the section.",
-            "error"
-          );
-        }
-      }
-    });
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete the section "${sectionName}" with code "${sectionCode}". This action cannot be undone.`,
+      "Yes, delete it!",
+      `Section "${sectionName}" deleted successfully!`,
+      `Error deleting section "${sectionName}"`,
+      async () => await removeSection(id)
+    );
   };
 
   const handleInputChange = (e) => {

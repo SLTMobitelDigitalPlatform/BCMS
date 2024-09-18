@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
 import { errorAlert, successAlert } from "../../../../utilities/alert";
 import { FaSpinner } from "react-icons/fa";
 
-const CreateVitalRecords = () => {
+const EditVitalRecords = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -18,21 +18,47 @@ const CreateVitalRecords = () => {
 
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const { addVitalRecord } = useVitalRecords();
+  const {
+    vitalRecord,
+    loading: vitalRecordLoading,
+    error: vitalRecordError,
+    fetchVitalRecordById,
+    updateVitalRecord,
+  } = useVitalRecords();
+
+  useEffect(() => {
+    fetchVitalRecordById(id);
+  }, []);
+
+  useEffect(() => {
+    if (vitalRecord) {
+      setFormData({
+        name: vitalRecord.name || "",
+        description: vitalRecord.description || "",
+        options: vitalRecord.options || "",
+        locations: vitalRecord.locations || "",
+        thirdPartyContact: vitalRecord.thirdPartyContact || "",
+        timeRequired: vitalRecord.timeRequired || "",
+        recordRecoveryPoint: vitalRecord.recordRecoveryPoint || "",
+        recoveryStrategy: vitalRecord.recoveryStrategy || "",
+      });
+    }
+  }, [vitalRecord]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await addVitalRecord(formData);
+      await updateVitalRecord(id, formData);
       successAlert(
-        "Record Added",
-        `Vital Record "${formData.name}" added successfully!`
+        "Record Updated",
+        `Vital Record "${formData.name}" updated successfully!`
       );
       navigate("/Business-Continuity-Plan/vital-records");
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Vital Record");
+      errorAlert("Error", error.message || "Error updating Vital Record");
       console.log(error);
     } finally {
       setIsSaving(false);
@@ -45,6 +71,16 @@ const CreateVitalRecords = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (vitalRecordLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
+  }
+
+  if (vitalRecordError) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -182,4 +218,4 @@ const CreateVitalRecords = () => {
   );
 };
 
-export default CreateVitalRecords;
+export default EditVitalRecords;
