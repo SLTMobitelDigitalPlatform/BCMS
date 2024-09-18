@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const ResourcesRequired = () => {
   const {
@@ -16,12 +17,15 @@ const ResourcesRequired = () => {
     fetchResourcesRequired();
   }, []);
 
-  const deleteResReq = async (id) => {
-    try {
-      await deleteResourceRequired(id);
-    } catch (error) {
-      console.log(error);
-    }
+  const deleteResReq = async (id, name) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete Resource Required "${name}". This action cannot be undone.`,
+      "Yes, delete it!",
+      `Resource Reqired "${name}" deleted successfully!`,
+      `Error deleting Resource Required "${name}"`,
+      async () => await deleteResourceRequired(id)
+    );
   };
 
   if (loading)
@@ -95,7 +99,12 @@ const ResourcesRequired = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deleteResReq(resourcesRequired._id)}
+                      onClick={() =>
+                        deleteResReq(
+                          resourcesRequired._id,
+                          resourcesRequired.name
+                        )
+                      }
                     >
                       Delete
                     </button>

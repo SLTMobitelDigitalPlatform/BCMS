@@ -73,7 +73,9 @@ exports.deleteResourcesRequired = async (req, res) => {
     if (!deletedResourcesRequired) {
       return res.status(404).json({ message: "Resources Required not found" });
     }
-    res.status(200).json(deletedResourcesRequired);
+    res
+      .status(200)
+      .json({ message: "Resources Required Deleted Successfully!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

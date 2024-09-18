@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
+import { errorAlert, successAlert } from "../../../../utilities/alert";
 
 const EditResourcesRequired = () => {
   const [formData, setFormData] = useState({
@@ -50,34 +50,17 @@ const EditResourcesRequired = () => {
     setIsSaving(true);
     try {
       await updateResourceRequired(id, formData);
-      handleSuccessAlert();
+      successAlert(
+        "Record Updated",
+        `Resource Required "${formData.name}" updated successfully!`
+      );
       navigate("/Business-Continuity-Plan/resources-required");
     } catch (error) {
-      handleErrorAlert();
+      errorAlert("Error", error.message || "Error updating Resource Required");
       console.log(error);
     } finally {
       setIsSaving(false);
     }
-  };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Updated Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {
