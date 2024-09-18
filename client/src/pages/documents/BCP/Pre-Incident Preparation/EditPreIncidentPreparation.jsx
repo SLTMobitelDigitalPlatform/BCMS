@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
 import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
+import { errorAlert, successAlert } from "../../../../utilities/alert";
 
 const EditPreIncidentPreparation = () => {
   const [formData, setFormData] = useState({
@@ -43,34 +43,20 @@ const EditPreIncidentPreparation = () => {
     setIsSaving(true);
     try {
       await updatePreIncidentPreparation(id, formData);
-      handleSuccessAlert();
+      successAlert(
+        "Record Updated",
+        "Pre-Incident Preparation updated successfully!"
+      );
       navigate("/Business-Continuity-Plan/pre-incident-preparation");
     } catch (error) {
-      handleErrorAlert();
+      errorAlert(
+        "Error",
+        error.message || "Error updating Pre-Incident Preparation!"
+      );
       console.log(error);
     } finally {
       setIsSaving(false);
     }
-  };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Updated Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {
