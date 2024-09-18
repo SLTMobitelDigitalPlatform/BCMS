@@ -14,7 +14,7 @@ router.post("/api/bcpBCPForm/add", createBCPForm);
 
 router.get("/api/bcpBCPForm/", getBCPForms);
 
-router.get("/api/bcpBCPForm/last", getLastbcpForm);
+router.get("/api/bcpBCPForm/last/:section", getLastbcpForm);
 
 router.get("/api/bcpBCPForm/:id", getbcpFormById);
 

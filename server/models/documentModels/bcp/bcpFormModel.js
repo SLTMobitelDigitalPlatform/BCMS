@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 
 const BCPFormSchema = new mongoose.Schema(
   {
-    planNo: { type: String, required: true },
+    bcpid: { type: String, required: true },
     date: { type: String, required: true },
     template: { type: String, required: true },
     legalEntity: { type: String, required: true },
     approver: { type: String, required: true },
+    owner: { type: String, required: true },
     maintainer: { type: String, required: true },
-    viewers: { type: [String], required: true, default: [] },
+    viewers: { type: String, required: true },
     dateApproved: { type: String, required: true },
     dateLastReviewed: { type: String, required: true },
     dateDueForNextReview: { type: String, required: true },

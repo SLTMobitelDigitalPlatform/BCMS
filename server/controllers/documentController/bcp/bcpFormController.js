@@ -24,7 +24,10 @@ const getBCPForms = async (req, res) => {
 // Get last bcp form
 const getLastbcpForm = async (req, res) => {
   try {
-    const lastBCPForm = await BCPForm.findOne().sort({ _id: -1 });
+    const { section } = req.params;
+    const lastBCPForm = await BCPForm.findOne({
+      bcpid: new RegExp(`^BCP-${section}-`),
+    }).sort({ _id: -1 });
 
     res.status(200).json(lastBCPForm);
   } catch (error) {

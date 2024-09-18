@@ -1,23 +1,31 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
+import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, successAlert } from "../../../../utilities/alert";
 
 const EditBCPForm = () => {
   const [formData, setFormData] = useState({
-    planNo: "",
+    bcpid: "",
     date: "",
     template: "",
     legalEntity: "",
     approver: "",
+    owner: "",
     maintainer: "",
-    viewers: [],
+    viewers: "",
     dateApproved: "",
     dateLastReviewed: "",
     dateDueForNextReview: "",
   });
+
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedSection, setSelectedSection] = useState(null);
+
+  const [isSaving, setIsSaving] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -30,6 +38,13 @@ const EditBCPForm = () => {
   } = useUsers();
 
   const {
+    sortedSections,
+    loading: loadingSections,
+    error: errorSections,
+    fetchSections,
+  } = useSections();
+
+  const {
     businessContinuityPlan,
     loading: bcpLoading,
     error: bcpError,
@@ -39,20 +54,35 @@ const EditBCPForm = () => {
 
   useEffect(() => {
     fetchUsers();
+    fetchSections();
     fetchBCPFormById(id);
   }, []);
+
+  useEffect(() => {
+    createBCPID();
+  }, [selectedYear, selectedSection]);
+
+  // Create BCPID
+  const createBCPID = async () => {
+    const currentYear = selectedYear;
+    setFormData({
+      ...formData,
+      bcpid: `BCP-${selectedSection}-${currentYear}`,
+    });
+  };
 
   // Update formData when embeddedDocument is fetched
   useEffect(() => {
     if (businessContinuityPlan) {
       setFormData({
-        planNo: businessContinuityPlan.planNo || "",
+        bcpid: businessContinuityPlan.bcpid || "",
         date: businessContinuityPlan.date || "",
         template: businessContinuityPlan.template || "",
         legalEntity: businessContinuityPlan.legalEntity || "",
         approver: businessContinuityPlan.approver || "",
+        owner: businessContinuityPlan.owner || "",
         maintainer: businessContinuityPlan.maintainer || "",
-        viewers: businessContinuityPlan.viewers || [],
+        viewers: businessContinuityPlan.viewers || "",
         dateApproved: businessContinuityPlan.dateApproved || "",
         dateLastReviewed: businessContinuityPlan.dateLastReviewed || "",
         dateDueForNextReview: businessContinuityPlan.dateDueForNextReview || "",
@@ -62,34 +92,23 @@ const EditBCPForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
       await updateBCPForm(id, formData);
-      handleSuccessAlert();
+      successAlert(
+        "Record Updated",
+        "Business Continuity Plan Updated Successfully!"
+      );
       navigate("/Business-Continuity-Plan/bcp-form");
     } catch (error) {
-      handleErrorAlert();
+      errorAlert(
+        "Error",
+        error.message || "Error updating Business Continuity Plan!"
+      );
       console.log(error);
+    } finally {
+      setIsSaving(false);
     }
-  };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Updated Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {
@@ -99,15 +118,60 @@ const EditBCPForm = () => {
     });
   };
 
-  const handleSelectChange = (selectedOption, name) => {
-    setFormData({
-      ...formData,
-      [name]: selectedOption ? selectedOption.value : "",
-    });
+  const handleSelectChange = (selectedOptions, name, isMulti = false) => {
+    if (isMulti) {
+      const selectedValues = selectedOptions
+        ? selectedOptions.map((option) => option.value).join(", ")
+        : "";
+
+      setFormData({
+        ...formData,
+        [name]: selectedValues,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: selectedOptions ? selectedOptions.value : "",
+      });
+    }
   };
 
-  if (usersLoading || bcpLoading) return <div>Loading...</div>;
-  if (bcpError || usersError) return <div>Error loading data.</div>;
+  const handleYearChange = (option) => {
+    if (option) {
+      setSelectedYear(option.value);
+    } else {
+      setSelectedYear(null);
+    }
+    createBCPID();
+  };
+
+  const handleSectionChange = (option) => {
+    if (option) {
+      setSelectedSection(option.value);
+    } else {
+      setSelectedSection(null);
+    }
+    createBCPID();
+  };
+
+  const years = [
+    { value: "2018", label: "2018" },
+    { value: "2019", label: "2019" },
+    { value: "2020", label: "2020" },
+    { value: "2021", label: "2021" },
+    { value: "2022", label: "2022" },
+    { value: "2023", label: "2023" },
+    { value: "2024", label: "2024" },
+  ];
+
+  if (usersLoading || loadingSections || bcpLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (usersError || errorSections || bcpError)
+    return <div>Error loading data</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -118,14 +182,12 @@ const EditBCPForm = () => {
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex justify-between gap-10">
             <div className="flex flex-col gap-2 w-1/2">
-              <label className="font-semibold">Plan Number</label>
+              <label className="font-semibold">BCP ID</label>
               <input
                 type="text"
-                name="planNo"
-                value={formData.planNo}
-                // onChange={handleChange}
-                disabled
-                readOnly
+                name="bcpid"
+                value={formData.bcpid}
+                onChange={handleChange}
                 className="p-2 w-full rounded bg-white"
               />
             </div>
@@ -141,19 +203,42 @@ const EditBCPForm = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Template</label>
-            <input
-              type="text"
-              name="template"
-              value={formData.template}
-              onChange={handleChange}
-              placeholder="Enter template name"
-              className="p-2 w-full rounded"
-            />
-          </div>
-
           <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Sections</label>
+              <Select
+                options={sortedSections}
+                value={sortedSections.find(
+                  (section) => section.value === selectedSection
+                )}
+                onChange={handleSectionChange}
+                isClearable={true}
+                placeholder="Select Section"
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Year</label>
+              <Select
+                options={years}
+                value={years.find((year) => year.value === selectedYear)}
+                onChange={handleYearChange}
+                isClearable={true}
+                placeholder="Select Year"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Template</label>
+              <input
+                type="text"
+                name="template"
+                value={formData.template}
+                onChange={handleChange}
+                placeholder="Enter template name"
+                className="p-2 w-full rounded"
+              />
+            </div>
             <div className="flex flex-col gap-2 w-full">
               <label className="font-semibold">Legal Entity</label>
               <Select
@@ -164,6 +249,20 @@ const EditBCPForm = () => {
                 onChange={(option) => handleSelectChange(option, "legalEntity")}
                 isClearable={true}
                 placeholder="Select Legal Entity"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Owner</label>
+              <Select
+                options={sortedUsers}
+                value={sortedUsers.find(
+                  (user) => user.value === formData.owner
+                )}
+                onChange={(option) => handleSelectChange(option, "owner")}
+                isClearable={true}
+                placeholder="Select Owner"
               />
             </div>
             <div className="flex flex-col gap-2 w-full">
@@ -195,13 +294,17 @@ const EditBCPForm = () => {
             </div>
             <div className="flex flex-col gap-2 w-full">
               <label className="font-semibold">Viewers</label>
-              <input
-                type="text"
-                name="viewers"
-                value={formData.viewers}
-                onChange={handleChange}
-                placeholder="Enter viewers"
-                className="p-2 w-full rounded"
+              <Select
+                options={sortedUsers}
+                value={sortedUsers.find(
+                  (user) => user.value === formData.viewers
+                )}
+                onChange={(option) =>
+                  handleSelectChange(option, "viewers", true)
+                }
+                isClearable={true}
+                isMulti={true}
+                placeholder="Select Viewers"
               />
             </div>
           </div>
@@ -242,9 +345,16 @@ const EditBCPForm = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/bcp-form"

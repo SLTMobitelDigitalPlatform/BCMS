@@ -61,11 +61,12 @@ const BCPForm = () => {
         <table className="table-fixed relative w-full py-10 bg-cyan-50">
           <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
             <tr>
-              <th className="w-20 doc-table-border">Plan Number</th>
+              <th className="w-20 doc-table-border">BCP ID</th>
               <th className="w-20 doc-table-border">Date</th>
               <th className="w-36 doc-table-border">Template</th>
               <th className="w-36 doc-table-border">Legal Entity</th>
               <th className="w-28 doc-table-border">Approver</th>
+              <th className="w-28 doc-table-border">Owner</th>
               <th className="w-28 doc-table-border">Maintainer</th>
               <th className="w-28 doc-table-border">Viewers</th>
               <th className="w-28 doc-table-border">Date Approved</th>
@@ -73,14 +74,14 @@ const BCPForm = () => {
               <th className="w-28 doc-table-border">
                 Date Due for Next Review
               </th>
-              <th className="w-28 doc-table-border">Actions</th>
+              <th className="w-44 doc-table-border">Actions</th>
             </tr>
           </thead>
           <tbody>
             {businessContinuityPlans.map((bcp) => (
               <tr key={bcp._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bcp.planNo}
+                  {bcp.bcpid}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {bcp.date}
@@ -94,6 +95,7 @@ const BCPForm = () => {
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {bcp.approver}
                 </td>
+                <td className="py-2 px-4 w-36 doc-table-border">{bcp.owner}</td>
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {bcp.maintainer}
                 </td>
@@ -109,8 +111,15 @@ const BCPForm = () => {
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {bcp.dateDueForNextReview}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-44 doc-table-border">
                   <div className="flex justify-center gap-2">
+                    <Link
+                      to={`/Business-Continuity-Plan/document-control/${bcp.bcpid}`}
+                      className="bg-indigo-800 text-white px-2 py-1 rounded"
+                    >
+                      View
+                    </Link>
+
                     <Link to={`/editBCP/${bcp._id}`} className="doc-edit-btn">
                       Edit
                     </Link>
