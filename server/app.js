@@ -46,6 +46,8 @@ const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preInc
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
 const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
+const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
+
 
 // Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
@@ -84,12 +86,15 @@ app.use(
   routerInternalParty,
   routerCallTree,
   routerTeam,
+
   routerBCPForm,
   routerPreIncidentPreparation,
   routerResourcesRequired,
   routerVitalRecords,
   routerEmbeddedDocument,
-  routerBiaForm
+  routerBiaForm,
+  routerlegalRequirements
+
 );
 
 // Create uploads directory if it doesn't exist
