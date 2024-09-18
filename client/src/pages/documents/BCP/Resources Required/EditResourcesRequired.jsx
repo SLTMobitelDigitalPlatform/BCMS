@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
 
-const CreateResourcesRequired = () => {
+const EditResourcesRequired = () => {
   const [formData, setFormData] = useState({
     name: "",
     quantity: "",
@@ -17,14 +17,39 @@ const CreateResourcesRequired = () => {
 
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const { addResourceRequired } = useResourcesRequired();
+  const {
+    resourceRequired,
+    loading: resourceRequiredLoading,
+    error: resourceRequiredError,
+    fetchResourceRequiredById,
+    updateResourceRequired,
+  } = useResourcesRequired();
+
+  useEffect(() => {
+    fetchResourceRequiredById(id);
+  }, []);
+
+  useEffect(() => {
+    if (resourceRequired) {
+      setFormData({
+        name: resourceRequired.name || "",
+        quantity: resourceRequired.quantity || "",
+        rto: resourceRequired.rto || "",
+        justification: resourceRequired.justification || "",
+        rpo: resourceRequired.rpo || "",
+        manualWorkaround: resourceRequired.manualWorkaround || "",
+        operationalDuration: resourceRequired.operationalDuration || "",
+      });
+    }
+  }, [resourceRequired]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await addResourceRequired(formData);
+      await updateResourceRequired(id, formData);
       handleSuccessAlert();
       navigate("/Business-Continuity-Plan/resources-required");
     } catch (error) {
@@ -40,7 +65,7 @@ const CreateResourcesRequired = () => {
     Swal.fire({
       position: "top-end",
       icon: "success",
-      title: "Record Added Successfully",
+      title: "Record Updated Successfully",
       showConfirmButton: false,
       timer: 2000,
     });
@@ -62,10 +87,18 @@ const CreateResourcesRequired = () => {
     });
   };
 
+  if (resourceRequiredLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (resourceRequiredError) return <div>Error loading data.</div>;
+
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Resource Required
+        Edit Resource Required
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -183,4 +216,4 @@ const CreateResourcesRequired = () => {
   );
 };
 
-export default CreateResourcesRequired;
+export default EditResourcesRequired;

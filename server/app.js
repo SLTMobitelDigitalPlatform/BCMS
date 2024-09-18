@@ -44,6 +44,7 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 // Business Continuity Plan Routes
 const bcpFormRoutes = require("./routes/documentRoutes/bcp/bcpFormRoutes");
 const preIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
+const resourcesRequiredRoutes = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
 
 // Business Impact Analysis Routes
@@ -84,6 +85,7 @@ app.use(
   routerTeam,
   bcpFormRoutes,
   preIncidentPreparation,
+  resourcesRequiredRoutes,
   embeddedDocumentRoutes
 );
 

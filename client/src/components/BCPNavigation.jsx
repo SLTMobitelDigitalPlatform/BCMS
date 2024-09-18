@@ -102,7 +102,7 @@ const BCPNavigation = () => {
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
             className={({ isActive }) =>
-              `flex items-center justify-center px-2 py-1 rounded text-white font-semibold text-center ${
+              `block px-2 py-1 rounded text-white font-semibold text-center ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
               }`
             }

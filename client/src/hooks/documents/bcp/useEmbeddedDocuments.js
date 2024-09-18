@@ -25,7 +25,7 @@ export const useEmbeddedDocuments = () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get("/api/bcpEmbeddedDocument/last");
-      setEmbeddedDocument(response.data);
+      return response.data;
     } catch (err) {
       handleError("Error fetching last embedded document.", err);
     } finally {

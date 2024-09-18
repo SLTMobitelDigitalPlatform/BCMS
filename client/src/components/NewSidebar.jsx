@@ -157,7 +157,7 @@ const NewSidebar = () => {
                       }
                       onClick={toggleDocumentDropdown}
                     >
-                      BCP
+                      Business Continuity Plan
                     </NavLink>
                   </li>
                   <hr className="my-1 border-black opacity-50" />
@@ -171,7 +171,7 @@ const NewSidebar = () => {
                       }
                       onClick={toggleDocumentDropdown}
                     >
-                      BIA
+                      Business Impact Analysis
                     </NavLink>
                   </li>
                   <hr className="my-1 border-black opacity-50" />
