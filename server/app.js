@@ -47,6 +47,7 @@ const preIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentP
 const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
 
 // Business Impact Analysis Routes
+const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
 
 const PORT = 5000;
 
@@ -84,7 +85,8 @@ app.use(
   routerTeam,
   bcpFormRoutes,
   preIncidentPreparation,
-  embeddedDocumentRoutes
+  embeddedDocumentRoutes,
+  routerBiaForm
 );
 
 // Create uploads directory if it doesn't exist

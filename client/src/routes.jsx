@@ -87,8 +87,8 @@ import Section from "./pages/sections/Section";
 
 // BIA
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
-import BiaForm from "./pages/documents/BIA/BiaForm";
 import BiaLayout from "./pages/documents/BIA/BiaLayout";
+import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
 //import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
