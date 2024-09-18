@@ -133,8 +133,8 @@ const Meeting = () => {
       )}
 
       <div className="overflow-x-auto mt-5">
-        <table className="min-w-full bg-white border border-green-500 border-collapse">
-          <thead className="bg-blue-900 text-white">
+        <table className="min-w-full bg-cyan-50 border border-green-500 border-collapse">
+          <thead className="bg-indigo-800 text-white">
             <tr>
               <th className="py-2 px-4 border border-green-500">Date</th>
               <th className="py-2 px-4 border border-green-500">Start Time</th>
@@ -146,28 +146,28 @@ const Meeting = () => {
           </thead>
           <tbody>
             {paginatedMeetings.map((meeting, i) => (
-              <tr key={i} className="border-b">
-                <td className="py-2 px-4 w-32 text-[#003E81] border border-green-500">
+              <tr key={i} className="border-b hover:bg-indigo-100">
+                <td className="py-2 px-4 w-28 tex border border-green-500 text-center">
                   {meeting.date}
                 </td>
-                <td className="py-2 px-4 w-28 text-[#003E81] border border-green-500">
+                <td className="py-2 px-4 w-28 border border-green-500 text-center">
                   {meeting.startTime}
                 </td>
-                <td className="py-2 px-4 w-28 text-[#003E81] border border-green-500">
+                <td className="py-2 px-4 w-28 border border-green-500 text-center">
                   {meeting.endTime}
                 </td>
-                <td className="py-2 px-4 w-56 text-[#003E81] border border-green-500">
+                <td className="py-2 px-4 w-60 border border-green-500">
                   {meeting.purpose}
                 </td>
-                <td className="py-2 px-4 w-32 text-[#003E81] border border-green-500">
+                <td className="py-2 px-4 w-32 border border-green-500">
                   {meeting.location}
                 </td>
-                <td className="border border-green-500 py-2 px-4 w-60">
-                  <div className="flex justify-between">
+                <td className="border border-green-500 py-2 px-4 w-44">
+                  <div className="flex justify-center gap-4">
                     <Link to={`/meeting/viewMeetings/${meeting._id}`}>
                       <button
                         type="button"
-                        className="text-white bg-blue-900 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-3 py-2"
+                        className="px-2 py-1 text-sm font-semibold bg-green-500 hover:bg-green-600 rounded text-white"
                       >
                         View
                       </button>
@@ -176,11 +176,8 @@ const Meeting = () => {
                     (user.role === "Super Admin" ||
                       user.role === "Secretariat Coordinator") ? (
                       <Link to={`/meeting/updateMeetings/${meeting._id}`}>
-                        <button
-                          type="button"
-                          className="text-white bg-green-500 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-3 py-2"
-                        >
-                          Update
+                        <button type="button" className="doc-edit-btn">
+                          Edit
                         </button>
                       </Link>
                     ) : (
@@ -191,7 +188,7 @@ const Meeting = () => {
                       user.role === "Secretariat Coordinator") ? (
                       <button
                         type="button"
-                        className="text-white bg-red-600 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm px-3 py-2"
+                        className="doc-delete-btn"
                         onClick={() => showDeleteConfirmation(meeting._id)}
                       >
                         Delete

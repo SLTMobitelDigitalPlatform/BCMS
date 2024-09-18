@@ -55,7 +55,7 @@ const MasterProcedures = () => {
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
-          Master List of Procedures / Process
+          Master List of Procedures/Process
         </h1>
         <Link to="/createMasterProducers" className="btn-primary font-semibold">
           Add Details

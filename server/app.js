@@ -34,10 +34,19 @@ const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/e
 const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
 
 const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
-
+const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
-//BIA
+// Risk Assessment Routes
+
+// Context of the Organization Routes
+
+// Business Continuity Plan Routes
+const bcpFormRoutes = require("./routes/documentRoutes/bcp/bcpFormRoutes");
+const preIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
+const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
+
+// Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
 
 const PORT = 5000;
@@ -73,6 +82,10 @@ app.use(
   routerExternalParty,
   routerInternalParty,
   routerCallTree,
+  routerTeam,
+  bcpFormRoutes,
+  preIncidentPreparation,
+  embeddedDocumentRoutes,
   routerBiaForm
 );
 

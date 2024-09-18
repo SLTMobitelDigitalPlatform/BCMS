@@ -1,10 +1,49 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
 
 const BCPForm = () => {
-  const [businessContinuityPlans, setBusinessContinuityPlans] = useState([]);
+  const {
+    businessContinuityPlans,
+    loading,
+    error,
+    fetchBCPForms,
+    deleteBCPForm,
+  } = useBCPForm();
 
-  const deleteBusinessContinuityPlan = async (id) => {};
+  useEffect(() => {
+    fetchBCPForms();
+  }, []);
+
+  const deleteBusinessContinuityPlan = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteBCPForm(id);
+          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
+        } catch (error) {
+          console.error(error);
+          Swal.fire(
+            "Error!",
+            "There was a problem deleting the record.",
+            "error"
+          );
+        }
+      }
+    });
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -26,9 +65,10 @@ const BCPForm = () => {
               <th className="w-20 doc-table-border">Date</th>
               <th className="w-36 doc-table-border">Template</th>
               <th className="w-36 doc-table-border">Legal Entity</th>
-              <th className="w-36 doc-table-border">Approver</th>
-              <th className="w-36 doc-table-border">Maintainer</th>
-              <th className="w-36 doc-table-border">Date Approved</th>
+              <th className="w-28 doc-table-border">Approver</th>
+              <th className="w-28 doc-table-border">Maintainer</th>
+              <th className="w-28 doc-table-border">Viewers</th>
+              <th className="w-28 doc-table-border">Date Approved</th>
               <th className="w-28 doc-table-border">Date Last Reviewed</th>
               <th className="w-28 doc-table-border">
                 Date Due for Next Review
@@ -38,27 +78,36 @@ const BCPForm = () => {
           </thead>
           <tbody>
             {businessContinuityPlans.map((bcp) => (
-              <tr key={bcp.id} className="hover:bg-indigo-100">
+              <tr key={bcp._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bcp.serialNo}
+                  {bcp.planNo}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bcp.versionNo}
+                  {bcp.date}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.prepare}
+                  {bcp.template}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.checkedBy}
+                  {bcp.legalEntity}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.approve}
+                  {bcp.approver}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.reasons}
+                  {bcp.maintainer}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.isApproved}
+                  {bcp.viewers}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {bcp.dateApproved}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {bcp.dateLastReviewed}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {bcp.dateDueForNextReview}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
