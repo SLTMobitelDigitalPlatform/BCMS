@@ -112,6 +112,7 @@ import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
 import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
 import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
+import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -377,7 +378,7 @@ const router = createBrowserRouter([
       // {path:"editRecoveryStrategy/:id",element:<EditRecoveryStrategy/>},
 
       { path: "createLegalRequirements", element: <CreateLegalRequirements /> },
-      // {path:"editLegalRequirements/:id",element:<EditLegalRequirements/>},
+      { path: "editLegalRequirements/:id", element: <EditLegalRequirements /> },
 
       {
         path: "createPreIncidentPreparation",
