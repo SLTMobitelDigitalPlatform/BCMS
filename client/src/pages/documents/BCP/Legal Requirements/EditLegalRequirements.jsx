@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, successAlert } from "../../../../utilities/alert";
 
 const EditLegalRequirements = () => {
   const [formData, setFormData] = useState({
-    organizationName: "",
+    name: "",
     legalRequirement: "",
     monitoredBy: "",
   });
 
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -38,7 +40,7 @@ const EditLegalRequirements = () => {
   useEffect(() => {
     if (legalRequirement) {
       setFormData({
-        organizationName: legalRequirement.organizationName || "",
+        name: legalRequirement.name || "",
         legalRequirement: legalRequirement.legalRequirement || "",
         monitoredBy: legalRequirement.monitoredBy || "",
       });
@@ -47,36 +49,17 @@ const EditLegalRequirements = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
       await updateLegalRequirement(id, formData);
-      handleSuccessAlert();
+      successAlert("Record Updated", `Legal Requirement updated successfully!`);
       navigate(
         "/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"
       );
     } catch (error) {
-      handleErrorAlert();
+      errorAlert("Error", error.message || "Error updating Legal Requirement");
       console.log(error);
     }
-  };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Updated Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {
@@ -93,89 +76,75 @@ const EditLegalRequirements = () => {
     });
   };
 
-  if (usersLoading || legalRequirementLoading) return <div>Loading...</div>;
-  if (legalRequirementError || usersError)
+  if (usersLoading || legalRequirementLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
+  }
+
+  if (usersError || legalRequirementError)
     return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Edit Embedded Document
+        Edit Legal Regulatory & Contractual Requirements
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Number</label>
+            <label className="font-semibold">Name</label>
             <input
               type="text"
-              name="number"
-              value={formData.number}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
-              placeholder="Enter number"
+              placeholder="Enter Name"
+              className="p-2 w-full rounded"
+            />
+          </div>
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">
+              Legal Regulatory & Contractual Requirements
+            </label>
+            <input
+              type="text"
+              name="legalRequirement"
+              value={formData.legalRequirement}
+              onChange={handleChange}
+              placeholder="Enter Legal Regulatory & Contractual Requirements"
               className="p-2 w-full rounded"
             />
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Description</label>
-            <input
-              type="text"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Enter description"
-              className="p-2 w-full rounded"
-            />
-          </div>
-
-          <div className="flex justify-between gap-10">
-            <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Responsible Person</label>
-              <Select
-                options={sortedUsers}
-                value={sortedUsers.find(
-                  (user) => user.value === formData.responsiblePerson
-                )}
-                onChange={(option) =>
-                  handleSelectChange(option, "responsiblePerson")
-                }
-                isClearable={true}
-                placeholder="Select Responsible Person"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2 w-full">
-              <label className="font-semibold">Owner</label>
-              <Select
-                options={sortedUsers}
-                value={sortedUsers.find(
-                  (user) => user.value === formData.owner
-                )}
-                onChange={(option) => handleSelectChange(option, "owner")}
-                isClearable={true}
-                placeholder="Select Owner"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Physical Location of Item</label>
-            <input
-              type="text"
-              name="physicalLocation"
-              value={formData.physicalLocation}
-              onChange={handleChange}
-              placeholder="Enter physical location of item"
-              className="p-2 w-full rounded"
+            <label className="font-semibold">Monitored By</label>
+            <Select
+              options={sortedUsers}
+              value={sortedUsers.find(
+                (user) => user.value === formData.monitoredBy
+              )}
+              onChange={(option) => handleSelectChange(option, "monitoredBy")}
+              isClearable={true}
+              placeholder="Select Responsible Person"
             />
           </div>
 
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"
