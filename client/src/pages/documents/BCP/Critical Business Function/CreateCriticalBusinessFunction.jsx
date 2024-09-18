@@ -9,7 +9,7 @@ const CreateCriticalBusinessFunction = () => {
     rto: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
     // Submit the form data to backend or API
