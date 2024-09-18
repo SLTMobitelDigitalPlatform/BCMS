@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
 import { errorAlert, successAlert } from "../../../../utilities/alert";
-import { FaSpinner } from "react-icons/fa";
 
 const EditVitalRecords = () => {
   const [formData, setFormData] = useState({

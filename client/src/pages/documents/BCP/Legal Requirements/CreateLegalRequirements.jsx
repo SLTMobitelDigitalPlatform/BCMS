@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
-import { useUsers } from "../../../../hooks/useUsers";
+
+import { FaSpinner } from "react-icons/fa";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
+import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, successAlert } from "../../../../utilities/alert";
 
 const CreateLegalRequirements = () => {
   const [formData, setFormData] = useState({
     name: "",
-    legalRequirements: "",
+    legalRequirement: "",
     monitoredBy: "",
   });
 
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
   const { sortedUsers, loading, error, fetchUsers } = useUsers();
@@ -23,28 +26,22 @@ const CreateLegalRequirements = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Submit the form data to backend or API
-
+    setIsSaving(true);
     try {
       addLegalRequirement(formData);
-      handleSuccessAlert();
+      successAlert(
+        "Record Added",
+        `Legal Requirement ${formData.name} added successfully!`
+      );
       navigate(
         "/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"
       );
     } catch (error) {
-      handleErrorAlert();
+      errorAlert("Error", error.message || "Error adding Legal Requirement");
       console.log(error);
+    } finally {
+      setIsSaving(false);
     }
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {
@@ -60,8 +57,15 @@ const CreateLegalRequirements = () => {
     });
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
+  }
+
+  if (error) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -87,8 +91,8 @@ const CreateLegalRequirements = () => {
             </label>
             <input
               type="text"
-              name="legalRequirements"
-              value={formData.legalRequirements}
+              name="legalRequirement"
+              value={formData.legalRequirement}
               onChange={handleChange}
               placeholder="Enter Legal Regulatory & Contractual Requirements"
               className="p-2 w-full rounded"
@@ -111,9 +115,16 @@ const CreateLegalRequirements = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"

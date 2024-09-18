@@ -117,6 +117,15 @@ const Customer = () => {
               }
             }}
           />
+          <Link
+            to={"/feedbacks"}
+            className="btn-primary text-white font-medium"
+            // onClick={() => {
+            //   setOpenAddEditModal({ isShown: true, type: "add", data: null });
+            // }}
+          >
+            Feedbacks
+          </Link>
 
           <Link
             to={"/subscribeForm"}

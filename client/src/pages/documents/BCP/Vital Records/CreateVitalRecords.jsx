@@ -32,7 +32,7 @@ const CreateVitalRecords = () => {
       );
       navigate("/Business-Continuity-Plan/vital-records");
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Vital Record");
+      errorAlert("Error", error.message || "Error adding Vital Record!");
       console.log(error);
     } finally {
       setIsSaving(false);

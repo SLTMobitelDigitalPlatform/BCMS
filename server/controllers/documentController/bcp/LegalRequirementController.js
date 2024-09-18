@@ -37,11 +37,15 @@ exports.getLastLegalRequirement = async (req, res) => {
 // Get a single embedded document by ID
 exports.getLegalRequirementById = async (req, res) => {
   try {
-    const embeddedDocument = await LegalRequirement.findById(req.params.id);
-    if (!embeddedDocument) {
-      return res.status(404).json({ message: "Legal Regulatory and Contractual Requirement not found" });
+    const legalRequirement = await LegalRequirement.findById(req.params.id);
+    if (!legalRequirement) {
+      return res
+        .status(404)
+        .json({
+          message: "Legal Regulatory and Contractual Requirement not found",
+        });
     }
-    res.status(200).json(embeddedDocument);
+    res.status(200).json(legalRequirement);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -56,7 +60,11 @@ exports.updateLegalRequirement = async (req, res) => {
       { new: true }
     );
     if (!updatedLegalRequirement) {
-      return res.status(404).json({ message: "Legal Regulatory and Contractual Requirement not found" });
+      return res
+        .status(404)
+        .json({
+          message: "Legal Regulatory and Contractual Requirement not found",
+        });
     }
     res.status(200).json(updatedLegalRequirement);
   } catch (error) {
@@ -71,9 +79,18 @@ exports.deleteLegalRequirement = async (req, res) => {
       req.params.id
     );
     if (!deletedLegalRequirement) {
-      return res.status(404).json({ message: "Legal Regulatory and Contractual Requirement not found" });
+      return res
+        .status(404)
+        .json({
+          message: "Legal Regulatory and Contractual Requirement not found",
+        });
     }
-    res.status(200).json({ message: "Legal Regulatory and Contractual Requirement deleted successfully" });
+    res
+      .status(200)
+      .json({
+        message:
+          "Legal Regulatory and Contractual Requirement deleted successfully",
+      });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
