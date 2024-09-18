@@ -1,10 +1,36 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
 
 const ResourcesRequired = () => {
-  const [resourcesRequired, setResourcesRequired] = useState([]);
+  const {
+    resourcesRequired,
+    loading,
+    error,
+    fetchResourcesRequired,
+    deleteResourceRequired,
+  } = useResourcesRequired();
 
-  const deleteResourcesRequired = async (id) => {};
+  useEffect(() => {
+    fetchResourcesRequired();
+  }, []);
+
+  const deleteResReq = async (id) => {
+    try {
+      await deleteResourceRequired(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -69,9 +95,7 @@ const ResourcesRequired = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() =>
-                        deleteResourcesRequired(resourcesRequired._id)
-                      }
+                      onClick={() => deleteResReq(resourcesRequired._id)}
                     >
                       Delete
                     </button>
