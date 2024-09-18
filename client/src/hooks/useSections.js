@@ -49,6 +49,14 @@ export const useSections = () => {
     }
   };
 
+  const sortedSections = sections
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((section) => ({
+      value: section.sectionCode,
+      label: `${section.name} (${section.sectionCode})`,
+    }));
+
   // Handle errors
   const handleError = (message, err) => {
     setError(message);
@@ -82,6 +90,7 @@ export const useSections = () => {
   return {
     // section,
     sections,
+    sortedSections,
     loading,
     error,
     fetchSections,

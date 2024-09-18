@@ -1,179 +1,150 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
+import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, successAlert } from "../../../../utilities/alert";
 
 const CreateBCP = () => {
   const today = new Date().toISOString().split("T")[0];
 
   const [formData, setFormData] = useState({
-    planNo: "",
+    bcpid: "",
     date: today,
     template: "",
     legalEntity: "",
     approver: "",
+    owner: "",
     maintainer: "",
-    viewers: [],
+    viewers: "",
     dateApproved: "",
     dateLastReviewed: "",
     dateDueForNextReview: "",
   });
 
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedSection, setSelectedSection] = useState(null);
+
+  const [isSaving, setIsSaving] = useState(false);
+
   const navigate = useNavigate();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
-  const { fetchLastBCPForm, addBCPForm } = useBCPForm();
+  const {
+    sortedUsers,
+    loading: loadingUsers,
+    error: errorUsers,
+    fetchUsers,
+  } = useUsers();
+  const { addBCPForm } = useBCPForm();
 
-  // Create Plan Number
-  const createPlanNo = async () => {
-    try {
-      const response = await fetchLastBCPForm();
+  const {
+    sortedSections,
+    loading: loadingSections,
+    error: errorSections,
+    fetchSections,
+  } = useSections();
 
-      // Check if response and response.data are valid
-      if (response && response.data) {
-        const lastRecord = response.data;
-
-        // Extract plan number from the last record
-        let lastPlanNo = lastRecord?.planNo || "P000"; // if no records, default to P000
-
-        // Increment the numeric part of the plan number
-        let numericPart = parseInt(lastPlanNo.slice(1)) + 1;
-
-        // Format the new plan number as P001, P002, etc.
-        let newPlanNo = `P${numericPart.toString().padStart(3, "0")}`;
-
-        // Update formData with the new plan number
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          planNo: newPlanNo,
-        }));
-      } else {
-        // If no previous record, set the first plan number
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          planNo: "P001", // First plan number
-        }));
-      }
-    } catch (error) {
-      console.error("Error creating plan number:", error);
-    }
+  // Create BCPID
+  const createBCPID = async () => {
+    const currentYear = selectedYear;
+    setFormData({
+      ...formData,
+      bcpid: `BCP-${selectedSection}-${currentYear}`,
+    });
   };
 
   useEffect(() => {
     fetchUsers();
-    fetchLastBCPForm();
-    createPlanNo();
+    fetchSections();
   }, []);
 
-  // const [loggedInUser, setLoggedInUsers] = useState([]);
-
-  // const fetchLastBCPForm = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "http://localhost:5000/api/businessContinuityPlanBCPForm/last"
-  //     );
-  //     const lastRecord = response.data;
-
-  //     const baseYear = 2024;
-  //     const currentYear = new Date().getFullYear();
-  //     const yearOffset = currentYear - baseYear + 1;
-
-  //     let newVersionNo = `${yearOffset}.0`;
-  //     let newSerialNo = 1;
-  //     // console.log(newVersionNo);
-  //     let lastVersionYearOffset;
-  //     let lastIndex;
-
-  //     if (lastRecord && lastRecord.versionNo) {
-  //       lastVersionYearOffset = parseInt(
-  //         lastRecord.versionNo.split(".")[0],
-  //         10
-  //       );
-  //       lastIndex = parseInt(lastRecord.versionNo.split(".")[1], 10);
-  //       newSerialNo = lastRecord.serialNo + 1;
-  //     }
-
-  //     if (lastVersionYearOffset === yearOffset) {
-  //       newVersionNo = `${yearOffset}.${lastIndex + 1}`;
-  //     }
-
-  //     // console.log(newVersionNo);
-  //     setPlanNo(newVersionNo);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const fetchLoggedInUser = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     const response = await axios.get("http://localhost:5000/currentuser", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     // console.log(response.data.name);
-
-  //     setLoggedInUsers(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching user details:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchLastBCPForm();
-  //   fetchLoggedInUser();
-  // }, []);
+  useEffect(() => {
+    createBCPID();
+  }, [selectedYear, selectedSection]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
     try {
       await addBCPForm(formData);
-      handleSuccessAlert();
+      successAlert(
+        "Record Added",
+        "Business Continuity Plan Added Successfully!"
+      );
       navigate("/Business-Continuity-Plan/bcp-form");
     } catch (error) {
-      handleErrorAlert();
+      errorAlert(
+        "Error",
+        error.message || "Error adding Business Continuity Plan!"
+      );
       console.log(error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Added Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
-  };
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === "viewers" ? value.split(",") : value, // Split viewers by commas
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSelectChange = (selectedOption, name) => {
-    setFormData({
-      ...formData,
-      [name]: selectedOption ? selectedOption.value : "",
-    });
+  const handleSelectChange = (selectedOptions, name, isMulti = false) => {
+    if (isMulti) {
+      const selectedValues = selectedOptions
+        ? selectedOptions.map((option) => option.value).join(", ")
+        : "";
+
+      setFormData({
+        ...formData,
+        [name]: selectedValues,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: selectedOptions ? selectedOptions.value : "",
+      });
+    }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  const handleYearChange = (option) => {
+    if (option) {
+      setSelectedYear(option.value);
+    } else {
+      setSelectedYear(null);
+    }
+    createBCPID();
+  };
+
+  const handleSectionChange = (option) => {
+    if (option) {
+      setSelectedSection(option.value);
+    } else {
+      setSelectedSection(null);
+    }
+    createBCPID();
+  };
+
+  const years = [
+    { value: "2018", label: "2018" },
+    { value: "2019", label: "2019" },
+    { value: "2020", label: "2020" },
+    { value: "2021", label: "2021" },
+    { value: "2022", label: "2022" },
+    { value: "2023", label: "2023" },
+    { value: "2024", label: "2024" },
+  ];
+
+  if (loadingUsers || loadingSections)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (errorUsers || errorSections) return <div>Error loading data</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -184,14 +155,12 @@ const CreateBCP = () => {
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex justify-between gap-10">
             <div className="flex flex-col gap-2 w-1/2">
-              <label className="font-semibold">Plan Number</label>
+              <label className="font-semibold">BCP ID</label>
               <input
                 type="text"
-                name="planNo"
-                value={formData.planNo}
-                // onChange={handleChange}
-                disabled
-                readOnly
+                name="bcpid"
+                value={formData.bcpid}
+                onChange={handleChange}
                 className="p-2 w-full rounded bg-white"
               />
             </div>
@@ -207,19 +176,42 @@ const CreateBCP = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Template</label>
-            <input
-              type="text"
-              name="template"
-              value={formData.template}
-              onChange={handleChange}
-              placeholder="Enter template name"
-              className="p-2 w-full rounded"
-            />
-          </div>
-
           <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Sections</label>
+              <Select
+                options={sortedSections}
+                value={sortedSections.find(
+                  (section) => section.value === selectedSection
+                )}
+                onChange={handleSectionChange}
+                isClearable={true}
+                placeholder="Select Section"
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Year</label>
+              <Select
+                options={years}
+                value={years.find((year) => year.value === selectedYear)}
+                onChange={handleYearChange}
+                isClearable={true}
+                placeholder="Select Year"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Template</label>
+              <input
+                type="text"
+                name="template"
+                value={formData.template}
+                onChange={handleChange}
+                placeholder="Enter template name"
+                className="p-2 w-full rounded"
+              />
+            </div>
             <div className="flex flex-col gap-2 w-full">
               <label className="font-semibold">Legal Entity</label>
               <Select
@@ -230,6 +222,20 @@ const CreateBCP = () => {
                 onChange={(option) => handleSelectChange(option, "legalEntity")}
                 isClearable={true}
                 placeholder="Select Legal Entity"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between gap-10">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-semibold">Owner</label>
+              <Select
+                options={sortedUsers}
+                value={sortedUsers.find(
+                  (user) => user.value === formData.owner
+                )}
+                onChange={(option) => handleSelectChange(option, "owner")}
+                isClearable={true}
+                placeholder="Select Owner"
               />
             </div>
             <div className="flex flex-col gap-2 w-full">
@@ -261,13 +267,17 @@ const CreateBCP = () => {
             </div>
             <div className="flex flex-col gap-2 w-full">
               <label className="font-semibold">Viewers</label>
-              <input
-                type="text"
-                name="viewers"
-                value={formData.viewers}
-                onChange={handleChange}
-                placeholder="Enter viewers"
-                className="p-2 w-full rounded"
+              <Select
+                options={sortedUsers}
+                value={sortedUsers.find(
+                  (user) => user.value === formData.viewers
+                )}
+                onChange={(option) =>
+                  handleSelectChange(option, "viewers", true)
+                }
+                isClearable={true}
+                isMulti={true}
+                placeholder="Select Viewers"
               />
             </div>
           </div>
@@ -308,9 +318,16 @@ const CreateBCP = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/bcp-form"

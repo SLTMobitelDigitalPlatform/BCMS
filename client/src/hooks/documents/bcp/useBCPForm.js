@@ -4,6 +4,10 @@ import axiosInstance from "../../../services/axiosInstance";
 export const useBCPForm = () => {
   const [businessContinuityPlans, setBusinessContinuityPlans] = useState([]);
   const [businessContinuityPlan, setBusinessContinuityPlan] = useState([]);
+  const [lastBusinessContinuityPlan, setLastBusinessContinuityPlan] = useState(
+    []
+  );
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -21,11 +25,13 @@ export const useBCPForm = () => {
   };
 
   // Fetch the last BCP form
-  const fetchLastBCPForm = async () => {
+  const fetchLastBCPForm = async (section) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/api/bcpBCPForm/last");
-      return response.data;
+      const response = await axiosInstance.get(
+        `/api/bcpBCPForm/last/${section}`
+      );
+      setLastBusinessContinuityPlan(response.data);
     } catch (err) {
       handleError("Error fetching last BCP form.", err);
     } finally {
@@ -94,6 +100,7 @@ export const useBCPForm = () => {
   return {
     businessContinuityPlans,
     businessContinuityPlan,
+    lastBusinessContinuityPlan,
     loading,
     error,
     fetchBCPForms,
