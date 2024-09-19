@@ -6,7 +6,9 @@ const teamSchema = new Schema({
   teamName: { type: String, required: true },
   section: { type: Schema.Types.ObjectId, ref: "Section", required: true },
   teamLeader: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  secondaryLeader: { type: Schema.Types.ObjectId, ref: "User" }, // New field
   teamMembers: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  secondaryTeamMembers: [{ type: Schema.Types.ObjectId, ref: "User" }], // New field
   dateCreated: { type: Date, default: Date.now },
   isTeamApproved: {
     type: String,

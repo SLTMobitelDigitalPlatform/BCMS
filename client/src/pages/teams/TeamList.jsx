@@ -3,16 +3,22 @@ import {
   getTeams,
   deleteTeam,
   updateTeamResponsibilities,
+  updateSecondaryTeamMembers,
 } from "../../services/teamAPI";
 import { Link, useNavigate } from "react-router-dom";
+import { getUsers } from "../../services/userAPI";
 
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showViewTeamModal, setShowViewTeamModal] = useState(false);
+  const [showEditMembersModal, setShowEditMembersModal] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [responsibilities, setResponsibilities] = useState({});
-  const [isViewOnly, setIsViewOnly] = useState(false); // New state to control view-only mode
-  const [activeTab, setActiveTab] = useState("Approved"); // New state for tab management
+  const [secondaryMembers, setSecondaryMembers] = useState({});
+  const [users, setUsers] = useState([]);
+  const [isViewOnly, setIsViewOnly] = useState(false);
+  const [activeTab, setActiveTab] = useState("Approved");
   const navigate = useNavigate();
 
   const fetchTeams = async () => {
@@ -22,6 +28,15 @@ const TeamList = () => {
     } catch (error) {
       console.error("Error fetching teams:", error);
       setTeams([]);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      setUsers(Array.isArray(response.data) ? response.data : []);
+    } catch (error) {
+      console.error("Error fetching users:", error);
     }
   };
 
@@ -39,21 +54,53 @@ const TeamList = () => {
 
     const initialResponsibilities = {};
     team.responsibilities.forEach((responsibilityObj) => {
-      const memberId = responsibilityObj.memberId._id; // Access member ID from the memberId object
+      const memberId = responsibilityObj.memberId._id;
       initialResponsibilities[memberId] =
-        responsibilityObj.responsibility || ""; // Store the responsibility text
+        responsibilityObj.responsibility || "";
     });
 
     setResponsibilities(initialResponsibilities);
-    setIsViewOnly(viewOnly); // Set the modal to view-only if true
+    setIsViewOnly(viewOnly);
     setShowModal(true);
+  };
+
+  const openViewTeamModal = (team) => {
+    setSelectedTeam(team);
+
+    const initialSecondaryMembers = {};
+    team.teamMembers.forEach((member) => {
+      initialSecondaryMembers[member._id] = member.secondaryMember || null;
+    });
+
+    setSecondaryMembers(initialSecondaryMembers);
+    setShowViewTeamModal(true);
+  };
+
+  const openEditMembersModal = (team) => {
+    setSelectedTeam(team);
+
+    const initialSecondaryMembers = {};
+    team.teamMembers.forEach((member) => {
+      initialSecondaryMembers[member._id] = member.secondaryMember || null;
+    });
+
+    setSecondaryMembers(initialSecondaryMembers);
+    setShowEditMembersModal(true);
+    fetchUsers();
   };
 
   const handleResponsibilityChange = (memberId, responsibility) => {
     setResponsibilities({ ...responsibilities, [memberId]: responsibility });
   };
 
-  const handleSubmit = async () => {
+  const handleSecondaryMemberChange = (memberId, secondaryMemberId) => {
+    setSecondaryMembers({
+      ...secondaryMembers,
+      [memberId]: secondaryMemberId,
+    });
+  };
+
+  const handleSubmitResponsibilities = async () => {
     const updatedResponsibilities = selectedTeam.teamMembers.map((member) => ({
       memberId: member._id,
       responsibility: responsibilities[member._id],
@@ -68,6 +115,21 @@ const TeamList = () => {
       fetchTeams();
     } catch (error) {
       console.error("Error updating responsibilities:", error);
+    }
+  };
+
+  const handleSubmitSecondaryMembers = async () => {
+    const updatedTeam = selectedTeam.teamMembers.map((member) => ({
+      memberId: member._id,
+      secondaryMember: secondaryMembers[member._id],
+    }));
+
+    try {
+      await updateSecondaryTeamMembers(selectedTeam._id, updatedTeam);
+      setShowEditMembersModal(false);
+      fetchTeams();
+    } catch (error) {
+      console.error("Error updating secondary members:", error);
     }
   };
 
@@ -185,9 +247,15 @@ const TeamList = () => {
                   </button>
                   <button
                     className="bg-cyan-500 text-white py-1 px-3 rounded hover:bg-cyan-900"
-                    onClick={() => openModal(team, true)} // Open in view-only mode
+                    onClick={() => openViewTeamModal(team)}
                   >
                     View
+                  </button>
+                  <button
+                    className="bg-purple-500 text-white py-1 px-3 rounded hover:bg-purple-700"
+                    onClick={() => openEditMembersModal(team)}
+                  >
+                    Edit Members
                   </button>
                 </td>
               </tr>
@@ -196,49 +264,283 @@ const TeamList = () => {
         </table>
       )}
 
+      {/* Existing Responsibilities Modal */}
       {showModal && selectedTeam && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h3 className="text-lg font-bold mb-4">
-              {isViewOnly
-                ? `Responsibilities for ${selectedTeam.teamName}`
-                : `Add/Edit Responsibilities for ${selectedTeam.teamName}`}
-            </h3>
-            <form onSubmit={(e) => e.preventDefault()}>
-              {selectedTeam.teamMembers.map((member) => (
-                <div key={member._id} className="mb-4">
-                  <label className="block font-semibold mb-1">
-                    {member.name}
-                  </label>
-                  <textarea
-                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                    value={responsibilities[member._id]} // Pre-filled with previous responsibility value
-                    onChange={(e) =>
-                      handleResponsibilityChange(member._id, e.target.value)
-                    }
-                    placeholder={`Enter responsibility for ${member.name}`}
-                    readOnly={isViewOnly} // Set read-only if viewing
-                  />
-                </div>
-              ))}
+          <div className="bg-white p-6 rounded-lg max-w-3xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4">
+              {isViewOnly ? "View" : "Edit"} Responsibilities for{" "}
+              {selectedTeam.teamName}
+            </h2>
 
-              <div className="flex justify-end space-x-2">
-                {!isViewOnly && (
-                  <button
-                    className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                )}
+            <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="text-left py-3 px-4 font-semibold text-sm">
+                    Team Member
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-sm">
+                    Responsibility
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {selectedTeam.teamMembers.map((member) => (
+                  <tr key={member._id} className="border-t">
+                    <td className="py-3 px-4">{member.name}</td>
+                    <td className="py-3 px-4">
+                      {isViewOnly ? (
+                        <span>{responsibilities[member._id]}</span>
+                      ) : (
+                        <input
+                          type="text"
+                          value={responsibilities[member._id] || ""}
+                          onChange={(e) =>
+                            handleResponsibilityChange(
+                              member._id,
+                              e.target.value
+                            )
+                          }
+                          className="w-full px-2 py-1 border rounded"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button
+              className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-2"
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </button>
+
+            {!isViewOnly && (
+              <div className="mt-4 flex justify-end">
                 <button
-                  className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                  onClick={handleSubmitResponsibilities}
+                >
+                  Submit
+                </button>
+                <button
+                  className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-2"
                   onClick={() => setShowModal(false)}
                 >
-                  {isViewOnly ? "Close" : "Cancel"}
+                  Cancel
                 </button>
               </div>
-            </form>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* View Team Modal */}
+      {showViewTeamModal && selectedTeam && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-5xl mx-auto overflow-y-auto max-h-[90vh]">
+            <h2 className="text-2xl font-semibold mb-4">
+              Team Details for {selectedTeam.teamName}
+            </h2>
+
+            <div className="flex mb-4">
+              <div className="w-1/2 pr-2">
+                <h3 className="text-xl font-semibold">Team Leader</h3>
+                <p>
+                  <strong>Name:</strong> {selectedTeam.teamLeader.name}
+                </p>
+                <p>
+                  <strong>Email:</strong> {selectedTeam.teamLeader.email}
+                </p>
+                <p>
+                  <strong>Phone:</strong>{" "}
+                  {selectedTeam.teamLeader.contactNumber}
+                </p>
+                <p>
+                  <strong>Designation:</strong>{" "}
+                  {selectedTeam.teamLeader.designation}
+                </p>
+              </div>
+              <div className="w-1/2 pl-2">
+                <h3 className="text-xl font-semibold">Secondary Leader</h3>
+                {selectedTeam.secondaryLeader ? (
+                  <>
+                    <p>
+                      <strong>Name:</strong> {selectedTeam.secondaryLeader.name}
+                    </p>
+                    <p>
+                      <strong>Email:</strong>{" "}
+                      {selectedTeam.secondaryLeader.email}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong>{" "}
+                      {selectedTeam.secondaryLeader.contactNumber}
+                    </p>
+                    <p>
+                      <strong>Designation:</strong>{" "}
+                      {selectedTeam.secondaryLeader.designation}
+                    </p>
+                  </>
+                ) : (
+                  <p>No secondary leader assigned</p>
+                )}
+              </div>
+            </div>
+
+            <h3 className="text-xl font-semibold mb-2">Team Members</h3>
+            <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden mb-4">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="text-left py-3 px-4 font-semibold text-sm">
+                    Primary Member
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-sm">
+                    Secondary Member
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedTeam.teamMembers.map((member, index) => (
+                  <tr key={member._id} className="border-t">
+                    <td className="py-3 px-4">
+                      <div>
+                        <p>
+                          <strong>Name:</strong> {member.name}
+                        </p>
+                        <p>
+                          <strong>Email:</strong> {member.email}
+                        </p>
+                        <p>
+                          <strong>Phone:</strong> {member.contactNumber}
+                        </p>
+                        <p>
+                          <strong>Designation:</strong> {member.designation}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      {selectedTeam.secondaryTeamMembers &&
+                      selectedTeam.secondaryTeamMembers[index] ? (
+                        <div>
+                          <p>
+                            <strong>Name:</strong>{" "}
+                            {selectedTeam.secondaryTeamMembers[index].name}
+                          </p>
+                          <p>
+                            <strong>Email:</strong>{" "}
+                            {selectedTeam.secondaryTeamMembers[index].email}
+                          </p>
+                          <p>
+                            <strong>Phone:</strong>{" "}
+                            {
+                              selectedTeam.secondaryTeamMembers[index]
+                                .contactNumber
+                            }
+                          </p>
+                          <p>
+                            <strong>Designation:</strong>{" "}
+                            {
+                              selectedTeam.secondaryTeamMembers[index]
+                                .designation
+                            }
+                          </p>
+                        </div>
+                      ) : (
+                        <p>No secondary member assigned</p>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <button
+              className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 mt-4"
+              onClick={() => setShowViewTeamModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Members Modal */}
+      {showEditMembersModal && selectedTeam && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-3xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4">
+              Edit Members for {selectedTeam.teamName}
+            </h2>
+
+            <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="text-left py-3 px-4 font-semibold text-sm">
+                    Team Member
+                  </th>
+                  <th className="text-left py-3 px-4 font-semibold text-sm">
+                    Secondary Member
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedTeam.teamMembers.map((member) => (
+                  <tr key={member._id} className="border-t">
+                    <td className="py-3 px-4">
+                      <div>
+                        <p>
+                          <strong>Name:</strong> {member.name}
+                        </p>
+                        <p>
+                          <strong>Email:</strong> {member.email}
+                        </p>
+                        <p>
+                          <strong>Phone:</strong> {member.contactNumber}
+                        </p>
+                        <p>
+                          <strong>Designation:</strong> {member.designation}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">
+                      <select
+                        value={secondaryMembers[member._id] || ""}
+                        onChange={(e) =>
+                          handleSecondaryMemberChange(
+                            member._id,
+                            e.target.value
+                          )
+                        }
+                        className="w-full px-2 py-1 border rounded"
+                      >
+                        <option value="">Select Secondary Member</option>
+                        {users.map((user) => (
+                          <option key={user._id} value={user._id}>
+                            {user.name}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="mt-4 flex justify-end">
+              <button
+                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                onClick={handleSubmitSecondaryMembers}
+              >
+                Submit
+              </button>
+              <button
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-2"
+                onClick={() => setShowEditMembersModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

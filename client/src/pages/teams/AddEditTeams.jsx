@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getSections } from "../../services/sectionApi";
-import { getUsers } from "../../services/userApi";
+import { getUsers } from "../../services/userAPI";
 import {
   createTeam,
   EditTeam,
@@ -19,6 +19,7 @@ const AddEditTeams = ({ fetchTeams }) => {
     teamName: "",
     section: "",
     teamLeader: "",
+    secondaryLeader: "",
     teamMembers: [],
     isTeamApproved: "Pending",
   });
@@ -60,6 +61,7 @@ const AddEditTeams = ({ fetchTeams }) => {
             ...response.data,
             section: response.data.section._id,
             teamLeader: response.data.teamLeader._id,
+            secondaryLeader: response.data.secondaryLeader._id,
             teamMembers: response.data.teamMembers.map((member) => member._id),
           });
         } catch (error) {
@@ -82,11 +84,11 @@ const AddEditTeams = ({ fetchTeams }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 ">
       <h2 className="text-2xl font-semibold mb-4">
         {isEditing ? "Edit Team" : "Create a New Team"}
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 overflow-auto">
         <div className="form-group">
           <label className="block text-sm font-medium mb-1">Team Number</label>
           <input
@@ -143,6 +145,27 @@ const AddEditTeams = ({ fetchTeams }) => {
           >
             <option value="" disabled>
               Select the Team Leader
+            </option>
+            {users.map((user) => (
+              <option key={user._id} value={user._id}>
+                {user.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label className="block text-sm font-medium mb-1">
+            Secondary Team Leader
+          </label>
+          <select
+            value={formData.secondaryLeader}
+            onChange={(e) =>
+              setFormData({ ...formData, secondaryLeader: e.target.value })
+            }
+            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+          >
+            <option value="" disabled>
+              Select the Secondary Team Leader
             </option>
             {users.map((user) => (
               <option key={user._id} value={user._id}>
