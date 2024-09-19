@@ -53,9 +53,7 @@ const EditLegalRequirements = () => {
     try {
       await updateLegalRequirement(id, formData);
       successAlert("Record Updated", `Legal Requirement updated successfully!`);
-      navigate(
-        "/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"
-      );
+      navigate("/Business-Continuity-Plan/legal-requirements");
     } catch (error) {
       errorAlert("Error", error.message || "Error updating Legal Requirement");
       console.log(error);
@@ -147,7 +145,7 @@ const EditLegalRequirements = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"
+              to="/Business-Continuity-Plan/legal-requirements"
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
