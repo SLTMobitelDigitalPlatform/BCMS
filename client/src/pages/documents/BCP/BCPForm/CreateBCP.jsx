@@ -13,6 +13,8 @@ const CreateBCP = () => {
   const [formData, setFormData] = useState({
     bcpid: "",
     date: today,
+    section: "",
+    year: "",
     template: "",
     legalEntity: "",
     approver: "",
@@ -24,8 +26,8 @@ const CreateBCP = () => {
     dateDueForNextReview: "",
   });
 
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedSection, setSelectedSection] = useState(null);
+  // const [selectedYear, setSelectedYear] = useState(null);
+  // const [selectedSection, setSelectedSection] = useState(null);
 
   const [isSaving, setIsSaving] = useState(false);
 
@@ -48,10 +50,9 @@ const CreateBCP = () => {
 
   // Create BCPID
   const createBCPID = async () => {
-    const currentYear = selectedYear;
     setFormData({
       ...formData,
-      bcpid: `BCP-${selectedSection}-${currentYear}`,
+      bcpid: `BCP-${formData.section}-${formData.year}`,
     });
   };
 
@@ -62,7 +63,7 @@ const CreateBCP = () => {
 
   useEffect(() => {
     createBCPID();
-  }, [selectedYear, selectedSection]);
+  }, [formData.year, formData.section]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -112,18 +113,18 @@ const CreateBCP = () => {
 
   const handleYearChange = (option) => {
     if (option) {
-      setSelectedYear(option.value);
+      setFormData.year(option.value);
     } else {
-      setSelectedYear(null);
+      setFormData.year(null);
     }
     createBCPID();
   };
 
   const handleSectionChange = (option) => {
     if (option) {
-      setSelectedSection(option.value);
+      setFormData.section(option.value);
     } else {
-      setSelectedSection(null);
+      setFormData.section(null);
     }
     createBCPID();
   };
@@ -182,7 +183,7 @@ const CreateBCP = () => {
               <Select
                 options={sortedSections}
                 value={sortedSections.find(
-                  (section) => section.value === selectedSection
+                  (section) => section.value === formData.section
                 )}
                 onChange={handleSectionChange}
                 isClearable={true}
@@ -193,7 +194,7 @@ const CreateBCP = () => {
               <label className="font-semibold">Year</label>
               <Select
                 options={years}
-                value={years.find((year) => year.value === selectedYear)}
+                value={years.find((year) => year.value === formData.year)}
                 onChange={handleYearChange}
                 isClearable={true}
                 placeholder="Select Year"

@@ -1,140 +1,108 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import { Link, useParams } from "react-router-dom";
 import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
 
 const BCPForm = () => {
-  const {
-    businessContinuityPlans,
-    loading,
-    error,
-    fetchBCPForms,
-    deleteBCPForm,
-  } = useBCPForm();
+  const { bcpid } = useParams();
+
+  const { businessContinuityPlan, loading, error, fetchBCPFormByBCPID } =
+    useBCPForm();
 
   useEffect(() => {
-    fetchBCPForms();
+    fetchBCPFormByBCPID(bcpid);
   }, []);
-
-  const deleteBusinessContinuityPlan = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteBCPForm(id);
-          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the record.",
-            "error"
-          );
-        }
-      }
-    });
-  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">
-          Business Continuity Plans
+    <div className="h-full overflow-auto">
+      <div className="flex flex-col gap-8 p-8 rounded-lg">
+        <h1 className="text-2xl font-bold text-indigo-900">
+          Business Continuity Plan: {businessContinuityPlan.bcpid}
         </h1>
-        <Link to="/createBCP" className="btn-primary font-semibold">
-          Create Plan
-        </Link>
-      </div>
+        <div className="flex justify-between">
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">BCP ID:</span>
+            <span>{businessContinuityPlan.bcpid}</span>
+          </div>
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Section:</span>
+            <span>{businessContinuityPlan.section}</span>
+          </div>
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Year:</span>
+            <span>{businessContinuityPlan.year}</span>
+          </div>
+        </div>
 
-      {/* Table */}
-      <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
-            <tr>
-              <th className="w-20 doc-table-border">BCP ID</th>
-              <th className="w-20 doc-table-border">Date</th>
-              <th className="w-36 doc-table-border">Template</th>
-              <th className="w-36 doc-table-border">Legal Entity</th>
-              <th className="w-28 doc-table-border">Approver</th>
-              <th className="w-28 doc-table-border">Owner</th>
-              <th className="w-28 doc-table-border">Maintainer</th>
-              <th className="w-28 doc-table-border">Viewers</th>
-              <th className="w-28 doc-table-border">Date Approved</th>
-              <th className="w-28 doc-table-border">Date Last Reviewed</th>
-              <th className="w-28 doc-table-border">
-                Date Due for Next Review
-              </th>
-              <th className="w-44 doc-table-border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {businessContinuityPlans.map((bcp) => (
-              <tr key={bcp._id} className="hover:bg-indigo-100">
-                <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bcp.bcpid}
-                </td>
-                <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bcp.date}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.template}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.legalEntity}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.approver}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">{bcp.owner}</td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.maintainer}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.viewers}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.dateApproved}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.dateLastReviewed}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bcp.dateDueForNextReview}
-                </td>
-                <td className="py-2 px-4 w-44 doc-table-border">
-                  <div className="flex justify-center gap-2">
-                    <Link
-                      to={`/Business-Continuity-Plan/document-control/${bcp.bcpid}`}
-                      className="bg-indigo-800 text-white px-2 py-1 rounded"
-                    >
-                      View
-                    </Link>
+        <div className="flex justify-between">
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Date:</span>
+            <span>{businessContinuityPlan.date}</span>
+          </div>
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Template:</span>
+            <span>{businessContinuityPlan.template}</span>
+          </div>
+        </div>
 
-                    <Link to={`/editBCP/${bcp._id}`} className="doc-edit-btn">
-                      Edit
-                    </Link>
-                    <button
-                      className="doc-delete-btn"
-                      onClick={() => deleteBusinessContinuityPlan(bcp._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="flex justify-between">
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Legal Entity:</span>
+            <span>{businessContinuityPlan.legalEntity}</span>
+          </div>
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Approver:</span>
+            <span>{businessContinuityPlan.approver}</span>
+          </div>
+        </div>
+
+        <div className="flex justify-between">
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Owner:</span>
+            <span>{businessContinuityPlan.owner}</span>
+          </div>
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Maintainer:</span>
+            <span>{businessContinuityPlan.maintainer}</span>
+          </div>
+        </div>
+
+        <div className="text-lg flex gap-2">
+          <span className="font-semibold">Viewers:</span>
+          <span>{businessContinuityPlan.viewers}</span>
+        </div>
+
+        <div className="flex justify-between gap-6">
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Date Approved:</span>
+            <span>{businessContinuityPlan.dateApproved}</span>
+          </div>
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Date Last Reviewed:</span>
+            <span>{businessContinuityPlan.dateLastReviewed}</span>
+          </div>
+          <div className="text-lg flex justify-between gap-2">
+            <span className="font-semibold">Date Due for Next Review:</span>
+            <span>{businessContinuityPlan.dateDueForNextReview}</span>
+          </div>
+        </div>
+
+        <div className="flex justify-start gap-4">
+          <Link
+            to={`/editBCP/${businessContinuityPlan.bcpid}`}
+            className="text-white rounded px-4 py-2 bg-sky-500 hover:bg-sky-600 transition ease-in-out duration-300"
+          >
+            Edit
+          </Link>
+          <Link
+            to="/business-continuity-plans"
+            className="text-white rounded px-4 py-2 bg-red-500 hover:bg-red-600 transition ease-in-out duration-300"
+          >
+            Back to List
+          </Link>
+        </div>
       </div>
     </div>
   );

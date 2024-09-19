@@ -11,6 +11,8 @@ const EditBCPForm = () => {
   const [formData, setFormData] = useState({
     bcpid: "",
     date: "",
+    section: "",
+    year: "",
     template: "",
     legalEntity: "",
     approver: "",
@@ -22,13 +24,13 @@ const EditBCPForm = () => {
     dateDueForNextReview: "",
   });
 
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedSection, setSelectedSection] = useState(null);
+  // const [selectedYear, setSelectedYear] = useState(null);
+  // const [selectedSection, setSelectedSection] = useState(null);
 
   const [isSaving, setIsSaving] = useState(false);
 
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { bcpid } = useParams();
 
   const {
     sortedUsers,
@@ -48,28 +50,33 @@ const EditBCPForm = () => {
     businessContinuityPlan,
     loading: bcpLoading,
     error: bcpError,
-    fetchBCPFormById,
-    updateBCPForm,
+    fetchBCPFormByBCPID,
+    updateBCPFormByBCPID,
   } = useBCPForm();
+
+  // Create BCPID
+  // const createBCPID = async () => {
+  //   setFormData({
+  //     ...formData,
+  //     bcpid: `BCP-${formData.section}-${formData.year}`,
+  //   });
+  // };
 
   useEffect(() => {
     fetchUsers();
     fetchSections();
-    fetchBCPFormById(id);
+    fetchBCPFormByBCPID(bcpid);
   }, []);
 
   useEffect(() => {
-    createBCPID();
-  }, [selectedYear, selectedSection]);
-
-  // Create BCPID
-  const createBCPID = async () => {
-    const currentYear = selectedYear;
-    setFormData({
-      ...formData,
-      bcpid: `BCP-${selectedSection}-${currentYear}`,
-    });
-  };
+    if (formData.section && formData.year) {
+      const newBCPID = `BCP-${formData.section}-${formData.year}`;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        bcpid: newBCPID,
+      }));
+    }
+  }, [formData.year, formData.section]);
 
   // Update formData when embeddedDocument is fetched
   useEffect(() => {
@@ -94,12 +101,12 @@ const EditBCPForm = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updateBCPForm(id, formData);
+      await updateBCPFormByBCPID(bcpid, formData);
       successAlert(
         "Record Updated",
         "Business Continuity Plan Updated Successfully!"
       );
-      navigate("/Business-Continuity-Plan/bcp-form");
+      navigate(`/Business-Continuity-Plan/bcp-form/${bcpid}`);
     } catch (error) {
       errorAlert(
         "Error",
@@ -136,23 +143,23 @@ const EditBCPForm = () => {
     }
   };
 
-  const handleYearChange = (option) => {
-    if (option) {
-      setSelectedYear(option.value);
-    } else {
-      setSelectedYear(null);
-    }
-    createBCPID();
-  };
+  // const handleYearChange = (option) => {
+  //   if (option) {
+  //     setFormData.year(option.value);
+  //   } else {
+  //     setFormData.year(null);
+  //   }
+  //   createBCPID();
+  // };
 
-  const handleSectionChange = (option) => {
-    if (option) {
-      setSelectedSection(option.value);
-    } else {
-      setSelectedSection(null);
-    }
-    createBCPID();
-  };
+  // const handleSectionChange = (option) => {
+  //   if (option) {
+  //     setFormData.section(option.value);
+  //   } else {
+  //     setFormData.section(null);
+  //   }
+  //   createBCPID();
+  // };
 
   const years = [
     { value: "2018", label: "2018" },
@@ -209,9 +216,10 @@ const EditBCPForm = () => {
               <Select
                 options={sortedSections}
                 value={sortedSections.find(
-                  (section) => section.value === selectedSection
+                  (section) => section.value === formData.section
                 )}
-                onChange={handleSectionChange}
+                // onChange={handleSectionChange}
+                onChange={(option) => handleSelectChange(option, "section")}
                 isClearable={true}
                 placeholder="Select Section"
               />
@@ -220,8 +228,9 @@ const EditBCPForm = () => {
               <label className="font-semibold">Year</label>
               <Select
                 options={years}
-                value={years.find((year) => year.value === selectedYear)}
-                onChange={handleYearChange}
+                value={years.find((year) => year.value === formData.year)}
+                // onChange={handleYearChange}
+                onChange={(option) => handleSelectChange(option, "year")}
                 isClearable={true}
                 placeholder="Select Year"
               />
@@ -357,7 +366,7 @@ const EditBCPForm = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/bcp-form"
+              to={`/Business-Continuity-Plan/bcp-form/${bcpid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

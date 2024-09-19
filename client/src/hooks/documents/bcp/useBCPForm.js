@@ -39,6 +39,19 @@ export const useBCPForm = () => {
     }
   };
 
+  // Fetch BCP form by BCP ID
+  const fetchBCPFormByBCPID = async (bcpid) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(`/api/bcpBCPForm/${bcpid}`);
+      setBusinessContinuityPlan(response.data);
+    } catch (err) {
+      handleError("Error fetching BCP form.", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch a single BCP form by ID
   const fetchBCPFormById = async (id) => {
     setLoading(true);
@@ -60,6 +73,19 @@ export const useBCPForm = () => {
       await fetchBCPForms(); // refresh the list after adding
     } catch (err) {
       handleError("Error adding BCP Form.", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Update BCP by BCP ID
+  const updateBCPFormByBCPID = async (bcpid, documentData) => {
+    setLoading(true);
+    try {
+      await axiosInstance.put(`/api/bcpBCPForm/edit/${bcpid}`, documentData);
+      await fetchBCPForms(); // refresh the list after updating
+    } catch (err) {
+      handleError("Error updating BCP Form.", err);
     } finally {
       setLoading(false);
     }
@@ -105,8 +131,10 @@ export const useBCPForm = () => {
     error,
     fetchBCPForms,
     fetchLastBCPForm,
+    fetchBCPFormByBCPID,
     fetchBCPFormById,
     addBCPForm,
+    updateBCPFormByBCPID,
     updateBCPForm,
     deleteBCPForm,
     handleError,

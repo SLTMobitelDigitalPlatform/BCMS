@@ -4,6 +4,8 @@ const BCPFormSchema = new mongoose.Schema(
   {
     bcpid: { type: String, required: true },
     date: { type: String, required: true },
+    section: { type: String, required: true },
+    year: { type: String, required: true },
     template: { type: String, required: true },
     legalEntity: { type: String, required: true },
     approver: { type: String, required: true },
