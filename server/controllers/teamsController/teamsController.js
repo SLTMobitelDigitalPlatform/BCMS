@@ -13,7 +13,7 @@ const createTeam = async (req, res) => {
 const getAllTeams = async (req, res) => {
   try {
     const teams = await Team.find().populate(
-      "teamLeader secondaryLeader teamMembers secondaryTeamMembers section responsibilities.memberId"
+      "teamLeader secondaryLeader teamMembers secondaryTeamMembers"
     );
     if (!teams) return res.status(404).json({ message: "Teams not found" });
     res.status(200).json(teams);
@@ -25,7 +25,7 @@ const getAllTeams = async (req, res) => {
 const getTeamById = async (req, res) => {
   try {
     const team = await Team.findById(req.params.id).populate(
-      "teamLeader secondaryLeader teamMembers secondaryTeamMembers section responsibilities.memberId"
+      "teamLeader secondaryLeader teamMembers secondaryTeamMembers"
     );
     if (!team) return res.status(404).json({ message: "Team not found" });
     res.status(200).json(team);
@@ -38,9 +38,7 @@ const EditTeam = async (req, res) => {
   try {
     const updatedTeam = await Team.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    }).populate(
-      "teamLeader secondaryLeader teamMembers secondaryTeamMembers section responsibilities.memberId"
-    );
+    }).populate("teamLeader secondaryLeader teamMembers secondaryTeamMembers");
     if (!updatedTeam)
       return res.status(404).json({ message: "Team not found" });
     res.status(200).json(updatedTeam);
@@ -117,16 +115,14 @@ const updateSecondaryTeamMembers = async (req, res) => {
         .json({ message: "No secondary team members found" });
     }
 
-    console.log(secondaryTeamMembers);
+    // console.log(secondaryTeamMembers);
 
     // Find the team by ID and update the secondaryTeamMembers field
     const updatedTeam = await Team.findByIdAndUpdate(
       teamId,
       { secondaryTeamMembers }, // Update the correct field
       { new: true } // Return the updated document
-    ).populate(
-      "teamLeader secondaryLeader teamMembers secondaryTeamMembers section responsibilities.memberId"
-    );
+    ).populate("teamLeader secondaryLeader teamMembers secondaryTeamMembers");
 
     if (!updatedTeam) {
       return res.status(404).json({ message: "Team not found" });

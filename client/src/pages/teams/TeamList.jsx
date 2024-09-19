@@ -239,12 +239,12 @@ const TeamList = () => {
                   >
                     Edit
                   </button>
-                  <button
+                  {/* <button
                     className="bg-gray-600 text-white py-1 px-3 rounded hover:bg-gray-900"
                     onClick={() => openModal(team)}
                   >
                     Add Responsibilities
-                  </button>
+                  </button> */}
                   <button
                     className="bg-cyan-500 text-white py-1 px-3 rounded hover:bg-cyan-900"
                     onClick={() => openViewTeamModal(team)}
@@ -265,7 +265,7 @@ const TeamList = () => {
       )}
 
       {/* Existing Responsibilities Modal */}
-      {showModal && selectedTeam && (
+      {/* {showModal && selectedTeam && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg max-w-3xl mx-auto">
             <h2 className="text-2xl font-semibold mb-4">
@@ -335,7 +335,7 @@ const TeamList = () => {
             )}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* View Team Modal */}
       {showViewTeamModal && selectedTeam && (
@@ -363,6 +363,7 @@ const TeamList = () => {
                   {selectedTeam.teamLeader.designation}
                 </p>
               </div>
+
               <div className="w-1/2 pl-2">
                 <h3 className="text-xl font-semibold">Secondary Leader</h3>
                 {selectedTeam.secondaryLeader ? (
@@ -387,6 +388,15 @@ const TeamList = () => {
                   <p>No secondary leader assigned</p>
                 )}
               </div>
+            </div>
+
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold">Responsibilities</h3>
+              <textarea
+                value={selectedTeam.teamResponsibilities}
+                readOnly
+                className="w-full h-32 px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+              />
             </div>
 
             <h3 className="text-xl font-semibold mb-2">Team Members</h3>
