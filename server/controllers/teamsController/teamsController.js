@@ -90,8 +90,8 @@ const getLastTeam = async (req, res) => {
 
 const updateSecondaryTeamMembers = async (req, res) => {
   try {
-    const { id: teamId } = req.params; // Extract teamId correctly
-    const secondaryMembersArray = req.body; // Request body contains an array of objects
+    const { id: teamId } = req.params;
+    const secondaryMembersArray = req.body;
 
     // console.log(teamId);
     // console.log(secondaryMembersArray);
@@ -128,15 +128,12 @@ const updateSecondaryTeamMembers = async (req, res) => {
       "teamLeader secondaryLeader teamMembers secondaryTeamMembers section responsibilities.memberId"
     );
 
-    // If the team is not found, return a 404 error
     if (!updatedTeam) {
       return res.status(404).json({ message: "Team not found" });
     }
 
-    // Respond with the updated team
     res.status(200).json(updatedTeam);
   } catch (error) {
-    // Handle any errors and return a 500 response
     res.status(500).json({ message: error.message });
   }
 };
