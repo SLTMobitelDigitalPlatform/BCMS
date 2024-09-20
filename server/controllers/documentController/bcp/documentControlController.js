@@ -11,6 +11,7 @@ exports.createDocumentControl = async (req, res) => {
   }
 };
 
+// Get all document controls
 exports.getAllDocumentControls = async (req, res) => {
   try {
     const documentControls = await DocumentControl.find();

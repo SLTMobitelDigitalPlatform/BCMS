@@ -115,6 +115,7 @@ import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecor
 import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
 import CreateDocumentControl from "./pages/documents/BCP/Document Control/CreateDocumentControl";
 import EditDocumentControl from "./pages/documents/BCP/Document Control/EditDocumentControl";
+import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
 //import BiaManpower from "./pages/documents/BIA/*";
@@ -342,13 +343,16 @@ const router = createBrowserRouter([
 
       //? -------------------------------- BCP --------------------------------------
       // * Business Continuity Plan Layout
-      { path: "business-continuity-plans", element: <BCPForm /> },
+      {
+        path: "business-continuity-plans",
+        element: <BusinessContinuityPlans />,
+      },
       {
         path: "Business-Continuity-Plan",
         element: <BusinessContinuityPlanLayout />,
         children: [
+          { path: "bcp-form/:bcpid", element: <BCPForm /> },
           { path: "document-control/:bcpid", element: <DocumentControl /> },
-          { path: "bcp-form", element: <BCPForm /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
           {
             path: "legal-requirements",
@@ -375,7 +379,7 @@ const router = createBrowserRouter([
         ],
       },
       { path: "createBCP", element: <CreateBCP /> },
-      { path: "editBCP/:id", element: <EditBCPForm /> },
+      { path: "editBCP/:bcpid", element: <EditBCPForm /> },
 
       {
         path: "createDocumentControl/:bcpid",

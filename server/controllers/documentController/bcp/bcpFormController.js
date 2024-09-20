@@ -1,8 +1,14 @@
 const BCPForm = require("../../../models/documentModels/bcp/bcpFormModel");
 
 // Create a new bcp form
-const createBCPForm = async (req, res) => {
+exports.createBCPForm = async (req, res) => {
   try {
+    const { bcpid } = req.body;
+
+    const existingBCP = await BCPForm.findOne({ bcpid });
+    if (existingBCP) {
+      return res.status(400).json({ message: "BCP ID already exists" });
+    }
     const newBCPForm = new BCPForm(req.body);
     await newBCPForm.save();
     res.status(201).json(newBCPForm);
@@ -12,7 +18,7 @@ const createBCPForm = async (req, res) => {
 };
 
 // Get all bcp forms
-const getBCPForms = async (req, res) => {
+exports.getBCPForms = async (req, res) => {
   try {
     const BCPForms = await BCPForm.find();
     res.status(200).json(BCPForms);
@@ -22,7 +28,7 @@ const getBCPForms = async (req, res) => {
 };
 
 // Get last bcp form
-const getLastbcpForm = async (req, res) => {
+exports.getLastbcpForm = async (req, res) => {
   try {
     const { section } = req.params;
     const lastBCPForm = await BCPForm.findOne({
@@ -35,8 +41,21 @@ const getLastbcpForm = async (req, res) => {
   }
 };
 
+// Get bcp form by BCP ID
+exports.getbcpFormByBCPID = async (req, res) => {
+  const filter = { bcpid: req.params.bcpid };
+  try {
+    const bcpForm = await BCPForm.findOne(filter);
+    if (!bcpForm)
+      return res.status(404).json({ message: "BCP Form not found" });
+    res.status(200).json(bcpForm);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Get a single bcp form by ID
-const getbcpFormById = async (req, res) => {
+exports.getbcpFormById = async (req, res) => {
   try {
     const singleBCPForm = await BCPForm.findById(req.params.id);
     if (!singleBCPForm)
@@ -47,8 +66,34 @@ const getbcpFormById = async (req, res) => {
   }
 };
 
+// Update a bcp form by BCP ID
+exports.updatebcpFormByBCPID = async (req, res) => {
+  const { bcpid } = req.body;
+  const filter = { bcpid: req.params.bcpid };
+
+  try {
+    if (bcpid !== req.params.bcpid) {
+      const existingBCP = await BCPForm.findOne({ bcpid });
+      if (existingBCP) {
+        return res.status(400).json({
+          message: "BCP ID already exists. Please choose a different ID.",
+        });
+      }
+    }
+
+    const updatedBCPForm = await BCPForm.findOneAndUpdate(filter, req.body, {
+      new: true,
+    });
+    if (!updatedBCPForm)
+      return res.status(404).json({ message: "BCP Form not found" });
+    res.status(200).json(updatedBCPForm);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Update a bcpForm by ID
-const updatebcpForm = async (req, res) => {
+exports.updatebcpForm = async (req, res) => {
   try {
     const updatedBCPForm = await BCPForm.findByIdAndUpdate(
       req.params.id,
@@ -64,7 +109,7 @@ const updatebcpForm = async (req, res) => {
 };
 
 // Delete a bcpForm by ID
-const deletebcpForm = async (req, res) => {
+exports.deletebcpForm = async (req, res) => {
   try {
     const deletedBCPForm = await BCPForm.findByIdAndDelete(req.params.id);
     if (!deletedBCPForm)
@@ -73,13 +118,4 @@ const deletebcpForm = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
-
-module.exports = {
-  createBCPForm,
-  getBCPForms,
-  getbcpFormById,
-  updatebcpForm,
-  deletebcpForm,
-  getLastbcpForm,
 };

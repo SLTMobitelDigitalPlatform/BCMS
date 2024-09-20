@@ -24,9 +24,7 @@ const DocumentControl = () => {
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">
-          {bcpid}: Document Control
-        </h1>
+        <h1 className="text-xl font-bold text-indigo-900">Document Control</h1>
         <Link
           to={`/createDocumentControl/${bcpid}`}
           className="btn-primary font-semibold"

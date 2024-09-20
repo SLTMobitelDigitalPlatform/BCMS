@@ -5,12 +5,14 @@ import Select from "react-select";
 import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
 import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditBCPForm = () => {
   const [formData, setFormData] = useState({
     bcpid: "",
     date: "",
+    section: "",
+    year: "",
     template: "",
     legalEntity: "",
     approver: "",
@@ -22,14 +24,11 @@ const EditBCPForm = () => {
     dateDueForNextReview: "",
   });
 
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedSection, setSelectedSection] = useState(null);
-
   const [isSaving, setIsSaving] = useState(false);
-
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { bcpid } = useParams();
 
+  // useHooks
   const {
     sortedUsers,
     loading: usersLoading,
@@ -48,41 +47,43 @@ const EditBCPForm = () => {
     businessContinuityPlan,
     loading: bcpLoading,
     error: bcpError,
-    fetchBCPFormById,
-    updateBCPForm,
+    fetchBCPForms,
+    fetchBCPFormByBCPID,
+    updateBCPFormByBCPID,
+    checkDuplicateBCPID,
   } = useBCPForm();
 
   useEffect(() => {
     fetchUsers();
     fetchSections();
-    fetchBCPFormById(id);
+    fetchBCPForms();
+    fetchBCPFormByBCPID(bcpid);
   }, []);
 
   useEffect(() => {
-    createBCPID();
-  }, [selectedYear, selectedSection]);
+    if (formData.section && formData.year) {
+      const newBCPID = `BCP-${formData.section}-${formData.year}`;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        bcpid: newBCPID,
+      }));
+    }
+  }, [formData.year, formData.section]);
 
-  // Create BCPID
-  const createBCPID = async () => {
-    const currentYear = selectedYear;
-    setFormData({
-      ...formData,
-      bcpid: `BCP-${selectedSection}-${currentYear}`,
-    });
-  };
-
-  // Update formData when embeddedDocument is fetched
+  // Fill data in the input fields
   useEffect(() => {
     if (businessContinuityPlan) {
       setFormData({
         bcpid: businessContinuityPlan.bcpid || "",
         date: businessContinuityPlan.date || "",
+        section: businessContinuityPlan.section || "",
+        year: businessContinuityPlan.year || "",
         template: businessContinuityPlan.template || "",
         legalEntity: businessContinuityPlan.legalEntity || "",
         approver: businessContinuityPlan.approver || "",
         owner: businessContinuityPlan.owner || "",
         maintainer: businessContinuityPlan.maintainer || "",
-        viewers: businessContinuityPlan.viewers || "",
+        viewers: businessContinuityPlan.viewers || [],
         dateApproved: businessContinuityPlan.dateApproved || "",
         dateLastReviewed: businessContinuityPlan.dateLastReviewed || "",
         dateDueForNextReview: businessContinuityPlan.dateDueForNextReview || "",
@@ -90,16 +91,43 @@ const EditBCPForm = () => {
     }
   }, [businessContinuityPlan]);
 
+  // Update a Business Continuity Plan
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updateBCPForm(id, formData);
-      successAlert(
-        "Record Updated",
-        "Business Continuity Plan Updated Successfully!"
+      const isDuplicate = await checkDuplicateBCPID(
+        formData.bcpid,
+        businessContinuityPlan.bcpid
       );
-      navigate("/Business-Continuity-Plan/bcp-form");
+
+      if (isDuplicate) {
+        errorAlert(
+          "Error",
+          `BCP ID "${formData.bcpid}" already exists! Please choose a different ID.`
+        );
+        setIsSaving(false);
+        return;
+      }
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update ${businessContinuityPlan.bcpid}?`,
+        "Yes, Update it!",
+        `${businessContinuityPlan.bcpid} has been updated successfully!`,
+        `Failed to update ${businessContinuityPlan.bcpid}!`,
+        async () => {
+          await updateBCPFormByBCPID(bcpid, formData);
+        }
+      );
+
+      // await updateBCPFormByBCPID(formData.bcpid, formData);
+      // successAlert(
+      //   "Record Updated",
+      //   "Business Continuity Plan Updated Successfully!"
+      // );
+      if (result === "success")
+        navigate(`/Business-Continuity-Plan/bcp-form/${formData.bcpid}`);
     } catch (error) {
       errorAlert(
         "Error",
@@ -121,8 +149,8 @@ const EditBCPForm = () => {
   const handleSelectChange = (selectedOptions, name, isMulti = false) => {
     if (isMulti) {
       const selectedValues = selectedOptions
-        ? selectedOptions.map((option) => option.value).join(", ")
-        : "";
+        ? selectedOptions.map((option) => option.value)
+        : [];
 
       setFormData({
         ...formData,
@@ -134,24 +162,6 @@ const EditBCPForm = () => {
         [name]: selectedOptions ? selectedOptions.value : "",
       });
     }
-  };
-
-  const handleYearChange = (option) => {
-    if (option) {
-      setSelectedYear(option.value);
-    } else {
-      setSelectedYear(null);
-    }
-    createBCPID();
-  };
-
-  const handleSectionChange = (option) => {
-    if (option) {
-      setSelectedSection(option.value);
-    } else {
-      setSelectedSection(null);
-    }
-    createBCPID();
   };
 
   const years = [
@@ -176,7 +186,7 @@ const EditBCPForm = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Business Continuity Plan
+        Edit Business Continuity Plan - {businessContinuityPlan.bcpid}
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -188,6 +198,7 @@ const EditBCPForm = () => {
                 name="bcpid"
                 value={formData.bcpid}
                 onChange={handleChange}
+                disabled
                 className="p-2 w-full rounded bg-white"
               />
             </div>
@@ -209,9 +220,10 @@ const EditBCPForm = () => {
               <Select
                 options={sortedSections}
                 value={sortedSections.find(
-                  (section) => section.value === selectedSection
+                  (section) => section.value === formData.section
                 )}
-                onChange={handleSectionChange}
+                // onChange={handleSectionChange}
+                onChange={(option) => handleSelectChange(option, "section")}
                 isClearable={true}
                 placeholder="Select Section"
               />
@@ -220,8 +232,9 @@ const EditBCPForm = () => {
               <label className="font-semibold">Year</label>
               <Select
                 options={years}
-                value={years.find((year) => year.value === selectedYear)}
-                onChange={handleYearChange}
+                value={years.find((year) => year.value === formData.year)}
+                // onChange={handleYearChange}
+                onChange={(option) => handleSelectChange(option, "year")}
                 isClearable={true}
                 placeholder="Select Year"
               />
@@ -296,8 +309,8 @@ const EditBCPForm = () => {
               <label className="font-semibold">Viewers</label>
               <Select
                 options={sortedUsers}
-                value={sortedUsers.find(
-                  (user) => user.value === formData.viewers
+                value={sortedUsers.filter((user) =>
+                  formData.viewers.includes(user.value)
                 )}
                 onChange={(option) =>
                   handleSelectChange(option, "viewers", true)
@@ -357,7 +370,7 @@ const EditBCPForm = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/bcp-form"
+              to={`/Business-Continuity-Plan/bcp-form/${bcpid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

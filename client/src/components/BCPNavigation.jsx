@@ -2,11 +2,13 @@ import { useEffect, useMemo, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 
 const BCPNavigation = () => {
   const carouselRef = useRef(null);
   const location = useLocation();
+
+  const { bcpid } = useParams();
 
   const links = useMemo(
     () => [
@@ -100,7 +102,7 @@ const BCPNavigation = () => {
             key={idx}
             to={`/Business-Continuity-Plan/${link
               .replace(/\s+/g, "-")
-              .toLowerCase()}`}
+              .toLowerCase()}/${bcpid}`}
             className={({ isActive }) =>
               `block px-2 py-1 rounded text-white font-semibold text-center ${
                 isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
