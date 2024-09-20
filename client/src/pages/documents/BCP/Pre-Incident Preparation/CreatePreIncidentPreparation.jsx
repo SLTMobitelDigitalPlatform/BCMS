@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreatePreIncidentPreparation = () => {
   const [formData, setFormData] = useState({
@@ -20,10 +20,12 @@ const CreatePreIncidentPreparation = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
+      // ! Add duplicate id validation
+
       await addPreIncidentPreparation(formData);
-      successAlert(
-        "Record Added",
-        "Pre-Incident Preparation added successfully!"
+      createAlert(
+        "Pre-Incident Preparation Added",
+        `Pre-Incident Preparation "${formData.preIncidentMeasures}" added successfully!`
       );
       navigate("/Business-Continuity-Plan/pre-incident-preparation");
     } catch (error) {

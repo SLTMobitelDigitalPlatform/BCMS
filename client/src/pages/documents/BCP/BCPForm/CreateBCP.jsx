@@ -5,7 +5,7 @@ import Select from "react-select";
 import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
 import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { errorAlert, createAlert } from "../../../../utilities/alert";
 
 const CreateBCP = () => {
   const today = new Date().toISOString().split("T")[0];
@@ -84,9 +84,9 @@ const CreateBCP = () => {
       }
 
       await addBCPForm(formData);
-      successAlert(
-        "Record Added",
-        "Business Continuity Plan Added Successfully!"
+      createAlert(
+        "Business Continuity Plan Added",
+        `Business Continuity Plan "${formData.bcpid}" added successfully!`
       );
       navigate("/business-continuity-plans");
     } catch (error) {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreateResourcesRequired = () => {
   const [formData, setFormData] = useState({
@@ -24,11 +24,14 @@ const CreateResourcesRequired = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
+      // ! Add duplicate id validation
+
       await addResourceRequired(formData);
-      successAlert(
-        "Record Added",
+      createAlert(
+        "Resource Required Added",
         `Resource Required "${formData.name}" added successfully!`
       );
+
       navigate("/Business-Continuity-Plan/resources-required");
     } catch (error) {
       errorAlert("Error", error.message || "Error adding Resource Required");

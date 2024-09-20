@@ -5,7 +5,7 @@ import Select from "react-select";
 import { FaSpinner } from "react-icons/fa";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreateLegalRequirements = () => {
   const [formData, setFormData] = useState({
@@ -24,14 +24,16 @@ const CreateLegalRequirements = () => {
     fetchUsers();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      addLegalRequirement(formData);
-      successAlert(
-        "Record Added",
-        `Legal Requirement ${formData.name} added successfully!`
+      // ! Add duplicate id validation
+
+      await addLegalRequirement(formData);
+      createAlert(
+        "Legal Requirement Added",
+        `Legal Requirement "${formData.name}" added successfully!`
       );
       navigate("/Business-Continuity-Plan/legal-requirements");
     } catch (error) {

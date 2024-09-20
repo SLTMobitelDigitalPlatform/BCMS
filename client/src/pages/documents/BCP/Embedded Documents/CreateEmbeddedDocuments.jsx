@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 import { useUsers } from "../../../../hooks/useUsers";
-import { FaSpinner } from "react-icons/fa";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreateEmbeddedDocuments = () => {
   const [formData, setFormData] = useState({
@@ -29,34 +29,17 @@ const CreateEmbeddedDocuments = () => {
     setIsSaving(true);
     try {
       await addEmbeddedDocument(formData);
-      handleSuccessAlert();
+      createAlert(
+        "Embedded Document Added",
+        `Embedded Document "${formData.number}" added successfully!`
+      );
       navigate("/Business-Continuity-Plan/embedded-documents");
     } catch (error) {
-      handleErrorAlert();
+      errorAlert("Error", error.message || "Error adding Embedded Document");
       console.log(error);
     } finally {
       setIsSaving(false);
     }
-  };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Added Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {

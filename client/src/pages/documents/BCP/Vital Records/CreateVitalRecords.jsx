@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
-import { FaSpinner } from "react-icons/fa";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreateVitalRecords = () => {
   const [formData, setFormData] = useState({
@@ -25,9 +25,11 @@ const CreateVitalRecords = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
+      // ! Add duplicate id validation
+
       await addVitalRecord(formData);
-      successAlert(
-        "Record Added",
+      createAlert(
+        "Vital Record Added",
         `Vital Record "${formData.name}" added successfully!`
       );
       navigate("/Business-Continuity-Plan/vital-records");

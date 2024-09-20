@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDocumentControl } from "../../../../hooks/documents/bcp/useDocumentControl";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreateDocumentControl = () => {
   const today = new Date().toISOString().split("T")[0];
@@ -26,7 +26,10 @@ const CreateDocumentControl = () => {
     try {
       const documentControlData = { ...formData, bcpid };
       await addDocumentControl(documentControlData);
-      successAlert("Record Added", "Document Control added successfully!");
+      createAlert(
+        "Document Control Added",
+        `Document Control "${formData.version}" added successfully!`
+      );
       navigate(`/Business-Continuity-Plan/document-control/${bcpid}`);
     } catch (error) {
       errorAlert("Error", error.message || "Error adding Document Control!");

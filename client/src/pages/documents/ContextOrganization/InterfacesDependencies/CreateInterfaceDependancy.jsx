@@ -26,7 +26,7 @@ const CreateInterfaceDependancy = () => {
   // const [externalEntityOptions, setExternalEntityOptions] = useState([]);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // const data = {
