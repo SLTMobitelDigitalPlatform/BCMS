@@ -2,16 +2,33 @@ import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useDocumentControl } from "../../../../hooks/documents/bcp/useDocumentControl";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const DocumentControl = () => {
-  const { documentControls, loading, error, fetchDocumentControlsByBCPID } =
-    useDocumentControl();
+  const {
+    documentControls,
+    loading,
+    error,
+    fetchDocumentControlsByBCPID,
+    deleteDocumentControl,
+  } = useDocumentControl();
 
   const { bcpid } = useParams();
 
   useEffect(() => {
     fetchDocumentControlsByBCPID(bcpid);
   }, []);
+
+  const deleteDocControl = async (id, version) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete "${version}" Document Control. This action cannot be undone.`,
+      "Yes, delete it!",
+      `"${version}" Document Control deleted successfully!`,
+      "Error deleting Document Control",
+      () => deleteDocumentControl(id, bcpid)
+    );
+  };
 
   if (loading)
     return (
@@ -64,7 +81,14 @@ const DocumentControl = () => {
                     >
                       Edit
                     </Link>
-                    <button className="doc-delete-btn">Delete</button>
+                    <button
+                      className="doc-delete-btn"
+                      onClick={() =>
+                        deleteDocControl(docControl._id, docControl.version)
+                      }
+                    >
+                      Delete
+                    </button>
                   </div>
                 </td>
               </tr>

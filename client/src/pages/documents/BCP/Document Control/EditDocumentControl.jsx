@@ -42,6 +42,7 @@ const EditDocumentControl = () => {
     setIsSaving(true);
     try {
       // ! Add duplicate id validation
+      // ! check if bcpid can be directly called (in all files)
 
       const documentControlData = {
         ...formData,

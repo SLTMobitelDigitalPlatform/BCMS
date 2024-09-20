@@ -8,10 +8,25 @@ export const useResourcesRequired = () => {
   const [error, setError] = useState(null);
 
   // Fetch all resources required
-  const fetchResourcesRequired = async () => {
+  // const fetchResourcesRequired = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axiosInstance.get("/api/bcpResourcesRequired");
+  //     setResourcesRequired(response.data);
+  //   } catch (err) {
+  //     handleError("Error fetching resources required.", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // Fetch resources required by BCP ID
+  const fetchResourcesRequiredByBCPID = async (bcpid) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/api/bcpResourcesRequired");
+      const response = await axiosInstance.get(
+        `/api/bcpResourcesRequired/${bcpid}`
+      );
       setResourcesRequired(response.data);
     } catch (err) {
       handleError("Error fetching resources required.", err);
@@ -21,26 +36,26 @@ export const useResourcesRequired = () => {
   };
 
   // Fetch the last resource required
-  const fetchLastResourceRequired = async () => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        "/api/bcpResourcesRequired/last"
-      );
-      return response.data;
-    } catch (err) {
-      handleError("Error fetching last resource required.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchLastResourceRequired = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axiosInstance.get(
+  //       "/api/bcpResourcesRequired/last"
+  //     );
+  //     return response.data;
+  //   } catch (err) {
+  //     handleError("Error fetching last resource required.", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  // Fetch a single resource required by ID
-  const fetchResourceRequiredById = async (id) => {
+  // Fetch a single resource required by BCP ID and Mongo ID
+  const fetchResourceRequiredByIds = async (bcpid, id) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/bcpResourcesRequired/${id}`
+        `/api/bcpResourcesRequired/${bcpid}/${id}`
       );
       setResourceRequired(response.data);
     } catch (err) {
@@ -58,7 +73,6 @@ export const useResourcesRequired = () => {
         "/api/bcpResourcesRequired/add",
         resourceRequiredData
       );
-      await fetchResourcesRequired(); // refresh the list after adding
     } catch (err) {
       handleError("Error adding resource required.", err);
     } finally {
@@ -74,7 +88,6 @@ export const useResourcesRequired = () => {
         `/api/bcpResourcesRequired/edit/${id}`,
         resourceRequiredData
       );
-      await fetchResourcesRequired(); // refresh the list after updating
     } catch (err) {
       handleError("Error updating resource required.", err);
     } finally {
@@ -83,11 +96,11 @@ export const useResourcesRequired = () => {
   };
 
   // Delete a resource required
-  const deleteResourceRequired = async (id) => {
+  const deleteResourceRequired = async (id, bcpid) => {
     setLoading(true);
     try {
       await axiosInstance.delete(`/api/bcpResourcesRequired/delete/${id}`);
-      await fetchResourcesRequired(); // refresh the list after deleting
+      await fetchResourcesRequiredByBCPID(bcpid);
     } catch (err) {
       handleError("Error deleting resource required.", err);
     } finally {
@@ -106,9 +119,10 @@ export const useResourcesRequired = () => {
     resourceRequired,
     loading,
     error,
-    fetchResourcesRequired,
-    fetchLastResourceRequired,
-    fetchResourceRequiredById,
+    // fetchResourcesRequired,
+    fetchResourcesRequiredByBCPID,
+    fetchResourceRequiredByIds,
+    // fetchLastResourceRequired,
     addResourceRequired,
     updateResourceRequired,
     deleteResourceRequired,
