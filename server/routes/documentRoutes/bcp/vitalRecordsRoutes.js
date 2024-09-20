@@ -2,8 +2,9 @@ const express = require("express");
 const {
   createVitalRecord,
   getAllVitalRecords,
+  getVitalRecordsByBCPID,
+  getVitalRecordByIds,
   getLastVitalRecord,
-  getVitalRecordById,
   updateVitalRecord,
   deleteVitalRecord,
 } = require("../../../controllers/documentController/bcp/vitalRecordsController");
@@ -14,9 +15,11 @@ router.post("/api/bcpVitalRecords/add", createVitalRecord);
 
 router.get("/api/bcpVitalRecords", getAllVitalRecords);
 
-router.get("/api/bcpVitalRecords/last", getLastVitalRecord);
+router.get("/api/bcpVitalRecords/:bcpid", getVitalRecordsByBCPID);
 
-router.get("/api/bcpVitalRecords/:id", getVitalRecordById);
+router.get("/api/bcpVitalRecords/:bcpid/:id", getVitalRecordByIds);
+
+router.get("/api/bcpVitalRecords/last", getLastVitalRecord);
 
 router.put("/api/bcpVitalRecords/edit/:id", updateVitalRecord);
 

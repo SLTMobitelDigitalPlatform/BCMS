@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const vitalRecordsSchema = new mongoose.Schema({
+  bcpid: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
   options: { type: String, required: true },

@@ -2,8 +2,9 @@ const express = require("express");
 const {
   createResourcesRequired,
   getAllResourcesRequired,
+  getResourcesRequiredByBCPID,
+  getResourcesRequiredByIds,
   getLastResourcesRequired,
-  getResourcesRequiredById,
   updateResourcesRequired,
   deleteResourcesRequired,
 } = require("../../../controllers/documentController/bcp/resourcesRequiredController");
@@ -14,9 +15,11 @@ router.post("/api/bcpResourcesRequired/add", createResourcesRequired);
 
 router.get("/api/bcpResourcesRequired", getAllResourcesRequired);
 
-router.get("/api/bcpResourcesRequired/last", getLastResourcesRequired);
+router.get("/api/bcpResourcesRequired/:bcpid", getResourcesRequiredByBCPID);
 
-router.get("/api/bcpResourcesRequired/:id", getResourcesRequiredById);
+router.get("/api/bcpResourcesRequired/:bcpid/:id", getResourcesRequiredByIds);
+
+router.get("/api/bcpResourcesRequired/last", getLastResourcesRequired);
 
 router.put("/api/bcpResourcesRequired/edit/:id", updateResourcesRequired);
 

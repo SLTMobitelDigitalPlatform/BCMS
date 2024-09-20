@@ -353,29 +353,29 @@ const router = createBrowserRouter([
         children: [
           { path: "bcp-form/:bcpid", element: <BCPForm /> },
           { path: "document-control/:bcpid", element: <DocumentControl /> },
-          { path: "recovery-strategy", element: <RecoveryStrategy /> },
+          { path: "recovery-strategy/:bcpid", element: <RecoveryStrategy /> },
           {
             path: "legal-requirements/:bcpid",
             element: <LegalRequirements />,
           },
           {
-            path: "pre-incident-preparation",
+            path: "pre-incident-preparation/:bcpid",
             element: <PreIncidentPreparation />,
           },
           {
-            path: "critical-business-function",
+            path: "critical-business-function/:bcpid",
             element: <CriticalBusinessFunction />,
           },
-          { path: "resources-required", element: <ResourcesRequired /> },
-          { path: "dependencies", element: <Dependencies /> },
-          { path: "vital-records", element: <VitalRecords /> },
-          { path: "work-area-recovery", element: <WorkAreaRecovery /> },
-          { path: "manpower", element: <Manpower /> },
+          { path: "resources-required/:bcpid", element: <ResourcesRequired /> },
+          { path: "dependencies/:bcpid", element: <Dependencies /> },
+          { path: "vital-records/:bcpid", element: <VitalRecords /> },
+          { path: "work-area-recovery/:bcpid", element: <WorkAreaRecovery /> },
+          { path: "manpower/:bcpid", element: <Manpower /> },
           {
-            path: "recovery-and-resumption",
+            path: "recovery-and-resumption/:bcpid",
             element: <RecoveryAndResumption />,
           },
-          { path: "embedded-documents", element: <EmbeddedDocuments /> },
+          { path: "embedded-documents/:bcpid", element: <EmbeddedDocuments /> },
         ],
       },
       // * BCP Form
@@ -408,33 +408,42 @@ const router = createBrowserRouter([
 
       // * Pre-Incident Preparation
       {
-        path: "createPreIncidentPreparation",
+        path: "createPreIncidentPreparation/:bcpid",
         element: <CreatePreIncidentPreparation />,
       },
       {
-        path: "editPreIncidentPreparation/:id",
+        path: "editPreIncidentPreparation/:bcpid/:id",
         element: <EditPreIncidentPreparation />,
       },
 
       // * Critical Business Function
       {
-        path: "createCriticalBusinessFunction",
+        path: "createCriticalBusinessFunction/:bcpid",
         element: <CreateCriticalBusinessFunction />,
       },
       // {path:"editCriticalBusinessFunction/:id",element:<EditCriticalBusinessFunction/>},
 
       // * Resources Required
-      { path: "createResourcesRequired", element: <CreateResourcesRequired /> },
-      { path: "editResourcesRequired/:id", element: <EditResourcesRequired /> },
+      {
+        path: "createResourcesRequired/:bcpid",
+        element: <CreateResourcesRequired />,
+      },
+      {
+        path: "editResourcesRequired/:bcpid/:id",
+        element: <EditResourcesRequired />,
+      },
 
       // * Dependencies
 
       // * Vital Records
-      { path: "createVitalRecord", element: <CreateVitalRecords /> },
-      { path: "editVitalRecords/:id", element: <EditVitalRecords /> },
+      { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
+      { path: "editVitalRecords/:bcpid/:id", element: <EditVitalRecords /> },
 
       // * Work Area Recovery
-      { path: "createWorkAreaRecovery", element: <CreateWorkAreaRecovery /> },
+      {
+        path: "createWorkAreaRecovery/:bcpid",
+        element: <CreateWorkAreaRecovery />,
+      },
       // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
 
       // * Manpower
@@ -444,8 +453,14 @@ const router = createBrowserRouter([
       // * Recovery And Resumption
 
       // * Embedded Documents
-      { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
-      { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
+      {
+        path: "createEmbeddedDocument/:bcpid",
+        element: <CreateEmbeddedDocuments />,
+      },
+      {
+        path: "editEmbeddedDocument/:bcpid/:id",
+        element: <EditEmbeddedDocuments />,
+      },
 
       // BIA (Business Impact Analysis)
       {
