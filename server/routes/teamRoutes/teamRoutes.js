@@ -14,6 +14,7 @@ router.put(
   "/team/responsibilities/:id",
   teamsController.updateResponsibilities
 );
+router.put("/team/secondary/:id", teamsController.updateSecondaryTeamMembers);
 router.delete("/team/delete/:id", teamsController.DeleteTeam);
 
 module.exports = router;

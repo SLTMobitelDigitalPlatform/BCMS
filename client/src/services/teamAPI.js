@@ -32,6 +32,14 @@ export const updateTeamResponsibilities = async (teamId, responsibilities) => {
   return response;
 };
 
+export const updateSecondaryTeamMembers = async (teamId, updatedTeam) => {
+  const response = await axiosInstance.put(
+    `/team/secondary/${teamId}`,
+    updatedTeam
+  );
+  return response;
+};
+
 export const getLastTeam = async () => {
   try {
     const response = await axiosInstance.get("/teams/last");
