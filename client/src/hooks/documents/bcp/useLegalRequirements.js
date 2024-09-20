@@ -14,54 +14,84 @@ export const useLegalRequirements = () => {
       const response = await axiosInstance.get("/api/bcpLegalRequirement");
       setLegalRequirements(response.data);
     } catch (err) {
-      handleError("Error fetching legal regualtory and contractual requirements.", err);
+      handleError(
+        "Error fetching legal, regualtory and contractual requirements.",
+        err
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch the last legal regulatory and contractual requirement
+  // Fetch legal requirements by BCP ID
+  const fetchLegalRequirementsByBCPID = async (bcpid) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(
+        `/api/bcpLegalRequirement/${bcpid}`
+      );
+      setLegalRequirements(response.data);
+    } catch (err) {
+      handleError(
+        "Error fetching legal, regualtory and contractual requirements.",
+        err
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch the last legal requirement
   const fetchLastLegalRequirement = async () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get("/api/bcpLegalRequirement/last");
       setLegalRequirement(response.data);
     } catch (err) {
-      handleError("Error fetching last legal regualtory and contractual requirements", err);
+      handleError(
+        "Error fetching last legal, regualtory and contractual requirements",
+        err
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch a single legal regulatory and contractual requirement by ID
-  const fetchLegalRequirementById = async (id) => {
+  // Fetch a single legal requirement by BCP ID and Mongo ID
+  const fetchLegalRequirementByIds = async (bcpid, id) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/bcpLegalRequirement/${id}`
+        `/api/bcpLegalRequirement/${bcpid}/${id}`
       );
       setLegalRequirement(response.data);
     } catch (err) {
-      handleError("Error fetching legal regualtory and contractual requirements.", err);
+      handleError(
+        "Error fetching legal, regualtory and contractual requirements.",
+        err
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Add a new legal regulatory and contractual requirement
+  // Add a new legal requirement
   const addLegalRequirement = async (documentData) => {
     setLoading(true);
     try {
       await axiosInstance.post("/api/bcpLegalRequirement/add", documentData);
       await fetchLegalRequirements(); // refresh the list after adding
     } catch (err) {
-      handleError("Error adding legal regualtory and contractual requirements.", err);
+      handleError(
+        "Error adding legal, regualtory and contractual requirements.",
+        err
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Update an legal regulatory and contractual requirement
+  // Update an legal requirement
   const updateLegalRequirement = async (id, documentData) => {
     setLoading(true);
     try {
@@ -71,20 +101,26 @@ export const useLegalRequirements = () => {
       );
       await fetchLegalRequirements(); // refresh the list after updating
     } catch (err) {
-      handleError("Error updating legal regualtory and contractual requirements.", err);
+      handleError(
+        "Error updating legal, regualtory and contractual requirements.",
+        err
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Delete an legal regulatory and contractual requirement
+  // Delete an legal requirement
   const deleteLegalRequirement = async (id) => {
     setLoading(true);
     try {
       await axiosInstance.delete(`/api/bcpLegalRequirement/delete/${id}`);
       await fetchLegalRequirements(); // refresh the list after deleting
     } catch (err) {
-      handleError("Error deleting legal regualtory and contractual requirements.", err);
+      handleError(
+        "Error deleting legal, regualtory and contractual requirements.",
+        err
+      );
     } finally {
       setLoading(false);
     }
@@ -102,8 +138,9 @@ export const useLegalRequirements = () => {
     loading,
     error,
     fetchLegalRequirements,
+    fetchLegalRequirementsByBCPID,
     fetchLastLegalRequirement,
-    fetchLegalRequirementById,
+    fetchLegalRequirementByIds,
     addLegalRequirement,
     updateLegalRequirement,
     deleteLegalRequirement,

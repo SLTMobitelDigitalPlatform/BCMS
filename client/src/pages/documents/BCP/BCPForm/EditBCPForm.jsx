@@ -159,16 +159,6 @@ const EditBCPForm = () => {
     }
   };
 
-  const years = [
-    { value: "2018", label: "2018" },
-    { value: "2019", label: "2019" },
-    { value: "2020", label: "2020" },
-    { value: "2021", label: "2021" },
-    { value: "2022", label: "2022" },
-    { value: "2023", label: "2023" },
-    { value: "2024", label: "2024" },
-  ];
-
   if (usersLoading || loadingSections || bcpLoading)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -225,13 +215,13 @@ const EditBCPForm = () => {
             </div>
             <div className="flex flex-col gap-2 w-full">
               <label className="font-semibold">Year</label>
-              <Select
-                options={years}
-                value={years.find((year) => year.value === formData.year)}
-                // onChange={handleYearChange}
-                onChange={(option) => handleSelectChange(option, "year")}
-                isClearable={true}
-                placeholder="Select Year"
+              <input
+                type="text"
+                name="year"
+                value={formData.year}
+                onChange={handleChange}
+                placeholder="Enter Year"
+                className="p-2 w-full rounded"
               />
             </div>
           </div>

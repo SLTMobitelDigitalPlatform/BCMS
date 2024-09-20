@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { deleteAlert } from "../../../../utilities/alert";
 
@@ -9,12 +9,14 @@ const LegalRequirements = () => {
     legalRequirements,
     loading,
     error,
-    fetchLegalRequirements,
+    fetchLegalRequirementsByBCPID,
     deleteLegalRequirement,
   } = useLegalRequirements();
 
+  const { bcpid } = useParams();
+
   useEffect(() => {
-    fetchLegalRequirements();
+    fetchLegalRequirementsByBCPID(bcpid);
   }, []);
 
   const deleteLegReq = async (id) => {
@@ -40,10 +42,10 @@ const LegalRequirements = () => {
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
-          Legal Regulatory & Contractual Requirements
+          Legal, Regulatory & Contractual Requirements
         </h1>
         <Link
-          to="/createLegalRequirements"
+          to={`/createLegalRequirements/${bcpid}`}
           className="btn-primary font-semibold"
         >
           Add Details
@@ -80,7 +82,7 @@ const LegalRequirements = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editLegalRequirements/${resourcesRequired._id}`}
+                      to={`/editLegalRequirements/${bcpid}/${resourcesRequired._id}`}
                       className="doc-edit-btn"
                     >
                       Edit

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axiosInstance from "../../../services/axiosInstance";
 
 export const useDocumentControl = () => {
+  const [documentControls, setDocumentControls] = useState([]);
   const [documentControl, setDocumentControl] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,7 +12,7 @@ export const useDocumentControl = () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get("/api/bcpDocumentControl");
-      setDocumentControl(response.data);
+      setDocumentControls(response.data);
     } catch (err) {
       handleError("Error fetching document controls.", err);
     } finally {
@@ -26,9 +27,24 @@ export const useDocumentControl = () => {
       const response = await axiosInstance.get(
         `/api/bcpDocumentControl/${bcpid}`
       );
-      setDocumentControl(response.data);
+      setDocumentControls(response.data);
     } catch (err) {
       handleError("Error fetching document controls.", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch a single legal requirement by BCP ID and Mongo ID
+  const fetchDocumentControlsByIds = async (bcpid, id) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(
+        `/api/bcpDocumentControl/${bcpid}/${id}`
+      );
+      setDocumentControl(response.data);
+    } catch (err) {
+      handleError("Error fetching document control.", err);
     } finally {
       setLoading(false);
     }
@@ -50,6 +66,35 @@ export const useDocumentControl = () => {
     }
   };
 
+  // Update a document control
+  const updateDocumentControl = async (id, documentControlData) => {
+    setLoading(true);
+    try {
+      await axiosInstance.put(
+        `/api/bcpDocumentControl/edit/${id}`,
+        documentControlData
+      );
+      await fetchDocumentControls(); // refresh the list after updating
+    } catch (err) {
+      handleError("Error updating document control.", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete a document control
+  const deleteDocumentControl = async (id) => {
+    setLoading(true);
+    try {
+      await axiosInstance.delete(`/api/bcpDocumentControl/delete/${id}`);
+      await fetchDocumentControls(); // refresh the list after deleting
+    } catch (err) {
+      handleError("Error deleting document control.", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Handle errors
   const handleError = (message, err) => {
     setError(message);
@@ -57,11 +102,15 @@ export const useDocumentControl = () => {
   };
 
   return {
+    documentControls,
     documentControl,
     loading,
     error,
     fetchDocumentControls,
     fetchDocumentControlsByBCPID,
+    fetchDocumentControlsByIds,
     addDocumentControl,
+    updateDocumentControl,
+    deleteDocumentControl,
   };
 };

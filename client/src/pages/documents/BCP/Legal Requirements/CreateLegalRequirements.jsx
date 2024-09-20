@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Select from "react-select";
-
 import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { useUsers } from "../../../../hooks/useUsers";
 import { createAlert, errorAlert } from "../../../../utilities/alert";
@@ -13,6 +12,8 @@ const CreateLegalRequirements = () => {
     legalRequirement: "",
     monitoredBy: "",
   });
+
+  const { bcpid } = useParams();
 
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
@@ -30,12 +31,13 @@ const CreateLegalRequirements = () => {
     try {
       // ! Add duplicate id validation
 
-      await addLegalRequirement(formData);
+      const legalRequirementData = { ...formData, bcpid };
+      await addLegalRequirement(legalRequirementData);
       createAlert(
         "Legal Requirement Added",
         `Legal Requirement "${formData.name}" added successfully!`
       );
-      navigate("/Business-Continuity-Plan/legal-requirements");
+      navigate(`/Business-Continuity-Plan/legal-requirements/${bcpid}`);
     } catch (error) {
       errorAlert("Error", error.message || "Error adding Legal Requirement");
       console.log(error);
@@ -127,7 +129,7 @@ const CreateLegalRequirements = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/legal-requirements"
+              to={`/Business-Continuity-Plan/legal-requirements/${bcpid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

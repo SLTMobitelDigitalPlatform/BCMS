@@ -1,4 +1,6 @@
 const BCPForm = require("../../../models/documentModels/bcp/bcpFormModel");
+const DocumentControl = require("../../../models/documentModels/bcp/documentControlModel");
+const LegalRequirement = require("../../../models/documentModels/bcp/legalRequirementModel");
 
 // Create a new bcp form
 exports.createBCPForm = async (req, res) => {
@@ -69,10 +71,10 @@ exports.getbcpFormById = async (req, res) => {
 // Update a bcp form by BCP ID
 exports.updatebcpFormByBCPID = async (req, res) => {
   const { bcpid } = req.body;
-  const filter = { bcpid: req.params.bcpid };
+  const oldBCPID = req.params.bcpid;
 
   try {
-    if (bcpid !== req.params.bcpid) {
+    if (bcpid !== oldBCPID) {
       const existingBCP = await BCPForm.findOne({ bcpid });
       if (existingBCP) {
         return res.status(400).json({
@@ -81,11 +83,24 @@ exports.updatebcpFormByBCPID = async (req, res) => {
       }
     }
 
-    const updatedBCPForm = await BCPForm.findOneAndUpdate(filter, req.body, {
-      new: true,
-    });
+    const updatedBCPForm = await BCPForm.findOneAndUpdate(
+      { bcpid: oldBCPID },
+      req.body,
+      { new: true }
+    );
+
     if (!updatedBCPForm)
       return res.status(404).json({ message: "BCP Form not found" });
+
+    if (bcpid !== oldBCPID) {
+      const documentModels = [DocumentControl, LegalRequirement];
+
+      await Promise.all(
+        documentModels.map(async (Model) => {
+          await Model.updateMany({ bcpid: oldBCPID }, { $set: { bcpid } });
+        })
+      );
+    }
     res.status(200).json(updatedBCPForm);
   } catch (error) {
     res.status(500).json({ message: error.message });

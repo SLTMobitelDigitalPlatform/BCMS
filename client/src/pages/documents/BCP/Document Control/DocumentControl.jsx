@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useDocumentControl } from "../../../../hooks/documents/bcp/useDocumentControl";
 
 const DocumentControl = () => {
-  const { documentControl, loading, error, fetchDocumentControlsByBCPID } =
+  const { documentControls, loading, error, fetchDocumentControlsByBCPID } =
     useDocumentControl();
 
   const { bcpid } = useParams();
@@ -45,7 +45,7 @@ const DocumentControl = () => {
             </tr>
           </thead>
           <tbody>
-            {documentControl.map((docControl) => (
+            {documentControls.map((docControl) => (
               <tr key={docControl._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {docControl.version}
@@ -59,7 +59,7 @@ const DocumentControl = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editDocumentControl/${docControl._id}`}
+                      to={`/editDocumentControl/${bcpid}/${docControl._id}`}
                       className="doc-edit-btn"
                     >
                       Edit

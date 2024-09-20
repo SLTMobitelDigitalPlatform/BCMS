@@ -24,6 +24,8 @@ const CreateDocumentControl = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
+      // ! Add duplicate id validation
+
       const documentControlData = { ...formData, bcpid };
       await addDocumentControl(documentControlData);
       createAlert(

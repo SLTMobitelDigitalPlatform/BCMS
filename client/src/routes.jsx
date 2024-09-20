@@ -355,7 +355,7 @@ const router = createBrowserRouter([
           { path: "document-control/:bcpid", element: <DocumentControl /> },
           { path: "recovery-strategy", element: <RecoveryStrategy /> },
           {
-            path: "legal-requirements",
+            path: "legal-requirements/:bcpid",
             element: <LegalRequirements />,
           },
           {
@@ -378,21 +378,35 @@ const router = createBrowserRouter([
           { path: "embedded-documents", element: <EmbeddedDocuments /> },
         ],
       },
+      // * BCP Form
       { path: "createBCP", element: <CreateBCP /> },
       { path: "editBCP/:bcpid", element: <EditBCPForm /> },
 
+      // * Document Control
       {
         path: "createDocumentControl/:bcpid",
         element: <CreateDocumentControl />,
       },
-      { path: "editDocumentControl/:id", element: <EditDocumentControl /> },
+      {
+        path: "editDocumentControl/:bcpid/:id",
+        element: <EditDocumentControl />,
+      },
 
+      // * Recovery Strategy
       { path: "createRecoveryStrategy", element: <CreateRecoveryStrategy /> },
       // {path:"editRecoveryStrategy/:id",element:<EditRecoveryStrategy/>},
 
-      { path: "createLegalRequirements", element: <CreateLegalRequirements /> },
-      { path: "editLegalRequirements/:id", element: <EditLegalRequirements /> },
+      // * Legal Requirements
+      {
+        path: "createLegalRequirements/:bcpid",
+        element: <CreateLegalRequirements />,
+      },
+      {
+        path: "editLegalRequirements/:bcpid/:id",
+        element: <EditLegalRequirements />,
+      },
 
+      // * Pre-Incident Preparation
       {
         path: "createPreIncidentPreparation",
         element: <CreatePreIncidentPreparation />,
@@ -402,21 +416,34 @@ const router = createBrowserRouter([
         element: <EditPreIncidentPreparation />,
       },
 
+      // * Critical Business Function
       {
         path: "createCriticalBusinessFunction",
         element: <CreateCriticalBusinessFunction />,
       },
       // {path:"editCriticalBusinessFunction/:id",element:<EditCriticalBusinessFunction/>},
 
+      // * Resources Required
       { path: "createResourcesRequired", element: <CreateResourcesRequired /> },
       { path: "editResourcesRequired/:id", element: <EditResourcesRequired /> },
 
+      // * Dependencies
+
+      // * Vital Records
       { path: "createVitalRecord", element: <CreateVitalRecords /> },
       { path: "editVitalRecords/:id", element: <EditVitalRecords /> },
 
+      // * Work Area Recovery
       { path: "createWorkAreaRecovery", element: <CreateWorkAreaRecovery /> },
       // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
 
+      // * Manpower
+      // { path: "createManpower", element: <CreateManpower /> },
+      // { path: "editManpower/:id", element: <EditManpower /> },
+
+      // * Recovery And Resumption
+
+      // * Embedded Documents
       { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
       { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
 
