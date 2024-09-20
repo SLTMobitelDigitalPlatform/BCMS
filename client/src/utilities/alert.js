@@ -1,13 +1,7 @@
 import Swal from "sweetalert2";
 
-export const successAlert = (title, text) => {
-  Swal.fire({
-    icon: "success",
-    title,
-    text,
-    showConfirmButton: false,
-    timer: 2000,
-  });
+export const createAlert = (title, text) => {
+  Swal.fire({ icon: "success", title, text });
 };
 
 export const updateAlert = (
@@ -45,14 +39,6 @@ export const updateAlert = (
   });
 };
 
-export const errorAlert = (title, text) => {
-  Swal.fire({
-    icon: "error",
-    title,
-    text,
-  });
-};
-
 export const deleteAlert = (
   title,
   text,
@@ -79,5 +65,13 @@ export const deleteAlert = (
         Swal.fire("Error!", errorMessage, "error");
       }
     }
+  });
+};
+
+export const errorAlert = (title, text) => {
+  Swal.fire({
+    icon: "error",
+    title,
+    text,
   });
 };

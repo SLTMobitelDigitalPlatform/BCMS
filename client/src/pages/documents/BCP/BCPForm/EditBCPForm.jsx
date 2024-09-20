@@ -112,20 +112,15 @@ const EditBCPForm = () => {
 
       const result = await updateAlert(
         "Confirm Update",
-        `Are you sure you want to update ${businessContinuityPlan.bcpid}?`,
+        `Are you sure you want to update "${businessContinuityPlan.bcpid}"?`,
         "Yes, Update it!",
-        `${businessContinuityPlan.bcpid} has been updated successfully!`,
-        `Failed to update ${businessContinuityPlan.bcpid}!`,
+        `"${businessContinuityPlan.bcpid}" has been updated successfully!`,
+        `Failed to update "${businessContinuityPlan.bcpid}"!`,
         async () => {
           await updateBCPFormByBCPID(bcpid, formData);
         }
       );
 
-      // await updateBCPFormByBCPID(formData.bcpid, formData);
-      // successAlert(
-      //   "Record Updated",
-      //   "Business Continuity Plan Updated Successfully!"
-      // );
       if (result === "success")
         navigate(`/Business-Continuity-Plan/bcp-form/${formData.bcpid}`);
     } catch (error) {

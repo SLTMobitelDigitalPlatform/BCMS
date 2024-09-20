@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditLegalRequirements = () => {
   const [formData, setFormData] = useState({
@@ -51,9 +51,22 @@ const EditLegalRequirements = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updateLegalRequirement(id, formData);
-      successAlert("Record Updated", `Legal Requirement updated successfully!`);
-      navigate("/Business-Continuity-Plan/legal-requirements");
+      // ! Add duplicate id validation
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${legalRequirement.name}"?`,
+        "Yes, Update it!",
+        `"${legalRequirement.name}" has been updated successfully!`,
+        `Failed to update "${legalRequirement.name}"!`,
+        async () => {
+          await updateLegalRequirement(id, formData);
+        }
+      );
+
+      if (result === "success") {
+        navigate("/Business-Continuity-Plan/legal-requirements");
+      }
     } catch (error) {
       errorAlert("Error", error.message || "Error updating Legal Requirement");
       console.log(error);

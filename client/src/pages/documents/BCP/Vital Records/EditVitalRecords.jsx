@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditVitalRecords = () => {
   const [formData, setFormData] = useState({
@@ -51,12 +51,22 @@ const EditVitalRecords = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updateVitalRecord(id, formData);
-      successAlert(
-        "Record Updated",
-        `Vital Record "${formData.name}" updated successfully!`
+      // ! Add duplicate id validation
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${vitalRecord.name}"?`,
+        "Yes, Update it!",
+        `"${vitalRecord.name}" has been updated successfully!`,
+        `Failed to update "${vitalRecord.name}"!`,
+        async () => {
+          await updateVitalRecord(id, formData);
+        }
       );
-      navigate("/Business-Continuity-Plan/vital-records");
+
+      if (result === "success") {
+        navigate("/Business-Continuity-Plan/vital-records");
+      }
     } catch (error) {
       errorAlert("Error", error.message || "Error updating Vital Record");
       console.log(error);

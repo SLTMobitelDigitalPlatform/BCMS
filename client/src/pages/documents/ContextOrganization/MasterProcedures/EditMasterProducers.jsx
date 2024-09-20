@@ -51,7 +51,7 @@ const EditMasterProducers = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // const data = {

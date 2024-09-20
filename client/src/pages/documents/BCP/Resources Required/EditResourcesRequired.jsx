@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditResourcesRequired = () => {
   const [formData, setFormData] = useState({
@@ -49,12 +49,22 @@ const EditResourcesRequired = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updateResourceRequired(id, formData);
-      successAlert(
-        "Record Updated",
-        `Resource Required "${formData.name}" updated successfully!`
+      // ! Add duplicate id validation
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${resourceRequired.name}"?`,
+        "Yes, Update it!",
+        `"${resourceRequired.name}" has been updated successfully!`,
+        `Failed to update "${resourceRequired.name}"!`,
+        async () => {
+          await updateResourceRequired(id, formData);
+        }
       );
-      navigate("/Business-Continuity-Plan/resources-required");
+
+      if (result === "success") {
+        navigate("/Business-Continuity-Plan/resources-required");
+      }
     } catch (error) {
       errorAlert("Error", error.message || "Error updating Resource Required");
       console.log(error);

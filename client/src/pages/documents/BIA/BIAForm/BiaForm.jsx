@@ -2,12 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import Select from "react-select"; 
+import Select from "react-select";
 
 const BIA = () => {
   const [sectionName, setSectionName] = useState("");
   const [dateNextReview, setDateNextReview] = useState("");
-  const [owner, setOwner] = useState("");  
+  const [owner, setOwner] = useState("");
   const [maintainers, setMaintainers] = useState([]);
   const [viewers, setViewers] = useState([]);
   const [dateApproved, setDateApproved] = useState("");
@@ -15,7 +15,7 @@ const BIA = () => {
   const [changesLastReview, setChangesLastReview] = useState("");
 
   // Store all users
-  const [users, setUsers] = useState([]); 
+  const [users, setUsers] = useState([]);
 
   const navigate = useNavigate();
 
@@ -23,19 +23,19 @@ const BIA = () => {
   useEffect(() => {
     fetch("http://localhost:5000/users", {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,  
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        setUsers(data);  
+        setUsers(data);
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form data before submission
@@ -54,14 +54,14 @@ const BIA = () => {
       dateNextReview,
       maintainers: maintainers.map((user) => user.value),
       viewers: viewers.map((user) => user.value),
-      viewers,
+      // viewers,
       dateApproved,
       dateLastReviewed,
       changesLastReview,
     };
 
     axios
-      .post("http://localhost:5000/api/biaForms/add", data)  
+      .post("http://localhost:5000/api/biaForms/add", data)
       .then(() => {
         handleSuccessAlert();
         navigate("/bia-form");
@@ -101,9 +101,15 @@ const BIA = () => {
       <div className="bg-cyan-50 w-full h-full p-3 rounded-2xl mt-5">
         <form onSubmit={handleSubmit} className="bia-form flex flex-col gap-6">
           <div className="bia-form-group flex gap-10">
-            <label htmlFor="sectionName" className="font-semibold">Section Name</label>
-            <select id="sectionName" className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
-              value={sectionName} onChange={(e) => setSectionName(e.target.value)}>
+            <label htmlFor="sectionName" className="font-semibold">
+              Section Name
+            </label>
+            <select
+              id="sectionName"
+              className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
+              value={sectionName}
+              onChange={(e) => setSectionName(e.target.value)}
+            >
               <option value="">Please Select Your Section</option>
               <option value="IT">IT</option>
               <option value="HR">HR</option>
@@ -112,9 +118,15 @@ const BIA = () => {
           </div>
 
           <div className="bia-form-group flex gap-10">
-            <label htmlFor="owner" className="font-semibold">Owner</label>
-            <select id="owner" className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
-              value={owner} onChange={(e) => setOwner(e.target.value)}>
+            <label htmlFor="owner" className="font-semibold">
+              Owner
+            </label>
+            <select
+              id="owner"
+              className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
+              value={owner}
+              onChange={(e) => setOwner(e.target.value)}
+            >
               <option value="">Please Select Owner</option>
               {users.map((user) => (
                 <option key={user._id} value={user._id}>
@@ -126,7 +138,9 @@ const BIA = () => {
 
           {/* Multi-select dropdown for Maintainers */}
           <div className="bia-form-group flex gap-10">
-            <label htmlFor="maintainers" className="font-semibold">Maintainers</label>
+            <label htmlFor="maintainers" className="font-semibold">
+              Maintainers
+            </label>
             <Select
               id="maintainers"
               isMulti
@@ -140,7 +154,9 @@ const BIA = () => {
 
           {/* Multi-select dropdown for Viewers */}
           <div className="bia-form-group flex gap-10">
-            <label htmlFor="viewers" className="font-semibold">Viewers</label>
+            <label htmlFor="viewers" className="font-semibold">
+              Viewers
+            </label>
             <Select
               id="viewers"
               isMulti
@@ -153,31 +169,55 @@ const BIA = () => {
           </div>
 
           <div className="bia-form-group flex gap-10">
-            <label htmlFor="dateApproved" className="font-semibold">Date Approved</label>
-            <input type="date" id="dateApproved" className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
-              value={dateApproved} onChange={(e) => setDateApproved(e.target.value)} />
+            <label htmlFor="dateApproved" className="font-semibold">
+              Date Approved
+            </label>
+            <input
+              type="date"
+              id="dateApproved"
+              className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
+              value={dateApproved}
+              onChange={(e) => setDateApproved(e.target.value)}
+            />
           </div>
 
           <div className="bia-form-group flex gap-10">
-            <label htmlFor="dateLastReviewed" className="font-semibold">Date Last Reviewed</label>
-            <input type="date" id="dateLastReviewed" className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
-              value={dateLastReviewed} onChange={(e) => setDateLastReviewed(e.target.value)} />
+            <label htmlFor="dateLastReviewed" className="font-semibold">
+              Date Last Reviewed
+            </label>
+            <input
+              type="date"
+              id="dateLastReviewed"
+              className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
+              value={dateLastReviewed}
+              onChange={(e) => setDateLastReviewed(e.target.value)}
+            />
           </div>
 
           <div className="bia-form-group flex gap-10">
-            <label htmlFor="changesLastReview" className="font-semibold">Changes of Last Review</label>
-            <input type="text" id="changesLastReview" className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
-              value={changesLastReview} onChange={(e) => setChangesLastReview(e.target.value)} placeholder="Please enter the changes" />
+            <label htmlFor="changesLastReview" className="font-semibold">
+              Changes of Last Review
+            </label>
+            <input
+              type="text"
+              id="changesLastReview"
+              className="bia-input w-[500px] p-2 rounded-lg bg-slate-100"
+              value={changesLastReview}
+              onChange={(e) => setChangesLastReview(e.target.value)}
+              placeholder="Please enter the changes"
+            />
           </div>
 
-          <button type="submit" className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold">
+          <button
+            type="submit"
+            className="p-2 w-32 bg-sky-600 text-white rounded-lg font-semibold"
+          >
             Submit
           </button>
         </form>
       </div>
     </div>
   );
-
 };
 
 export default BIA;

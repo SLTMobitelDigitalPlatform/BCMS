@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditPreIncidentPreparation = () => {
   const [formData, setFormData] = useState({
@@ -42,12 +42,22 @@ const EditPreIncidentPreparation = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updatePreIncidentPreparation(id, formData);
-      successAlert(
-        "Record Updated",
-        "Pre-Incident Preparation updated successfully!"
+      // ! Add duplicate id validation
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${preIncidentPreparation.preIncidentMeasures}"?`,
+        "Yes, Update it!",
+        `"${preIncidentPreparation.preIncidentMeasures}" has been updated successfully!`,
+        `Failed to update "${preIncidentPreparation.preIncidentMeasures}"!`,
+        async () => {
+          await updatePreIncidentPreparation(id, formData);
+        }
       );
-      navigate("/Business-Continuity-Plan/pre-incident-preparation");
+
+      if (result === "success") {
+        navigate("/Business-Continuity-Plan/pre-incident-preparation");
+      }
     } catch (error) {
       errorAlert(
         "Error",

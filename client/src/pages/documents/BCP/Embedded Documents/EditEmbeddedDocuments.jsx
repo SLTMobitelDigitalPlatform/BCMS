@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditEmbeddedDocuments = () => {
   const [formData, setFormData] = useState({
@@ -55,35 +55,28 @@ const EditEmbeddedDocuments = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updateEmbeddedDocument(id, formData);
-      handleSuccessAlert();
-      navigate("/Business-Continuity-Plan/embedded-documents");
+      // ! Add duplicate id validation
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${embeddedDocument.number}"?`,
+        "Yes, Update it!",
+        `"${embeddedDocument.number}" has been updated successfully!`,
+        `Failed to update "${embeddedDocument.number}"!`,
+        async () => {
+          await updateEmbeddedDocument(id, formData);
+        }
+      );
+
+      if (result === "success") {
+        navigate("/Business-Continuity-Plan/embedded-documents");
+      }
     } catch (error) {
-      handleErrorAlert();
+      errorAlert("Error", error.message || "Error updating Embedded Document");
       console.log(error);
     } finally {
       setIsSaving(false);
     }
-  };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Updated Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {
