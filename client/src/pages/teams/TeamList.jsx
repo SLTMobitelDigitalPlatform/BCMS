@@ -80,8 +80,13 @@ const TeamList = () => {
     setSelectedTeam(team);
 
     const initialSecondaryMembers = {};
-    team.teamMembers.forEach((member) => {
-      initialSecondaryMembers[member._id] = member.secondaryMember || null;
+    team.teamMembers.forEach((member, index) => {
+      if (team.secondaryTeamMembers && team.secondaryTeamMembers[index]) {
+        initialSecondaryMembers[member._id] =
+          team.secondaryTeamMembers[index]._id;
+      } else {
+        initialSecondaryMembers[member._id] = "";
+      }
     });
 
     setSecondaryMembers(initialSecondaryMembers);
@@ -496,7 +501,7 @@ const TeamList = () => {
                 </tr>
               </thead>
               <tbody>
-                {selectedTeam.teamMembers.map((member) => (
+                {selectedTeam.teamMembers.map((member, index) => (
                   <tr key={member._id} className="border-t">
                     <td className="py-3 px-4">
                       <div>
