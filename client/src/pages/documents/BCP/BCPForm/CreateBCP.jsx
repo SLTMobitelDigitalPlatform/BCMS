@@ -20,26 +20,30 @@ const CreateBCP = () => {
     approver: "",
     owner: "",
     maintainer: "",
-    viewers: "",
+    viewers: [],
     dateApproved: "",
     dateLastReviewed: "",
     dateDueForNextReview: "",
   });
 
-  // const [selectedYear, setSelectedYear] = useState(null);
-  // const [selectedSection, setSelectedSection] = useState(null);
-
   const [isSaving, setIsSaving] = useState(false);
-
   const navigate = useNavigate();
 
+  // useHooks
   const {
     sortedUsers,
     loading: loadingUsers,
     error: errorUsers,
     fetchUsers,
   } = useUsers();
-  const { addBCPForm } = useBCPForm();
+
+  const {
+    loading: loadingBCPForms,
+    error: errorBCPForms,
+    fetchBCPForms,
+    addBCPForm,
+    checkDuplicateBCPID,
+  } = useBCPForm();
 
   const {
     sortedSections,
@@ -48,33 +52,43 @@ const CreateBCP = () => {
     fetchSections,
   } = useSections();
 
-  // Create BCPID
-  const createBCPID = async () => {
-    setFormData({
-      ...formData,
-      bcpid: `BCP-${formData.section}-${formData.year}`,
-    });
-  };
-
   useEffect(() => {
     fetchUsers();
+    fetchBCPForms();
     fetchSections();
   }, []);
 
   useEffect(() => {
-    createBCPID();
+    const newBCPID = `BCP-${formData.section}-${formData.year}`;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      bcpid: newBCPID,
+    }));
   }, [formData.year, formData.section]);
 
+  // Create new Business Continuity Plan
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
+
     try {
+      const isDuplicate = await checkDuplicateBCPID(formData.bcpid);
+
+      if (isDuplicate) {
+        errorAlert(
+          "Error",
+          `BCP ID "${formData.bcpid}" already exists! Please choose a different ID.`
+        );
+        setIsSaving(false);
+        return;
+      }
+
       await addBCPForm(formData);
       successAlert(
         "Record Added",
         "Business Continuity Plan Added Successfully!"
       );
-      navigate("/Business-Continuity-Plan/bcp-form");
+      navigate("/business-continuity-plans");
     } catch (error) {
       errorAlert(
         "Error",
@@ -96,8 +110,8 @@ const CreateBCP = () => {
   const handleSelectChange = (selectedOptions, name, isMulti = false) => {
     if (isMulti) {
       const selectedValues = selectedOptions
-        ? selectedOptions.map((option) => option.value).join(", ")
-        : "";
+        ? selectedOptions.map((option) => option.value)
+        : [];
 
       setFormData({
         ...formData,
@@ -111,24 +125,6 @@ const CreateBCP = () => {
     }
   };
 
-  const handleYearChange = (option) => {
-    if (option) {
-      setFormData.year(option.value);
-    } else {
-      setFormData.year(null);
-    }
-    createBCPID();
-  };
-
-  const handleSectionChange = (option) => {
-    if (option) {
-      setFormData.section(option.value);
-    } else {
-      setFormData.section(null);
-    }
-    createBCPID();
-  };
-
   const years = [
     { value: "2018", label: "2018" },
     { value: "2019", label: "2019" },
@@ -139,13 +135,14 @@ const CreateBCP = () => {
     { value: "2024", label: "2024" },
   ];
 
-  if (loadingUsers || loadingSections)
+  if (loadingUsers || loadingSections || loadingBCPForms)
     return (
       <div className="flex items-center justify-center h-screen">
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (errorUsers || errorSections) return <div>Error loading data</div>;
+  if (errorUsers || errorSections || errorBCPForms)
+    return <div>Error loading data</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -162,6 +159,7 @@ const CreateBCP = () => {
                 name="bcpid"
                 value={formData.bcpid}
                 onChange={handleChange}
+                disabled
                 className="p-2 w-full rounded bg-white"
               />
             </div>
@@ -185,7 +183,7 @@ const CreateBCP = () => {
                 value={sortedSections.find(
                   (section) => section.value === formData.section
                 )}
-                onChange={handleSectionChange}
+                onChange={(option) => handleSelectChange(option, "section")}
                 isClearable={true}
                 placeholder="Select Section"
               />
@@ -195,7 +193,7 @@ const CreateBCP = () => {
               <Select
                 options={years}
                 value={years.find((year) => year.value === formData.year)}
-                onChange={handleYearChange}
+                onChange={(option) => handleSelectChange(option, "year")}
                 isClearable={true}
                 placeholder="Select Year"
               />
@@ -331,7 +329,7 @@ const CreateBCP = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/bcp-form"
+              to="/business-continuity-plans"
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

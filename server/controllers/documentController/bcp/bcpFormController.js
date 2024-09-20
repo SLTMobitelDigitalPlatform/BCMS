@@ -3,6 +3,12 @@ const BCPForm = require("../../../models/documentModels/bcp/bcpFormModel");
 // Create a new bcp form
 exports.createBCPForm = async (req, res) => {
   try {
+    const { bcpid } = req.body;
+
+    const existingBCP = await BCPForm.findOne({ bcpid });
+    if (existingBCP) {
+      return res.status(400).json({ message: "BCP ID already exists" });
+    }
     const newBCPForm = new BCPForm(req.body);
     await newBCPForm.save();
     res.status(201).json(newBCPForm);
@@ -62,8 +68,19 @@ exports.getbcpFormById = async (req, res) => {
 
 // Update a bcp form by BCP ID
 exports.updatebcpFormByBCPID = async (req, res) => {
+  const { bcpid } = req.body;
   const filter = { bcpid: req.params.bcpid };
+
   try {
+    if (bcpid !== req.params.bcpid) {
+      const existingBCP = await BCPForm.findOne({ bcpid });
+      if (existingBCP) {
+        return res.status(400).json({
+          message: "BCP ID already exists. Please choose a different ID.",
+        });
+      }
+    }
+
     const updatedBCPForm = await BCPForm.findOneAndUpdate(filter, req.body, {
       new: true,
     });

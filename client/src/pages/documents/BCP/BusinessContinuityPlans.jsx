@@ -60,18 +60,13 @@ const BusinessContinuityPlans = () => {
           <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
             <tr>
               <th className="w-32 doc-table-border">BCP ID</th>
-              <th className="w-24 doc-table-border">Date</th>
-              <th className="w-20 doc-table-border">Template</th>
+
               <th className="w-44 doc-table-border">Legal Entity</th>
               <th className="w-44 doc-table-border">Approver</th>
               <th className="w-44 doc-table-border">Owner</th>
               <th className="w-44 doc-table-border">Maintainer</th>
               <th className="w-48 doc-table-border">Viewers</th>
-              <th className="w-24 doc-table-border">Date Approved</th>
-              <th className="w-24 doc-table-border">Date Last Reviewed</th>
-              <th className="w-24 doc-table-border">
-                Date Due for Next Review
-              </th>
+
               <th className="w-44 doc-table-border">Actions</th>
             </tr>
           </thead>
@@ -81,10 +76,7 @@ const BusinessContinuityPlans = () => {
                 <td className="p-1 doc-table-border text-center">
                   {bcp.bcpid}
                 </td>
-                <td className="p-1 doc-table-border text-center">{bcp.date}</td>
-                <td className="p-1 doc-table-border text-center">
-                  {bcp.template}
-                </td>
+
                 <td className="p-1 doc-table-border text-center">
                   {bcp.legalEntity}
                 </td>
@@ -98,17 +90,9 @@ const BusinessContinuityPlans = () => {
                   {bcp.maintainer}
                 </td>
                 <td className="p-1 doc-table-border text-center">
-                  {bcp.viewers}
+                  {bcp.viewers?.join(", ")}
                 </td>
-                <td className="p-1 doc-table-border text-center">
-                  {bcp.dateApproved}
-                </td>
-                <td className="p-1 doc-table-border text-center">
-                  {bcp.dateLastReviewed}
-                </td>
-                <td className="p-1 doc-table-border text-center">
-                  {bcp.dateDueForNextReview}
-                </td>
+
                 <td className="p-1 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link

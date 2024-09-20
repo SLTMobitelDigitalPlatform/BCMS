@@ -117,6 +117,20 @@ export const useBCPForm = () => {
     }
   };
 
+  // Check for duplicate BCP IDs
+  const checkDuplicateBCPID = async (bcpid, originalBCPID = null) => {
+    try {
+      const existingBCPIDs = businessContinuityPlans.map((bcp) => bcp.bcpid);
+      if (originalBCPID && bcpid === originalBCPID) {
+        return false;
+      }
+      return existingBCPIDs.includes(bcpid);
+    } catch (error) {
+      console.error("Error checking BCP IDs: ", error);
+      return false;
+    }
+  };
+
   // Handle errors
   const handleError = (message, err) => {
     setError(message);
@@ -137,6 +151,7 @@ export const useBCPForm = () => {
     updateBCPFormByBCPID,
     updateBCPForm,
     deleteBCPForm,
+    checkDuplicateBCPID,
     handleError,
   };
 };

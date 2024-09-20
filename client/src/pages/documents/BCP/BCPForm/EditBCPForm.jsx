@@ -5,7 +5,7 @@ import Select from "react-select";
 import { useBCPForm } from "../../../../hooks/documents/bcp/useBCPForm";
 import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditBCPForm = () => {
   const [formData, setFormData] = useState({
@@ -24,14 +24,11 @@ const EditBCPForm = () => {
     dateDueForNextReview: "",
   });
 
-  // const [selectedYear, setSelectedYear] = useState(null);
-  // const [selectedSection, setSelectedSection] = useState(null);
-
   const [isSaving, setIsSaving] = useState(false);
-
   const navigate = useNavigate();
   const { bcpid } = useParams();
 
+  // useHooks
   const {
     sortedUsers,
     loading: usersLoading,
@@ -50,21 +47,16 @@ const EditBCPForm = () => {
     businessContinuityPlan,
     loading: bcpLoading,
     error: bcpError,
+    fetchBCPForms,
     fetchBCPFormByBCPID,
     updateBCPFormByBCPID,
+    checkDuplicateBCPID,
   } = useBCPForm();
-
-  // Create BCPID
-  // const createBCPID = async () => {
-  //   setFormData({
-  //     ...formData,
-  //     bcpid: `BCP-${formData.section}-${formData.year}`,
-  //   });
-  // };
 
   useEffect(() => {
     fetchUsers();
     fetchSections();
+    fetchBCPForms();
     fetchBCPFormByBCPID(bcpid);
   }, []);
 
@@ -78,18 +70,20 @@ const EditBCPForm = () => {
     }
   }, [formData.year, formData.section]);
 
-  // Update formData when embeddedDocument is fetched
+  // Fill data in the input fields
   useEffect(() => {
     if (businessContinuityPlan) {
       setFormData({
         bcpid: businessContinuityPlan.bcpid || "",
         date: businessContinuityPlan.date || "",
+        section: businessContinuityPlan.section || "",
+        year: businessContinuityPlan.year || "",
         template: businessContinuityPlan.template || "",
         legalEntity: businessContinuityPlan.legalEntity || "",
         approver: businessContinuityPlan.approver || "",
         owner: businessContinuityPlan.owner || "",
         maintainer: businessContinuityPlan.maintainer || "",
-        viewers: businessContinuityPlan.viewers || "",
+        viewers: businessContinuityPlan.viewers || [],
         dateApproved: businessContinuityPlan.dateApproved || "",
         dateLastReviewed: businessContinuityPlan.dateLastReviewed || "",
         dateDueForNextReview: businessContinuityPlan.dateDueForNextReview || "",
@@ -97,16 +91,43 @@ const EditBCPForm = () => {
     }
   }, [businessContinuityPlan]);
 
+  // Update a Business Continuity Plan
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await updateBCPFormByBCPID(bcpid, formData);
-      successAlert(
-        "Record Updated",
-        "Business Continuity Plan Updated Successfully!"
+      const isDuplicate = await checkDuplicateBCPID(
+        formData.bcpid,
+        businessContinuityPlan.bcpid
       );
-      navigate(`/Business-Continuity-Plan/bcp-form/${bcpid}`);
+
+      if (isDuplicate) {
+        errorAlert(
+          "Error",
+          `BCP ID "${formData.bcpid}" already exists! Please choose a different ID.`
+        );
+        setIsSaving(false);
+        return;
+      }
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update ${businessContinuityPlan.bcpid}?`,
+        "Yes, Update it!",
+        `${businessContinuityPlan.bcpid} has been updated successfully!`,
+        `Failed to update ${businessContinuityPlan.bcpid}!`,
+        async () => {
+          await updateBCPFormByBCPID(bcpid, formData);
+        }
+      );
+
+      // await updateBCPFormByBCPID(formData.bcpid, formData);
+      // successAlert(
+      //   "Record Updated",
+      //   "Business Continuity Plan Updated Successfully!"
+      // );
+      if (result === "success")
+        navigate(`/Business-Continuity-Plan/bcp-form/${formData.bcpid}`);
     } catch (error) {
       errorAlert(
         "Error",
@@ -128,8 +149,8 @@ const EditBCPForm = () => {
   const handleSelectChange = (selectedOptions, name, isMulti = false) => {
     if (isMulti) {
       const selectedValues = selectedOptions
-        ? selectedOptions.map((option) => option.value).join(", ")
-        : "";
+        ? selectedOptions.map((option) => option.value)
+        : [];
 
       setFormData({
         ...formData,
@@ -142,24 +163,6 @@ const EditBCPForm = () => {
       });
     }
   };
-
-  // const handleYearChange = (option) => {
-  //   if (option) {
-  //     setFormData.year(option.value);
-  //   } else {
-  //     setFormData.year(null);
-  //   }
-  //   createBCPID();
-  // };
-
-  // const handleSectionChange = (option) => {
-  //   if (option) {
-  //     setFormData.section(option.value);
-  //   } else {
-  //     setFormData.section(null);
-  //   }
-  //   createBCPID();
-  // };
 
   const years = [
     { value: "2018", label: "2018" },
@@ -183,7 +186,7 @@ const EditBCPForm = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Business Continuity Plan
+        Edit Business Continuity Plan - {businessContinuityPlan.bcpid}
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -195,6 +198,7 @@ const EditBCPForm = () => {
                 name="bcpid"
                 value={formData.bcpid}
                 onChange={handleChange}
+                disabled
                 className="p-2 w-full rounded bg-white"
               />
             </div>
@@ -305,8 +309,8 @@ const EditBCPForm = () => {
               <label className="font-semibold">Viewers</label>
               <Select
                 options={sortedUsers}
-                value={sortedUsers.find(
-                  (user) => user.value === formData.viewers
+                value={sortedUsers.filter((user) =>
+                  formData.viewers.includes(user.value)
                 )}
                 onChange={(option) =>
                   handleSelectChange(option, "viewers", true)
