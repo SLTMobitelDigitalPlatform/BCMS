@@ -1,6 +1,10 @@
 const BCPForm = require("../../../models/documentModels/bcp/bcpFormModel");
 const DocumentControl = require("../../../models/documentModels/bcp/documentControlModel");
 const LegalRequirement = require("../../../models/documentModels/bcp/legalRequirementModel");
+const EmbeddedDocument = require("../../../models/documentModels/bcp/embeddedDocumentModel");
+const PreIncidentPreparation = require("../../../models/documentModels/bcp/preIncidentPreparationModel");
+const ResourcesRequired = require("../../../models/documentModels/bcp/resourcesRequiredModel");
+const VitalRecords = require("../../../models/documentModels/bcp/vitalRecordsModel");
 
 // Create a new bcp form
 exports.createBCPForm = async (req, res) => {
@@ -93,7 +97,14 @@ exports.updatebcpFormByBCPID = async (req, res) => {
       return res.status(404).json({ message: "BCP Form not found" });
 
     if (bcpid !== oldBCPID) {
-      const documentModels = [DocumentControl, LegalRequirement];
+      const documentModels = [
+        DocumentControl,
+        LegalRequirement,
+        EmbeddedDocument,
+        PreIncidentPreparation,
+        ResourcesRequired,
+        VitalRecords,
+      ];
 
       await Promise.all(
         documentModels.map(async (Model) => {

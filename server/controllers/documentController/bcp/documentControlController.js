@@ -35,6 +35,18 @@ exports.getDocumentControlByBCPID = async (req, res) => {
   }
 };
 
+// Get last document control
+exports.getLastDocumentControl = async (req, res) => {
+  try {
+    const lastDocumentControl = await DocumentControl.findOne().sort({
+      _id: -1,
+    });
+    res.status(200).json(lastDocumentControl);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Get a single document control by BCP ID and MongoDB ID
 exports.getDocumentControlByIds = async (req, res) => {
   const { bcpid, id } = req.params;

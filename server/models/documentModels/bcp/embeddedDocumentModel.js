@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const embeddedDocumentSchema = new mongoose.Schema({
+  bcpid: { type: String, required: true },
   number: { type: String, required: true },
   description: { type: String, required: true },
   responsiblePerson: { type: String, required: true },
