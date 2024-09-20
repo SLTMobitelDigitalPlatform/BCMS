@@ -15,7 +15,7 @@ const EditLegalRequirements = () => {
 
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { bcpid, id } = useParams();
 
   const {
     sortedUsers,
@@ -27,13 +27,13 @@ const EditLegalRequirements = () => {
     legalRequirement,
     loading: legalRequirementLoading,
     error: legalRequirementError,
-    fetchLegalRequirementById,
+    fetchLegalRequirementByIds,
     updateLegalRequirement,
   } = useLegalRequirements();
 
   useEffect(() => {
     fetchUsers();
-    fetchLegalRequirementById(id);
+    fetchLegalRequirementByIds(bcpid, id);
   }, []);
 
   // Update formData when legalRequirement is fetched
@@ -47,11 +47,17 @@ const EditLegalRequirements = () => {
     }
   }, [legalRequirement]);
 
+  // Update Legal Requirement
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
     try {
       // ! Add duplicate id validation
+
+      const legalRequirementData = {
+        ...formData,
+        bcpid: legalRequirement.bcpid,
+      };
 
       const result = await updateAlert(
         "Confirm Update",
@@ -60,12 +66,14 @@ const EditLegalRequirements = () => {
         `"${legalRequirement.name}" has been updated successfully!`,
         `Failed to update "${legalRequirement.name}"!`,
         async () => {
-          await updateLegalRequirement(id, formData);
+          await updateLegalRequirement(id, legalRequirementData);
         }
       );
 
       if (result === "success") {
-        navigate("/Business-Continuity-Plan/legal-requirements");
+        navigate(
+          `/Business-Continuity-Plan/legal-requirements/${legalRequirement.bcpid}`
+        );
       }
     } catch (error) {
       errorAlert("Error", error.message || "Error updating Legal Requirement");
@@ -158,7 +166,7 @@ const EditLegalRequirements = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/legal-requirements"
+              to={`/Business-Continuity-Plan/legal-requirements/${bcpid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
