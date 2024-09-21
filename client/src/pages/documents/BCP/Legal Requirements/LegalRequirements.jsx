@@ -8,7 +8,6 @@ const LegalRequirements = () => {
   const {
     legalRequirements,
     loading,
-    error,
     fetchLegalRequirementsByBCPID,
     deleteLegalRequirement,
   } = useLegalRequirements();
@@ -36,7 +35,6 @@ const LegalRequirements = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">

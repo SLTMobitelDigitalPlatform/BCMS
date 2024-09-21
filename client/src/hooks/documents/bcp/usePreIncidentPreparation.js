@@ -1,27 +1,11 @@
 import { useState } from "react";
 import axiosInstance from "../../../services/axiosInstance";
+import { errorAlert } from "../../../utilities/alert";
 
 export const usePreIncidentPreparation = () => {
   const [preIncidentPreparation, setPreIncidentPreparation] = useState([]);
   const [preIncidentPreparations, setPreIncidentPreparations] = useState([]);
-
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Fetch all pre-incident preparation
-  // const fetchPreIncidentPreparation = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await axiosInstance.get(
-  //       "/api/bcpPreIncidentPreparation"
-  //     );
-  //     setPreIncidentPreparations(response.data);
-  //   } catch (err) {
-  //     handleError("Error fetching pre-incident preparations.", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   // Fetch pre-incident preparation by BCP ID
   const fetchPreIncidentPreparationByBCPID = async (bcpid) => {
@@ -37,21 +21,6 @@ export const usePreIncidentPreparation = () => {
       setLoading(false);
     }
   };
-
-  // Fetch the last pre-incident preparation
-  // const fetchLastPreIncidentPreparation = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await axiosInstance.get(
-  //       "/api/bcpPreIncidentPreparation/last"
-  //     );
-  //     return response.data;
-  //   } catch (err) {
-  //     handleError("Error fetching last pre-incident preparation.", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   // Fetch a single pre-incident preparation by BCP ID and Mongo ID
   const fetchPreIncidentPreparationByIds = async (bcpid, id) => {
@@ -70,7 +39,6 @@ export const usePreIncidentPreparation = () => {
 
   // Add a new pre-incident preparation
   const addPreIncidentPreparation = async (preIncidentPreparationData) => {
-    setLoading(true);
     try {
       await axiosInstance.post(
         "/api/bcpPreIncidentPreparation/add",
@@ -78,8 +46,6 @@ export const usePreIncidentPreparation = () => {
       );
     } catch (err) {
       handleError("Error adding pre-incident preparation.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -88,7 +54,6 @@ export const usePreIncidentPreparation = () => {
     id,
     preIncidentPreparationData
   ) => {
-    setLoading(true);
     try {
       await axiosInstance.put(
         `/api/bcpPreIncidentPreparation/edit/${id}`,
@@ -96,35 +61,29 @@ export const usePreIncidentPreparation = () => {
       );
     } catch (err) {
       handleError("Error updating pre-incident preparation.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Delete a pre-incident preparation
   const deletePreIncidentPreparation = async (id, bcpid) => {
-    setLoading(true);
     try {
       await axiosInstance.delete(`/api/bcpPreIncidentPreparation/delete/${id}`);
       await fetchPreIncidentPreparationByBCPID(bcpid);
     } catch (err) {
       handleError("Error deleting pre-incident preparation.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Handle errors
   const handleError = (message, err) => {
-    setError(message);
     console.error(message, err.response?.data || err);
+    errorAlert("Error", message);
   };
 
   return {
     preIncidentPreparation,
     preIncidentPreparations,
     loading,
-    error,
     // fetchPreIncidentPreparation,
     fetchPreIncidentPreparationByBCPID,
     fetchPreIncidentPreparationByIds,
@@ -134,3 +93,33 @@ export const usePreIncidentPreparation = () => {
     deletePreIncidentPreparation,
   };
 };
+
+// Fetch all pre-incident preparation
+// const fetchPreIncidentPreparation = async () => {
+//   setLoading(true);
+//   try {
+//     const response = await axiosInstance.get(
+//       "/api/bcpPreIncidentPreparation"
+//     );
+//     setPreIncidentPreparations(response.data);
+//   } catch (err) {
+//     handleError("Error fetching pre-incident preparations.", err);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+// Fetch the last pre-incident preparation
+// const fetchLastPreIncidentPreparation = async () => {
+//   setLoading(true);
+//   try {
+//     const response = await axiosInstance.get(
+//       "/api/bcpPreIncidentPreparation/last"
+//     );
+//     return response.data;
+//   } catch (err) {
+//     handleError("Error fetching last pre-incident preparation.", err);
+//   } finally {
+//     setLoading(false);
+//   }
+// };

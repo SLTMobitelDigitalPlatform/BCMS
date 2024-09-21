@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
-import { createAlert, errorAlert } from "../../../../utilities/alert";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateVitalRecords = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +16,8 @@ const CreateVitalRecords = () => {
     recoveryStrategy: "",
   });
 
+  const { bcpid } = useParams();
+
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
@@ -27,14 +29,14 @@ const CreateVitalRecords = () => {
     try {
       // ! Add duplicate id validation
 
-      await addVitalRecord(formData);
+      const vitalRecordData = { ...formData, bcpid };
+      await addVitalRecord(vitalRecordData);
       createAlert(
         "Vital Record Added",
         `Vital Record "${formData.name}" added successfully!`
       );
-      navigate("/Business-Continuity-Plan/vital-records");
+      navigate(`/Business-Continuity-Plan/vital-records/${bcpid}`);
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Vital Record!");
       console.log(error);
     } finally {
       setIsSaving(false);
@@ -172,7 +174,7 @@ const CreateVitalRecords = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/vital-records"
+              to={`/Business-Continuity-Plan/vital-records/${bcpid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

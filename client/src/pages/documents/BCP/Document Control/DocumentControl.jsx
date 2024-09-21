@@ -8,7 +8,6 @@ const DocumentControl = () => {
   const {
     documentControls,
     loading,
-    error,
     fetchDocumentControlsByBCPID,
     deleteDocumentControl,
   } = useDocumentControl();
@@ -36,7 +35,6 @@ const DocumentControl = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">

@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { useUsers } from "../../../../hooks/useUsers";
-import { createAlert, errorAlert } from "../../../../utilities/alert";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateLegalRequirements = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ const CreateLegalRequirements = () => {
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
+  const { sortedUsers, loading, fetchUsers } = useUsers();
   const { addLegalRequirement } = useLegalRequirements();
 
   useEffect(() => {
@@ -39,7 +39,6 @@ const CreateLegalRequirements = () => {
       );
       navigate(`/Business-Continuity-Plan/legal-requirements/${bcpid}`);
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Legal Requirement");
       console.log(error);
     } finally {
       setIsSaving(false);
@@ -66,8 +65,6 @@ const CreateLegalRequirements = () => {
       </div>
     );
   }
-
-  if (error) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">

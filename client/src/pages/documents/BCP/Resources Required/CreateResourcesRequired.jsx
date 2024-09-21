@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
-import { createAlert, errorAlert } from "../../../../utilities/alert";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateResourcesRequired = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +15,8 @@ const CreateResourcesRequired = () => {
     operationalDuration: "",
   });
 
+  const { bcpid } = useParams();
+
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
@@ -26,15 +28,15 @@ const CreateResourcesRequired = () => {
     try {
       // ! Add duplicate id validation
 
-      await addResourceRequired(formData);
+      const resourcesRequiredData = { ...formData, bcpid };
+      await addResourceRequired(resourcesRequiredData);
       createAlert(
         "Resource Required Added",
         `Resource Required "${formData.name}" added successfully!`
       );
 
-      navigate("/Business-Continuity-Plan/resources-required");
+      navigate(`/Business-Continuity-Plan/resources-required/${bcpid}`);
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Resource Required");
       console.log(error);
     } finally {
       setIsSaving(false);
@@ -157,7 +159,7 @@ const CreateResourcesRequired = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/resources-required"
+              to={`/Business-Continuity-Plan/resources-required/${bcpid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

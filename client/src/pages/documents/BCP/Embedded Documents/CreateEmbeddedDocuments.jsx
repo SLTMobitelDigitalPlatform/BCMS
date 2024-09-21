@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 import { useUsers } from "../../../../hooks/useUsers";
-import { createAlert, errorAlert } from "../../../../utilities/alert";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateEmbeddedDocuments = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +14,13 @@ const CreateEmbeddedDocuments = () => {
     physicalLocation: "",
     owner: "",
   });
+
+  const { bcpid } = useParams();
+
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
+  const { sortedUsers, loading, fetchUsers } = useUsers();
   const { addEmbeddedDocument } = useEmbeddedDocuments();
 
   useEffect(() => {
@@ -28,14 +31,19 @@ const CreateEmbeddedDocuments = () => {
     e.preventDefault();
     setIsSaving(true);
     try {
-      await addEmbeddedDocument(formData);
+      // ! Add duplicate id validation
+
+      const embeddedDocumentData = {
+        ...formData,
+        bcpid,
+      };
+      await addEmbeddedDocument(embeddedDocumentData);
       createAlert(
         "Embedded Document Added",
         `Embedded Document "${formData.number}" added successfully!`
       );
-      navigate("/Business-Continuity-Plan/embedded-documents");
+      navigate(`/Business-Continuity-Plan/embedded-documents/${bcpid}`);
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Embedded Document");
       console.log(error);
     } finally {
       setIsSaving(false);
@@ -62,7 +70,6 @@ const CreateEmbeddedDocuments = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -152,7 +159,7 @@ const CreateEmbeddedDocuments = () => {
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/embedded-documents"
+              to={`/Business-Continuity-Plan/embedded-documents/${bcpid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

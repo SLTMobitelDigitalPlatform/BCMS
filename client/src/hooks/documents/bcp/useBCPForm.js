@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axiosInstance from "../../../services/axiosInstance";
+import { errorAlert } from "../../../utilities/alert";
 
 export const useBCPForm = () => {
   const [businessContinuityPlans, setBusinessContinuityPlans] = useState([]);
@@ -7,9 +8,7 @@ export const useBCPForm = () => {
   const [lastBusinessContinuityPlan, setLastBusinessContinuityPlan] = useState(
     []
   );
-
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // Fetch all BCP forms
   const fetchBCPForms = async () => {
@@ -67,53 +66,41 @@ export const useBCPForm = () => {
 
   // Add a new BCP Form
   const addBCPForm = async (documentData) => {
-    setLoading(true);
     try {
       await axiosInstance.post("/api/bcpBCPForm/add", documentData);
-      await fetchBCPForms(); // refresh the list after adding
+      await fetchBCPForms();
     } catch (err) {
       handleError("Error adding BCP Form.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Update BCP by BCP ID
   const updateBCPFormByBCPID = async (bcpid, documentData) => {
-    setLoading(true);
     try {
       await axiosInstance.put(`/api/bcpBCPForm/edit/${bcpid}`, documentData);
-      await fetchBCPForms(); // refresh the list after updating
+      await fetchBCPForms();
     } catch (err) {
       handleError("Error updating BCP Form.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Update a BCP Form
   const updateBCPForm = async (id, documentData) => {
-    setLoading(true);
     try {
       await axiosInstance.put(`/api/bcpBCPForm/edit/${id}`, documentData);
-      await fetchBCPForms(); // refresh the list after updating
+      await fetchBCPForms();
     } catch (err) {
       handleError("Error updating BCP Form.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Delete a BCP Form
   const deleteBCPForm = async (id) => {
-    setLoading(true);
     try {
       await axiosInstance.delete(`/api/bcpBCPForm/delete/${id}`);
-      await fetchBCPForms(); // refresh the list after deleting
+      await fetchBCPForms();
     } catch (err) {
       handleError("Error deleting BCP Form.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -133,8 +120,8 @@ export const useBCPForm = () => {
 
   // Handle errors
   const handleError = (message, err) => {
-    setError(message);
     console.error(message, err.response?.data || err);
+    errorAlert("Error", message);
   };
 
   return {
@@ -142,7 +129,6 @@ export const useBCPForm = () => {
     businessContinuityPlan,
     lastBusinessContinuityPlan,
     loading,
-    error,
     fetchBCPForms,
     fetchLastBCPForm,
     fetchBCPFormByBCPID,
