@@ -89,12 +89,17 @@ import Section from "./pages/sections/Section";
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
 import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
+import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
+import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
 //import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
 //import BiaResources from "./pages/documents/BIA/*";
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
+//import BiaDependencies from "./pages/documents/BIA/*";
+//import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
+//import BiaManpower from "./pages/documents/BIA/*";
 
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
 import CreateEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/CreateEmbeddedDocuments";
@@ -110,15 +115,13 @@ import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Pre
 import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
 import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
 import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
+
 import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
 import CreateDocumentControl from "./pages/documents/BCP/Document Control/CreateDocumentControl";
 import EditDocumentControl from "./pages/documents/BCP/Document Control/EditDocumentControl";
 import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
-//import BiaDependencies from "./pages/documents/BIA/*";
-//import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
-//import BiaManpower from "./pages/documents/BIA/*";
 
 const router = createBrowserRouter([
   {
@@ -483,6 +486,9 @@ const router = createBrowserRouter([
           //{ path: "manpower", element: <BiaManpower /> },
         ],
       },
+      
+      { path: "createBIA", element: <CreateBIAForm /> },
+      { path: "editBIA/:id", element: <EditBIAForm /> },
 
       // Roles
       { path: "roles", element: <Roles /> },
