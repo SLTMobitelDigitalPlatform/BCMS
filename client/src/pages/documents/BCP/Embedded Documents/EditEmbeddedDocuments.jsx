@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, updateAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
 const EditEmbeddedDocuments = () => {
   const [formData, setFormData] = useState({
@@ -15,27 +15,22 @@ const EditEmbeddedDocuments = () => {
     owner: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const path = `/Business-Continuity-Plan/embedded-documents/${bcpid}`;
 
-  const {
-    sortedUsers,
-    loading: usersLoading,
-    error: usersError,
-    fetchUsers,
-  } = useUsers();
+  const { sortedUsers, loading: usersLoading, fetchUsers } = useUsers();
   const {
     embeddedDocument,
     loading: embeddedDocumentLoading,
-    error: embeddedDocumentError,
-    fetchEmbeddedDocumentById,
+    fetchEmbeddedDocumentByIds,
     updateEmbeddedDocument,
   } = useEmbeddedDocuments();
 
   useEffect(() => {
     fetchUsers();
-    fetchEmbeddedDocumentById(id);
+    fetchEmbeddedDocumentByIds(bcpid, id);
   }, []);
 
   // Update formData when embeddedDocument is fetched
@@ -53,9 +48,11 @@ const EditEmbeddedDocuments = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
+
+      const embeddedDocumentData = { ...formData, bcpid };
 
       const result = await updateAlert(
         "Confirm Update",
@@ -63,19 +60,16 @@ const EditEmbeddedDocuments = () => {
         "Yes, Update it!",
         `"${embeddedDocument.number}" has been updated successfully!`,
         `Failed to update "${embeddedDocument.number}"!`,
-        async () => {
-          await updateEmbeddedDocument(id, formData);
-        }
+        () => updateEmbeddedDocument(id, embeddedDocumentData)
       );
 
       if (result === "success") {
-        navigate("/Business-Continuity-Plan/embedded-documents");
+        navigate(path);
       }
     } catch (error) {
-      errorAlert("Error", error.message || "Error updating Embedded Document");
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsUpdating(false);
     }
   };
 
@@ -99,8 +93,6 @@ const EditEmbeddedDocuments = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (embeddedDocumentError || usersError)
-    return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -179,18 +171,18 @@ const EditEmbeddedDocuments = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isUpdating}
             >
-              {isSaving ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Update"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/embedded-documents"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

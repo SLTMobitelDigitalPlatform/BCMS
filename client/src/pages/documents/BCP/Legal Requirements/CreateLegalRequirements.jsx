@@ -15,8 +15,9 @@ const CreateLegalRequirements = () => {
 
   const { bcpid } = useParams();
 
-  const [isSaving, setIsSaving] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/legal-requirements/${bcpid}`;
 
   const { sortedUsers, loading, fetchUsers } = useUsers();
   const { addLegalRequirement } = useLegalRequirements();
@@ -27,7 +28,7 @@ const CreateLegalRequirements = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
@@ -37,11 +38,11 @@ const CreateLegalRequirements = () => {
         "Legal Requirement Added",
         `Legal Requirement "${formData.name}" added successfully!`
       );
-      navigate(`/Business-Continuity-Plan/legal-requirements/${bcpid}`);
+      navigate(path);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsCreating(false);
     }
   };
 
@@ -115,18 +116,18 @@ const CreateLegalRequirements = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isCreating}
             >
-              {isSaving ? (
+              {isCreating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Create"
               )}
             </button>
             <Link
-              to={`/Business-Continuity-Plan/legal-requirements/${bcpid}`}
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
