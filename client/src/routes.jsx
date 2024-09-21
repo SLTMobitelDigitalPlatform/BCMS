@@ -122,6 +122,9 @@ import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/Edit
 import CreateDocumentControl from "./pages/documents/BCP/Document Control/CreateDocumentControl";
 import EditDocumentControl from "./pages/documents/BCP/Document Control/EditDocumentControl";
 import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
+import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDocuments";
+import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/CreateRelatedDocuments";
+import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
 
 const router = createBrowserRouter([
   {
@@ -356,6 +359,7 @@ const router = createBrowserRouter([
         children: [
           { path: "bcp-form/:bcpid", element: <BCPForm /> },
           { path: "document-control/:bcpid", element: <DocumentControl /> },
+          { path: "related-documents/:bcpid", element: <RelatedDocuments /> },
           { path: "recovery-strategy/:bcpid", element: <RecoveryStrategy /> },
           {
             path: "legal-requirements/:bcpid",
@@ -393,6 +397,16 @@ const router = createBrowserRouter([
       {
         path: "editDocumentControl/:bcpid/:id",
         element: <EditDocumentControl />,
+      },
+
+      // * Related Documents
+      {
+        path: "createRelatedDocument/:bcpid",
+        element: <CreateRelatedDocuments />,
+      },
+      {
+        path: "editRelatedDocument/:bcpid/:id",
+        element: <EditRelatedDocuments />,
       },
 
       // * Recovery Strategy
@@ -486,7 +500,7 @@ const router = createBrowserRouter([
           //{ path: "manpower", element: <BiaManpower /> },
         ],
       },
-      
+
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
 

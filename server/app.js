@@ -43,11 +43,12 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 // Business Continuity Plan Routes
 const routerBCPForm = require("./routes/documentRoutes/bcp/bcpFormRoutes");
 const routerDocumentControl = require("./routes/documentRoutes/bcp/documentControlRoutes");
+const routerRelatedDocuments = require("./routes/documentRoutes/bcp/relatedDocumentsRoutes");
+const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
 const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
 const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
-const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
 
 // Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
@@ -88,12 +89,13 @@ app.use(
   routerTeam,
   routerBCPForm,
   routerDocumentControl,
+  routerRelatedDocuments,
+  routerlegalRequirements,
   routerPreIncidentPreparation,
   routerResourcesRequired,
   routerVitalRecords,
   routerEmbeddedDocument,
-  routerBiaForm,
-  routerlegalRequirements
+  routerBiaForm
 );
 
 // Create uploads directory if it doesn't exist
