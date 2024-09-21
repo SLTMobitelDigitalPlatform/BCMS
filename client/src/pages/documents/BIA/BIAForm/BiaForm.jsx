@@ -97,24 +97,21 @@ const BIAForm = () => {
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {bia.owner}
-                </td>
-                
+                </td>               
                 <td className="py-2 px-4 w-36 doc-table-border">
-  {bia.maintainers && bia.maintainers.length > 0 ? (
-    bia.maintainers.join(", ")
-  ) : (
-    <span>No maintainers</span>
-  )}
-</td>
-<td className="py-2 px-4 w-36 doc-table-border">
-  {bia.viewers && bia.viewers.length > 0 ? (
-    bia.viewers.join(", ")
-  ) : (
-    <span>No viewers</span>
-  )}
-</td>
-
-
+                  {bia.maintainers && bia.maintainers.length > 0 ? (
+                    bia.maintainers.join(", ")
+                  ) : (
+                    <span>No maintainers</span>
+                  )}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-border">
+                  {bia.viewers && bia.viewers.length > 0 ? (
+                    bia.viewers.join(", ")
+                  ) : (
+                    <span>No viewers</span>
+                  )}
+                </td>
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {bia.dateApproved}
                 </td>
