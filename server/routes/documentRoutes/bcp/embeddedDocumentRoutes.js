@@ -2,8 +2,9 @@ const express = require("express");
 const {
   createEmbeddedDocument,
   getAllEmbeddedDocuments,
+  getEmbeddedDocumentsByBCPID,
+  getEmbeddedDocumentByIds,
   getLastEmbeddedDocument,
-  getEmbeddedDocumentById,
   updateEmbeddedDocument,
   deleteEmbeddedDocument,
 } = require("../../../controllers/documentController/bcp/embeddedDocumentController");
@@ -14,9 +15,11 @@ router.post("/api/bcpEmbeddedDocument/add", createEmbeddedDocument);
 
 router.get("/api/bcpEmbeddedDocument", getAllEmbeddedDocuments);
 
-router.get("/api/bcpEmbeddedDocument/last", getLastEmbeddedDocument);
+router.get("/api/bcpEmbeddedDocument/:bcpid", getEmbeddedDocumentsByBCPID);
 
-router.get("/api/bcpEmbeddedDocument/:id", getEmbeddedDocumentById);
+router.get("/api/bcpEmbeddedDocument/:bcpid/:id", getEmbeddedDocumentByIds);
+
+router.get("/api/bcpEmbeddedDocument/last", getLastEmbeddedDocument);
 
 router.put("/api/bcpEmbeddedDocument/edit/:id", updateEmbeddedDocument);
 

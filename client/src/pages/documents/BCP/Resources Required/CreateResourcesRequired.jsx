@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreateResourcesRequired = () => {
   const [formData, setFormData] = useState({
@@ -12,10 +15,30 @@ const CreateResourcesRequired = () => {
     operationalDuration: "",
   });
 
-  const handleSubmit = (e) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+
+  const { addResourceRequired } = useResourcesRequired();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Submit the form data to backend or API
+    setIsSaving(true);
+    try {
+      // ! Add duplicate id validation
+
+      await addResourceRequired(formData);
+      createAlert(
+        "Resource Required Added",
+        `Resource Required "${formData.name}" added successfully!`
+      );
+
+      navigate("/Business-Continuity-Plan/resources-required");
+    } catch (error) {
+      errorAlert("Error", error.message || "Error adding Resource Required");
+      console.log(error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -122,9 +145,16 @@ const CreateResourcesRequired = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/resources-required"

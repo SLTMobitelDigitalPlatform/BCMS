@@ -116,6 +116,13 @@ import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/Edit
 import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
 import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
 
+import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
+import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
+import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
+import CreateDocumentControl from "./pages/documents/BCP/Document Control/CreateDocumentControl";
+import EditDocumentControl from "./pages/documents/BCP/Document Control/EditDocumentControl";
+import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -340,71 +347,123 @@ const router = createBrowserRouter([
       //? -------------------------------- BCP --------------------------------------
       // * Business Continuity Plan Layout
       {
+        path: "business-continuity-plans",
+        element: <BusinessContinuityPlans />,
+      },
+      {
         path: "Business-Continuity-Plan",
         element: <BusinessContinuityPlanLayout />,
         children: [
-          { path: "bcp-form", element: <BCPForm /> },
-          { path: "document-control", element: <DocumentControl /> },
-          { path: "recovery-strategy", element: <RecoveryStrategy /> },
+          { path: "bcp-form/:bcpid", element: <BCPForm /> },
+          { path: "document-control/:bcpid", element: <DocumentControl /> },
+          { path: "recovery-strategy/:bcpid", element: <RecoveryStrategy /> },
           {
-            path: "legal,-regulatory-&-contractual-requirements",
+            path: "legal-requirements/:bcpid",
             element: <LegalRequirements />,
           },
           {
-            path: "pre-incident-preparation",
+            path: "pre-incident-preparation/:bcpid",
             element: <PreIncidentPreparation />,
           },
           {
-            path: "critical-business-function",
+            path: "critical-business-function/:bcpid",
             element: <CriticalBusinessFunction />,
           },
-          { path: "resources-required", element: <ResourcesRequired /> },
-          { path: "dependencies", element: <Dependencies /> },
-          { path: "vital-records", element: <VitalRecords /> },
-          { path: "work-area-recovery", element: <WorkAreaRecovery /> },
-          { path: "manpower", element: <Manpower /> },
+          { path: "resources-required/:bcpid", element: <ResourcesRequired /> },
+          { path: "dependencies/:bcpid", element: <Dependencies /> },
+          { path: "vital-records/:bcpid", element: <VitalRecords /> },
+          { path: "work-area-recovery/:bcpid", element: <WorkAreaRecovery /> },
+          { path: "manpower/:bcpid", element: <Manpower /> },
           {
-            path: "recovery-and-resumption",
+            path: "recovery-and-resumption/:bcpid",
             element: <RecoveryAndResumption />,
           },
-          { path: "embedded-documents", element: <EmbeddedDocuments /> },
+          { path: "embedded-documents/:bcpid", element: <EmbeddedDocuments /> },
         ],
       },
+      // * BCP Form
       { path: "createBCP", element: <CreateBCP /> },
-      { path: "editBCP/:id", element: <EditBCPForm /> },
+      { path: "editBCP/:bcpid", element: <EditBCPForm /> },
 
+      // * Document Control
+      {
+        path: "createDocumentControl/:bcpid",
+        element: <CreateDocumentControl />,
+      },
+      {
+        path: "editDocumentControl/:bcpid/:id",
+        element: <EditDocumentControl />,
+      },
+
+      // * Recovery Strategy
       { path: "createRecoveryStrategy", element: <CreateRecoveryStrategy /> },
       // {path:"editRecoveryStrategy/:id",element:<EditRecoveryStrategy/>},
 
-      { path: "createLegalRequirements", element: <CreateLegalRequirements /> },
-      // {path:"editLegalRequirements/:id",element:<EditLegalRequirements/>},
-
+      // * Legal Requirements
       {
-        path: "createPreIncidentPreparation",
+        path: "createLegalRequirements/:bcpid",
+        element: <CreateLegalRequirements />,
+      },
+      {
+        path: "editLegalRequirements/:bcpid/:id",
+        element: <EditLegalRequirements />,
+      },
+
+      // * Pre-Incident Preparation
+      {
+        path: "createPreIncidentPreparation/:bcpid",
         element: <CreatePreIncidentPreparation />,
       },
       {
-        path: "editPreIncidentPreparation/:id",
+        path: "editPreIncidentPreparation/:bcpid/:id",
         element: <EditPreIncidentPreparation />,
       },
 
+      // * Critical Business Function
       {
-        path: "createCriticalBusinessFunction",
+        path: "createCriticalBusinessFunction/:bcpid",
         element: <CreateCriticalBusinessFunction />,
       },
       // {path:"editCriticalBusinessFunction/:id",element:<EditCriticalBusinessFunction/>},
 
-      { path: "createResourcesRequired", element: <CreateResourcesRequired /> },
-      // {path:"editResourcesRequired/:id",element:<EditResourcesRequired/>},
+      // * Resources Required
+      {
+        path: "createResourcesRequired/:bcpid",
+        element: <CreateResourcesRequired />,
+      },
+      {
+        path: "editResourcesRequired/:bcpid/:id",
+        element: <EditResourcesRequired />,
+      },
 
-      { path: "createVitalRecord", element: <CreateVitalRecords /> },
-      // {path:"editVitalRecords/:id",element:<EditVitalRecords/>},
+      // * Dependencies
 
-      { path: "createWorkAreaRecovery", element: <CreateWorkAreaRecovery /> },
+      // * Vital Records
+      { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
+      { path: "editVitalRecords/:bcpid/:id", element: <EditVitalRecords /> },
+
+      // * Work Area Recovery
+      {
+        path: "createWorkAreaRecovery/:bcpid",
+        element: <CreateWorkAreaRecovery />,
+      },
       // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
 
-      { path: "createEmbeddedDocument", element: <CreateEmbeddedDocuments /> },
-      { path: "editEmbeddedDocument/:id", element: <EditEmbeddedDocuments /> },
+      // * Manpower
+      // { path: "createManpower", element: <CreateManpower /> },
+      // { path: "editManpower/:id", element: <EditManpower /> },
+
+      // * Recovery And Resumption
+
+      // * Embedded Documents
+      {
+        path: "createEmbeddedDocument/:bcpid",
+        element: <CreateEmbeddedDocuments />,
+      },
+      {
+        path: "editEmbeddedDocument/:bcpid/:id",
+        element: <EditEmbeddedDocuments />,
+      },
 
       // BIA (Business Impact Analysis)
       {

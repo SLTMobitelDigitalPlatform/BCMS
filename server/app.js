@@ -32,7 +32,6 @@ const routerRiskQuality = require("./routes/documentRoutes/qualityManagementRout
 const routerRiskElements = require("./routes/documentRoutes/riskAssesment/riskElementRoutes");
 const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/externalPartyRoutes");
 const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
-
 const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
 const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
@@ -42,9 +41,13 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 // Context of the Organization Routes
 
 // Business Continuity Plan Routes
-const bcpFormRoutes = require("./routes/documentRoutes/bcp/bcpFormRoutes");
-const preIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
-const embeddedDocumentRoutes = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
+const routerBCPForm = require("./routes/documentRoutes/bcp/bcpFormRoutes");
+const routerDocumentControl = require("./routes/documentRoutes/bcp/documentControlRoutes");
+const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
+const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
+const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
+const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
+const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
 
 // Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
@@ -83,10 +86,14 @@ app.use(
   routerInternalParty,
   routerCallTree,
   routerTeam,
-  bcpFormRoutes,
-  preIncidentPreparation,
-  embeddedDocumentRoutes,
-  routerBiaForm
+  routerBCPForm,
+  routerDocumentControl,
+  routerPreIncidentPreparation,
+  routerResourcesRequired,
+  routerVitalRecords,
+  routerEmbeddedDocument,
+  routerBiaForm,
+  routerlegalRequirements
 );
 
 // Create uploads directory if it doesn't exist

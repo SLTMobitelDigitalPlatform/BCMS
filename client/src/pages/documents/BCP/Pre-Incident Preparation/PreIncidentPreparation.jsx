@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const PreIncidentPreparation = () => {
   const {
@@ -17,11 +18,19 @@ const PreIncidentPreparation = () => {
   }, []);
 
   const deletePreIncidentPrep = async (id) => {
-    try {
-      await deletePreIncidentPreparation(id);
-    } catch (error) {
-      console.log(error);
-    }
+    deleteAlert(
+      "Are you sure?",
+      "You are about to delete Pre-Incident Preparation. This action cannot be undone.",
+      "Yes, delete it!",
+      "Pre-Incident Preparation deleted successfully!",
+      "Error deleting Pre-Incident Preparation",
+      async () => await deletePreIncidentPreparation(id)
+    );
+    // try {
+    //   await deletePreIncidentPreparation(id);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   if (loading)

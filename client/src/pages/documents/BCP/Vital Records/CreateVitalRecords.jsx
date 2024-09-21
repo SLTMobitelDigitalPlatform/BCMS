@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
+import { createAlert, errorAlert } from "../../../../utilities/alert";
 
 const CreateVitalRecords = () => {
   const [formData, setFormData] = useState({
@@ -13,10 +16,29 @@ const CreateVitalRecords = () => {
     recoveryStrategy: "",
   });
 
-  const handleSubmit = (e) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const navigate = useNavigate();
+
+  const { addVitalRecord } = useVitalRecords();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Submit the form data to backend or API
+    setIsSaving(true);
+    try {
+      // ! Add duplicate id validation
+
+      await addVitalRecord(formData);
+      createAlert(
+        "Vital Record Added",
+        `Vital Record "${formData.name}" added successfully!`
+      );
+      navigate("/Business-Continuity-Plan/vital-records");
+    } catch (error) {
+      errorAlert("Error", error.message || "Error adding Vital Record!");
+      console.log(error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -138,9 +160,16 @@ const CreateVitalRecords = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
               to="/Business-Continuity-Plan/vital-records"

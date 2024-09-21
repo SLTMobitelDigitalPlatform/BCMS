@@ -21,6 +21,20 @@ exports.getAllEmbeddedDocuments = async (req, res) => {
   }
 };
 
+// Get all embedded documents by BCP ID
+exports.getEmbeddedDocumentsByBCPID = async (req, res) => {
+  const filter = { bcpid: req.params.bcpid };
+  try {
+    const embeddedDocuments = await EmbeddedDocument.find(filter);
+    if (!embeddedDocuments) {
+      return res.status(404).json({ message: "Embedded Documents not found" });
+    }
+    res.status(200).json(embeddedDocuments);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Get last embedded document
 exports.getLastEmbeddedDocument = async (req, res) => {
   try {
@@ -34,10 +48,11 @@ exports.getLastEmbeddedDocument = async (req, res) => {
   }
 };
 
-// Get a single embedded document by ID
-exports.getEmbeddedDocumentById = async (req, res) => {
+// Get a single embedded document by BCP ID and MongoDB ID
+exports.getEmbeddedDocumentByIds = async (req, res) => {
+  const { bcpid, id } = req.params;
   try {
-    const embeddedDocument = await EmbeddedDocument.findById(req.params.id);
+    const embeddedDocument = await EmbeddedDocument.findOne({ _id: id, bcpid });
     if (!embeddedDocument) {
       return res.status(404).json({ message: "Embedded Document not found" });
     }

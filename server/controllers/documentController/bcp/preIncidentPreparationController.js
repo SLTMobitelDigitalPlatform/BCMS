@@ -21,6 +21,22 @@ exports.getAllPreIncidentPreparation = async (req, res) => {
   }
 };
 
+// Get all pre-Incident Preparation by BCP ID
+exports.getPreIncidentPreparationByBCPID = async (req, res) => {
+  const filter = { bcpid: req.params.bcpid };
+  try {
+    const preIncidentPreparation = await PreIncidentPreparation.find(filter);
+    if (!preIncidentPreparation) {
+      return res
+        .status(404)
+        .json({ message: "Pre-Incident Preparation not found" });
+    }
+    res.status(200).json(preIncidentPreparation);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Get last pre-Incident Preparation
 exports.getLastPreIncidentPreparation = async (req, res) => {
   try {
@@ -32,12 +48,14 @@ exports.getLastPreIncidentPreparation = async (req, res) => {
   }
 };
 
-// Get a single pre-Incident Preparation by ID
-exports.getPreIncidentPreparationById = async (req, res) => {
+// Get a single pre-Incident Preparation by BCP ID and MongoDB ID
+exports.getPreIncidentPreparationByIds = async (req, res) => {
+  const { bcpid, id } = req.params;
   try {
-    const preIncidentPreparation = await PreIncidentPreparation.findById(
-      req.params.id
-    );
+    const preIncidentPreparation = await PreIncidentPreparation.findOne({
+      _id: id,
+      bcpid,
+    });
     if (!preIncidentPreparation) {
       return res
         .status(404)

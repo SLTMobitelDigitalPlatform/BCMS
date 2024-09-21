@@ -2,7 +2,7 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import ellipse from "../../assets/Ellipse2.png";
 import contact from "../../assets/contact.png";
 import { useNavigate } from "react-router-dom";
-import { FaCheckCircle, FaEnvelope, FaPhone, FaUser} from "react-icons/fa";
+import { FaCheckCircle, FaEnvelope, FaPhone, FaUser } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
 import { useState } from "react";
 import Modal from "react-modal";
@@ -18,7 +18,7 @@ const Contact = () => {
   });
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = validateForm();
@@ -63,7 +63,7 @@ const Contact = () => {
     }));
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [id]: "", 
+      [id]: "",
     }));
   };
 
@@ -77,7 +77,6 @@ const Contact = () => {
       //   backgroundPosition: "center",
       // }}
     >
-
       <div className="flex justify-between items-center">
         {/* Back arrow icon for navigation */}
         <IoArrowBackCircleOutline
@@ -87,26 +86,32 @@ const Contact = () => {
 
         {/* Heading*/}
         <div className="flex-grow text-center m-10">
-          <h1 className="text-5xl font-bold text-blue-800">
-            Get in Touch
-          </h1>
+          <h1 className="text-5xl font-bold text-blue-800">Get in Touch</h1>
         </div>
 
-        <div className="w-8"></div> 
-
+        <div className="w-8"></div>
       </div>
 
       <div className="px-10 py-6 flex justify-center space-x-6 md:space-x-12 lg:space-x-24 xl:space-x-48">
-
         {/* First Container */}
-        <div >
+        <div>
           <h3 className="font-semibold text-xl">PHONE</h3>
           <br />
           <h4 className="text-sm">
             24 Hour Customer Service-Hotline :
             <br />
-            <a href="tel:+94712755777" className="text-blue-600 hover:text-green-600"> +94 712755777</a> or dial
-            <a href="tel:1717" className="text-blue-600 hover:text-green-600"> 1717 </a>
+            <a
+              href="tel:+94712755777"
+              className="text-blue-600 hover:text-green-600"
+            >
+              {" "}
+              +94 712755777
+            </a>{" "}
+            or dial
+            <a href="tel:1717" className="text-blue-600 hover:text-green-600">
+              {" "}
+              1717{" "}
+            </a>
             <br />
             from any network in Sri Lanka
           </h4>
@@ -117,16 +122,28 @@ const Contact = () => {
           <h4 className="text-sm">
             24 Hour Roaming Service Hotline :
             <br />
-            <a href="tel:+94714555555" className="text-blue-600 hover:text-green-600"> +94 714555555</a>
+            <a
+              href="tel:+94714555555"
+              className="text-blue-600 hover:text-green-600"
+            >
+              {" "}
+              +94 714555555
+            </a>
           </h4>
           <h4 className="text-sm">
             General Line :
-            <a href="tel:+94714555555" className="text-blue-600 hover:text-green-600"> +94 714555555</a>
+            <a
+              href="tel:+94714555555"
+              className="text-blue-600 hover:text-green-600"
+            >
+              {" "}
+              +94 714555555
+            </a>
           </h4>
         </div>
 
         {/* Second Container */}
-        <div >
+        <div>
           <h3 className="font-semibold text-xl">GENERAL INQUIRIES</h3>
           <br />
           <h4 className="text-sm">Mobitel Corporate Office</h4>
@@ -144,7 +161,7 @@ const Contact = () => {
         </div>
 
         {/* Third Container */}
-        <div >
+        <div>
           <h3 className="font-semibold text-xl">HOURS OF OPERATION</h3>
 
           <br />
@@ -164,23 +181,25 @@ const Contact = () => {
 
           <br />
           <h4 className="text-sm">Service Difficulties?</h4>
-          <a href="#" className="text-blue-600 underline hover:text-green-600 text-sm">
+          <a
+            href="#"
+            className="text-blue-600 underline hover:text-green-600 text-sm"
+          >
             <em> Click Here</em>
           </a>
         </div>
-
       </div>
 
       <div className="my-12 mx-40 rounded-xl border-2 bg-gradient-to-r from-[#2ACF1C] to-[#003E81]">
-        <div className="m-0.5 rounded-lg pt-10 px-14 bg-white bg-opacity-95"
-             style={{
-                backgroundImage: `url(${contact})`,
-                backgroundSize: "20%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "bottom right",
-              }}
+        <div
+          className="m-0.5 rounded-lg pt-10 px-14 bg-white bg-opacity-95"
+          style={{
+            backgroundImage: `url(${contact})`,
+            backgroundSize: "20%",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "bottom right",
+          }}
         >
-
           <h1 className="text-2xl font-medium mb-3 text-center text-black">
             CONTACT FORM
           </h1>
@@ -188,11 +207,11 @@ const Contact = () => {
           <p className="mb-5 text-md text-center text-black text-opacity-70">
             Your insights drive our improvements. Share your experience with our
             Business Continuity Management System.
-            <br/><br/>
+            <br />
+            <br />
           </p>
 
           <form onSubmit={handleSubmit}>
-
             <div className="flex space-x-6">
               {/* Name */}
               <div className="relative mb-5 p-0.5 rounded-lg w-1/2">
@@ -202,10 +221,10 @@ const Contact = () => {
                   id="fullName"
                   type="text"
                   placeholder="Name"
-                  
-
                 />
-                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                {errors.name && (
+                  <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                )}
               </div>
 
               {/*Phone*/}
@@ -223,13 +242,13 @@ const Contact = () => {
 
             {/* Email */}
             <div className="relative mb-5 p-0.5 rounded-lg">
-                <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700 opacity-80" />
-                <input
-                  className="shadow appearance-none border rounded-md w-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                />
+              <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700 opacity-80" />
+              <input
+                className="shadow appearance-none border rounded-md w-full py-2 px-10 text-gray-700 leading-tight focus:outline-white"
+                id="email"
+                type="email"
+                placeholder="Email"
+              />
             </div>
 
             {/*Message*/}
@@ -254,9 +273,8 @@ const Contact = () => {
                 Send
               </button>
             </div>
-
           </form>
-          
+
           <Modal
             isOpen={feedbackSubmitted}
             style={{
@@ -282,18 +300,17 @@ const Contact = () => {
               <div className="text-center mr-12">
                 <h3 className="text-xl font-semibold mb-2">
                   Thank you for reaching out!
-                </h3><br/>
+                </h3>
+                <br />
                 <p className="text-lg">
                   We've received your message and will get back to you as soon
                   as possible
                 </p>
               </div>
             </div>
-
           </Modal>
-
         </div>
-      </div>    
+      </div>
     </div>
   );
 };

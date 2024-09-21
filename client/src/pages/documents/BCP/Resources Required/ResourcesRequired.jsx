@@ -1,10 +1,40 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const ResourcesRequired = () => {
-  const [resourcesRequired, setResourcesRequired] = useState([]);
+  const {
+    resourcesRequired,
+    loading,
+    error,
+    fetchResourcesRequired,
+    deleteResourceRequired,
+  } = useResourcesRequired();
 
-  const deleteResourcesRequired = async (id) => {};
+  useEffect(() => {
+    fetchResourcesRequired();
+  }, []);
+
+  const deleteResReq = async (id, name) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete Resource Required "${name}". This action cannot be undone.`,
+      "Yes, delete it!",
+      `Resource Reqired "${name}" deleted successfully!`,
+      `Error deleting Resource Required "${name}"`,
+      async () => await deleteResourceRequired(id)
+    );
+  };
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -70,7 +100,10 @@ const ResourcesRequired = () => {
                     <button
                       className="doc-delete-btn"
                       onClick={() =>
-                        deleteResourcesRequired(resourcesRequired._id)
+                        deleteResReq(
+                          resourcesRequired._id,
+                          resourcesRequired.name
+                        )
                       }
                     >
                       Delete
