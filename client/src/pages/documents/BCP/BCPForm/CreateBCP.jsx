@@ -26,7 +26,7 @@ const CreateBCP = () => {
     dateDueForNextReview: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
 
   // useHooks
@@ -69,7 +69,7 @@ const CreateBCP = () => {
   // Create new Business Continuity Plan
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsCreating(true);
 
     try {
       const isDuplicate = await checkDuplicateBCPID(formData.bcpid);
@@ -79,7 +79,7 @@ const CreateBCP = () => {
           "Error",
           `BCP ID "${formData.bcpid}" already exists! Please choose a different ID.`
         );
-        setIsSaving(false);
+        setIsCreating(false);
         return;
       }
 
@@ -96,7 +96,7 @@ const CreateBCP = () => {
       );
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsCreating(false);
     }
   };
 
@@ -309,14 +309,14 @@ const CreateBCP = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isCreating}
             >
-              {isSaving ? (
+              {isCreating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Create"
               )}
             </button>
             <Link

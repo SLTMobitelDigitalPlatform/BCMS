@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDocumentControl } from "../../../../hooks/documents/bcp/useDocumentControl";
-import { errorAlert, updateAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
 const EditDocumentControl = () => {
   const [formData, setFormData] = useState({
@@ -11,14 +11,14 @@ const EditDocumentControl = () => {
     date: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
-  const navigate = useNavigate();
   const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/document-control/${bcpid}`;
 
   const {
     documentControl,
     loading,
-    error,
     fetchDocumentControlsByIds,
     updateDocumentControl,
   } = useDocumentControl();
@@ -39,14 +39,11 @@ const EditDocumentControl = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
 
-      const documentControlData = {
-        ...formData,
-        bcpid: documentControl.bcpid,
-      };
+      const documentControlData = { ...formData, bcpid };
 
       const result = await updateAlert(
         "Confirm Update",
@@ -54,21 +51,16 @@ const EditDocumentControl = () => {
         "Yes, Update it!",
         `"${documentControl.version}" has been updated successfully!`,
         `Failed to update "${documentControl.version}"!`,
-        async () => {
-          await updateDocumentControl(id, documentControlData);
-        }
+        () => updateDocumentControl(id, documentControlData)
       );
 
       if (result === "success") {
-        navigate(
-          `/Business-Continuity-Plan/document-control/${documentControl.bcpid}`
-        );
+        navigate(path);
       }
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Document Control!");
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsUpdating(false);
     }
   };
 
@@ -79,20 +71,17 @@ const EditDocumentControl = () => {
     });
   };
 
-  if (loading) {
+  if (loading)
     return (
       <div className="flex justify-center items-center h-full">
         <FaSpinner className="animate-spin text-4xl text-green-500" />
       </div>
     );
-  }
-
-  if (error) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Document Control
+        Edit Document Control
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -134,18 +123,18 @@ const EditDocumentControl = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isUpdating}
             >
-              {isSaving ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Update"
               )}
             </button>
             <Link
-              to={`/Business-Continuity-Plan/document-control/${bcpid}`}
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

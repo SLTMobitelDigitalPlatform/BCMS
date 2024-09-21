@@ -116,9 +116,7 @@ const EditBCPForm = () => {
         "Yes, Update it!",
         `"${businessContinuityPlan.bcpid}" has been updated successfully!`,
         `Failed to update "${businessContinuityPlan.bcpid}"!`,
-        async () => {
-          await updateBCPFormByBCPID(bcpid, formData);
-        }
+        () => updateBCPFormByBCPID(bcpid, formData)
       );
 
       if (result === "success")

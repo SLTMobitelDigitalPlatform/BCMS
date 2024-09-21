@@ -2,15 +2,11 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useBCPForm } from "../../../hooks/documents/bcp/useBCPForm";
 import { deleteAlert } from "../../../utilities/alert";
+import { FaSpinner } from "react-icons/fa";
 
 const BusinessContinuityPlans = () => {
-  const {
-    businessContinuityPlans,
-    loading,
-    error,
-    fetchBCPForms,
-    deleteBCPForm,
-  } = useBCPForm();
+  const { businessContinuityPlans, loading, fetchBCPForms, deleteBCPForm } =
+    useBCPForm();
 
   useEffect(() => {
     fetchBCPForms();
@@ -27,8 +23,12 @@ const BusinessContinuityPlans = () => {
     );
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
