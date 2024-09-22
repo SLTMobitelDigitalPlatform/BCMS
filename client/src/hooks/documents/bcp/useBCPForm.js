@@ -8,7 +8,7 @@ export const useBCPForm = () => {
   const [lastBusinessContinuityPlan, setLastBusinessContinuityPlan] = useState(
     []
   );
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch all BCP forms
   const fetchBCPForms = async () => {

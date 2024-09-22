@@ -14,7 +14,7 @@ const VitalRecords = () => {
     fetchVitalRecordsByBCPID(bcpid);
   }, []);
 
-  const deleteVitalRec = async (id, name) => {
+  const handleDelete = async (id, name) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Vital Record "${name}". This action cannot be undone.`,
@@ -99,9 +99,7 @@ const VitalRecords = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() =>
-                        deleteVitalRec(vitalRec._id, vitalRec.name)
-                      }
+                      onClick={() => handleDelete(vitalRec._id, vitalRec.name)}
                     >
                       Delete
                     </button>

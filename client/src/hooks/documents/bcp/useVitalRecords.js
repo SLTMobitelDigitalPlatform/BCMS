@@ -5,7 +5,7 @@ import { errorAlert } from "../../../utilities/alert";
 export const useVitalRecords = () => {
   const [vitalRecords, setVitalRecords] = useState([]);
   const [vitalRecord, setVitalRecord] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch vital records by BCP ID
   const fetchVitalRecordsByBCPID = async (bcpid) => {

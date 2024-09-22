@@ -122,6 +122,11 @@ import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/Edit
 import CreateDocumentControl from "./pages/documents/BCP/Document Control/CreateDocumentControl";
 import EditDocumentControl from "./pages/documents/BCP/Document Control/EditDocumentControl";
 import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
+import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDocuments";
+import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/CreateRelatedDocuments";
+import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
+import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
+import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
 
 const router = createBrowserRouter([
   {
@@ -356,6 +361,7 @@ const router = createBrowserRouter([
         children: [
           { path: "bcp-form/:bcpid", element: <BCPForm /> },
           { path: "document-control/:bcpid", element: <DocumentControl /> },
+          { path: "related-documents/:bcpid", element: <RelatedDocuments /> },
           { path: "recovery-strategy/:bcpid", element: <RecoveryStrategy /> },
           {
             path: "legal-requirements/:bcpid",
@@ -395,9 +401,25 @@ const router = createBrowserRouter([
         element: <EditDocumentControl />,
       },
 
+      // * Related Documents
+      {
+        path: "createRelatedDocument/:bcpid",
+        element: <CreateRelatedDocuments />,
+      },
+      {
+        path: "editRelatedDocument/:bcpid/:id",
+        element: <EditRelatedDocuments />,
+      },
+
       // * Recovery Strategy
-      { path: "createRecoveryStrategy", element: <CreateRecoveryStrategy /> },
-      // {path:"editRecoveryStrategy/:id",element:<EditRecoveryStrategy/>},
+      {
+        path: "createRecoveryStrategy/:bcpid",
+        element: <CreateRecoveryStrategy />,
+      },
+      {
+        path: "editRecoveryStrategy/:bcpid/:id",
+        element: <EditRecoveryStrategy />,
+      },
 
       // * Legal Requirements
       {
@@ -424,7 +446,10 @@ const router = createBrowserRouter([
         path: "createCriticalBusinessFunction/:bcpid",
         element: <CreateCriticalBusinessFunction />,
       },
-      // {path:"editCriticalBusinessFunction/:id",element:<EditCriticalBusinessFunction/>},
+      {
+        path: "editCriticalBusinessFunction/:bcpid/:id",
+        element: <EditCriticalBusinessFunction />,
+      },
 
       // * Resources Required
       {
@@ -486,7 +511,7 @@ const router = createBrowserRouter([
           //{ path: "manpower", element: <BiaManpower /> },
         ],
       },
-      
+
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
 

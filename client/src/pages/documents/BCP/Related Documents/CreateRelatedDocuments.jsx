@@ -1,33 +1,33 @@
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useRecoveryStrategy } from "../../../../hooks/documents/bcp/useRecoveryStrategy";
+import { useRelatedDocuments } from "../../../../hooks/documents/bcp/useRelatedDocuments";
 import { createAlert } from "../../../../utilities/alert";
 
-const CreateRecoveryStrategy = () => {
+const CreateRelatedDocuments = () => {
   const [formData, setFormData] = useState({
-    primaryOperatingSite: "",
-    relocateTo: "",
-    outsourceOptions: "",
+    referenceDocument: "",
+    documentType: "",
   });
 
   const { bcpid } = useParams();
   const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
-  const path = `/Business-Continuity-Plan/recovery-strategy/${bcpid}`;
+  const path = `/Business-Continuity-Plan/related-documents/${bcpid}`;
 
-  const { addRecoveryStrategy } = useRecoveryStrategy();
+  const { addRelatedDocument } = useRelatedDocuments();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
-      const recoveryStrategyData = { ...formData, bcpid };
-      await addRecoveryStrategy(recoveryStrategyData);
+
+      const relatedDocumentData = { ...formData, bcpid };
+      await addRelatedDocument(relatedDocumentData);
       createAlert(
-        "Recovery Strategy Added",
-        `Recovery Strategy "${formData.primaryOperatingSite}" added successfully!`
+        "Document Control Added",
+        `Document Control "${formData.referenceDocument}" added successfully!`
       );
       navigate(path);
     } catch (error) {
@@ -47,41 +47,29 @@ const CreateRecoveryStrategy = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Recovery Strategy
+        Add New Related Document
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Primary Operating Site</label>
+            <label className="font-semibold">Reference Document Name</label>
             <input
               type="text"
-              name="primaryOperatingSite"
-              value={formData.primaryOperatingSite}
+              name="referenceDocument"
+              value={formData.referenceDocument}
               onChange={handleChange}
-              placeholder="Enter Primary Operating Site"
+              placeholder="Enter Reference Document Name"
               className="p-2 w-full rounded"
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Relocate To</label>
+            <label className="font-semibold">Document Type</label>
             <input
               type="text"
-              name="relocateTo"
-              value={formData.relocateTo}
+              name="documentType"
+              value={formData.documentType}
               onChange={handleChange}
-              placeholder="Enter Relocate To"
-              className="p-2 w-full rounded"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Outsource Options</label>
-            <input
-              type="text"
-              name="outsourceOptions"
-              value={formData.outsourceOptions}
-              onChange={handleChange}
-              placeholder="Enter Outsource Options"
+              placeholder="Enter Document Type"
               className="p-2 w-full rounded"
             />
           </div>
@@ -113,4 +101,4 @@ const CreateRecoveryStrategy = () => {
   );
 };
 
-export default CreateRecoveryStrategy;
+export default CreateRelatedDocuments;

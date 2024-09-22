@@ -14,7 +14,6 @@ const CreateDocumentControl = () => {
   });
 
   const { bcpid } = useParams();
-
   const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/document-control/${bcpid}`;

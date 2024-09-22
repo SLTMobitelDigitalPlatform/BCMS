@@ -18,7 +18,7 @@ const EmbeddedDocuments = () => {
     fetchEmbeddedDocumentsByBCPID(bcpid);
   }, []);
 
-  const deleteEmbeddedDoc = async (id, number) => {
+  const handleDelete = async (id, number) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete "${number}" Embedded Document. This action cannot be undone.`,
@@ -94,7 +94,7 @@ const EmbeddedDocuments = () => {
                     <button
                       className="doc-delete-btn"
                       onClick={() =>
-                        deleteEmbeddedDoc(embedDoc._id, embedDoc.number)
+                        handleDelete(embedDoc._id, embedDoc.number)
                       }
                     >
                       Delete

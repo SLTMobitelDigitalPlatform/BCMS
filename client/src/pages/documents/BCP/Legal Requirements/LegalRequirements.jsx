@@ -18,7 +18,7 @@ const LegalRequirements = () => {
     fetchLegalRequirementsByBCPID(bcpid);
   }, []);
 
-  const deleteLegReq = async (id) => {
+  const handleDelete = async (id) => {
     deleteAlert(
       "Are you sure?",
       "You are about to delete Legal, Regulatory and Contractual Requirement. This action cannot be undone.",
@@ -87,7 +87,7 @@ const LegalRequirements = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deleteLegReq(legalReq._id)}
+                      onClick={() => handleDelete(legalReq._id)}
                     >
                       Delete
                     </button>

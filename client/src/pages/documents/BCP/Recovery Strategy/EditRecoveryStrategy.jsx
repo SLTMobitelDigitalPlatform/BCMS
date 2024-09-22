@@ -1,39 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoveryStrategy } from "../../../../hooks/documents/bcp/useRecoveryStrategy";
-import { createAlert } from "../../../../utilities/alert";
-
-const CreateRecoveryStrategy = () => {
+import { updateAlert } from "../../../../utilities/alert";
+const EditRecoveryStrategy = () => {
   const [formData, setFormData] = useState({
     primaryOperatingSite: "",
     relocateTo: "",
     outsourceOptions: "",
   });
 
-  const { bcpid } = useParams();
-  const [isCreating, setIsCreating] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/recovery-strategy/${bcpid}`;
 
-  const { addRecoveryStrategy } = useRecoveryStrategy();
+  const {
+    recoveryStrategy,
+    loading,
+    fetchRecoveryStrategyByIds,
+    updateRecoveryStrategy,
+  } = useRecoveryStrategy();
+
+  useEffect(() => {
+    fetchRecoveryStrategyByIds(bcpid, id);
+  }, []);
+
+  useEffect(() => {
+    if (recoveryStrategy) {
+      setFormData({
+        primaryOperatingSite: recoveryStrategy.primaryOperatingSite,
+        relocateTo: recoveryStrategy.relocateTo,
+        outsourceOptions: recoveryStrategy.outsourceOptions,
+      });
+    }
+  }, [recoveryStrategy]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
       const recoveryStrategyData = { ...formData, bcpid };
-      await addRecoveryStrategy(recoveryStrategyData);
-      createAlert(
-        "Recovery Strategy Added",
-        `Recovery Strategy "${formData.primaryOperatingSite}" added successfully!`
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${recoveryStrategy.primaryOperatingSite}"?`,
+        "Yes, Update it!",
+        `"${recoveryStrategy.primaryOperatingSite}" has been updated successfully!`,
+        `Failed to update "${recoveryStrategy.primaryOperatingSite}"!`,
+        () => updateRecoveryStrategy(id, recoveryStrategyData)
       );
-      navigate(path);
+
+      if (result === "success") {
+        navigate(path);
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsUpdating(false);
     }
   };
 
@@ -44,10 +69,17 @@ const CreateRecoveryStrategy = () => {
     });
   };
 
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
+
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Recovery Strategy
+        Edit Recovery Strategy
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -90,14 +122,14 @@ const CreateRecoveryStrategy = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isCreating ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isCreating}
+              disabled={isUpdating}
             >
-              {isCreating ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Create"
+                "Update"
               )}
             </button>
             <Link
@@ -113,4 +145,4 @@ const CreateRecoveryStrategy = () => {
   );
 };
 
-export default CreateRecoveryStrategy;
+export default EditRecoveryStrategy;

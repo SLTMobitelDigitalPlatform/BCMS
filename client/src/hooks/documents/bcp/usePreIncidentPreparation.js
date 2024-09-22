@@ -5,7 +5,7 @@ import { errorAlert } from "../../../utilities/alert";
 export const usePreIncidentPreparation = () => {
   const [preIncidentPreparation, setPreIncidentPreparation] = useState([]);
   const [preIncidentPreparations, setPreIncidentPreparations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch pre-incident preparation by BCP ID
   const fetchPreIncidentPreparationByBCPID = async (bcpid) => {

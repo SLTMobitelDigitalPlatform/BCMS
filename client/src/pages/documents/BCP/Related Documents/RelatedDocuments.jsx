@@ -1,31 +1,31 @@
 import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
+import { useRelatedDocuments } from "../../../../hooks/documents/bcp/useRelatedDocuments";
 import { deleteAlert } from "../../../../utilities/alert";
 
-const PreIncidentPreparation = () => {
+const RelatedDocuments = () => {
   const {
-    preIncidentPreparations,
+    relatedDocuments,
     loading,
-    fetchPreIncidentPreparationByBCPID,
-    deletePreIncidentPreparation,
-  } = usePreIncidentPreparation();
+    fetchRelatedDocumentsByBCPID,
+    deleteRelatedDocument,
+  } = useRelatedDocuments();
 
   const { bcpid } = useParams();
 
   useEffect(() => {
-    fetchPreIncidentPreparationByBCPID(bcpid);
-  }, []);
+    fetchRelatedDocumentsByBCPID(bcpid);
+  }, [bcpid]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, refDoc) => {
     deleteAlert(
       "Are you sure?",
-      "You are about to delete Pre-Incident Preparation. This action cannot be undone.",
+      `You are about to delete "${refDoc}" Related Document. This action cannot be undone.`,
       "Yes, delete it!",
-      "Pre-Incident Preparation deleted successfully!",
-      "Error deleting Pre-Incident Preparation",
-      () => deletePreIncidentPreparation(id, bcpid)
+      `"${refDoc}" Related Document deleted successfully!`,
+      "Error deleting Related Document",
+      () => deleteRelatedDocument(id, bcpid)
     );
   };
 
@@ -39,14 +39,12 @@ const PreIncidentPreparation = () => {
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">
-          Pre-Incident Preparation
-        </h1>
+        <h1 className="text-xl font-bold text-indigo-900">Related Documents</h1>
         <Link
-          to={`/createPreIncidentPreparation/${bcpid}`}
+          to={`/createRelatedDocument/${bcpid}`}
           className="btn-primary font-semibold"
         >
-          Add Details
+          Add New Related Document
         </Link>
       </div>
 
@@ -55,39 +53,36 @@ const PreIncidentPreparation = () => {
         <table className="table-fixed relative w-full py-10 bg-cyan-50">
           <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
             <tr>
-              <th className="w-20 doc-table-border">Pre-Incident Measures</th>
-              <th className="w-20 doc-table-border">Frequency / Schedule</th>
-              <th className="w-36 doc-table-border">
-                Frequency / Schedule Responsibility
-              </th>
-
-              <th className="w-28 doc-table-border">Actions</th>
+              <th className="w-20 doc-table-border">Reference Document Name</th>
+              <th className="w-20 doc-table-border">Document Type</th>
+              <th className="w-20 doc-table-border">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {preIncidentPreparations.map((pip) => (
-              <tr key={pip._id} className="hover:bg-indigo-100">
+            {relatedDocuments.map((relatedDoc) => (
+              <tr key={relatedDoc._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {pip.preIncidentMeasures}
+                  {relatedDoc.referenceDocument}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {pip.frequencyOrSchedule}
+                  {relatedDoc.documentType}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {pip.frequencyOrScheduleResponsibility}
-                </td>
-
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-20 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editPreIncidentPreparation/${bcpid}/${pip._id}`}
+                      to={`/editRelatedDocument/${bcpid}/${relatedDoc._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => handleDelete(pip._id)}
+                      onClick={() =>
+                        handleDelete(
+                          relatedDoc._id,
+                          relatedDoc.referenceDocument
+                        )
+                      }
                     >
                       Delete
                     </button>
@@ -102,4 +97,4 @@ const PreIncidentPreparation = () => {
   );
 };
 
-export default PreIncidentPreparation;
+export default RelatedDocuments;

@@ -5,7 +5,7 @@ import { errorAlert } from "../../../utilities/alert";
 export const useResourcesRequired = () => {
   const [resourcesRequired, setResourcesRequired] = useState([]);
   const [resourceRequired, setResourceRequired] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch resources required by BCP ID
   const fetchResourcesRequiredByBCPID = async (bcpid) => {

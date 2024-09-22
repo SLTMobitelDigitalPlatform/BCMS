@@ -18,7 +18,7 @@ const DocumentControl = () => {
     fetchDocumentControlsByBCPID(bcpid);
   }, []);
 
-  const deleteDocControl = async (id, version) => {
+  const handleDelete = async (id, version) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete "${version}" Document Control. This action cannot be undone.`,
@@ -82,7 +82,7 @@ const DocumentControl = () => {
                     <button
                       className="doc-delete-btn"
                       onClick={() =>
-                        deleteDocControl(docControl._id, docControl.version)
+                        handleDelete(docControl._id, docControl.version)
                       }
                     >
                       Delete
