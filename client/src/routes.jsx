@@ -126,6 +126,7 @@ import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDoc
 import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/CreateRelatedDocuments";
 import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
 import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
+import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
 
 const router = createBrowserRouter([
   {
@@ -445,7 +446,10 @@ const router = createBrowserRouter([
         path: "createCriticalBusinessFunction/:bcpid",
         element: <CreateCriticalBusinessFunction />,
       },
-      // {path:"editCriticalBusinessFunction/:id",element:<EditCriticalBusinessFunction/>},
+      {
+        path: "editCriticalBusinessFunction/:bcpid/:id",
+        element: <EditCriticalBusinessFunction />,
+      },
 
       // * Resources Required
       {

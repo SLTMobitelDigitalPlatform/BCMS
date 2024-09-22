@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
-import { createAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
-const CreateCriticalBusinessFunction = () => {
+const EditCriticalBusinessFunction = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -12,30 +12,55 @@ const CreateCriticalBusinessFunction = () => {
     rto: "",
   });
 
-  const { bcpid } = useParams();
-  const [isCreating, setIsCreating] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/critical-business-function/${bcpid}`;
 
-  const { addCriticalBusinessFunction } = useCriticalBusinessFunction();
+  const {
+    criticalBusinessFunction,
+    loading,
+    fetchCriticalBusinessFunctionsByIds,
+    updateCriticalBusinessFunction,
+  } = useCriticalBusinessFunction();
+
+  useEffect(() => {
+    fetchCriticalBusinessFunctionsByIds(bcpid, id);
+  }, []);
+
+  useEffect(() => {
+    if (criticalBusinessFunction) {
+      setFormData({
+        name: criticalBusinessFunction.name,
+        description: criticalBusinessFunction.description,
+        criticality: criticalBusinessFunction.criticality,
+        rto: criticalBusinessFunction.rto,
+      });
+    }
+  }, [criticalBusinessFunction]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true);
+    setIsUpdating(true);
     try {
-      // ! Add duplicate id validation
-
       const criticalBusinessFunctionData = { ...formData, bcpid };
-      await addCriticalBusinessFunction(criticalBusinessFunctionData);
-      createAlert(
-        "Critical Business Function Added",
-        `Critical Business Function "${formData.name}" added successfully!`
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${criticalBusinessFunction.name}"?`,
+        "Yes, Update it!",
+        `"${criticalBusinessFunction.name}" has been updated successfully!`,
+        `Failed to update "${criticalBusinessFunction.name}"!`,
+        () => updateCriticalBusinessFunction(id, criticalBusinessFunctionData)
       );
-      navigate(path);
+
+      if (result === "success") {
+        navigate(path);
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsUpdating(false);
     }
   };
 
@@ -46,10 +71,17 @@ const CreateCriticalBusinessFunction = () => {
     });
   };
 
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
+
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Critical Business Function
+        Edit Critical Business Function
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -103,14 +135,14 @@ const CreateCriticalBusinessFunction = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isCreating ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isCreating}
+              disabled={isUpdating}
             >
-              {isCreating ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Create"
+                "Update"
               )}
             </button>
             <Link
@@ -126,4 +158,4 @@ const CreateCriticalBusinessFunction = () => {
   );
 };
 
-export default CreateCriticalBusinessFunction;
+export default EditCriticalBusinessFunction;
