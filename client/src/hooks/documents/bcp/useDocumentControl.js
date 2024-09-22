@@ -5,7 +5,7 @@ import { errorAlert } from "../../../utilities/alert";
 export const useDocumentControl = () => {
   const [documentControls, setDocumentControls] = useState([]);
   const [documentControl, setDocumentControl] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch document controls by BCP ID
   const fetchDocumentControlsByBCPID = async (bcpid) => {

@@ -18,7 +18,7 @@ const PreIncidentPreparation = () => {
     fetchPreIncidentPreparationByBCPID(bcpid);
   }, []);
 
-  const deletePreIncidentPrep = async (id) => {
+  const handleDelete = async (id) => {
     deleteAlert(
       "Are you sure?",
       "You are about to delete Pre-Incident Preparation. This action cannot be undone.",
@@ -87,7 +87,7 @@ const PreIncidentPreparation = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deletePreIncidentPrep(pip._id)}
+                      onClick={() => handleDelete(pip._id)}
                     >
                       Delete
                     </button>

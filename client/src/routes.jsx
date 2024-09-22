@@ -125,6 +125,7 @@ import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPla
 import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDocuments";
 import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/CreateRelatedDocuments";
 import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
+import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
 
 const router = createBrowserRouter([
   {
@@ -410,8 +411,14 @@ const router = createBrowserRouter([
       },
 
       // * Recovery Strategy
-      { path: "createRecoveryStrategy", element: <CreateRecoveryStrategy /> },
-      // {path:"editRecoveryStrategy/:id",element:<EditRecoveryStrategy/>},
+      {
+        path: "createRecoveryStrategy/:bcpid",
+        element: <CreateRecoveryStrategy />,
+      },
+      {
+        path: "editRecoveryStrategy/:bcpid/:id",
+        element: <EditRecoveryStrategy />,
+      },
 
       // * Legal Requirements
       {

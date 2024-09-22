@@ -5,7 +5,7 @@ import { errorAlert } from "../../../utilities/alert";
 export const useEmbeddedDocuments = () => {
   const [embeddedDocuments, setEmbeddedDocuments] = useState([]);
   const [embeddedDocument, setEmbeddedDocument] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch embedded documents by BCP ID
   const fetchEmbeddedDocumentsByBCPID = async (bcpid) => {

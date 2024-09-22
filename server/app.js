@@ -44,6 +44,7 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 const routerBCPForm = require("./routes/documentRoutes/bcp/bcpFormRoutes");
 const routerDocumentControl = require("./routes/documentRoutes/bcp/documentControlRoutes");
 const routerRelatedDocuments = require("./routes/documentRoutes/bcp/relatedDocumentsRoutes");
+const routerRecoveryStrategy = require("./routes/documentRoutes/bcp/recoveryStrategyRoutes");
 const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
 const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
@@ -90,6 +91,7 @@ app.use(
   routerBCPForm,
   routerDocumentControl,
   routerRelatedDocuments,
+  routerRecoveryStrategy,
   routerlegalRequirements,
   routerPreIncidentPreparation,
   routerResourcesRequired,

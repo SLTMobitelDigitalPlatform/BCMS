@@ -18,7 +18,7 @@ const ResourcesRequired = () => {
     fetchResourcesRequiredByBCPID(bcpid);
   }, []);
 
-  const deleteResReq = async (id, name) => {
+  const handleDelete = async (id, name) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Resource Required "${name}". This action cannot be undone.`,
@@ -100,7 +100,7 @@ const ResourcesRequired = () => {
                     <button
                       className="doc-delete-btn"
                       onClick={() =>
-                        deleteResReq(
+                        handleDelete(
                           resourcesRequired._id,
                           resourcesRequired.name
                         )

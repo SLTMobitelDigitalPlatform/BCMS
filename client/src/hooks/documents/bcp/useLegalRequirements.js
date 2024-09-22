@@ -5,7 +5,7 @@ import { errorAlert } from "../../../utilities/alert";
 export const useLegalRequirements = () => {
   const [legalRequirements, setLegalRequirements] = useState([]);
   const [legalRequirement, setLegalRequirement] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch legal requirements by BCP ID
   const fetchLegalRequirementsByBCPID = async (bcpid) => {

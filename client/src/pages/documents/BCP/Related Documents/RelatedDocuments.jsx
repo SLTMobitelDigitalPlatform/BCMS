@@ -18,7 +18,7 @@ const RelatedDocuments = () => {
     fetchRelatedDocumentsByBCPID(bcpid);
   }, [bcpid]);
 
-  const deleteRelatedDoc = async (id, refDoc) => {
+  const handleDelete = async (id, refDoc) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete "${refDoc}" Related Document. This action cannot be undone.`,
@@ -78,7 +78,7 @@ const RelatedDocuments = () => {
                     <button
                       className="doc-delete-btn"
                       onClick={() =>
-                        deleteRelatedDoc(
+                        handleDelete(
                           relatedDoc._id,
                           relatedDoc.referenceDocument
                         )
