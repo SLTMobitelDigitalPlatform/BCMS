@@ -1,10 +1,48 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
+import { useWorkAreaRecovery } from "../../../../hooks/documents/bcp/useWorkAreaRecovery";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const WorkAreaRecovery = () => {
-  const [workAreaRecovery, setWorkAreaRecovery] = useState([]);
+  const {
+    workAreaRecoveries,
+    loading,
+    fetchWorkAreaRecoveriesByBCPID,
+    deleteWorkAreaRecovery,
+  } = useWorkAreaRecovery();
 
-  const deleteWorkAreaRecovery = async (id) => {};
+  const { bcpid } = useParams();
+
+  useEffect(() => {
+    fetchWorkAreaRecoveriesByBCPID(bcpid);
+  }, [bcpid]);
+
+  const handleDelete = async (id, site) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete "${site}" Work Area Recovery. This action cannot be undone.`,
+      "Yes, delete it!",
+      `"${site}" Work Area Recovery deleted successfully!`,
+      `Error deleting "${site}" Work Area Recovery`,
+      () => deleteWorkAreaRecovery(id, bcpid)
+    );
+    // deleteAlert(
+    //   "Are you sure?",
+    //   "You are about to delete Work Area Recovery. This action cannot be undone.",
+    //   "Yes, delete it!",
+    //   "Work Area Recovery deleted successfully!",
+    //   "Error deleting Work Area Recovery",
+    //   () => deleteWorkAreaRecovery(id, bcpid)
+    // );
+  };
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -13,7 +51,7 @@ const WorkAreaRecovery = () => {
           Work Area Recovery
         </h1>
         <Link
-          to="/createWorkAreaRecovery"
+          to={`/createWorkAreaRecovery/${bcpid}`}
           className="btn-primary font-semibold"
         >
           Add Details
@@ -35,7 +73,7 @@ const WorkAreaRecovery = () => {
             </tr>
           </thead>
           <tbody>
-            {workAreaRecovery.map((workAreaRecovery) => (
+            {workAreaRecoveries.map((workAreaRecovery) => (
               <tr key={workAreaRecovery._id} className="hover:bg-indigo-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {workAreaRecovery.site}
@@ -58,7 +96,7 @@ const WorkAreaRecovery = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editWorkAreaRecovery/${workAreaRecovery._id}`}
+                      to={`/editWorkAreaRecovery/${bcpid}/${workAreaRecovery._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
@@ -66,7 +104,10 @@ const WorkAreaRecovery = () => {
                     <button
                       className="doc-delete-btn"
                       onClick={() =>
-                        deleteWorkAreaRecovery(workAreaRecovery._id)
+                        handleDelete(
+                          workAreaRecovery._id,
+                          workAreaRecovery.site
+                        )
                       }
                     >
                       Delete
