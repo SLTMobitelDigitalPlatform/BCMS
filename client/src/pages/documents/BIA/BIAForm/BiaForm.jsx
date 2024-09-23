@@ -73,13 +73,13 @@ const BIAForm = () => {
               <th className="w-28 doc-table-border">Date Last Reviewed</th>
               <th className="w-28 doc-table-border">
                 Date Due for Next Review
-              </th>          
+              </th>
               <th className="w-28 doc-table-border">Actions</th>
             </tr>
           </thead>
           <tbody>
             {businessImpactAnalysisPlans.map((bia) => (
-              <tr key={bia._id} className="hover:bg-indigo-100">
+              <tr key={bia._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {bia.docNo}
                 </td>
@@ -95,9 +95,7 @@ const BIAForm = () => {
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {bia.approver}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.owner}
-                </td>               
+                <td className="py-2 px-4 w-36 doc-table-border">{bia.owner}</td>
                 <td className="py-2 px-4 w-36 doc-table-border">
                   {bia.maintainers && bia.maintainers.length > 0 ? (
                     bia.maintainers.join(", ")
