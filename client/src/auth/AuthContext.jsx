@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
@@ -6,12 +7,29 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
+    const isUserAuthenticated = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:5000/currentuser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const currentUser = response.data;
+        // console.log(currentUser);
+        if (currentUser) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setIsAuthenticated(false);
+        logout();
+      }
+    };
+
+    isUserAuthenticated();
   }, []);
 
   const login = () => {
