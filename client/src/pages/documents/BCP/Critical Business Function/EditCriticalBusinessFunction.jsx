@@ -31,10 +31,10 @@ const EditCriticalBusinessFunction = () => {
   useEffect(() => {
     if (criticalBusinessFunction) {
       setFormData({
-        name: criticalBusinessFunction.name,
-        description: criticalBusinessFunction.description,
-        criticality: criticalBusinessFunction.criticality,
-        rto: criticalBusinessFunction.rto,
+        name: criticalBusinessFunction.name || "",
+        description: criticalBusinessFunction.description || "",
+        criticality: criticalBusinessFunction.criticality || "",
+        rto: criticalBusinessFunction.rto || "",
       });
     }
   }, [criticalBusinessFunction]);

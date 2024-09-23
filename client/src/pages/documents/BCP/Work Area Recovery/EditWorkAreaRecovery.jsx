@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useWorkAreaRecovery } from "../../../../hooks/documents/bcp/useWorkAreaRecovery";
-import { createAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
-const CreateWorkAreaRecovery = () => {
+const EditWorkAreaRecovery = () => {
   const [formData, setFormData] = useState({
     site: "",
     availableFrom: "",
@@ -14,31 +14,60 @@ const CreateWorkAreaRecovery = () => {
     contactNumber: "",
   });
 
-  const { bcpid } = useParams();
-  const [isCreating, setIsCreating] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/work-area-recovery/${bcpid}`;
 
-  const { addWorkAreaRecovery } = useWorkAreaRecovery();
+  const {
+    workAreaRecovery,
+    loading,
+    fetchWorkAreaRecoveryByIds,
+    updateWorkAreaRecovery,
+  } = useWorkAreaRecovery();
+
+  useEffect(() => {
+    fetchWorkAreaRecoveryByIds(bcpid, id);
+  }, []);
+
+  useEffect(() => {
+    if (workAreaRecovery) {
+      setFormData({
+        site: workAreaRecovery.site || "",
+        availableFrom: workAreaRecovery.availableFrom || "",
+        availableTo: workAreaRecovery.availableTo || "",
+        travelDistance: workAreaRecovery.travelDistance || "",
+        travelTime: workAreaRecovery.travelTime || "",
+        contactNumber: workAreaRecovery.contactNumber || "",
+      });
+    }
+  }, [workAreaRecovery]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true);
+    setIsUpdating(true);
 
     try {
       // ! Add duplicate id validation
 
       const workAreaRecoveryData = { ...formData, bcpid };
-      await addWorkAreaRecovery(workAreaRecoveryData);
-      createAlert(
-        "Work Area Recovery Added",
-        `Work Area Recovery "${formData.site}" added successfully!`
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${workAreaRecovery.site}"?`,
+        "Yes, Update it!",
+        `"${workAreaRecovery.site}" has been updated successfully!`,
+        `Failed to update "${workAreaRecovery.site}"!`,
+        () => updateWorkAreaRecovery(id, workAreaRecoveryData)
       );
-      navigate(path);
+
+      if (result === "success") {
+        navigate(path);
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsUpdating(false);
     }
   };
 
@@ -48,6 +77,13 @@ const CreateWorkAreaRecovery = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -135,14 +171,14 @@ const CreateWorkAreaRecovery = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isCreating ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isCreating}
+              disabled={isUpdating}
             >
-              {isCreating ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Create"
+                "Update"
               )}
             </button>
             <Link
@@ -158,4 +194,4 @@ const CreateWorkAreaRecovery = () => {
   );
 };
 
-export default CreateWorkAreaRecovery;
+export default EditWorkAreaRecovery;
