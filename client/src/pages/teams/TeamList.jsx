@@ -94,9 +94,9 @@ const TeamList = () => {
     fetchUsers();
   };
 
-  const handleResponsibilityChange = (memberId, responsibility) => {
-    setResponsibilities({ ...responsibilities, [memberId]: responsibility });
-  };
+  // const handleResponsibilityChange = (memberId, responsibility) => {
+  //   setResponsibilities({ ...responsibilities, [memberId]: responsibility });
+  // };
 
   const handleSecondaryMemberChange = (memberId, secondaryMemberId) => {
     setSecondaryMembers({
@@ -105,23 +105,23 @@ const TeamList = () => {
     });
   };
 
-  const handleSubmitResponsibilities = async () => {
-    const updatedResponsibilities = selectedTeam.teamMembers.map((member) => ({
-      memberId: member._id,
-      responsibility: responsibilities[member._id],
-    }));
+  // const handleSubmitResponsibilities = async () => {
+  //   const updatedResponsibilities = selectedTeam.teamMembers.map((member) => ({
+  //     memberId: member._id,
+  //     responsibility: responsibilities[member._id],
+  //   }));
 
-    try {
-      await updateTeamResponsibilities(
-        selectedTeam._id,
-        updatedResponsibilities
-      );
-      setShowModal(false);
-      fetchTeams();
-    } catch (error) {
-      console.error("Error updating responsibilities:", error);
-    }
-  };
+  //   try {
+  //     await updateTeamResponsibilities(
+  //       selectedTeam._id,
+  //       updatedResponsibilities
+  //     );
+  //     setShowModal(false);
+  //     fetchTeams();
+  //   } catch (error) {
+  //     console.error("Error updating responsibilities:", error);
+  //   }
+  // };
 
   const handleSubmitSecondaryMembers = async () => {
     const updatedTeam = selectedTeam.teamMembers.map((member) => ({
