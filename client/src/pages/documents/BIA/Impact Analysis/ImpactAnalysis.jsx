@@ -1,19 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import BIANavigation from "../../../components/BIANavigation";
+import BIANavigation from "../../../../components/BIANavigation";
 
-const ImpactAnalysis = () => {
+const BiaImpactAnalysis = () => {
   const navigate = useNavigate();
 
   return (
     <div className="flex h-screen overflow-hidden">
-    
       
       {/* Impact Analysis Container */}
       <div className="impact-analysis-container flex-1 bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto"> 
-     
         <div className="impact-analysis-content mt-6 px-5">
-          
+
+
+
           {/* Severity Level - Operational */}
           <div className="severity-level-table bg-white rounded-xl p-5 shadow-md">
             <h3 className="text-lg font-semibold mb-4">
@@ -101,6 +101,32 @@ const ImpactAnalysis = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Severity Level - Legal and Regulatory Compliance */}
+          <div className="severity-level-table bg-white rounded-xl p-5 shadow-md mt-6">
+            <h3 className="text-lg font-semibold mb-4">
+              Severity Level – Legal and Regulatory Compliance
+            </h3>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="border p-2 bg-blue-900 text-white">Measure Keys</th>
+                  <th className="border p-2 bg-blue-900 text-white">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border p-2 bg-teal-400">Not Breached</td>
+                  <td className="border p-2">Threshold not breached</td>
+                </tr>
+                <tr>
+                  <td className="border p-2 bg-orange-500">Breached</td>
+                  <td className="border p-2">Threshold breached</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>
@@ -139,4 +165,4 @@ const Sidebar = () => (
   </div>
 );
 
-export default ImpactAnalysis;
+export default BiaImpactAnalysis;
