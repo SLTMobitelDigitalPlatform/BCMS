@@ -1,59 +1,82 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useVersionControl } from "../../../../hooks/documents/Context of the Organization/useVersionControl";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const VersionControls = () => {
-  const [versionControls, setVersionControls] = useState([]);
+  // const [versionControls, setVersionControls] = useState([]);
 
-  const fetchVersionControls = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/versionControls/"
-      );
-      setVersionControls(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const {
+    versionControls,
+    loading,
+    fetchVersionControls,
+    deleteVersionControl,
+  } = useVersionControl();
+
+  // const fetchVersionControls = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "http://localhost:5000/api/versionControls/"
+  //     );
+  //     setVersionControls(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchVersionControls();
   }, []);
 
   // Delete a risk with SweetAlert2 confirmation
-  const deleteVersionControl = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(
-            `http://localhost:5000/api/versionControls/delete/${id}`
-          );
-          setVersionControls(
-            versionControls.filter(
-              (versionControl) => versionControl._id !== id
-            )
-          );
-          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the record.",
-            "error"
-          );
-        }
-      }
-    });
+  const handleDelete = async (id, serialNo, versionNo) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete "${serialNo} - ${versionNo}" Version Control. This action cannot be undone.`,
+      "Yes, delete it!",
+      `"${serialNo} - ${versionNo}" Version Control deleted successfully!`,
+      "Error deleting Version Control",
+      () => deleteVersionControl(id)
+    );
+    // Swal.fire({
+    //   title: "Are you sure?",
+    //   text: "You won't be able to revert this!",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#3085d6",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "Yes, delete it!",
+    // }).then(async (result) => {
+    //   if (result.isConfirmed) {
+    //     try {
+    //       await axios.delete(
+    //         `http://localhost:5000/api/versionControls/delete/${id}`
+    //       );
+    //       setVersionControls(
+    //         versionControls.filter(
+    //           (versionControl) => versionControl._id !== id
+    //         )
+    //       );
+    //       Swal.fire("Deleted!", "Version Control has been deleted.", "success");
+    //     } catch (error) {
+    //       console.error(error);
+    //       Swal.fire(
+    //         "Error!",
+    //         "There was a problem deleting the record.",
+    //         "error"
+    //       );
+    //     }
+    //   }
+    // });
   };
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -81,7 +104,7 @@ const VersionControls = () => {
           </thead>
           <tbody>
             {versionControls.map((v) => (
-              <tr key={v._id} className="hover:bg-indigo-100">
+              <tr key={v._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {v.serialNo}
                 </td>
@@ -104,7 +127,9 @@ const VersionControls = () => {
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deleteVersionControl(v._id)}
+                      onClick={() =>
+                        handleDelete(v._id, v.serialNo, v.versionNo)
+                      }
                     >
                       Delete
                     </button>

@@ -74,7 +74,7 @@ const WorkAreaRecovery = () => {
           </thead>
           <tbody>
             {workAreaRecoveries.map((workAreaRecovery) => (
-              <tr key={workAreaRecovery._id} className="hover:bg-indigo-100">
+              <tr key={workAreaRecovery._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {workAreaRecovery.site}
                 </td>
