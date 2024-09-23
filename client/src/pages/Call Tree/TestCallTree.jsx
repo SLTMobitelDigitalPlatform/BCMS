@@ -110,17 +110,14 @@ function TestCallTree() {
   };
 
   return (
-    <div>
+    <div className="w-[1100px] h-[600px] overflow-y-scroll ">
       <h1 className="text-center text-4xl">{sectionName}</h1>
       <Link to="/calltreetable">
         <div className="text-white bg-blue-900 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm w-40 px-3 py-2">
           Go to Table
         </div>
       </Link>
-
-      <div className="w-[1100px] h-[600px] overflow-auto">
-        <OrgDiagram centerOnCursor={true} config={config} />
-      </div>
+      <OrgDiagram centerOnCursor={true} config={config} />
     </div>
   );
 }
