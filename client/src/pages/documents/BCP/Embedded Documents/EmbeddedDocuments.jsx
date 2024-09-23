@@ -1,27 +1,32 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 import { FaSpinner } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
+import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
+import { deleteAlert } from "../../../../utilities/alert";
 
 const EmbeddedDocuments = () => {
   const {
     embeddedDocuments,
     loading,
-    error,
-    fetchEmbeddedDocuments,
+    fetchEmbeddedDocumentsByBCPID,
     deleteEmbeddedDocument,
   } = useEmbeddedDocuments();
 
+  const { bcpid } = useParams();
+
   useEffect(() => {
-    fetchEmbeddedDocuments();
+    fetchEmbeddedDocumentsByBCPID(bcpid);
   }, []);
 
-  const deleteEmbeddedDoc = async (id) => {
-    try {
-      await deleteEmbeddedDocument(id);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleDelete = async (id, number) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete "${number}" Embedded Document. This action cannot be undone.`,
+      "Yes, delete it!",
+      `"${number}" Embedded Document deleted successfully!`,
+      "Error deleting Embedded Document",
+      () => deleteEmbeddedDocument(id, bcpid)
+    );
   };
 
   if (loading)
@@ -30,7 +35,6 @@ const EmbeddedDocuments = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -39,7 +43,7 @@ const EmbeddedDocuments = () => {
           Embedded List/Grab List
         </h1>
         <Link
-          to="/createEmbeddedDocument"
+          to={`/createEmbeddedDocument/${bcpid}`}
           className="btn-primary font-semibold"
         >
           Add Details
@@ -82,14 +86,16 @@ const EmbeddedDocuments = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editEmbeddedDocument/${embedDoc._id}`}
+                      to={`/editEmbeddedDocument/${bcpid}/${embedDoc._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deleteEmbeddedDoc(embedDoc._id)}
+                      onClick={() =>
+                        handleDelete(embedDoc._id, embedDoc.number)
+                      }
                     >
                       Delete
                     </button>

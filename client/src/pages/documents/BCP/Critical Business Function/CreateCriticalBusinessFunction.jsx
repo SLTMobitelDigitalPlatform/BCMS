@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateCriticalBusinessFunction = () => {
   const [formData, setFormData] = useState({
@@ -9,10 +12,31 @@ const CreateCriticalBusinessFunction = () => {
     rto: "",
   });
 
+  const { bcpid } = useParams();
+  const [isCreating, setIsCreating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/critical-business-function/${bcpid}`;
+
+  const { addCriticalBusinessFunction } = useCriticalBusinessFunction();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Submit the form data to backend or API
+    setIsCreating(true);
+    try {
+      // ! Add duplicate id validation
+
+      const criticalBusinessFunctionData = { ...formData, bcpid };
+      await addCriticalBusinessFunction(criticalBusinessFunctionData);
+      createAlert(
+        "Critical Business Function Added",
+        `Critical Business Function "${formData.name}" added successfully!`
+      );
+      navigate(path);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -78,12 +102,19 @@ const CreateCriticalBusinessFunction = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isCreating}
             >
-              Save
+              {isCreating ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Create"
+              )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/critical-business-function"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

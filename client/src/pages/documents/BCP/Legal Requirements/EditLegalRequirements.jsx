@@ -4,7 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, updateAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
 const EditLegalRequirements = () => {
   const [formData, setFormData] = useState({
@@ -13,30 +13,25 @@ const EditLegalRequirements = () => {
     monitoredBy: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const path = `/Business-Continuity-Plan/legal-requirements/${bcpid}`;
 
-  const {
-    sortedUsers,
-    loading: usersLoading,
-    error: usersError,
-    fetchUsers,
-  } = useUsers();
+  const { sortedUsers, loading: usersLoading, fetchUsers } = useUsers();
+
   const {
     legalRequirement,
     loading: legalRequirementLoading,
-    error: legalRequirementError,
-    fetchLegalRequirementById,
+    fetchLegalRequirementByIds,
     updateLegalRequirement,
   } = useLegalRequirements();
 
   useEffect(() => {
     fetchUsers();
-    fetchLegalRequirementById(id);
+    fetchLegalRequirementByIds(bcpid, id);
   }, []);
 
-  // Update formData when legalRequirement is fetched
   useEffect(() => {
     if (legalRequirement) {
       setFormData({
@@ -49,9 +44,11 @@ const EditLegalRequirements = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
+
+      const legalRequirementData = { ...formData, bcpid };
 
       const result = await updateAlert(
         "Confirm Update",
@@ -59,16 +56,13 @@ const EditLegalRequirements = () => {
         "Yes, Update it!",
         `"${legalRequirement.name}" has been updated successfully!`,
         `Failed to update "${legalRequirement.name}"!`,
-        async () => {
-          await updateLegalRequirement(id, formData);
-        }
+        () => updateLegalRequirement(id, legalRequirementData)
       );
 
       if (result === "success") {
-        navigate("/Business-Continuity-Plan/legal-requirements");
+        navigate(path);
       }
     } catch (error) {
-      errorAlert("Error", error.message || "Error updating Legal Requirement");
       console.log(error);
     }
   };
@@ -94,9 +88,6 @@ const EditLegalRequirements = () => {
       </div>
     );
   }
-
-  if (usersError || legalRequirementError)
-    return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -147,18 +138,18 @@ const EditLegalRequirements = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isUpdating}
             >
-              {isSaving ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Update"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/legal-requirements"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
-import { errorAlert, updateAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
 const EditResourcesRequired = () => {
   const [formData, setFormData] = useState({
@@ -15,20 +15,20 @@ const EditResourcesRequired = () => {
     operationalDuration: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const path = `/Business-Continuity-Plan/resources-required/${bcpid}`;
 
   const {
     resourceRequired,
     loading: resourceRequiredLoading,
-    error: resourceRequiredError,
-    fetchResourceRequiredById,
+    fetchResourceRequiredByIds,
     updateResourceRequired,
   } = useResourcesRequired();
 
   useEffect(() => {
-    fetchResourceRequiredById(id);
+    fetchResourceRequiredByIds(bcpid, id);
   }, []);
 
   useEffect(() => {
@@ -47,9 +47,11 @@ const EditResourcesRequired = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
+
+      const resourceRequiredData = { ...formData, bcpid };
 
       const result = await updateAlert(
         "Confirm Update",
@@ -57,19 +59,16 @@ const EditResourcesRequired = () => {
         "Yes, Update it!",
         `"${resourceRequired.name}" has been updated successfully!`,
         `Failed to update "${resourceRequired.name}"!`,
-        async () => {
-          await updateResourceRequired(id, formData);
-        }
+        () => updateResourceRequired(id, resourceRequiredData)
       );
 
       if (result === "success") {
-        navigate("/Business-Continuity-Plan/resources-required");
+        navigate(path);
       }
     } catch (error) {
-      errorAlert("Error", error.message || "Error updating Resource Required");
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsUpdating(false);
     }
   };
 
@@ -86,7 +85,6 @@ const EditResourcesRequired = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (resourceRequiredError) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -186,18 +184,18 @@ const EditResourcesRequired = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isUpdating}
             >
-              {isSaving ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Update"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/resources-required"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

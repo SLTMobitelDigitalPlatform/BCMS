@@ -26,7 +26,7 @@ const CreateBCP = () => {
     dateDueForNextReview: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
 
   // useHooks
@@ -69,7 +69,7 @@ const CreateBCP = () => {
   // Create new Business Continuity Plan
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsCreating(true);
 
     try {
       const isDuplicate = await checkDuplicateBCPID(formData.bcpid);
@@ -79,7 +79,7 @@ const CreateBCP = () => {
           "Error",
           `BCP ID "${formData.bcpid}" already exists! Please choose a different ID.`
         );
-        setIsSaving(false);
+        setIsCreating(false);
         return;
       }
 
@@ -96,7 +96,7 @@ const CreateBCP = () => {
       );
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsCreating(false);
     }
   };
 
@@ -124,16 +124,6 @@ const CreateBCP = () => {
       });
     }
   };
-
-  const years = [
-    { value: "2018", label: "2018" },
-    { value: "2019", label: "2019" },
-    { value: "2020", label: "2020" },
-    { value: "2021", label: "2021" },
-    { value: "2022", label: "2022" },
-    { value: "2023", label: "2023" },
-    { value: "2024", label: "2024" },
-  ];
 
   if (loadingUsers || loadingSections || loadingBCPForms)
     return (
@@ -190,12 +180,13 @@ const CreateBCP = () => {
             </div>
             <div className="flex flex-col gap-2 w-full">
               <label className="font-semibold">Year</label>
-              <Select
-                options={years}
-                value={years.find((year) => year.value === formData.year)}
-                onChange={(option) => handleSelectChange(option, "year")}
-                isClearable={true}
-                placeholder="Select Year"
+              <input
+                type="text"
+                name="year"
+                value={formData.year}
+                onChange={handleChange}
+                placeholder="Enter Year"
+                className="p-2 w-full rounded"
               />
             </div>
           </div>
@@ -318,14 +309,14 @@ const CreateBCP = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isCreating}
             >
-              {isSaving ? (
+              {isCreating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Create"
               )}
             </button>
             <Link

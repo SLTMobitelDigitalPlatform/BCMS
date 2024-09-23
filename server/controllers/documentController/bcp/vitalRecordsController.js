@@ -1,6 +1,6 @@
 const VitalRecords = require("../../../models/documentModels/bcp/vitalRecordsModel");
 
-// Create a new vital records
+// Create a new vital record
 exports.createVitalRecord = async (req, res) => {
   try {
     const newVitalRecord = new VitalRecords(req.body);
@@ -21,7 +21,21 @@ exports.getAllVitalRecords = async (req, res) => {
   }
 };
 
-// Get last vital records
+// Get all vital records by BCP ID
+exports.getVitalRecordsByBCPID = async (req, res) => {
+  const filter = { bcpid: req.params.bcpid };
+  try {
+    const vitalRecords = await VitalRecords.find(filter);
+    if (!vitalRecords) {
+      return res.status(404).json({ message: "Vital Records not found" });
+    }
+    res.status(200).json(vitalRecords);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get last vital record
 exports.getLastVitalRecord = async (req, res) => {
   try {
     const lastVitalRecord = await VitalRecords.findOne().sort({
@@ -34,12 +48,13 @@ exports.getLastVitalRecord = async (req, res) => {
   }
 };
 
-// Get a single vital records by ID
-exports.getVitalRecordById = async (req, res) => {
+// Get a single vital record by BCP ID and MongoDB ID
+exports.getVitalRecordByIds = async (req, res) => {
+  const { bcpid, id } = req.params;
   try {
-    const vitalRecord = await VitalRecords.findById(req.params.id);
+    const vitalRecord = await VitalRecords.findOne({ _id: id, bcpid });
     if (!vitalRecord) {
-      return res.status(404).json({ message: "Vital Records not found" });
+      return res.status(404).json({ message: "Vital Record not found" });
     }
     res.status(200).json(vitalRecord);
   } catch (error) {
@@ -47,7 +62,7 @@ exports.getVitalRecordById = async (req, res) => {
   }
 };
 
-// Update a vital records
+// Update a vital record
 exports.updateVitalRecord = async (req, res) => {
   try {
     const updatedVitalRecord = await VitalRecords.findByIdAndUpdate(
@@ -56,7 +71,7 @@ exports.updateVitalRecord = async (req, res) => {
       { new: true }
     );
     if (!updatedVitalRecord) {
-      return res.status(404).json({ message: "Vital Records not found" });
+      return res.status(404).json({ message: "Vital Record not found" });
     }
     res.status(200).json(updatedVitalRecord);
   } catch (error) {
@@ -64,16 +79,16 @@ exports.updateVitalRecord = async (req, res) => {
   }
 };
 
-// Delete a vital records
+// Delete a vital record
 exports.deleteVitalRecord = async (req, res) => {
   try {
     const deletedVitalRecord = await VitalRecords.findByIdAndDelete(
       req.params.id
     );
     if (!deletedVitalRecord) {
-      return res.status(404).json({ message: "Vital Records not found" });
+      return res.status(404).json({ message: "Vital Record not found" });
     }
-    res.status(200).json({ message: "Vital Records deleted successfully" });
+    res.status(200).json({ message: "Vital Record deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

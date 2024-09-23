@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
 import { deleteAlert } from "../../../../utilities/alert";
 
@@ -8,29 +8,25 @@ const PreIncidentPreparation = () => {
   const {
     preIncidentPreparations,
     loading,
-    error,
-    fetchPreIncidentPreparation,
+    fetchPreIncidentPreparationByBCPID,
     deletePreIncidentPreparation,
   } = usePreIncidentPreparation();
 
+  const { bcpid } = useParams();
+
   useEffect(() => {
-    fetchPreIncidentPreparation();
+    fetchPreIncidentPreparationByBCPID(bcpid);
   }, []);
 
-  const deletePreIncidentPrep = async (id) => {
+  const handleDelete = async (id) => {
     deleteAlert(
       "Are you sure?",
       "You are about to delete Pre-Incident Preparation. This action cannot be undone.",
       "Yes, delete it!",
       "Pre-Incident Preparation deleted successfully!",
       "Error deleting Pre-Incident Preparation",
-      async () => await deletePreIncidentPreparation(id)
+      () => deletePreIncidentPreparation(id, bcpid)
     );
-    // try {
-    //   await deletePreIncidentPreparation(id);
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   if (loading)
@@ -39,7 +35,6 @@ const PreIncidentPreparation = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -48,7 +43,7 @@ const PreIncidentPreparation = () => {
           Pre-Incident Preparation
         </h1>
         <Link
-          to="/createPreIncidentPreparation"
+          to={`/createPreIncidentPreparation/${bcpid}`}
           className="btn-primary font-semibold"
         >
           Add Details
@@ -85,14 +80,14 @@ const PreIncidentPreparation = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editPreIncidentPreparation/${pip._id}`}
+                      to={`/editPreIncidentPreparation/${bcpid}/${pip._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deletePreIncidentPrep(pip._id)}
+                      onClick={() => handleDelete(pip._id)}
                     >
                       Delete
                     </button>
