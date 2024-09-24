@@ -80,7 +80,7 @@ const BIANavigation = () => {
       {/* Navigation Links */}
       <div
         ref={scrollContainerRef}
-        className="flex overflow-hidden space-x-2 text-white font-semibold px-8" // Add padding to the sides to avoid overlay with buttons
+        className="flex overflow-hidden space-x-2  font-semibold px-8" // Add padding to the sides to avoid overlay with buttons
       >
         {[
           "BIA Form",
@@ -94,7 +94,6 @@ const BIANavigation = () => {
           "Dependencies",
           "Work Area Recovery",
           "Manpower",
-         
         ].map((link, idx) => (
           <NavLink
             key={idx}
@@ -103,7 +102,9 @@ const BIANavigation = () => {
               .toLowerCase()}`}
             className={({ isActive }) =>
               `whitespace-nowrap px-2 py-1 rounded-lg ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+                isActive
+                  ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                  : "border-2 border-indigo-900  hover:bg-indigo-100 "
               }`
             }
             onClick={() => handleTabClick(idx)}
