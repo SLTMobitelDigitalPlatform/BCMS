@@ -61,7 +61,7 @@ const Roles = () => {
           </thead>
           <tbody>
             {roles.map((role, index) => (
-              <tr key={index} className="hover:bg-indigo-100">
+              <tr key={index} className="hover:bg-gray-100">
                 <td className="py-3 px-8 border border-green-500 text-blue-900 text-lg">
                   {role.roles}
                 </td>

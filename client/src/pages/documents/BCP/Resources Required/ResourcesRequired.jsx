@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
 import { deleteAlert } from "../../../../utilities/alert";
 
@@ -8,23 +8,24 @@ const ResourcesRequired = () => {
   const {
     resourcesRequired,
     loading,
-    error,
-    fetchResourcesRequired,
+    fetchResourcesRequiredByBCPID,
     deleteResourceRequired,
   } = useResourcesRequired();
 
+  const { bcpid } = useParams();
+
   useEffect(() => {
-    fetchResourcesRequired();
+    fetchResourcesRequiredByBCPID(bcpid);
   }, []);
 
-  const deleteResReq = async (id, name) => {
+  const handleDelete = async (id, name) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Resource Required "${name}". This action cannot be undone.`,
       "Yes, delete it!",
       `Resource Reqired "${name}" deleted successfully!`,
       `Error deleting Resource Required "${name}"`,
-      async () => await deleteResourceRequired(id)
+      () => deleteResourceRequired(id, bcpid)
     );
   };
 
@@ -34,7 +35,6 @@ const ResourcesRequired = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
@@ -43,7 +43,7 @@ const ResourcesRequired = () => {
           Resources Required
         </h1>
         <Link
-          to="/createResourcesRequired"
+          to={`/createResourcesRequired/${bcpid}`}
           className="btn-primary font-semibold"
         >
           Add Details
@@ -67,7 +67,7 @@ const ResourcesRequired = () => {
           </thead>
           <tbody>
             {resourcesRequired.map((resourcesRequired) => (
-              <tr key={resourcesRequired._id} className="hover:bg-indigo-100">
+              <tr key={resourcesRequired._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {resourcesRequired.name}
                 </td>
@@ -92,7 +92,7 @@ const ResourcesRequired = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editResourcesRequired/${resourcesRequired._id}`}
+                      to={`/editResourcesRequired/${bcpid}/${resourcesRequired._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
@@ -100,7 +100,7 @@ const ResourcesRequired = () => {
                     <button
                       className="doc-delete-btn"
                       onClick={() =>
-                        deleteResReq(
+                        handleDelete(
                           resourcesRequired._id,
                           resourcesRequired.name
                         )

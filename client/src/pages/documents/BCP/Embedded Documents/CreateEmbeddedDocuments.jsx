@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useEmbeddedDocuments } from "../../../../hooks/documents/bcp/useEmbeddedDocuments";
 import { useUsers } from "../../../../hooks/useUsers";
-import { FaSpinner } from "react-icons/fa";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateEmbeddedDocuments = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +14,14 @@ const CreateEmbeddedDocuments = () => {
     physicalLocation: "",
     owner: "",
   });
-  const [isSaving, setIsSaving] = useState(false);
-  const navigate = useNavigate();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
+  const { bcpid } = useParams();
+
+  const [isCreating, setIsCreating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/embedded-documents/${bcpid}`;
+
+  const { sortedUsers, loading, fetchUsers } = useUsers();
   const { addEmbeddedDocument } = useEmbeddedDocuments();
 
   useEffect(() => {
@@ -26,37 +30,22 @@ const CreateEmbeddedDocuments = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsCreating(true);
     try {
-      await addEmbeddedDocument(formData);
-      handleSuccessAlert();
-      navigate("/Business-Continuity-Plan/embedded-documents");
+      // ! Add duplicate id validation
+
+      const embeddedDocumentData = { ...formData, bcpid };
+      await addEmbeddedDocument(embeddedDocumentData);
+      createAlert(
+        "Embedded Document Added",
+        `Embedded Document "${formData.number}" added successfully!`
+      );
+      navigate(path);
     } catch (error) {
-      handleErrorAlert();
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsCreating(false);
     }
-  };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Added Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
-    });
   };
 
   const handleChange = (e) => {
@@ -79,7 +68,6 @@ const CreateEmbeddedDocuments = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -158,18 +146,18 @@ const CreateEmbeddedDocuments = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isCreating}
             >
-              {isSaving ? (
+              {isCreating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Create"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/embedded-documents"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

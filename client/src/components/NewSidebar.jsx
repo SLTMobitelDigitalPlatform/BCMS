@@ -149,7 +149,7 @@ const NewSidebar = () => {
                   <hr className="my-1 border-black opacity-50" />
                   <li>
                     <NavLink
-                      to="/Business-Continuity-Plan/bcp-form"
+                      to="/business-continuity-plans"
                       className={({ isActive }) =>
                         `sidebar-link ${
                           isActive ? "dropdown-active" : "dropdown-hover"

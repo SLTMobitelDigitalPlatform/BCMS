@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
 const EditVitalRecords = () => {
   const [formData, setFormData] = useState({
@@ -16,20 +16,20 @@ const EditVitalRecords = () => {
     recoveryStrategy: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const path = `/Business-Continuity-Plan/vital-records/${bcpid}`;
 
   const {
     vitalRecord,
     loading: vitalRecordLoading,
-    error: vitalRecordError,
-    fetchVitalRecordById,
+    fetchVitalRecordByIds,
     updateVitalRecord,
   } = useVitalRecords();
 
   useEffect(() => {
-    fetchVitalRecordById(id);
+    fetchVitalRecordByIds(bcpid, id);
   }, []);
 
   useEffect(() => {
@@ -49,19 +49,28 @@ const EditVitalRecords = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsUpdating(true);
     try {
-      await updateVitalRecord(id, formData);
-      successAlert(
-        "Record Updated",
-        `Vital Record "${formData.name}" updated successfully!`
+      // ! Add duplicate id validation
+
+      const vitalRecordData = { ...formData, bcpid };
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${vitalRecord.name}"?`,
+        "Yes, Update it!",
+        `"${vitalRecord.name}" has been updated successfully!`,
+        `Failed to update "${vitalRecord.name}"!`,
+        () => updateVitalRecord(id, vitalRecordData)
       );
-      navigate("/Business-Continuity-Plan/vital-records");
+
+      if (result === "success") {
+        navigate(path);
+      }
     } catch (error) {
-      errorAlert("Error", error.message || "Error updating Vital Record");
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsUpdating(false);
     }
   };
 
@@ -79,8 +88,6 @@ const EditVitalRecords = () => {
       </div>
     );
   }
-
-  if (vitalRecordError) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -195,18 +202,18 @@ const EditVitalRecords = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isUpdating}
             >
-              {isSaving ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Update"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/vital-records"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

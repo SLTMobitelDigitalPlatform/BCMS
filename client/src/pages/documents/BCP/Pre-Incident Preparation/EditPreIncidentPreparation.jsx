@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { updateAlert } from "../../../../utilities/alert";
 
 const EditPreIncidentPreparation = () => {
   const [formData, setFormData] = useState({
@@ -11,20 +11,20 @@ const EditPreIncidentPreparation = () => {
     frequencyOrScheduleResponsibility: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const path = `/Business-Continuity-Plan/pre-incident-preparation/${bcpid}`;
 
   const {
     preIncidentPreparation,
     loading,
-    error,
-    fetchPreIncidentPreparationById,
+    fetchPreIncidentPreparationByIds,
     updatePreIncidentPreparation,
   } = usePreIncidentPreparation();
 
   useEffect(() => {
-    fetchPreIncidentPreparationById(id);
+    fetchPreIncidentPreparationByIds(bcpid, id);
   }, []);
 
   useEffect(() => {
@@ -40,22 +40,28 @@ const EditPreIncidentPreparation = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsUpdating(true);
     try {
-      await updatePreIncidentPreparation(id, formData);
-      successAlert(
-        "Record Updated",
-        "Pre-Incident Preparation updated successfully!"
+      // ! Add duplicate id validation
+
+      const preIncidentPreparationData = { ...formData, bcpid };
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${preIncidentPreparation.preIncidentMeasures}"?`,
+        "Yes, Update it!",
+        `"${preIncidentPreparation.preIncidentMeasures}" has been updated successfully!`,
+        `Failed to update "${preIncidentPreparation.preIncidentMeasures}"!`,
+        () => updatePreIncidentPreparation(id, preIncidentPreparationData)
       );
-      navigate("/Business-Continuity-Plan/pre-incident-preparation");
+
+      if (result === "success") {
+        navigate(path);
+      }
     } catch (error) {
-      errorAlert(
-        "Error",
-        error.message || "Error updating Pre-Incident Preparation!"
-      );
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsUpdating(false);
     }
   };
 
@@ -72,7 +78,6 @@ const EditPreIncidentPreparation = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -122,18 +127,18 @@ const EditPreIncidentPreparation = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isUpdating}
             >
-              {isSaving ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Update"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/pre-incident-preparation"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

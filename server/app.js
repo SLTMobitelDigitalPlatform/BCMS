@@ -42,12 +42,16 @@ const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
 // Business Continuity Plan Routes
 const routerBCPForm = require("./routes/documentRoutes/bcp/bcpFormRoutes");
+const routerDocumentControl = require("./routes/documentRoutes/bcp/documentControlRoutes");
+const routerRelatedDocuments = require("./routes/documentRoutes/bcp/relatedDocumentsRoutes");
+const routerRecoveryStrategy = require("./routes/documentRoutes/bcp/recoveryStrategyRoutes");
+const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
 const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
+const routerCriticalBusinessFunction = require("./routes/documentRoutes/bcp/criticalBusinessFunctionRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
+const routerWorkAreaRecovery = require("./routes/documentRoutes/bcp/workAreaRecoveryRoutes");
 const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
-const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
-
 
 // Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
@@ -86,15 +90,18 @@ app.use(
   routerInternalParty,
   routerCallTree,
   routerTeam,
-
   routerBCPForm,
+  routerDocumentControl,
+  routerRelatedDocuments,
+  routerRecoveryStrategy,
+  routerlegalRequirements,
   routerPreIncidentPreparation,
+  routerCriticalBusinessFunction,
   routerResourcesRequired,
   routerVitalRecords,
+  routerWorkAreaRecovery,
   routerEmbeddedDocument,
-  routerBiaForm,
-  routerlegalRequirements
-
+  routerBiaForm
 );
 
 // Create uploads directory if it doesn't exist

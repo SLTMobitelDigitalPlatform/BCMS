@@ -2,8 +2,9 @@ const express = require("express");
 const {
   createLegalRequirement,
   getAllLegalRequirements,
+  getLegalRequirementByBCPID,
   getLastLegalRequirement,
-  getLegalRequirementById,
+  getLegalRequirementByIds,
   updateLegalRequirement,
   deleteLegalRequirement,
 } = require("../../../controllers/documentController/bcp/LegalRequirementController");
@@ -14,9 +15,11 @@ router.post("/api/bcpLegalRequirement/add", createLegalRequirement);
 
 router.get("/api/bcpLegalRequirement", getAllLegalRequirements);
 
-router.get("/api/bcpLegalRequirement/last", getLastLegalRequirement);
+router.get("/api/bcpLegalRequirement/:bcpid", getLegalRequirementByBCPID);
 
-router.get("/api/bcpLegalRequirement/:id", getLegalRequirementById);
+router.get("/api/bcpLegalRequirement/:bcpid/:id", getLegalRequirementByIds);
+
+router.get("/api/bcpLegalRequirement/last", getLastLegalRequirement);
 
 router.put("/api/bcpLegalRequirement/edit/:id", updateLegalRequirement);
 

@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useSections } from "../../hooks/useSections";
 import { getUsers } from "../../services/userAPI";
-import { deleteAlert, errorAlert, successAlert } from "../../utilities/alert";
+import {
+  createAlert,
+  deleteAlert,
+  errorAlert,
+  updateAlert,
+} from "../../utilities/alert";
 import { validateSectionCode } from "../../utilities/helper";
 
 Modal.setAppElement("#root");
@@ -68,25 +73,33 @@ const Section = () => {
       sectionCoordinator === "" ? null : sectionCoordinator;
 
     try {
+      // ! Add duplicate id validation
       if (addEditSectionModal.type === "add") {
+        // ! Add duplicate id validation
         await addSection({
           sectionCode,
           name,
           sectionCoordinator: coordinatorValue,
         });
-        successAlert(
+        createAlert(
           "Section Added",
-          `The section "${name}" with code "${sectionCode}" has been successfully added!`
+          `The section "${name}" (${sectionCode}) has been successfully added!`
         );
       } else {
-        await editSection(addEditSectionModal.data._id, {
-          sectionCode,
-          name,
-          sectionCoordinator: coordinatorValue,
-        });
-        successAlert(
-          "Section Updated",
-          `The section "${name}" with code "${sectionCode}" has been successfully updated!`
+        // ! Add duplicate id validation
+        await updateAlert(
+          "Confirm Update",
+          `Are you sure you want to update section "${name}" (${sectionCode})?`,
+          "Yes, Update it!",
+          `"${name}" (${sectionCode}) has been updated successfully!`,
+          `Failed to update "${name}" (${sectionCode})!`,
+          async () => {
+            await editSection(addEditSectionModal.data._id, {
+              sectionCode,
+              name,
+              sectionCoordinator: coordinatorValue,
+            });
+          }
         );
       }
 
@@ -109,10 +122,10 @@ const Section = () => {
   const handleDeleteSection = async (id, sectionName, sectionCode) => {
     deleteAlert(
       "Are you sure?",
-      `You are about to delete the section "${sectionName}" with code "${sectionCode}". This action cannot be undone.`,
+      `You are about to delete the section "${sectionName}" (${sectionCode}). This action cannot be undone.`,
       "Yes, delete it!",
-      `Section "${sectionName}" deleted successfully!`,
-      `Error deleting section "${sectionName}"`,
+      `Section "${sectionName}" (${sectionCode}) deleted successfully!`,
+      `Error deleting section "${sectionName}" (${sectionCode})`,
       async () => await removeSection(id)
     );
   };
@@ -208,7 +221,7 @@ const Section = () => {
               <option value="" disabled>
                 Select
               </option>
-              {coordinatorOptions.map((option, index) => (
+              {coordinatorOptions.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.name}
                 </option>
@@ -255,7 +268,7 @@ const Section = () => {
           </thead>
           <tbody>
             {sections.map((section) => (
-              <tr key={section._id} className="hover:bg-indigo-100">
+              <tr key={section._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-28 doc-table-border">
                   {section.sectionCode}
                 </td>
@@ -305,3 +318,13 @@ const Section = () => {
 };
 
 export default Section;
+
+// await editSection(addEditSectionModal.data._id, {
+//   sectionCode,
+//   name,
+//   sectionCoordinator: coordinatorValue,
+// });
+// successAlert(
+//   "Section Updated",
+//   `The section "${name}" with code "${sectionCode}" has been successfully updated!`
+// );

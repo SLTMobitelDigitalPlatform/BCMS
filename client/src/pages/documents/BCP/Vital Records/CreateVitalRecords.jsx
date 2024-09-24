@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
 import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateVitalRecords = () => {
   const [formData, setFormData] = useState({
@@ -16,26 +16,30 @@ const CreateVitalRecords = () => {
     recoveryStrategy: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
+  const { bcpid } = useParams();
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/vital-records/${bcpid}`;
 
   const { addVitalRecord } = useVitalRecords();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsCreating(true);
     try {
-      await addVitalRecord(formData);
-      successAlert(
-        "Record Added",
+      // ! Add duplicate id validation
+
+      const vitalRecordData = { ...formData, bcpid };
+      await addVitalRecord(vitalRecordData);
+      createAlert(
+        "Vital Record Added",
         `Vital Record "${formData.name}" added successfully!`
       );
-      navigate("/Business-Continuity-Plan/vital-records");
+      navigate(path);
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Vital Record!");
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsCreating(false);
     }
   };
 
@@ -159,18 +163,18 @@ const CreateVitalRecords = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isCreating}
             >
-              {isSaving ? (
+              {isCreating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Create"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/vital-records"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

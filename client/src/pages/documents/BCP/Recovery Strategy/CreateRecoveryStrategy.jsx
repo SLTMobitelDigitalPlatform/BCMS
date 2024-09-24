@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useRecoveryStrategy } from "../../../../hooks/documents/bcp/useRecoveryStrategy";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateRecoveryStrategy = () => {
   const [formData, setFormData] = useState({
@@ -8,10 +11,30 @@ const CreateRecoveryStrategy = () => {
     outsourceOptions: "",
   });
 
+  const { bcpid } = useParams();
+  const [isCreating, setIsCreating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/recovery-strategy/${bcpid}`;
+
+  const { addRecoveryStrategy } = useRecoveryStrategy();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Submit the form data to backend or API
+    setIsCreating(true);
+    try {
+      // ! Add duplicate id validation
+      const recoveryStrategyData = { ...formData, bcpid };
+      await addRecoveryStrategy(recoveryStrategyData);
+      createAlert(
+        "Recovery Strategy Added",
+        `Recovery Strategy "${formData.primaryOperatingSite}" added successfully!`
+      );
+      navigate(path);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -66,12 +89,19 @@ const CreateRecoveryStrategy = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isCreating}
             >
-              Save
+              {isCreating ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Create"
+              )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/recovery-strategy"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

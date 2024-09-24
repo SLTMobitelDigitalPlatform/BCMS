@@ -2,8 +2,10 @@ const express = require("express");
 const {
   createPreIncidentPreparation,
   getAllPreIncidentPreparation,
+  getPreIncidentPreparationByBCPID,
+  getPreIncidentPreparationByIds,
   getLastPreIncidentPreparation,
-  getPreIncidentPreparationById,
+
   updatePreIncidentPreparation,
   deletePreIncidentPreparation,
 } = require("../../../controllers/documentController/bcp/preIncidentPreparationController");
@@ -15,11 +17,19 @@ router.post("/api/bcpPreIncidentPreparation/add", createPreIncidentPreparation);
 router.get("/api/bcpPreIncidentPreparation", getAllPreIncidentPreparation);
 
 router.get(
+  "/api/bcpPreIncidentPreparation/:bcpid",
+  getPreIncidentPreparationByBCPID
+);
+
+router.get(
+  "/api/bcpPreIncidentPreparation/:bcpid/:id",
+  getPreIncidentPreparationByIds
+);
+
+router.get(
   "/api/bcpPreIncidentPreparation/last",
   getLastPreIncidentPreparation
 );
-
-router.get("/api/bcpPreIncidentPreparation/:id", getPreIncidentPreparationById);
 
 router.put(
   "/api/bcpPreIncidentPreparation/edit/:id",

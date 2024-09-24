@@ -1,25 +1,27 @@
 import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useVitalRecords } from "../../../../hooks/documents/bcp/useVitalRecords";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const VitalRecords = () => {
-  const { vitalRecords, loading, error, fetchVitalRecords, deleteVitalRecord } =
+  const { vitalRecords, loading, fetchVitalRecordsByBCPID, deleteVitalRecord } =
     useVitalRecords();
 
+  const { bcpid } = useParams();
+
   useEffect(() => {
-    fetchVitalRecords();
+    fetchVitalRecordsByBCPID(bcpid);
   }, []);
 
-  const deleteVitalRec = async (id, name) => {
+  const handleDelete = async (id, name) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Vital Record "${name}". This action cannot be undone.`,
       "Yes, delete it!",
       `Vital Record "${name}" deleted successfully!`,
       `Error deleting Vital Record "${name}"`,
-      async () => await deleteVitalRecord(id)
+      () => deleteVitalRecord(id, bcpid)
     );
   };
 
@@ -29,13 +31,15 @@ const VitalRecords = () => {
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
       </div>
     );
-  if (error) return <div>{error}</div>;
 
   return (
     <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">Vital Records</h1>
-        <Link to="/createVitalRecord" className="btn-primary font-semibold">
+        <Link
+          to={`/createVitalRecord/${bcpid}`}
+          className="btn-primary font-semibold"
+        >
           Add Details
         </Link>
       </div>
@@ -60,7 +64,7 @@ const VitalRecords = () => {
           </thead>
           <tbody>
             {vitalRecords.map((vitalRec) => (
-              <tr key={vitalRec._id} className="hover:bg-indigo-100">
+              <tr key={vitalRec._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {vitalRec.name}
                 </td>
@@ -88,16 +92,14 @@ const VitalRecords = () => {
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editVitalRecords/${vitalRec._id}`}
+                      to={`/editVitalRecords/${bcpid}/${vitalRec._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() =>
-                        deleteVitalRec(vitalRec._id, vitalRec.name)
-                      }
+                      onClick={() => handleDelete(vitalRec._id, vitalRec.name)}
                     >
                       Delete
                     </button>

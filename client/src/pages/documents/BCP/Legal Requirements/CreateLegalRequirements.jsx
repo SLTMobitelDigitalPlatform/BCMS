@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Select from "react-select";
-
 import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { useUsers } from "../../../../hooks/useUsers";
-import { errorAlert, successAlert } from "../../../../utilities/alert";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateLegalRequirements = () => {
   const [formData, setFormData] = useState({
@@ -14,33 +13,36 @@ const CreateLegalRequirements = () => {
     monitoredBy: "",
   });
 
-  const [isSaving, setIsSaving] = useState(false);
-  const navigate = useNavigate();
+  const { bcpid } = useParams();
 
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
+  const [isCreating, setIsCreating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/legal-requirements/${bcpid}`;
+
+  const { sortedUsers, loading, fetchUsers } = useUsers();
   const { addLegalRequirement } = useLegalRequirements();
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsCreating(true);
     try {
-      addLegalRequirement(formData);
-      successAlert(
-        "Record Added",
-        `Legal Requirement ${formData.name} added successfully!`
+      // ! Add duplicate id validation
+
+      const legalRequirementData = { ...formData, bcpid };
+      await addLegalRequirement(legalRequirementData);
+      createAlert(
+        "Legal Requirement Added",
+        `Legal Requirement "${formData.name}" added successfully!`
       );
-      navigate(
-        "/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"
-      );
+      navigate(path);
     } catch (error) {
-      errorAlert("Error", error.message || "Error adding Legal Requirement");
       console.log(error);
     } finally {
-      setIsSaving(false);
+      setIsCreating(false);
     }
   };
 
@@ -64,8 +66,6 @@ const CreateLegalRequirements = () => {
       </div>
     );
   }
-
-  if (error) return <div>Error loading data.</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -116,18 +116,18 @@ const CreateLegalRequirements = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isSaving ? "opacity-50 cursor-not-allowed" : ""
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isSaving}
+              disabled={isCreating}
             >
-              {isSaving ? (
+              {isCreating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Save"
+                "Create"
               )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/legal-regulatory-&-contractual-requirements"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

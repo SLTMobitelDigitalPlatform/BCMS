@@ -27,12 +27,12 @@ const CreateMeeting = () => {
 
   const handleAttendeeChange = (selectedOptions) => {
     setAttendees(selectedOptions);
-  }; 
+  };
 
   const attendeeOptions = employees.map((employee) => ({
     value: employee._id,
     label: employee.name,
-  }));  
+  }));
 
   // select chairperson from all employees
   const handleChairedByClick = (employeeId) => {
@@ -47,7 +47,7 @@ const CreateMeeting = () => {
   };
 
   // Store form data in database
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     fetch("http://localhost:5000/createMeeting", {
       method: "POST",
@@ -96,7 +96,6 @@ const CreateMeeting = () => {
         <div className="mx-10">
           <div className="pb-2">
             <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
               <div className="sm:col-span-3">
                 <label
                   htmlFor="Purpose"
@@ -220,17 +219,16 @@ const CreateMeeting = () => {
                   </select>
                 </div>
               </div>
-              
             </div>
 
-            <div className="sm:col-span-3 mt-5" >
-                <label
-                  htmlFor="Attendees"
-                  className="block text-m font-medium leading-6 text-[#003E81]"
-                >
-                  Attendees
-                </label>
-                <div className="mt-2">
+            <div className="sm:col-span-3 mt-5">
+              <label
+                htmlFor="Attendees"
+                className="block text-m font-medium leading-6 text-[#003E81]"
+              >
+                Attendees
+              </label>
+              <div className="mt-2">
                 <Select
                   isMulti
                   value={attendees}
@@ -239,10 +237,8 @@ const CreateMeeting = () => {
                   className="basic-multi-select"
                   classNamePrefix="select"
                 />
-
-                </div>
+              </div>
             </div>
-
           </div>
         </div>
 
@@ -259,7 +255,9 @@ const CreateMeeting = () => {
             </thead>
             <tbody>
               {attendees.map((attendee, i) => {
-                const fullAttendee = employees.find((emp) => emp._id === attendee.value); // Match attendee's ID with employee data
+                const fullAttendee = employees.find(
+                  (emp) => emp._id === attendee.value
+                ); // Match attendee's ID with employee data
                 if (!fullAttendee) return null; // If employee data is missing, skip rendering
                 return (
                   <tr
@@ -269,7 +267,8 @@ const CreateMeeting = () => {
                     <td>{i + 1}</td>
                     <td>{fullAttendee.name}</td>
                     <td>{fullAttendee.designation}</td>
-                    <td>{fullAttendee.section?.name || "N/A"}</td> {/* Changed to safely access section name */}
+                    <td>{fullAttendee.section?.name || "N/A"}</td>{" "}
+                    {/* Changed to safely access section name */}
                     <td>
                       <button
                         type="button"
