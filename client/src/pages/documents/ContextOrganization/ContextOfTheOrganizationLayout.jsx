@@ -8,7 +8,7 @@ const ContextOfTheOrganizationLayout = () => {
         Context Of The Organization
       </h1>
       <ContextNavigation />
-      <div className="overflow-hidden h-screen rounded-2xl bg-indigo-200 mt-3">
+      <div className="overflow-hidden h-screen rounded-2xl  mt-1">
         <Outlet />
       </div>
     </div>

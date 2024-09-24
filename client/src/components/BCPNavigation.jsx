@@ -107,8 +107,10 @@ const BCPNavigation = () => {
               .replace(/\s+/g, "-")
               .toLowerCase()}/${bcpid}`}
             className={({ isActive }) =>
-              `block px-2 py-1 rounded text-white font-semibold text-center ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              `block px-2 py-1 rounded  font-semibold text-center ${
+                isActive
+                  ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                  : "border-2 border-indigo-900  hover:bg-green-400 "
               }`
             }
             onClick={() => {

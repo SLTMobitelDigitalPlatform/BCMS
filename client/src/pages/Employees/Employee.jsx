@@ -183,7 +183,7 @@ const Employee = () => {
         )} */}
 
         <div className="mt-5">
-          <table className="table-fixed w-full min-w-full bg-cyan-50 border-green-500">
+          <table className="table-fixed w-full min-w-full border-green-500">
             <thead className="bg-indigo-800 text-white">
               <tr>
                 <th className="w-28 border border-green-500">Name</th>
