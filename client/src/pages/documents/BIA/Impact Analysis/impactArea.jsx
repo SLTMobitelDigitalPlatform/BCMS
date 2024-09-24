@@ -1,28 +1,5 @@
 import React, { useState }  from 'react';
 
-// Tabs Component
-const Tabs = () => {
-  return (
-    <div className="flex space-x-4 p-4 border-b">
-      <button className="px-4 py-2 text-blue-600">
-        Severity Level
-      </button>
-      <button className="px-4 py-2 text-blue-600">
-        Impact Areas
-      </button>
-    </div>
-  );
-};
-
-// Dropdown Component
-const Dropdown = () => {
-  return (
-    <div className="">
-      
-    </div>
-  );
-};
-
 const ImpactAnalysisGrid = () => {
   const headers = [
     "30 Min", "1 Hour", "2 Hours", "4 Hours", "6 Hours", "8 Hours", 
@@ -75,7 +52,7 @@ const ImpactAnalysisGrid = () => {
       severityLevels: ["Not Breached", "Breached"],
       colors: {
         "Not Breached": "bg-green-200",
-        Breached: "bg-red-400"
+        "Breached": "bg-red-400"
       }
     }
   ];
@@ -97,14 +74,14 @@ const ImpactAnalysisGrid = () => {
   };
 
   return (
-    <div className="overflow-x-auto overflow-y-auto p-4">
-      <table className="min-w-full border-collapse">
-        <thead>
+    <div className="h-screen overflow-auto pb-40">
+      <table className="table-fixed relative p-20">
+        <thead className="sticky top-0 text-white">
           <tr>
-            <th className="px-6 py-2 border-b text-left"></th> 
-            <th className="px-6 py-2 border-b text-left">Impact Areas</th>
+            <th className="w-20 doc-table-border sticky left-0 bg-indigo-100 "></th> 
+            <th className="doc-table-border sticky top-0 left-24  bg-indigo-800 ">Impact Areas</th>
             {headers.map((header) => (
-              <th key={header} className="px-6 py-2 border-b text-center">{header}</th>
+              <th key={header} className="w-16 px-6 py-2 border-b text-center bg-indigo-800">{header}</th>
             ))}
           </tr>
         </thead>
@@ -112,17 +89,19 @@ const ImpactAnalysisGrid = () => {
           {categories.map((category, categoryIndex) => (
             <React.Fragment key={categoryIndex}>
               {category.rows.map((row, rowIndex) => (
-                <tr key={rowIndex}>
+                <tr key={rowIndex} >
                   {rowIndex === 0 && (
-                    <td
+                    <td 
                       rowSpan={category.rows.length}
-                      className="px-6 py-4 border-b font-semibold text-center"
+                      className="sticky left-0 bg-indigo-100 px-6 py-4 border-b font-semibold text-center whitespace-pre-wrap "
                       style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
                     >
-                      {category.title}
+                      {category.title === "Legal and Regulatory Compliance"
+                        ? "Legal and\nRegulatory Compliance"
+                        : category.title}
                     </td>
                   )}
-                  <td className="px-6 py-4 border-b">{row}</td>
+                  <td className="sticky left-24 h-24 px-6 py-4 border-b bg-cyan-50">{row}</td>
                   {headers.map((_, colIndex) => {
                     const cellKey = `${categoryIndex}-${rowIndex}-${colIndex}`;
                     const selectedValue = selectedValues[cellKey] || "";
@@ -139,7 +118,7 @@ const ImpactAnalysisGrid = () => {
                             onChange={(e) => handleSelectChange(`${categoryIndex}-${rowIndex}`, colIndex, e.target.value)}
                             className="form-select w-full h-8"
                           >
-                            <option value="">Select</option>
+                            <option value=""></option>
                             {category.severityLevels.map((level) => (
                               <option key={level} value={level}>{level}</option>
                             ))}
@@ -169,8 +148,6 @@ const ImpactAreas = () => {
   return (
     <div className="p-8">
       <h1 className="text-xl font-bold mb-4">Impact Analysis</h1>
-      <Tabs />
-      <Dropdown />
       <ImpactAnalysisGrid />
       
     </div>

@@ -96,7 +96,7 @@ import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
 //import BiaResources from "./pages/documents/BIA/*";
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
-import ImpactAreas from "./pages/documents/BIA/Impact Analysis/ImpactAreas";
+import ImpactAreas from "./pages/documents/BIA/Impact Analysis/impactArea";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
 //import BiaDependencies from "./pages/documents/BIA/*";
 //import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
