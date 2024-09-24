@@ -68,7 +68,7 @@ const Objectives = () => {
           </thead>
           <tbody>
             {objectives.map((objective) => (
-              <tr key={objective._id} className="hover:bg-indigo-100">
+              <tr key={objective._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 doc-table-border">
                   {objective.informationSecurity}
                 </td>

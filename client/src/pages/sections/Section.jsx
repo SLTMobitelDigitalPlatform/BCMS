@@ -268,7 +268,7 @@ const Section = () => {
           </thead>
           <tbody>
             {sections.map((section) => (
-              <tr key={section._id} className="hover:bg-indigo-100">
+              <tr key={section._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-28 doc-table-border">
                   {section.sectionCode}
                 </td>

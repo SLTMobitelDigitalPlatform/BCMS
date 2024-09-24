@@ -32,7 +32,7 @@ const BusinessContinuityPlans = () => {
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
-      <div className="overflow-hidden h-screen rounded-2xl bg-indigo-200 p-3">
+      <div className="overflow-hidden h-screen rounded-2xl p-3">
         {/* Heading */}
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-3xl font-bold text-indigo-900">
@@ -45,8 +45,8 @@ const BusinessContinuityPlans = () => {
 
         {/* Table */}
         <div className="overflow-auto">
-          <table className="table-fixed relative w-full py-10 bg-cyan-50">
-            <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+          <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
+            <thead className="bg-indigo-200">
               <tr>
                 <th className="w-32 doc-table-border">BCP ID</th>
                 <th className="w-44 doc-table-border">Legal Entity</th>
@@ -54,31 +54,21 @@ const BusinessContinuityPlans = () => {
                 <th className="w-44 doc-table-border">Owner</th>
                 <th className="w-44 doc-table-border">Maintainer</th>
                 <th className="w-48 doc-table-border">Viewers</th>
-                <th className="w-44 doc-table-border">Actions</th>
+                <th className="w-44 doc-table-border text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               {businessContinuityPlans.map((bcp) => (
-                <tr key={bcp._id} className="hover:bg-indigo-100">
-                  <td className="p-1 doc-table-border text-center">
-                    {bcp.bcpid}
-                  </td>
-                  <td className="p-1 doc-table-border text-center">
-                    {bcp.legalEntity}
-                  </td>
-                  <td className="p-1 doc-table-border text-center">
-                    {bcp.approver}
-                  </td>
-                  <td className="p-1 doc-table-border text-center">
-                    {bcp.owner}
-                  </td>
-                  <td className="p-1 doc-table-border text-center">
-                    {bcp.maintainer}
-                  </td>
-                  <td className="p-1 doc-table-border text-center">
+                <tr key={bcp._id} className="hover:bg-gray-100">
+                  <td className="p-1 doc-table-data">{bcp.bcpid}</td>
+                  <td className="p-1 doc-table-data">{bcp.legalEntity}</td>
+                  <td className="p-1 doc-table-data">{bcp.approver}</td>
+                  <td className="p-1 doc-table-data">{bcp.owner}</td>
+                  <td className="p-1 doc-table-data">{bcp.maintainer}</td>
+                  <td className="p-1 doc-table-data">
                     {bcp.viewers?.join(", ")}
                   </td>
-                  <td className="p-1 doc-table-border">
+                  <td className="p-1 doc-table-data">
                     <div className="flex justify-center gap-2">
                       <Link
                         to={`/Business-Continuity-Plan/bcp-form/${bcp.bcpid}`}

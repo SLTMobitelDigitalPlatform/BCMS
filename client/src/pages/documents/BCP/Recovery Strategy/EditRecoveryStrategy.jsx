@@ -29,9 +29,9 @@ const EditRecoveryStrategy = () => {
   useEffect(() => {
     if (recoveryStrategy) {
       setFormData({
-        primaryOperatingSite: recoveryStrategy.primaryOperatingSite,
-        relocateTo: recoveryStrategy.relocateTo,
-        outsourceOptions: recoveryStrategy.outsourceOptions,
+        primaryOperatingSite: recoveryStrategy.primaryOperatingSite || "",
+        relocateTo: recoveryStrategy.relocateTo || "",
+        outsourceOptions: recoveryStrategy.outsourceOptions || "",
       });
     }
   }, [recoveryStrategy]);

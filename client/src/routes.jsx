@@ -127,6 +127,7 @@ import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/Crea
 import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
 import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
 import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
+import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 
 const router = createBrowserRouter([
   {
@@ -472,7 +473,10 @@ const router = createBrowserRouter([
         path: "createWorkAreaRecovery/:bcpid",
         element: <CreateWorkAreaRecovery />,
       },
-      // { path: "editWorkAreaRecovery/:id", element: <EditWorkAreaRecovery />},
+      {
+        path: "editWorkAreaRecovery/:bcpid/:id",
+        element: <EditWorkAreaRecovery />,
+      },
 
       // * Manpower
       // { path: "createManpower", element: <CreateManpower /> },

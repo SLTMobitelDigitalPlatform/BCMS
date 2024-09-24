@@ -52,7 +52,7 @@ const CriticalBusinessFunction = () => {
 
       {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
+        <table className="table-fixed relative w-full py-10 bg-white">
           <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
             <tr>
               <th className="w-20 doc-table-border">Name</th>
@@ -64,7 +64,7 @@ const CriticalBusinessFunction = () => {
           </thead>
           <tbody>
             {criticalBusinessFunctions.map((cbf) => (
-              <tr key={cbf._id} className="hover:bg-indigo-100">
+              <tr key={cbf._id} className="hover:bg-gray-100">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {cbf.name}
                 </td>
@@ -78,6 +78,9 @@ const CriticalBusinessFunction = () => {
 
                 <td className="py-2 px-4 w-28 doc-table-border">
                   <div className="flex justify-center gap-2">
+                    <Link className="py-1 px-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded">
+                      View
+                    </Link>
                     <Link
                       to={`/editCriticalBusinessFunction/${bcpid}/${cbf._id}`}
                       className="doc-edit-btn"

@@ -50,6 +50,7 @@ const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preInc
 const routerCriticalBusinessFunction = require("./routes/documentRoutes/bcp/criticalBusinessFunctionRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
+const routerWorkAreaRecovery = require("./routes/documentRoutes/bcp/workAreaRecoveryRoutes");
 const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
 
 // Business Impact Analysis Routes
@@ -98,6 +99,7 @@ app.use(
   routerCriticalBusinessFunction,
   routerResourcesRequired,
   routerVitalRecords,
+  routerWorkAreaRecovery,
   routerEmbeddedDocument,
   routerBiaForm
 );
