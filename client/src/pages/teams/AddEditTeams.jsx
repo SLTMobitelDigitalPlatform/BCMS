@@ -80,11 +80,11 @@ const AddEditTeams = ({ fetchTeams }) => {
   };
 
   return (
-    <div className="container mx-auto p-4 h-screen">
+    <div className="container mx-auto p-4 h-screen overflow-auto">
       <h2 className="text-2xl font-semibold mb-4">
         {isEditing ? "Edit Team" : "Create a New Team"}
       </h2>
-      <div className="overflow-auto h-full">
+      <div className="overflow-auto h-full mb-10">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="form-group">
             <label className="block text-sm font-medium mb-1">
