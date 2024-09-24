@@ -29,7 +29,7 @@ const ContextNavigation = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center text-white font-semibold">
+      <div className="flex justify-between items-center  font-semibold">
         {[
           "Version Control",
           "Interested Parties",
@@ -50,7 +50,9 @@ const ContextNavigation = () => {
             // }`}
             className={({ isActive }) =>
               `whitespace-nowrap px-2 py-1 rounded ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+                isActive
+                  ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                  : "border-2 border-indigo-900  hover:bg-indigo-200 "
               }`
             }
           >

@@ -3,12 +3,14 @@ import { NavLink } from "react-router-dom";
 const RiskAssNavigation = () => {
   return (
     <div>
-      <div className="flex justify-between items-center text-white font-semibold">
+      <div className="flex justify-between items-center  font-semibold">
         <NavLink
           to="/Risk-Assessment/versionControl"
           className={({ isActive }) =>
-            `px-2 py-1 rounded ${
-              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            `whitespace-nowrap px-2 py-1 rounded ${
+              isActive
+                ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                : "border-2 border-indigo-900  hover:bg-indigo-200 "
             }`
           }
         >
@@ -17,8 +19,10 @@ const RiskAssNavigation = () => {
         <NavLink
           to="/Risk-Assessment/informationSecurity"
           className={({ isActive }) =>
-            `px-2 py-1 rounded ${
-              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            `whitespace-nowrap px-2 py-1 rounded ${
+              isActive
+                ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                : "border-2 border-indigo-900  hover:bg-indigo-200 "
             }`
           }
         >
@@ -27,8 +31,10 @@ const RiskAssNavigation = () => {
         <NavLink
           to="/Risk-Assessment/bcpRisk"
           className={({ isActive }) =>
-            `px-2 py-1 rounded ${
-              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            `whitespace-nowrap px-2 py-1 rounded ${
+              isActive
+                ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                : "border-2 border-indigo-900  hover:bg-indigo-200 "
             }`
           }
         >
@@ -37,8 +43,10 @@ const RiskAssNavigation = () => {
         <NavLink
           to="/Risk-Assessment/qualityManagement"
           className={({ isActive }) =>
-            `px-2 py-1 rounded ${
-              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            `whitespace-nowrap px-2 py-1 rounded ${
+              isActive
+                ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                : "border-2 border-indigo-900  hover:bg-indigo-200 "
             }`
           }
         >
@@ -47,8 +55,10 @@ const RiskAssNavigation = () => {
         <NavLink
           to="/Risk-Assessment/residualRisk"
           className={({ isActive }) =>
-            `px-2 py-1 rounded ${
-              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            `whitespace-nowrap px-2 py-1 rounded ${
+              isActive
+                ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                : "border-2 border-indigo-900  hover:bg-indigo-200 "
             }`
           }
         >
@@ -57,8 +67,10 @@ const RiskAssNavigation = () => {
         <NavLink
           to="/Risk-Assessment/riskElements"
           className={({ isActive }) =>
-            `px-2 py-1 rounded ${
-              isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+            `whitespace-nowrap px-2 py-1 rounded ${
+              isActive
+                ? "bg-indigo-900 text-white border-2 border-indigo-900"
+                : "border-2 border-indigo-900  hover:bg-indigo-200 "
             }`
           }
         >
