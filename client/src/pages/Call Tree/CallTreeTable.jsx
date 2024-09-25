@@ -90,7 +90,7 @@ function CallTreeTable() {
       setIsEditing(false);
       setShowModal(false); // Close the modal on form submit
       fetchItems();
-      navigate("/testcalltree");
+      navigate("/call-tree");
     } catch (error) {
       console.error("Error submitting form:", error);
     }

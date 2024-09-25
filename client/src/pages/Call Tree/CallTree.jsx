@@ -113,7 +113,7 @@ function CallTree() {
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
         <h1 className="font-semibold text-2xl">{sectionName}</h1>
-        <Link to="/calltreetable" className="btn-primary">
+        <Link to="/call-tree-table" className="btn-primary">
           Call Tree Table
         </Link>
       </div>
