@@ -257,7 +257,7 @@ const TeamList = () => {
                     View
                   </button>
                   <button
-                    className="bg-purple-500 text-white py-1 px-3 rounded hover:bg-purple-700"
+                    className="bg-sky-950 text-white py-1 px-3 rounded hover:bg-purple-700"
                     onClick={() => openEditMembersModal(team)}
                   >
                     Edit Members
