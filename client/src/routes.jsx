@@ -85,6 +85,7 @@ import Section from "./pages/sections/Section";
 
 // BIA
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+import BiaCriticalBusinessFunction from "./pages/documents/BIA/BiaCriticalBusinessFunction";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
@@ -497,6 +498,7 @@ const router = createBrowserRouter([
         path: "Business-Impact-Analysis",
         element: <BiaLayout />,
         children: [
+          { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "bia-form", element: <BiaForm /> },
           { path: "document-version", element: <BiaDocumentControl /> },
           //{ path: "operating-sites", element: <BiaOperatingSites /> },
@@ -516,6 +518,7 @@ const router = createBrowserRouter([
 
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
+      { path: "critical-business-function", element: <BiaCriticalBusinessFunction/>},
 
       // Roles
       { path: "roles", element: <Roles /> },
