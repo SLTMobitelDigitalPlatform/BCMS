@@ -30,7 +30,7 @@ const NewSidebar = () => {
   };
 
   return (
-    <div className="bg-indigo-950 text-white w-1/5 p-5 rounded-2xl mx-4 mb-4 flex flex-col justify-between">
+    <div className="bg-indigo-950 text-white w-64 p-5 rounded-2xl mx-4 mb-4 flex flex-col justify-between">
       <div className="text-4xl text-center font-bold text-sky-400">
         <NavLink to={"/profile"}>BCMS</NavLink>
       </div>
