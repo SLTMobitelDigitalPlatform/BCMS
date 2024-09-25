@@ -3,9 +3,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Profile from "./components/Profile";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
-import CallTree from "./pages/Call Tree/CallTree";
 import CallTreeTable from "./pages/Call Tree/CallTreeTable";
-import TestCallTree from "./pages/Call Tree/TestCallTree";
 import Customer from "./pages/Customers/Customer";
 import BCPForm from "./pages/documents/BCP/BCPForm/BCPForm";
 import BusinessContinuityPlanLayout from "./pages/documents/BCP/BusinessContinuityPlanLayout";
@@ -87,10 +85,10 @@ import Section from "./pages/sections/Section";
 
 // BIA
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
-import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
+import BiaLayout from "./pages/documents/BIA/BiaLayout";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
 //import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
@@ -102,31 +100,32 @@ import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
 //import BiaManpower from "./pages/documents/BIA/*";
 
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
+import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
+import CreateCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CreateCriticalBusinessFunction";
 import CreateEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/CreateEmbeddedDocuments";
+import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
+import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/CreateLegalRequirements";
+import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
+import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
+import CreateRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/CreateRecoveryStrategy";
 import CreateResourcesRequired from "./pages/documents/BCP/Resources Required/CreateResourcesRequired";
 import CreateVitalRecords from "./pages/documents/BCP/Vital Records/CreateVitalRecords";
 import CreateWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/CreateWorkAreaRecovery";
 import AddEditTeams from "./pages/teams/AddEditTeams";
 import TeamList from "./pages/teams/TeamList";
-import CreateCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CreateCriticalBusinessFunction";
-import CreateRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/CreateRecoveryStrategy";
-import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/CreateLegalRequirements";
-import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
-import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
-import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
-import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
 
-import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
-import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
-import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
+import CallTree from "./pages/Call Tree/CallTree";
+import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
+import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
 import CreateDocumentControl from "./pages/documents/BCP/Document Control/CreateDocumentControl";
 import EditDocumentControl from "./pages/documents/BCP/Document Control/EditDocumentControl";
-import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
-import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDocuments";
+import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
+import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
 import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/CreateRelatedDocuments";
 import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
-import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
-import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
+import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDocuments";
+import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
+import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 
 const router = createBrowserRouter([
@@ -214,9 +213,8 @@ const router = createBrowserRouter([
       { path: "sections", element: <Section /> },
 
       // Call Tree
-      { path: "callTree", element: <CallTree /> },
-      { path: "testCallTree", element: <TestCallTree /> },
-      { path: "callTreeTable", element: <CallTreeTable /> },
+      { path: "call-tree", element: <CallTree /> },
+      { path: "call-tree-table", element: <CallTreeTable /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
