@@ -50,7 +50,7 @@ function CallTree() {
   }, []);
 
   const config = {
-    pageFitMode: PageFitMode.AutoSize,
+    pageFitMode: PageFitMode.None,
     autoSizeMaximum: { width: 1200, height: 600 },
     cursorItem: 0,
     highlightItem: 0,
@@ -110,10 +110,10 @@ function CallTree() {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
-        <h1 className="font-semibold">{sectionName}</h1>
-        <Link to="/calltreetable" className="">
+        <h1 className="font-semibold text-2xl">{sectionName}</h1>
+        <Link to="/calltreetable" className="btn-primary">
           Call Tree Table
         </Link>
       </div>

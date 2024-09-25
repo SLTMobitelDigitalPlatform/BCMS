@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-// import Sidebar from "../components/Sidebar";
 import NewSidebar from "../components/NewSidebar";
 
 const Layout = () => {
@@ -9,7 +8,7 @@ const Layout = () => {
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <NewSidebar />
-        <div className="flex-1 mx-4 mb-4">
+        <div className="flex-1 mx-4 mb-4 overflow-hidden">
           <Outlet />
         </div>
       </div>
