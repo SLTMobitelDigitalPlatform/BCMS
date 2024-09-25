@@ -60,7 +60,7 @@ function CallTree() {
     templates: [
       {
         name: "CustomTemplate",
-        itemSize: { width: 300, height: 140 },
+        itemSize: { width: 305, height: 130 },
         minimizedItemSize: { width: 3, height: 3 },
         highlightPadding: { left: 2, top: 2, right: 2, bottom: 2 },
         onItemRender: ({ context: itemConfig }) => {
@@ -81,7 +81,7 @@ function CallTree() {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-1 mt-1">
+              <div className="flex items-center space-x-1 m-1">
                 <div className="ContactPhotoFrame">
                   <img
                     className="w-20 h-20 rounded-full object-cover m-1"
@@ -113,7 +113,7 @@ function CallTree() {
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
         <h1 className="font-semibold text-2xl">{sectionName}</h1>
-        <Link to="/calltreetable" className="btn-primary">
+        <Link to="/call-tree-table" className="btn-primary">
           Call Tree Table
         </Link>
       </div>
