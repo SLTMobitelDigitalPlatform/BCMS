@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCurrentUser } from "../../services/userAPI";
 import { useUsers } from "../../hooks/useUsers";
+import { useNavigate } from "react-router-dom";
 
 function CallTreeTable() {
   const [items, setItems] = useState([]);
@@ -18,6 +19,7 @@ function CallTreeTable() {
   });
 
   const { users, fetchUsers, fetchUserDetails } = useUsers();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchItems();
@@ -88,6 +90,7 @@ function CallTreeTable() {
       setIsEditing(false);
       setShowModal(false); // Close the modal on form submit
       fetchItems();
+      navigate("/testcalltree");
     } catch (error) {
       console.error("Error submitting form:", error);
     }

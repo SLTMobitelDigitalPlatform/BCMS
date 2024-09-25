@@ -51,7 +51,7 @@ function TestCallTree() {
 
   const config = {
     pageFitMode: PageFitMode.AutoSize,
-    autoSizeMinimum: { width: 100, height: 100 },
+    autoSizeMaximum: { width: 1160, height: 600 },
     cursorItem: 0,
     highlightItem: 0,
     hasSelectorCheckbox: Enabled.False,
@@ -110,7 +110,7 @@ function TestCallTree() {
   };
 
   return (
-    <div className="w-[1100px] h-[600px] overflow-y-scroll ">
+    <div className=" ">
       <h1 className="text-center text-4xl">{sectionName}</h1>
       <Link to="/calltreetable">
         <div className="text-white bg-blue-900 focus:outline-none focus:ring-2 focus:ring-black font-medium rounded-lg text-sm w-40 px-3 py-2">
