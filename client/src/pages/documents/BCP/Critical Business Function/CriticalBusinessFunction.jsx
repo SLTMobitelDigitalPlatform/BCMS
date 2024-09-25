@@ -64,7 +64,7 @@ const CriticalBusinessFunction = () => {
           </thead>
           <tbody>
             {criticalBusinessFunctions.map((cbf) => (
-              <tr key={cbf._id} className="hover:bg-gray-100">
+              <tr key={cbf._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {cbf.name}
                 </td>

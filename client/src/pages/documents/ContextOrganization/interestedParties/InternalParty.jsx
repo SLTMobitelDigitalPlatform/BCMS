@@ -52,84 +52,44 @@ const InternalParty = () => {
   }, []);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
-      {/* <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-blue-900">Internal Party</h1>
+    <table className="table-fixed w-full">
+      <thead className="sticky top-0 bg-indigo-200">
+        <tr>
+          <th className="doc-table-head">Internal Party</th>
+          <th className="doc-table-head">Requirments</th>
 
-        <div className="flex items-center gap-10">
-          <NavLink
-            to="/Context-of-the-Organization/interseted-parties/internal-party"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            Internal Party
-          </NavLink>
-          <NavLink
-            to="/Context-of-the-Organization/interseted-parties/external-party"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            External Party
-          </NavLink>
-        </div>
-        <Link to="/createInternalParty" className="btn-primary font-semibold">
-          Create Record
-        </Link>
-      </div>
-      {/* <div className="mt-5">
-        <h1 className="text-center text-2xl font-bold mb-3">Internal Issues</h1>
-      </div> */}
+          <th className="w-32 doc-table-head">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {internalParty.map((internal) => (
+          <tr key={internal._id} className="doc-table-hover">
+            <td className="py-2 px-4 doc-table-data">
+              {internal.internalParty}
+            </td>
+            <td className="py-2 px-4 doc-table-data">{internal.requirments}</td>
 
-      {/* Table */}
-      <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
-            <tr>
-              <th className="doc-table-border">Internal Party</th>
-              <th className="doc-table-border">Requirments</th>
-
-              <th className="w-32 doc-table-border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {internalParty.map((internal) => (
-              <tr key={internal._id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 doc-table-border">
-                  {internal.internalParty}
-                </td>
-                <td className="py-2 px-4 doc-table-border">
-                  {internal.requirments}
-                </td>
-
-                <td className="py-2 px-4 w-32 doc-table-border">
-                  <div className="flex justify-center gap-2">
-                    <Link
-                      to={`/editInternalParty/${internal._id}`}
-                      state={{ activeTab: "internalParty" }}
-                      className="doc-edit-btn"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      className="doc-delete-btn"
-                      onClick={() => deleteInternal(internal._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+            <td className="py-2 px-4 w-32 doc-table-data">
+              <div className="flex justify-center gap-2">
+                <Link
+                  to={`/editInternalParty/${internal._id}`}
+                  state={{ activeTab: "internalParty" }}
+                  className="doc-edit-btn"
+                >
+                  Edit
+                </Link>
+                <button
+                  className="doc-delete-btn"
+                  onClick={() => deleteInternal(internal._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

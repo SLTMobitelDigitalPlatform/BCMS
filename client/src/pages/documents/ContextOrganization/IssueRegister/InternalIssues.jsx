@@ -52,91 +52,54 @@ const InternalIssues = () => {
   }, []);
 
   return (
-    <div>
-      {/* <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-blue-900">Internal Issues</h1>
-
-        <div className="flex items-center gap-10">
-          <NavLink
-            to="/Context-of-the-Organization/issue-register/internalIssues"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            Internal Issues
-          </NavLink>
-          <NavLink
-            to="/Context-of-the-Organization/issue-register/externalIssues"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            External Issues
-          </NavLink>
-        </div>
-        <Link to="/createInternalIssue" className="btn-primary font-semibold">
-          Create Record
-        </Link>
-      </div> */}
-
-      {/* Table */}
-      <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
-            <tr>
-              <th className="doc-table-border">Internal Issues</th>
-              <th className="doc-table-border">Requirments</th>
-              <th className="w-20 doc-table-border">ISMS</th>
-              <th className="w-20 doc-table-border">QMS</th>
-              <th className="w-20 doc-table-border">BCMS</th>
-              <th className="w-32 doc-table-border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {internalIssues.map((internal) => (
-              <tr key={internal._id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 doc-table-border">
-                  {internal.internalIssues}
-                </td>
-                <td className="py-2 px-4 doc-table-border">
-                  {internal.requirments}
-                </td>
-                <td className="py-2 px-4 w-20 text-center font-bold doc-table-border">
-                  {internal.isms ? "✓" : "✗"}
-                </td>
-                <td className="py-2 px-4 w-20 text-center font-bold doc-table-border">
-                  {internal.qms ? "✓" : "✗"}
-                </td>
-                <td className="py-2 px-4 w-20 text-center font-bold doc-table-border">
-                  {internal.bcms ? "✓" : "✗"}
-                </td>
-                <td className="py-2 px-4 w-32 doc-table-border">
-                  <div className="flex justify-center gap-2">
-                    <Link
-                      to={`/editInternalIssues/${internal._id}`}
-                      state={{ activeTab: "internal" }}
-                      className="doc-edit-btn"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      className="doc-delete-btn"
-                      onClick={() => deleteInternal(internal._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table className="table-fixed w-full">
+      <thead className="sticky top-0 bg-indigo-200">
+        <tr>
+          <th className="doc-table-head">Internal Issues</th>
+          <th className="doc-table-head">Requirments</th>
+          <th className="w-20 doc-table-head">ISMS</th>
+          <th className="w-20 doc-table-head">QMS</th>
+          <th className="w-20 doc-table-head">BCMS</th>
+          <th className="w-32 doc-table-head">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {internalIssues.map((internal) => (
+          <tr key={internal._id} className="doc-table-hover">
+            <td className="py-2 px-4 doc-table-data">
+              {internal.internalIssues}
+            </td>
+            <td className="py-2 px-4 doc-table-data">{internal.requirments}</td>
+            <td className="py-2 px-4 w-20 text-center font-bold doc-table-data">
+              {internal.isms ? "✓" : "✗"}
+            </td>
+            <td className="py-2 px-4 w-20 text-center font-bold doc-table-data">
+              {internal.qms ? "✓" : "✗"}
+            </td>
+            <td className="py-2 px-4 w-20 text-center font-bold doc-table-data">
+              {internal.bcms ? "✓" : "✗"}
+            </td>
+            <td className="py-2 px-4 w-32 doc-table-data">
+              <div className="flex justify-center gap-2">
+                <Link
+                  to={`/editInternalIssues/${internal._id}`}
+                  state={{ activeTab: "internal" }}
+                  className="doc-edit-btn"
+                >
+                  Edit
+                </Link>
+                <button
+                  className="doc-delete-btn"
+                  onClick={() => deleteInternal(internal._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

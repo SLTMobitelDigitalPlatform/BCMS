@@ -101,7 +101,7 @@ const InternalDependencies = () => {
           </thead>
           <tbody>
             {internalDependencies.map((internal) => (
-              <tr key={internal._id} className="hover:bg-gray-100">
+              <tr key={internal._id} className="doc-table-hover">
                 <td className="py-2 px-4 doc-table-border">
                   {internal.internalDependencies}
                 </td>
