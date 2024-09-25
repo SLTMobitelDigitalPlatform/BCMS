@@ -245,7 +245,7 @@ function CallTreeTable() {
           {items.map((item) => (
             <tr
               key={item._id}
-              className="border-b border-gray-200 hover:bg-gray-100"
+              className="border-b border-gray-200 doc-table-hover"
             >
               <td className="p-3">{item.title}</td>
               <td className="p-3">{item.description}</td>

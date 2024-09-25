@@ -67,7 +67,7 @@ const EmbeddedDocuments = () => {
           </thead>
           <tbody>
             {embeddedDocuments.map((embedDoc) => (
-              <tr key={embedDoc._id} className="hover:bg-gray-100">
+              <tr key={embedDoc._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {embedDoc.number}
                 </td>

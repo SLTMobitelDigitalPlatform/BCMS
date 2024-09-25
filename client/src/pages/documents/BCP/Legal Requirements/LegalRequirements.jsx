@@ -67,7 +67,7 @@ const LegalRequirements = () => {
           </thead>
           <tbody>
             {legalRequirements.map((legalReq) => (
-              <tr key={legalReq._id} className="hover:bg-gray-100">
+              <tr key={legalReq._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {legalReq.name}
                 </td>

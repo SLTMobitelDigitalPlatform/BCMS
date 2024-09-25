@@ -64,7 +64,7 @@ const VitalRecords = () => {
           </thead>
           <tbody>
             {vitalRecords.map((vitalRec) => (
-              <tr key={vitalRec._id} className="hover:bg-gray-100">
+              <tr key={vitalRec._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {vitalRec.name}
                 </td>

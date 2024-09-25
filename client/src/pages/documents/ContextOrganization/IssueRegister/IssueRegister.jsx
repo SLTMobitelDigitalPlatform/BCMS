@@ -19,27 +19,23 @@ const IssueRegister = () => {
   };
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">Issue Register</h1>
 
         {/* Tab Navigation */}
         <div className="flex items-center gap-10">
           <button
-            className={`px-2 py-1 rounded-lg text-white font-semibold ${
-              activeTab === "internal"
-                ? "bg-green-500"
-                : "bg-indigo-900 hover:bg-indigo-600"
+            className={`p-1 rounded font-semibold ${
+              activeTab === "internal" ? "doc-nav-active" : "doc-nav-hover"
             }`}
             onClick={() => handleTabChange("internal")}
           >
             Internal Issues
           </button>
           <button
-            className={`px-2 py-1 rounded-lg text-white font-semibold ${
-              activeTab === "external"
-                ? "bg-green-500"
-                : "bg-indigo-900 hover:bg-indigo-600"
+            className={`p-1 rounded font-semibold ${
+              activeTab === "external" ? "doc-nav-active" : "doc-nav-hover"
             }`}
             onClick={() => handleTabChange("external")}
           >

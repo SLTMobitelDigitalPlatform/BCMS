@@ -79,21 +79,22 @@ const VersionControls = () => {
     );
 
   return (
-    <div className=" pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">Version Control</h1>
-        <Link to="/createVersion" className="btn-primary font-semibold">
+        <Link to="/createVersion" className="btn-primary">
           Create Version Control
         </Link>
       </div>
 
       {/* Table */}
+
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg">
-          <thead className="sticky top-0 bg-indigo-100 doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-20 doc-table-head">Serial Number</th>
-              <th className="w-20 doc-table-head">Version Number</th>
+              <th className="w-20 doc-table-head">Serial No</th>
+              <th className="w-20 doc-table-head">Version No</th>
               <th className="w-48 doc-table-head">Prepared By</th>
               <th className="w-48 doc-table-head">Checked By</th>
               <th className="w-48 doc-table-head">Approved By</th>
@@ -104,7 +105,7 @@ const VersionControls = () => {
           </thead>
           <tbody>
             {versionControls.map((v) => (
-              <tr key={v._id} className="hover:bg-gray-100">
+              <tr key={v._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
                   {v.serialNo}
                 </td>
