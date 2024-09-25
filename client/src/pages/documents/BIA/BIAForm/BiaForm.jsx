@@ -79,7 +79,7 @@ const BIAForm = () => {
           </thead>
           <tbody>
             {businessImpactAnalysisPlans.map((bia) => (
-              <tr key={bia._id} className="hover:bg-gray-100">
+              <tr key={bia._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {bia.docNo}
                 </td>

@@ -176,7 +176,7 @@ const Customer = () => {
             <tbody>
               {paginatedCustomerData.length > 0 ? (
                 paginatedCustomerData.map((customer) => (
-                  <tr key={customer._id} className="hover:bg-gray-200">
+                  <tr key={customer._id} className="doc-table-hover">
                     <td className="border border-green-500 p-1 text-blue-900 text-sm">
                       {customer.name}
                     </td>

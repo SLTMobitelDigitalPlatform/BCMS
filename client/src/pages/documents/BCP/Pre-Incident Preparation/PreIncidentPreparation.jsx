@@ -66,7 +66,7 @@ const PreIncidentPreparation = () => {
           </thead>
           <tbody>
             {preIncidentPreparations.map((pip) => (
-              <tr key={pip._id} className="hover:bg-gray-100">
+              <tr key={pip._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-border text-center">
                   {pip.preIncidentMeasures}
                 </td>

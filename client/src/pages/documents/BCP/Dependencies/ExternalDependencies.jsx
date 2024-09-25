@@ -105,7 +105,7 @@ const ExternalDependencies = () => {
           </thead>
           <tbody>
             {externalDependencies.map((external) => (
-              <tr key={external._id} className="hover:bg-gray-100">
+              <tr key={external._id} className="doc-table-hover">
                 <td className="py-2 px-4 doc-table-border">
                   {external.externalDependencies}
                 </td>

@@ -59,7 +59,7 @@ const BusinessContinuityPlans = () => {
             </thead>
             <tbody>
               {businessContinuityPlans.map((bcp) => (
-                <tr key={bcp._id} className="hover:bg-gray-100">
+                <tr key={bcp._id} className="doc-table-hover">
                   <td className="p-1 doc-table-data">{bcp.bcpid}</td>
                   <td className="p-1 doc-table-data">{bcp.legalEntity}</td>
                   <td className="p-1 doc-table-data">{bcp.approver}</td>

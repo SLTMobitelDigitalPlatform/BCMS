@@ -104,20 +104,20 @@ app.use(
   routerBiaForm
 );
 
-// Create uploads directory if it doesn't exist
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// // Create uploads directory if it doesn't exist
+// const uploadDir = path.join(__dirname, "uploads");
+// if (!fs.existsSync(uploadDir)) {
+//   fs.mkdirSync(uploadDir);
+// }
 
-// Create uploads directory if it doesn't exist
-const uploadDirCover = path.join(__dirname, "covers");
-if (!fs.existsSync(uploadDirCover)) {
-  fs.mkdirSync(uploadDirCover);
-}
+// // Create uploads directory if it doesn't exist
+// const uploadDirCover = path.join(__dirname, "covers");
+// if (!fs.existsSync(uploadDirCover)) {
+//   fs.mkdirSync(uploadDirCover);
+// }
 
-app.use("/uploads", express.static(uploadDir)); // Serve the uploads directory as a static folder
-app.use("/covers", express.static(uploadDirCover));
+// app.use("/uploads", express.static(uploadDir)); // Serve the uploads directory as a static folder
+// app.use("/covers", express.static(uploadDirCover));
 app.use("/userImages", express.static(path.join(__dirname, "userImages")));
 
 app.listen(PORT, () => {
