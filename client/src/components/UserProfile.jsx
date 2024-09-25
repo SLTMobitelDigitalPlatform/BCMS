@@ -24,7 +24,6 @@ const UserProfile = () => {
           },
         });
         const fullImageUrl = `http://localhost:5000${response.data.profileImg}`;
-        console.log(response.data);
         setUser(response.data);
         setPreviewUrl(fullImageUrl); // Set the initial previewUrl
       } catch (error) {
@@ -39,21 +38,17 @@ const UserProfile = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-
     const validTypes = ["image/jpeg", "image/jpg", "image/png"];
-
     if (!validTypes.includes(file.type)) {
       alert("Only JPEG and PNG files are allowed.");
       return;
     }
-
     if (file.size > 5 * 1024 * 1024) {
       alert("File size exceeds the 5MB limit.");
       return;
     }
     if (file) {
       setSelectedFile(file);
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result);
@@ -64,12 +59,9 @@ const UserProfile = () => {
 
   const handleSave = async () => {
     if (!selectedFile || !user) return;
-
     setIsSaving(true);
-
     const formData = new FormData();
     formData.append("profileImg", selectedFile);
-
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -82,19 +74,12 @@ const UserProfile = () => {
           },
         }
       );
-
-      // Construct the full URL for the profile image
       const fullImageUrl = `http://localhost:5000${response.data.profileImg}`;
-
-      // Update the user state with the new profile photo URL returned from the server
       setUser((prevUser) => ({
         ...prevUser,
         profileImg: fullImageUrl,
       }));
-
-      // Update the preview URL with the new profile image URL
       setPreviewUrl(fullImageUrl);
-      console.log("Full profile image URL:", fullImageUrl);
       setEditing(false);
       setSaveSuccess(true);
     } catch (error) {
@@ -115,7 +100,6 @@ const UserProfile = () => {
 
   const handleDelete = async () => {
     if (!user || !user._id) return;
-
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
@@ -126,16 +110,11 @@ const UserProfile = () => {
           },
         }
       );
-
-      // Clear the profile image state
       setUser((prevUser) => ({
         ...prevUser,
         profileImg: null,
       }));
-
-      // Clear the preview URL
       setPreviewUrl(null);
-
       alert("Profile image deleted successfully!");
     } catch (error) {
       console.error(
@@ -152,29 +131,25 @@ const UserProfile = () => {
   };
 
   if (loading) {
-    return <div className="text-blue-900 text-md">Loading...</div>;
+    return <div className="text-center text-blue-900 text-md">Loading...</div>;
   }
 
   return (
-    <div className="flex flex-col h-full p-4 bg-sky-100 rounded-2xl md:mr-2">
-      {/* Profile Heading */}
-      <div className="w-full text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold text-green-500">
-          Profile
-        </h1>
+    <div className="max-w-2xl  mx-auto p-6 bg-blue-100 shadow-md rounded-lg space-y-6 mt-10">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold text-blue-600">User Profile</h1>
       </div>
 
-      {/* Profile Picture and Edit Button */}
-      <div className="flex flex-col items-center justify-center space-y-5 p-5">
-        <div className="w-44 h-44 flex items-center justify-center rounded-full overflow-hidden bg-green-500">
+      <div className="flex flex-col items-center space-y-5">
+        <div className="relative w-44 h-44 rounded-full overflow-hidden bg-green-500 shadow-lg">
           {previewUrl ? (
             <img
-              src={previewUrl} // Directly use the base64 data URL
+              src={previewUrl}
               alt="Profile"
               className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-2xl font-bold text-white">
+            <span className="text-3xl font-bold text-white">
               {getInitials(user?.name)}
             </span>
           )}
@@ -188,42 +163,38 @@ const UserProfile = () => {
           onChange={handleFileChange}
         />
 
-        {/* Edit Button */}
-        {!editing && (
-          <div className="flex space-x-2">
+        {!editing ? (
+          <div className="flex space-x-3">
             <button
-              className="btn-primary px-2 py-1 rounded"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
               onClick={handleEdit}
             >
-              Edit
+              Edit Photo
             </button>
             {user?.profileImg && (
               <button
-                className="btn-primary px-2 py-1 rounded"
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                 onClick={handleDelete}
               >
-                Delete
+                Delete Photo
               </button>
             )}
           </div>
-        )}
-        {/* <p>{user.profileImg}</p> */}
-
-        {/* Save and Cancel Buttons */}
-        {editing && !saveSuccess && (
-          <div className="flex justify-center mt-4 space-x-2">
+        ) : (
+          <div className="flex space-x-3">
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded-md"
+              className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
               onClick={handleSave}
               disabled={isSaving}
             >
-              {isSaving && (
-                <FaSpinner className="animate-spin inline text-xl mr-2" />
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline mr-2" />
+              ) : (
+                "Save"
               )}
-              {isSaving ? "Saving..." : "Save"}
             </button>
             <button
-              className="bg-red-500 text-white px-4 py-2 rounded-md"
+              className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
               onClick={handleCancel}
             >
               Cancel
@@ -232,47 +203,19 @@ const UserProfile = () => {
         )}
       </div>
 
-      {/* User Details */}
       {user ? (
-        <div className="mt-6 gap-x-6 gap-y-4 flex justify-center">
-          <div className="text-center">
-            <h2 className="font-bold text-xl text-blue-900">{user.name}</h2>
-            <p className="text-md text-blue-900">{user.email}</p>
-            <p className="text-md text-blue-900">{user.role}</p>
-            <p className="text-md text-blue-900 capitalize">
-              {user.section.name}
-            </p>
-            <p className="text-md text-blue-900">
-              Service No: {user.serviceNumber}
-            </p>
-          </div>
+        <div className="bg-gray-50 p-4 rounded-lg shadow-inner text-center">
+          <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
+          <p className="text-gray-600">{user.email}</p>
+          <p className="text-gray-600">{user.role}</p>
+          <p className="text-gray-600 capitalize">{user.section.name}</p>
+          <p className="text-gray-600">Service No: {user.serviceNumber}</p>
         </div>
       ) : (
-        <p className="text-blue-900 text-md mt-6">No user details found.</p>
+        <p className="text-red-500">No user details found.</p>
       )}
     </div>
   );
 };
 
 export default UserProfile;
-
-// {/* User Details */}
-// {user ? (
-//   <div className="mt-6 gap-x-6 gap-y-4">
-//     {/* Left column */}
-//     <div>
-//       <h2 className="font-bold text-xl text-blue-900">{user.name}</h2>
-//       <p className="text-md text-blue-900">{user.email}</p>
-//     </div>
-//     {/* Right column */}
-//     <div>
-//       <p className="text-md text-blue-900">{user.role}</p>
-//       <p className="text-md text-blue-900 capitalize">{user.section}</p>
-//       <p className="text-md text-blue-900">
-//         Service No: {user.serviceNumber}
-//       </p>
-//     </div>
-//   </div>
-// ) : (
-//   <p className="text-blue-900 text-md mt-6">No user details found.</p>
-// )}
