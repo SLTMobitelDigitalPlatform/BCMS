@@ -89,7 +89,7 @@ const InterfacesDependencies = () => {
                   {interfaceDep.processName}
                 </td>
                 <td className="py-2 px-4 doc-table-data">
-                  {interfaceDep.externalEntityName}
+                  {interfaceDep.externalEntityName.name}
                 </td>
                 <td className="py-2 px-4 doc-table-data">
                   {interfaceDep.informationExchanged}

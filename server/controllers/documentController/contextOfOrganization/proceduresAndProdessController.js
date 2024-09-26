@@ -2,7 +2,9 @@ const ProceduresAndProcess = require("../../../models/documentModels/proceduresA
 
 const getProceduresAndProcess = async (req, res) => {
   try {
-    const proceduresAndProcess = await ProceduresAndProcess.find();
+    const proceduresAndProcess = await ProceduresAndProcess.find().populate(
+      "responsiblePerson"
+    );
     if (!proceduresAndProcess) {
       return res
         .status(404)

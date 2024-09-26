@@ -46,7 +46,10 @@ const EditRiskVersionControl = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const users = response.data.map((user) => user.name);
+      const users = response.data.map((user) => ({
+        name: user.name,
+        id: user._id,
+      }));
       setUsers(users);
 
       // console.log(users);
@@ -171,12 +174,9 @@ const EditRiskVersionControl = () => {
                   onChange={(e) => setPrepare(e.target.value)}
                   className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
-                  <option value="" disabled>
-                    {prepare}
-                  </option>
                   {users.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -192,12 +192,9 @@ const EditRiskVersionControl = () => {
                   onChange={(e) => setApprove(e.target.value)}
                   className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
-                  <option value="" disabled>
-                    {approve}
-                  </option>
                   {users.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -212,12 +209,9 @@ const EditRiskVersionControl = () => {
                   onChange={(e) => setCheckedBy(e.target.value)}
                   className="w-[300px] p-2 rounded-lg bg-slate-100"
                 >
-                  <option value="" disabled>
-                    {checkedBy}
-                  </option>
                   {users.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -236,7 +230,7 @@ const EditRiskVersionControl = () => {
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
-            {loggedInUser.name === checkedBy ? (
+            {loggedInUser._id === checkedBy ? (
               <div className="flex flex-col gap-2">
                 <label htmlFor="isChecked" className="font-semibold">
                   Checking Status
@@ -267,11 +261,11 @@ const EditRiskVersionControl = () => {
                 value={checkedComment}
                 rows={4}
                 onChange={(e) => setCheckedComment(e.target.value)}
-                readOnly={loggedInUser.name !== checkedBy}
+                readOnly={loggedInUser._id !== checkedBy}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
-            {loggedInUser.name === approve ? (
+            {loggedInUser._id === approve ? (
               <div className="flex flex-col gap-2">
                 <label htmlFor="isapprove" className="font-semibold">
                   Approval
@@ -302,7 +296,7 @@ const EditRiskVersionControl = () => {
                 value={comment}
                 rows={4}
                 onChange={(e) => setComment(e.target.value)}
-                readOnly={loggedInUser.name !== approve}
+                readOnly={loggedInUser._id !== approve}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
