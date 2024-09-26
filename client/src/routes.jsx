@@ -90,7 +90,7 @@ import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
 import BiaLayout from "./pages/documents/BIA/BiaLayout";
 //import BiaOperatingSites from "./pages/documents/BIA/*";
-//import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
+import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
 //import BiaResources from "./pages/documents/BIA/*";
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
@@ -498,10 +498,11 @@ const router = createBrowserRouter([
         path: "Business-Impact-Analysis",
         element: <BiaLayout />,
         children: [
+          { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "bia-form", element: <BiaForm /> },
           { path: "document-version", element: <BiaDocumentControl /> },
           //{ path: "operating-sites", element: <BiaOperatingSites /> },
-          // { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
+         { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
           {
             path: "business-peaks-and-deadlines",
             element: <BiaPeaksAndDeadlines />,
@@ -517,6 +518,7 @@ const router = createBrowserRouter([
 
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
+    
 
       {path:"impactAreas", element:<ImpactAreas/>},
 

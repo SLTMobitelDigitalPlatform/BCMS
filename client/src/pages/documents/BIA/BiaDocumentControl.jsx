@@ -14,7 +14,8 @@ const BiaDocumentControl = () => {
 
           <h1 className="text-2xl font-bold text-blue-900">Document Control</h1>
         </header>        
-
+        
+    
 
         {/* Document Control Table */}
         <div className="bg-white rounded-xl shadow-lg p-6">
