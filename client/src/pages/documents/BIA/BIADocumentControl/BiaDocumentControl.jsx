@@ -1,64 +1,101 @@
-import React from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import BIANavigation from "../../../../components/BIANavigation";
+import { useBIAForm } from "../../../../hooks/documents/bia/useBIAForm";
 
 const BiaDocumentControl = () => {
+  const {
+    businessImpactAnalysisPlans,
+    loading,
+    error,
+    fetchBIAForms,
+    deleteBIAForm,
+  } = useBIAForm();
+
+  useEffect(() => {
+    fetchBIAForms();
+  }, []);
+
+  const deleteBusinessImpactAnalysisPlan = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteBIAForm(id);
+          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
+        } catch (error) {
+          console.error(error);
+          Swal.fire(
+            "Error!",
+            "There was a problem deleting the record.",
+            "error"
+          );
+        }
+      }
+    });
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
-    <div className="min-h-screen bg-gray-100 flex">
-      {/* Main Content */}
-      <div className="flex-1 p-6">
-        {/* Header */}
-        <header className="flex justify-between items-center mb-8">
+    <div className="pt-5 w-full h-full flex flex-col">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-xl font-bold text-indigo-900">
+          Document Control
+        </h1>
+        <Link to="/createBIA" className="btn-primary">
+          Create new Document
+        </Link>
+      </div>
 
-          <h1 className="text-2xl font-bold text-blue-900">Document Control</h1>
-        </header>        
-        
-    
-
-        {/* Document Control Table */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold text-center mb-6">
-            Document Control
-          </h2>
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-blue-100">
-                <th className="border p-2">Version</th>
-                <th className="border p-2">Description</th>
-                <th className="border p-2">Date</th>
+      {/* Table */}
+      <div className="h-full w-full overflow-auto">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
+            <tr>
+              <th className="w-20 doc-table-head">Version</th>
+              <th className="w-20 doc-table-head">Description</th>
+              <th className="w-20 doc-table-head">Date</th>
+              <th className="w-28 doc-table-head">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {businessImpactAnalysisPlans.map((bia) => (
+              <tr key={bia.version} className="doc-table-hover">
+                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                  {bia.version}
+                </td>
+                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                  {bia.description}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-data">
+                  {bia.date}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  <div className="flex justify-center gap-2">
+                    <Link to={`/editBIA/${bia.version}`} className="doc-edit-btn">
+                      Edit
+                    </Link>
+                    <button
+                      className="doc-delete-btn"
+                      onClick={() => deleteBusinessImpactAnalysisPlan(bia.version)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border p-2">1.0</td>
-                <td className="border p-2">Initial Version</td>
-                <td className="border p-2">10 Oct 2016</td>
-              </tr>
-              <tr>
-                <td className="border p-2">2.0</td>
-                <td className="border p-2">2018 review</td>
-                <td className="border p-2">22 May 2018</td>
-              </tr>
-              <tr>
-                <td className="border p-2">3.0</td>
-                <td className="border p-2">2019 review</td>
-                <td className="border p-2">20 May 2019</td>
-              </tr>
-              <tr>
-                <td className="border p-2">4.0</td>
-                <td className="border p-2">2020 review</td>
-                <td className="border p-2">21 Aug 2020</td>
-              </tr>
-              <tr>
-                <td className="border p-2">5.0</td>
-                <td className="border p-2">2021 review</td>
-                <td className="border p-2">22 Aug 2021</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
