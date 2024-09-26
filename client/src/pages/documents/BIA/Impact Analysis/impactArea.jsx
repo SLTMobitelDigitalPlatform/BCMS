@@ -74,12 +74,12 @@ const ImpactAnalysisGrid = () => {
   };
 
   return (
-    <div className="h-screen overflow-auto pb-40">
+    <div className="h-screen overflow-auto pb-80">
       <table className="table-fixed relative p-20">
-        <thead className="sticky top-0 text-white">
+        <thead className="text-white sticky top-0 ">
           <tr>
-            <th className="w-20 doc-table-border sticky left-0 bg-indigo-100 "></th> 
-            <th className="doc-table-border sticky top-0 left-24  bg-indigo-800 ">Impact Areas</th>
+            <th className="w-20 doc-table-border sticky left-0 bg-indigo-800"></th> 
+            <th className="doc-table-border sticky left-24 bg-indigo-800 ">Impact Areas</th>
             {headers.map((header) => (
               <th key={header} className="w-16 px-6 py-2 border-b text-center bg-indigo-800">{header}</th>
             ))}
