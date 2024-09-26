@@ -50,7 +50,7 @@ const InterestedParties = () => {
           <Link
             to="/createInternalParty"
             state={{ activeTab: "internalParty" }}
-            className="btn-primary font-semibold"
+            className="btn-primary"
           >
             Create Internal Record
           </Link>
@@ -58,7 +58,7 @@ const InterestedParties = () => {
           <Link
             to="/createExternalParty"
             state={{ activeTab: "externalParty" }}
-            className="btn-primary font-semibold"
+            className="btn-primary"
           >
             Create External Record
           </Link>
