@@ -89,16 +89,16 @@ import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
 import BiaLayout from "./pages/documents/BIA/BiaLayout";
-//import BiaOperatingSites from "./pages/documents/BIA/*";
+import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
-//import BiaResources from "./pages/documents/BIA/*";
+import BiaResources from "./pages/documents/BIA/Resources/resources";
 import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
 import ImpactAreas from "./pages/documents/BIA/Impact Analysis/impactArea";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
-//import BiaDependencies from "./pages/documents/BIA/*";
-//import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
-//import BiaManpower from "./pages/documents/BIA/*";
+import BiaDependencies from "./pages/documents/BIA/Dependencies/dependencies";
+import BiaWorkAreaRecovery from "./pages/documents/BIA/Work Area Recovery/workAreaRecovery";
+import BiaManpower from "./pages/documents/BIA/Manpower/manpower";
 
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
 import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
@@ -501,18 +501,18 @@ const router = createBrowserRouter([
           { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "bia-form", element: <BiaForm /> },
           { path: "document-version", element: <BiaDocumentControl /> },
-          //{ path: "operating-sites", element: <BiaOperatingSites /> },
-         { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
+          { path: "operating-sites", element: <BiaOperatingSites /> },
+          { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
           {
             path: "business-peaks-and-deadlines",
             element: <BiaPeaksAndDeadlines />,
           },
-          //{ path: "resources", element: <BiaResources /> },
+          { path: "resources", element: <BiaResources /> },
           { path: "impact-analysis", element: <BiaImpactAnalysis /> },
           { path: "resources-required", element: <BiaResourcesRequired /> },
-          //{ path: "dependencies", element: <BiaDependencies /> },
-          //{ path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
-          //{ path: "manpower", element: <BiaManpower /> },
+          { path: "dependencies", element: <BiaDependencies /> },
+          { path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
+          { path: "manpower", element: <BiaManpower /> },
         ],
       },
 
