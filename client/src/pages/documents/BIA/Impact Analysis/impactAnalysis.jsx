@@ -5,15 +5,15 @@ import SeverityLevel from './severityLevel';
 // Tabs Component
 const Tabs = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="flex space-x-4 p-4 border-b">
+    <div className="flex space-x-4 p-4 ">
       <button
-        className={`px-4 py-2 ${activeTab === 'severity' ? 'text-blue-600' : 'text-gray-600'}`}
+        className={`px-4 py-2 ${activeTab === 'severity' ? 'text-green-500' : 'text-gray-600'} font-semibold`}
         onClick={() => setActiveTab('severity')}
       >
         Severity Level
       </button>
       <button
-        className={`px-4 py-2 ${activeTab === 'impact' ? 'text-blue-600' : 'text-gray-600'}`}
+        className={`px-4 py-2 ${activeTab === 'impact' ? 'text-green-500' : 'text-gray-600'} font-semibold`}
         onClick={() => setActiveTab('impact')}
       >
         Impact Areas
@@ -36,12 +36,14 @@ const ImpactAnalysis = () => {
   const [activeTab, setActiveTab] = useState('severity');
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-bold mb-4">Impact Analysis</h1>
+    <div className="p-8 min-h-screen flex flex-col">
+      <h1 className="text-xl font-bold text-indigo-900">Impact Analysis</h1>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       
-      {activeTab === 'severity' && <SeverityLevel />}
-      {activeTab === 'impact' && <ImpactAnalysisGrid />}
+      <div className="flex-1 overflow-y-auto">
+        {activeTab === 'severity' && <SeverityLevel />}
+        {activeTab === 'impact' && <ImpactAnalysisGrid />}
+      </div>
       
     </div>
   );
