@@ -112,9 +112,15 @@ const VersionControls = () => {
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
                   {v.versionNo}
                 </td>
-                <td className="py-2 px-4 w-48 doc-table-data">{v.prepare}</td>
-                <td className="py-2 px-4 w-48 doc-table-data">{v.checkedBy}</td>
-                <td className="py-2 px-4 w-48 doc-table-data">{v.approve}</td>
+                <td className="py-2 px-4 w-48 doc-table-data">
+                  {v.prepare.name}
+                </td>
+                <td className="py-2 px-4 w-48 doc-table-data">
+                  {v.checkedBy.name}
+                </td>
+                <td className="py-2 px-4 w-48 doc-table-data">
+                  {v.approve.name}
+                </td>
                 <td className="py-2 px-4 w-36 doc-table-data">{v.reasons}</td>
                 <td className="py-2 px-4 w-36 doc-table-data">
                   {v.isApproved}
