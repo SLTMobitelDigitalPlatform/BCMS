@@ -143,15 +143,4 @@ const ImpactAnalysisGrid = () => {
   );
 };
 
-// Main Component (Impact Areas)
-const ImpactAreas = () => {
-  return (
-    <div className="p-8">
-      <h1 className="text-xl font-bold mb-4">Impact Analysis</h1>
-      <ImpactAnalysisGrid />
-      
-    </div>
-  );
-};
-
-export default ImpactAreas;
+export default ImpactAnalysisGrid;
