@@ -84,7 +84,7 @@ import Roles from "./pages/Roles_Responsibilities/Roles";
 import Section from "./pages/sections/Section";
 
 // BIA
-import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
