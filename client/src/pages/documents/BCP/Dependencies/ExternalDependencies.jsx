@@ -54,7 +54,7 @@ const ExternalDependencies = () => {
   }, []);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       {/* <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-blue-900">Internal Party</h1>
 
@@ -90,30 +90,30 @@ const ExternalDependencies = () => {
 
       {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-52 doc-table-border">
+              <th className="w-52 doc-table-head">
                 Critical Business Function
               </th>
-              <th className="doc-table-border">Organization</th>
-              <th className="w-32 doc-table-border">Dependencies</th>
-              <th className="w-32 doc-table-border">Primary Contact</th>
-              <th className="w-32 doc-table-border">Secondary Contact</th>
-              <th className="w-32 doc-table-border">Justification</th>
+              <th className="doc-table-head">Organization</th>
+              <th className="w-32 doc-table-head">Dependencies</th>
+              <th className="w-32 doc-table-head">Primary Contact</th>
+              <th className="w-32 doc-table-head">Secondary Contact</th>
+              <th className="w-32 doc-table-head">Justification</th>
             </tr>
           </thead>
           <tbody>
             {externalDependencies.map((external) => (
               <tr key={external._id} className="doc-table-hover">
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {external.externalDependencies}
                 </td>
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {external.requirments}
                 </td>
 
-                <td className="py-2 px-4 w-32 doc-table-border">
+                <td className="py-2 px-4 w-32 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editExternalDependencies/${external._id}`}

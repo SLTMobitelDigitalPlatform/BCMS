@@ -48,7 +48,7 @@ const IssueRegister = () => {
           <Link
             to="/createInternalIssue"
             state={{ activeTab: "internal" }}
-            className="btn-primary font-semibold"
+            className="btn-primary"
           >
             Create Internal Record
           </Link>
@@ -56,7 +56,7 @@ const IssueRegister = () => {
           <Link
             to="/createExternalIssue"
             state={{ activeTab: "external" }}
-            className="btn-primary font-semibold"
+            className="btn-primary"
           >
             Create External Record
           </Link>

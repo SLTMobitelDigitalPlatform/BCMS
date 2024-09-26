@@ -54,7 +54,7 @@ const InternalDependencies = () => {
   }, []);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       {/* <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-blue-900">Internal Party</h1>
 
@@ -90,26 +90,26 @@ const InternalDependencies = () => {
 
       {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="doc-table-border">Internal Party</th>
-              <th className="doc-table-border">Requirments</th>
+              <th className="doc-table-head">Internal Party</th>
+              <th className="doc-table-head">Requirments</th>
 
-              <th className="w-32 doc-table-border">Actions</th>
+              <th className="w-32 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
             {internalDependencies.map((internal) => (
               <tr key={internal._id} className="doc-table-hover">
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {internal.internalDependencies}
                 </td>
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {internal.requirments}
                 </td>
 
-                <td className="py-2 px-4 w-32 doc-table-border">
+                <td className="py-2 px-4 w-32 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editInternalDependencies/${internal._id}`}

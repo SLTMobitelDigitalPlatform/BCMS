@@ -184,7 +184,7 @@ const RiskElements = () => {
         </h1>
 
         <button
-          className="btn-primary font-semibold"
+          className="btn-primary"
           onClick={() =>
             setCategoryModal({ isShown: true, type: "add", data: {} })
           }
