@@ -6,7 +6,7 @@ const ImpactAnalysis = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       
       {/* Impact Analysis Container */}
       <div className="impact-analysis-container flex-1 bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto"> 
