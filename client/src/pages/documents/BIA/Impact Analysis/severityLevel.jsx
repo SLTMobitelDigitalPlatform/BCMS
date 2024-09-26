@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import BIANavigation from "../../../components/BIANavigation";
 
 const ImpactAnalysis = () => {
   const navigate = useNavigate();

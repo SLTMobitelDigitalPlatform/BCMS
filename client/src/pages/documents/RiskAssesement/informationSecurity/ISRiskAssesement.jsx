@@ -9,40 +9,39 @@ const ISRiskAssesement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredRisks, setFilteredRisks] = useState([]);
   const [section, setSection] = useState("");
+  const [isAdminView, setIsAdminView] = useState(false);
+  const [sections, setSections] = useState([]);
   const risksPerPage = 5;
 
-  // Fetch all risks
+  // Fetch all risks and sections
   const fetchRisks = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/risksIS/");
       const user = await getCurrentUser();
-      let section = user.data.section.sectionCode;
-      console.log(section);
-      // if (section === "Information Technology (IT)") {
-      //   section = "ITSE";
-      // } else if (section === "Marketing") {
-      //   section = "MARC";
-      // } else if (section === "Sales") {
-      //   section = "SALE";
-      // } else if (section === "Human Resources(HR)") {
-      //   section = "HRMA";
-      // } else if (section === "Finance") {
-      //   section = "FINA";
-      // } else if (section === "Operations") {
-      //   section = "OPER";
-      // } else if (section === "Customer Service") {
-      //   section = "CUSE";
-      // }
-      // console.log(section);
+      let userSection = user.data.section.sectionCode;
       setRisks(response.data);
-      setSection(section);
-      filterRisks(response.data, section);
+      setSection(userSection);
+      if (!isAdminView) {
+        filterRisks(response.data, userSection);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const filterRisks = async (risks, section) => {
+  // Fetch available sections for dropdown
+  const fetchSections = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/sections");
+      // console.log(response.data);
+      setSections(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Filter risks based on section
+  const filterRisks = (risks, section) => {
     try {
       const filtered = risks.filter((risk) => {
         const sectionIdentifier = risk.rid.split("-")[1];
@@ -55,12 +54,29 @@ const ISRiskAssesement = () => {
   };
 
   useEffect(() => {
-    filterRisks(risks, section);
-  }, [risks, section]);
+    fetchRisks();
+    fetchSections();
+  }, [isAdminView]); // Refetch risks when switching views
 
   useEffect(() => {
-    fetchRisks();
-  }, []);
+    if (!isAdminView) {
+      filterRisks(risks, section);
+    } else {
+      setFilteredRisks(risks); // Show all risks in admin view
+    }
+  }, [risks, section, isAdminView]);
+
+  const toggleAdminView = () => {
+    setIsAdminView((prev) => !prev);
+  };
+
+  // Handle section change from the dropdown
+  const handleSectionChange = (e) => {
+    setSection(e.target.value);
+    if (!isAdminView) {
+      filterRisks(risks, e.target.value);
+    }
+  };
 
   // Delete a risk with SweetAlert2 confirmation
   const deleteRisk = async (id) => {
@@ -116,12 +132,30 @@ const ISRiskAssesement = () => {
           Information Security
         </h1>
 
-        <Link to="/createRiskIS" className="btn-primary">
-          Create Risk Assessment
-        </Link>
+        <div className="flex space-x-4">
+          <button onClick={toggleAdminView} className="btn-primary">
+            {isAdminView ? "Default View" : "Admin View"}
+          </button>
+
+          <select
+            className="border rounded px-3 py-2"
+            value={section}
+            onChange={handleSectionChange}
+          >
+            <option value="">Select Section</option>
+            {sections.map((sec) => (
+              <option key={sec._id} value={sec.sectionCode}>
+                {sec.name} ({sec.sectionCode})
+              </option>
+            ))}
+          </select>
+
+          <Link to="/createRiskIS" className="btn-primary">
+            Create Risk Assessment
+          </Link>
+        </div>
       </div>
 
-      {/* Table */}
       <div className="h-full w-full overflow-auto">
         <table className="table-fixed w-full">
           <thead className="sticky top-0 bg-indigo-200">
@@ -179,7 +213,9 @@ const ISRiskAssesement = () => {
                 <td className="py-2 px-4 w-28 doc-table-data">
                   {r.treatMethod}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-data">{r.date}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  {r.date.split("T")[0]}
+                </td>
                 <td className="py-2 px-4 w-28 doc-table-data">
                   {r.newControls}
                 </td>
@@ -214,22 +250,26 @@ const ISRiskAssesement = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center mt-4">
-        {Array.from(
-          { length: Math.ceil(risks.length / risksPerPage) },
-          (_, i) => (
-            <button
-              key={i + 1}
-              onClick={() => paginate(i + 1)}
-              className={`px-3 py-1 mx-1 border ${
-                currentPage === i + 1 ? "bg-gray-300" : "bg-white"
-              }`}
-            >
-              {i + 1}
-            </button>
-          )
-        )}
-      </div>
+
+      <nav className="flex justify-center items-center mt-5">
+        <ul className="flex space-x-2">
+          {Array.from(
+            { length: Math.ceil(filteredRisks.length / risksPerPage) },
+            (_, i) => (
+              <li key={i} className="inline-block">
+                <button
+                  onClick={() => paginate(i + 1)}
+                  className={`px-4 py-2 rounded-lg border border-indigo-500 text-indigo-100 hover:bg-indigo-500 hover:text-white transition-all duration-300 ${
+                    currentPage === i + 1 ? "bg-indigo-500 text-white" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              </li>
+            )
+          )}
+        </ul>
+      </nav>
     </div>
   );
 };
