@@ -93,8 +93,9 @@ import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSi
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
 import BiaResources from "./pages/documents/BIA/Resources/resources";
-import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
+import BiaImpactAnalysis from "./pages/documents/BIA/Impact Analysis/impactAnalysis";
 import ImpactAreas from "./pages/documents/BIA/Impact Analysis/impactArea";
+import SeverityLevel from "./pages/documents/BIA/Impact Analysis/severityLevel";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
 import BiaDependencies from "./pages/documents/BIA/Dependencies/dependencies";
 import BiaWorkAreaRecovery from "./pages/documents/BIA/Work Area Recovery/workAreaRecovery";
@@ -508,7 +509,7 @@ const router = createBrowserRouter([
             element: <BiaPeaksAndDeadlines />,
           },
           { path: "resources", element: <BiaResources /> },
-          { path: "impact-analysis", element: <BiaImpactAnalysis /> },
+          { path: "impact-analysis", element: <SeverityLevel /> },
           { path: "resources-required", element: <BiaResourcesRequired /> },
           { path: "dependencies", element: <BiaDependencies /> },
           { path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
@@ -519,8 +520,8 @@ const router = createBrowserRouter([
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
     
-
       {path:"impactAreas", element:<ImpactAreas/>},
+      {path:"severityLevel", element:<BiaImpactAnalysis/>},
 
       // Roles
       { path: "roles", element: <Roles /> },
