@@ -31,8 +31,8 @@ const Dropdown = () => {
   );
 };
 
-// Main Component (Impact Areas)
-const ImpactAreas = () => {
+// Main Component
+const ImpactAnalysis = () => {
   const [activeTab, setActiveTab] = useState('severity');
 
   return (
@@ -47,4 +47,4 @@ const ImpactAreas = () => {
   );
 };
 
-export default ImpactAreas;
+export default ImpactAnalysis;
