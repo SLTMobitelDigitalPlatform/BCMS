@@ -1,84 +1,140 @@
-const BiaForm = require("../../../models/documentModels/businessImpactAnalysis/biaFormModel");
+const BIAForm = require("../../../models/documentModels/businessImpactAnalysis/biaFormModel");
 
-// Create a new BIA Plan
-const createBiaForm = async (req, res) => {
+// Create a new bia form
+exports.createBIAForm = async (req, res) => {
   try {
-    const biaForm = new BiaForm(req.body);
-    await biaForm.save();
-    res.status(201).json(biaForm);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
+    const { biaid } = req.body;
 
-// Get all BIA Plans
-const getBiaForms = async (req, res) => {
-  try {
-    const biaForm = await BiaForm.find().lean();
-    res.status(200).json(biaForm);
+    const existingBIA = await BIAForm.findOne({ biaid });
+    if (existingBIA) {
+      return res.status(400).json({ message: "BIA ID already exists" });
+    }
+    const newBIAForm = new BIAForm(req.body);
+    await newBIAForm.save();
+    res.status(201).json(newBIAForm);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get a single BIA Plan
-const getBiaFormById = async (req, res) => {
+// Get all bia forms
+exports.getBIAForms = async (req, res) => {
   try {
-    const biaForm = await BiaForm.findById(req.params.id).lean();
+    const BIAForms = await BIAForm.find();
+    res.status(200).json(BIAForms);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get last bia form
+exports.getLastbiaForm = async (req, res) => {
+  try {
+    const { template } = req.params;
+    const lastBIAForm = await BIAForm.findOne({
+      biaid: new RegExp(`^BIA-${template}-`),
+    }).sort({ _id: -1 });
+
+    res.status(200).json(lastBIAForm);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get bia form by BIA ID
+exports.getbiaFormByBIAID = async (req, res) => {
+  const filter = { biaid: req.params.biaid };
+  try {
+    const biaForm = await BIAForm.findOne(filter);
     if (!biaForm)
-      return res.status(404).json({ message: "BIA Plan not found" });
+      return res.status(404).json({ message: "BIA Form not found" });
     res.status(200).json(biaForm);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Update a BIA Plan
-const updateBiaForm = async (req, res) => {
+// Get a single bia form by ID
+exports.getbiaFormById = async (req, res) => {
   try {
-    const biaForm = await BiaForm.findByIdAndUpdate(
+    console.log("Requesting BIA Form with ID:", req.params.id);
+    const singleBIAForm = await BIAForm.findById(req.params.id);
+    if (!singleBIAForm) {
+      console.log("BIA Form not found");
+      return res.status(404).json({ message: "BIA Form not found" });
+    }
+    res.status(200).json(singleBIAForm);
+  } catch (error) {
+    console.error("Error fetching BIA form:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update a bia form by BIA ID
+exports.updatebiaFormByBIAID = async (req, res) => {
+  const { biaid } = req.body;
+  const oldBIAID = req.params.biaid;
+
+  try {
+    if (biaid !== oldBIAID) {
+      const existingBIA = await BIAForm.findOne({ biaid });
+      if (existingBIA) {
+        return res.status(400).json({
+          message: "BIA ID already exists. Please choose a different ID.",
+        });
+      }
+    }
+
+    const updatedBIAForm = await BIAForm.findOneAndUpdate(
+      { biaid: oldBIAID },
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedBIAForm)
+      return res.status(404).json({ message: "BIA Form not found" });
+
+    if (biaid !== oldBIAID) {
+      const documentModels = [
+        
+      ];
+
+      await Promise.all(
+        documentModels.map(async (Model) => {
+          await Model.updateMany({ biaid: oldBIAID }, { $set: { biaid } });
+        })
+      );
+    }
+    res.status(200).json(updatedBIAForm);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update a biaForm by ID
+exports.updatebiaForm = async (req, res) => {
+  try {
+    const updatedBIAForm = await BIAForm.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true }
+      { new: true }
     );
-    if (!biaForm)
-      return res.status(404).json({ message: "BIA Plan not found" });
-    res.status(200).json(biaForm);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-// Delete a BIA Plan 
-const deleteBiaForm = async (req, res) => {
-  try {
-    const biaForm = await BiaForm.findByIdAndDelete(
-      req.params.id
-    );
-    if (!biaForm)
-      return res.status(404).json({ message: "BIA Plan not found" });
-    res.status(200).json({ message: "BIA Plan deleted successfully" });
+    if (!updatedBIAForm)
+      return res.status(404).json({ message: "BIA Form not found" });
+    res.status(200).json(updatedBIAForm);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Get a last created BIA Plan
-const getLastBiaForm = async (req, res) => {
+// Delete a biaForm by ID
+exports.deletebiaForm = async (req, res) => {
   try {
-    const lastBiaForm = await BiaForm.findOne().sort({ _id: -1 }).lean();
-
-    res.status(200).json(lastBiaForm);
+    const deletedBIAForm = await BIAForm.findByIdAndDelete(req.params.id);
+    if (!deletedBIAForm)
+      return res.status(404).json({ message: "BIA Form not found" });
+    res.status(200).json({ message: "BIA Form deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
-
-module.exports = {
-  createBiaForm,
-  getBiaForms,
-  getBiaFormById,
-  updateBiaForm,
-  deleteBiaForm,
-  getLastBiaForm,
 };
