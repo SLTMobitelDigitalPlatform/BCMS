@@ -145,9 +145,9 @@ const Section = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="px-5 pt-4 pb-20 rounded-2xl bg-indigo-100 w-full h-full overflow-hidden">
+    <div className="w-full h-full flex flex-col">
       <div className="flex items-center justify-between mb-5">
-        <h1 className="text-3xl mb-3 font-bold text-green-500">Sections</h1>
+        <h1 className="text-3xl font-bold text-green-500">Sections</h1>
         <button
           className="btn-primary"
           onClick={() =>
@@ -158,7 +158,7 @@ const Section = () => {
             })
           }
         >
-          Add
+          Add Section
         </button>
       </div>
 
