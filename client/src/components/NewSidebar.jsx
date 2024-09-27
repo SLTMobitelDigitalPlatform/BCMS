@@ -53,7 +53,7 @@ const NewSidebar = () => {
                 System Management <FaChevronDown className="ml-2" />
               </button>
               {managementDropdown && (
-                <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
+                <ul className="absolute left-0 w-full bg-white text-black text-sm rounded-2xl p-2 z-10">
                   <li>
                     <NavLink
                       to="/employee"
@@ -118,7 +118,7 @@ const NewSidebar = () => {
                 System Documents <FaChevronDown className="ml-2" />
               </button>
               {documentDropdown && (
-                <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
+                <ul className="absolute left-0 w-full bg-white text-black text-sm rounded-2xl p-1 z-10">
                   <li>
                     <NavLink
                       to="/Risk-Assessment/versionControl"

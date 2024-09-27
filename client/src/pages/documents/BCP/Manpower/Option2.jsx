@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ImpactAnalysisGrid = () => {
+const Option2 = () => {
   const headers = [
     "30 Min",
     "1 Hour",
@@ -53,18 +53,13 @@ const ImpactAnalysisGrid = () => {
   };
 
   return (
-    <div className="overflow-x-auto pb-40">
-      <table className="table-fixed relative min-w-max p-20 border-collapse border border-indigo-100">
-        <thead className="sticky text-white h-16">
+    <div className="overflow-auto">
+      <table className="table-fixed w-full">
+        <thead className="sticky bg-indigo-200">
           <tr>
-            <th className="w-36 sticky left-0 bg-indigo-800 border-indigo-100">
-              Site
-            </th>
+            <th className="w-40 sticky doc-table-head">Site</th>
             {headers.map((header) => (
-              <th
-                key={header}
-                className="w-20 border border-indigo-100 text-center bg-indigo-800"
-              >
+              <th key={header} className="w-20 doc-table-head text-center">
                 {header}
               </th>
             ))}
@@ -73,7 +68,7 @@ const ImpactAnalysisGrid = () => {
         <tbody>
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              <td className="sticky left-0 h-24 px-6 py-4 border border-indigo-100 bg-indigo-100">
+              <td className="sticky left-0 p-4 h-16 doc-table-head whitespace-nowrap bg-indigo-100">
                 {row}
               </td>
               {headers.map((_, colIndex) => {
@@ -83,18 +78,18 @@ const ImpactAnalysisGrid = () => {
                 return (
                   <td
                     key={colIndex}
-                    className="border border-indigo-100 text-center"
+                    className="doc-table-data text-center"
                     onClick={() => handleCellClick(rowIndex, colIndex)}
                   >
                     {editingCell === cellKey ? (
                       <input
-                        type="text"
+                        type="number"
                         value={inputValue}
                         onChange={(e) =>
                           handleInputChange(rowIndex, colIndex, e.target.value)
                         }
                         onBlur={handleInputBlur}
-                        className="form-input w-full h-8 bg-transparent"
+                        className="form-input w-full h-8 bg-transparent text-center"
                         autoFocus
                       />
                     ) : (
@@ -111,16 +106,4 @@ const ImpactAnalysisGrid = () => {
   );
 };
 
-// Main Component (Impact Areas)
-const Manpower = () => {
-  return (
-    <div className="p-8">
-      <h1 className="text-xl font-bold mb-4">
-        Minimum Operating Requirements - Manpower/Manpower
-      </h1>
-      <ImpactAnalysisGrid />
-    </div>
-  );
-};
-
-export default Manpower;
+export default Option2;

@@ -51,6 +51,7 @@ const routerCriticalBusinessFunction = require("./routes/documentRoutes/bcp/crit
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
 const routerWorkAreaRecovery = require("./routes/documentRoutes/bcp/workAreaRecoveryRoutes");
+const routerManpower = require("./routes/documentRoutes/bcp/manpowerRoutes");
 const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
 
 // Business Impact Analysis Routes
@@ -100,6 +101,7 @@ app.use(
   routerResourcesRequired,
   routerVitalRecords,
   routerWorkAreaRecovery,
+  routerManpower,
   routerEmbeddedDocument,
   routerBiaForm
 );
