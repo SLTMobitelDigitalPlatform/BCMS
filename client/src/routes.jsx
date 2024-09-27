@@ -501,7 +501,10 @@ const router = createBrowserRouter([
           { path: "bia-form", element: <BiaForm /> },
           { path: "document-version", element: <BiaDocumentControl /> },
           { path: "operating-sites", element: <BiaOperatingSites /> },
-          { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
+          {
+            path: "critical-business-function",
+            element: <BiaCriticalBusinessFunction />,
+          },
           {
             path: "business-peaks-and-deadlines",
             element: <BiaPeaksAndDeadlines />,
@@ -517,6 +520,8 @@ const router = createBrowserRouter([
 
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
+      // { path: "impactAreas", element: <ImpactAreas /> },
+      { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
       // Roles
       { path: "roles", element: <Roles /> },
