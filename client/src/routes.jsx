@@ -520,9 +520,8 @@ const router = createBrowserRouter([
 
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
-      { path: "impactAreas", element: <ImpactAreas /> },
+      // { path: "impactAreas", element: <ImpactAreas /> },
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
-
 
       // Roles
       { path: "roles", element: <Roles /> },
