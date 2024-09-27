@@ -5,9 +5,9 @@ const vControlSchema = new Schema(
   {
     serialNo: { type: Number, required: true },
     versionNo: { type: String, required: true },
-    prepare: { type: String, required: true },
-    checkedBy: { type: String, required: true },
-    approve: { type: String, required: true },
+    prepare: { type: Schema.Types.ObjectId, ref: "User" },
+    checkedBy: { type: Schema.Types.ObjectId, ref: "User" },
+    approve: { type: Schema.Types.ObjectId, ref: "User" },
     reasons: { type: String, required: true },
     isChecked: {
       type: String,

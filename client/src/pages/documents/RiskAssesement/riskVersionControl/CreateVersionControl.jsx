@@ -77,7 +77,11 @@ const CreateRiskVersionControl = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      const users = response.data.map((user) => user.name);
+      const users = response.data.map((user) => ({
+        id: user._id,
+        name: user.name,
+      }));
+      // console.log(users);
       setUsers(users);
 
       // console.log(users);
@@ -190,8 +194,8 @@ const CreateRiskVersionControl = () => {
                     Select
                   </option>
                   {users.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -211,8 +215,8 @@ const CreateRiskVersionControl = () => {
                     Select
                   </option>
                   {users.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
@@ -232,8 +236,8 @@ const CreateRiskVersionControl = () => {
                     Select
                   </option>
                   {users.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>

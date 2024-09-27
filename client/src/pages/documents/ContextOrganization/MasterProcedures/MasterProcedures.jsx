@@ -87,7 +87,7 @@ const MasterProcedures = () => {
                   {masterProd.processKpi}
                 </td>
                 <td className="py-2 px-4 doc-table-data">
-                  {masterProd.responsiblePerson}
+                  {masterProd.responsiblePerson.name}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-data">
                   <div className="flex justify-center gap-2">

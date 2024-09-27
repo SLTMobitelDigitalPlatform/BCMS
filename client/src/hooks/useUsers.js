@@ -34,7 +34,7 @@ export const useUsers = () => {
   const sortedUsers = users
     .slice()
     .sort((a, b) => a.name.localeCompare(b.name))
-    .map((user) => ({ value: user.name, label: user.name }));
+    .map((user) => ({ value: user._id, label: user.name }));
 
   // Handle errors
   const handleError = (message, err) => {

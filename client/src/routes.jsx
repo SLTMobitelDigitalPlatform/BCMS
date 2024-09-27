@@ -84,7 +84,7 @@ import Roles from "./pages/Roles_Responsibilities/Roles";
 import Section from "./pages/sections/Section";
 
 // BIA
-import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
@@ -94,8 +94,6 @@ import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusine
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
 import BiaResources from "./pages/documents/BIA/Resources/resources";
 import BiaImpactAnalysis from "./pages/documents/BIA/Impact Analysis/impactAnalysis";
-import ImpactAreas from "./pages/documents/BIA/Impact Analysis/impactArea";
-import SeverityLevel from "./pages/documents/BIA/Impact Analysis/severityLevel";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
 import BiaDependencies from "./pages/documents/BIA/Dependencies/dependencies";
 import BiaWorkAreaRecovery from "./pages/documents/BIA/Work Area Recovery/workAreaRecovery";
@@ -512,7 +510,7 @@ const router = createBrowserRouter([
             element: <BiaPeaksAndDeadlines />,
           },
           { path: "resources", element: <BiaResources /> },
-          { path: "impact-analysis", element: <SeverityLevel /> },
+          { path: "impact-analysis", element: <BiaImpactAnalysis /> },
           { path: "resources-required", element: <BiaResourcesRequired /> },
           { path: "dependencies", element: <BiaDependencies /> },
           { path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
@@ -522,9 +520,9 @@ const router = createBrowserRouter([
 
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:id", element: <EditBIAForm /> },
-
       { path: "impactAreas", element: <ImpactAreas /> },
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
+
 
       // Roles
       { path: "roles", element: <Roles /> },

@@ -6,10 +6,7 @@ const interfaceSchema = new Schema({
     type: String,
     required: true,
   },
-  externalEntityName: {
-    type: String,
-    required: true,
-  },
+  externalEntityName: { type: Schema.Types.ObjectId, ref: "User" },
   informationExchanged: {
     type: String,
     required: false,

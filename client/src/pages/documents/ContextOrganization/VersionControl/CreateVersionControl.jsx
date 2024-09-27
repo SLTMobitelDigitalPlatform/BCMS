@@ -33,6 +33,7 @@ const CreateVersionControl = () => {
 
   useEffect(() => {
     fetchLastVersionControl();
+    console.log(sortedUsers);
     // fetchLastVersion();
     fetchUsers();
   }, []);

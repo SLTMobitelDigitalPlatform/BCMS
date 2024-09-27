@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useBiaDocumentControl } from "../../../../hooks/documents/bia/useBiaDocumentControl";
-import { createAlert } from "../../../../utilities/alert";
+import { createAlert } from "../../../utilities/alert";
 
 const CreateBiaDocumentControl = () => {
   const today = new Date().toISOString().split("T")[0];
