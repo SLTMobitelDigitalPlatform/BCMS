@@ -1,18 +1,21 @@
 import { useState } from "react";
 import axiosInstance from "../../../services/axiosInstance";
+import { errorAlert } from "../../../utilities/alert";
 
 export const useBIAForm = () => {
-  const [businessImpactAnalysisPlans, setbusinessImpactAnalysisPlans] = useState([]);
-  const [businessImpactAnalysisPlan, setbusinessImpactAnalysisPlan] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [businessImpactAnalysisPlans, setBusinessImpactAnalysisPlans] = useState([]);
+  const [businessImpactAnalysisPlan, setBusinessImpactAnalysisPlan] = useState([]);
+  const [lastBusinessImpactAnalysisPlan, setLastBusinessImpactAnalysisPlan] = useState(
+    []
+  );
+  const [loading, setLoading] = useState(false);
 
   // Fetch all BIA forms
   const fetchBIAForms = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/api/biaForms/");
-      setbusinessImpactAnalysisPlans(response.data);
+      const response = await axiosInstance.get("/api/biaForms");
+      setBusinessImpactAnalysisPlans(response.data);
     } catch (err) {
       handleError("Error fetching BIA forms.", err);
     } finally {
@@ -21,13 +24,28 @@ export const useBIAForm = () => {
   };
 
   // Fetch the last BIA form
-  const fetchLastBIAForm = async () => {
+  const fetchLastBIAForm = async (template) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("/api/biaForms/last");
-      return response.data;
+      const response = await axiosInstance.get(
+        `/api/biaForms/last/${template}`
+      );
+      setLastBusinessImpactAnalysisPlan(response.data);
     } catch (err) {
       handleError("Error fetching last BIA form.", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch BIA form by BIA ID
+  const fetchBIAFormByBIAID = async (biaid) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(`/api/biaForms/${biaid}`);
+      setBusinessImpactAnalysisPlan(response.data);
+    } catch (err) {
+      handleError("Error fetching BIA form.", err);
     } finally {
       setLoading(false);
     }
@@ -38,7 +56,7 @@ export const useBIAForm = () => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(`/api/biaForms/${id}`);
-      setbusinessImpactAnalysisPlan(response.data);
+      setBusinessImpactAnalysisPlan(response.data);
     } catch (err) {
       handleError("Error fetching BIA form.", err);
     } finally {
@@ -48,60 +66,78 @@ export const useBIAForm = () => {
 
   // Add a new BIA Form
   const addBIAForm = async (documentData) => {
-    setLoading(true);
     try {
       await axiosInstance.post("/api/biaForms/add", documentData);
-      await fetchBIAForms(); // refresh the list after adding
+      await fetchBIAForms();
     } catch (err) {
       handleError("Error adding BIA Form.", err);
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  // Update BIA by BIA ID
+  const updateBIAFormByBIAID = async (biaid, documentData) => {
+    try {
+      await axiosInstance.put(`/api/biaForms/edit/${biaid}`, documentData);
+      await fetchBIAForms();
+    } catch (err) {
+      handleError("Error updating BIA Form.", err);
     }
   };
 
   // Update a BIA Form
   const updateBIAForm = async (id, documentData) => {
-    setLoading(true);
     try {
       await axiosInstance.put(`/api/biaForms/edit/${id}`, documentData);
-      await fetchBIAForms(); // refresh the list after updating
+      await fetchBIAForms();
     } catch (err) {
       handleError("Error updating BIA Form.", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   // Delete a BIA Form
   const deleteBIAForm = async (id) => {
-    setLoading(true);
     try {
       await axiosInstance.delete(`/api/biaForms/delete/${id}`);
-      await fetchBIAForms(); // refresh the list after deleting
+      await fetchBIAForms();
     } catch (err) {
       handleError("Error deleting BIA Form.", err);
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  // Check for duplicate BIA IDs
+  const checkDuplicateBIAID = async (biaid, originalBIAID = null) => {
+    try {
+      const existingBIAIDs = businessImpactAnalysisPlans.map((bia) => bia.biaid);
+      if (originalBIAID && biaid === originalBIAID) {
+        return false;
+      }
+      return existingBIAIDs.includes(biaid);
+    } catch (error) {
+      console.error("Error checking BIA IDs: ", error);
+      return false;
     }
   };
 
   // Handle errors
   const handleError = (message, err) => {
-    setError(message);
     console.error(message, err.response?.data || err);
+    errorAlert("Error", message);
   };
 
   return {
     businessImpactAnalysisPlans,
     businessImpactAnalysisPlan,
+    lastBusinessImpactAnalysisPlan,
     loading,
-    error,
     fetchBIAForms,
     fetchLastBIAForm,
+    fetchBIAFormByBIAID,
     fetchBIAFormById,
     addBIAForm,
+    updateBIAFormByBIAID,
     updateBIAForm,
     deleteBIAForm,
+    checkDuplicateBIAID,
     handleError,
   };
 };

@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useBIAForm } from "../../../../hooks/documents/bia/useBIAForm";
+import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, createAlert } from "../../../../utilities/alert";
 
 const CreateBIA = () => {
   const today = new Date().toISOString().split("T")[0];
 
   const [formData, setFormData] = useState({
-    docNo: "",
+    biaid: "",
     date: today,
     template: "",
     legalEntity: "",
@@ -22,35 +24,46 @@ const CreateBIA = () => {
     dateDueForNextReview: "",
   });
 
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
-  const { fetchLastBIAForm, addBIAForm } = useBIAForm();
 
-  // Create Plan Number
-  const createDocNo = async () => {
-    try {
-      const response = await fetchLastBIAForm();
-      if (response && response.data) {
-        const lastRecord = response.data;
-        let lastDocNo = lastRecord?.docNo || "P000";
-        let numericPart = parseInt(lastDocNo.slice(1)) + 1;
-        let newDocNo = `P${numericPart.toString().padStart(3, "0")}`;
-        setFormData((prev) => ({ ...prev, docNo: newDocNo }));
-      } else {
-        setFormData((prev) => ({ ...prev, docNo: "P001" }));
-      }
-    } catch (error) {
-      console.error("Error creating plan number:", error);
-    }
-  };
+  // useHooks
+  const {
+    sortedUsers,
+    loading: loadingUsers,
+    error: errorUsers,
+    fetchUsers,
+  } = useUsers();
+
+  const {
+    loading: loadingBIAForms,
+    error: errorBIAForms,
+    fetchBIAForms,
+    addBIAForm,
+    checkDuplicateBIAID,
+  } = useBIAForm();
+
+  const {
+    sortedSections,
+    loading: loadingSections,
+    error: errorSections,
+    fetchSections,
+  } = useSections();
+
+  useEffect(() => {
+    fetchUsers();
+    fetchBIAForms();
+    fetchSections();
+  }, []);
 
   useEffect(() => {
     const initializeForm = async () => {
       try {
+        // Fetch necessary data
         await fetchUsers();
         await createDocNo();
-
-        // Set dateDueForNextReview based on dateLastReviewed if dateLastReviewed is already set
+  
+        // Update dateDueForNextReview if dateLastReviewed is set
         if (formData.dateLastReviewed) {
           const lastReviewedDate = new Date(formData.dateLastReviewed);
           const nextReviewDate = new Date(lastReviewedDate.setFullYear(lastReviewedDate.getFullYear() + 1));
@@ -59,13 +72,26 @@ const CreateBIA = () => {
             dateDueForNextReview: nextReviewDate.toISOString().split("T")[0],
           }));
         }
+  
+        console.log("Template:", formData.template);
+        // Update biaid based on template and year
+        if (formData.template) {
+          const currentYear = new Date().getFullYear();
+          const newBIAID = `BIA-${formData.template}-${currentYear}`;
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            biaid: newBIAID,
+          }));
+        }
       } catch (err) {
         console.error("Error initializing form:", err);
       }
     };
+  
+    // Initialize form when any of these dependencies change
     initializeForm();
-  }, [formData.dateLastReviewed]);
-
+  }, [formData.dateLastReviewed, formData.template]);
+  
   // Validate dates
   const validateDates = () => {
     const {
@@ -100,48 +126,56 @@ const CreateBIA = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.viewers.length || !formData.maintainers.length) {
-      handleErrorAlert("Please select viewers and maintainers");
-      return;
+    setIsCreating(true);
+  
+    // Ensure biaid is generated
+    if (!formData.biaid && formData.template) {
+      const currentYear = new Date().getFullYear();
+      const newBIAID = `BIA-${formData.template}-${currentYear}`;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        biaid: newBIAID,
+      }));
     }
-
-    const dateError = validateDates();
-    if (dateError) {
-      handleErrorAlert(dateError);
-      return;
-    }
-    
+  
     try {
+      // Check for duplicate BIA ID
+      const isDuplicate = await checkDuplicateBIAID(formData.biaid);
+      if (isDuplicate) {
+        errorAlert(
+          "Error",
+          `BIA ID "${formData.biaid}" already exists! Please choose a different ID.`
+        );
+        return;
+      }
+  
+      // Validate dates
+      const dateError = validateDates();
+      if (dateError) {
+        handleErrorAlert(dateError);
+        return;
+      }
+  
+      // Submit BIA form
       await addBIAForm(formData);
-      handleSuccessAlert();
+      createAlert(
+        "Business Impact Analysis Plan Added",
+        `Business Impact Analysis Plan "${formData.biaid}" added successfully!`
+      );
+  
       navigate("/Business-Impact-Analysis/bia-form");
+  
     } catch (error) {
-      handleErrorAlert("Failed to add the record. Please try again later.");
-    console.error(error);
+      errorAlert(
+        "Error",
+        error.message || "Error adding Business Impact Analysis Plan!"
+      );
+      console.error(error);
+    } finally {
+      setIsCreating(false);
     }
   };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Added Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = (message) => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: message || "Fix it and try again",
-      icon: "error",
-    });
-  };
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => {
@@ -172,8 +206,14 @@ const CreateBIA = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loadingUsers || loadingSections || loadingBIAForms)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (errorUsers || errorSections || errorBIAForms)
+    return <div>Error loading data</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -189,8 +229,9 @@ const CreateBIA = () => {
               <label className="font-semibold">Document Number</label>
               <input
                 type="text"
-                name="docNo"
-                value={formData.docNo}
+                name="biaid"
+                value={formData.biaid}
+                onChange={handleChange}
                 disabled
                 readOnly
                 className="p-2 w-full rounded bg-white"
@@ -281,9 +322,9 @@ const CreateBIA = () => {
             <label className="font-semibold">Viewers</label>
             <Select
               isMulti
-              options={sortedUsers}
-              value={sortedUsers.filter((user) =>
-                formData.viewers.includes(user.value)
+              options={sortedSections}
+              value={sortedSections.filter((section) =>
+                formData.viewers.includes(section.value)
               )}
               onChange={(option) => handleSelectChange(option, "viewers")}
               isClearable={true}
@@ -332,9 +373,16 @@ const CreateBIA = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isCreating}
             >
-              Save
+              {isCreating ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Create"
+              )}
             </button>
             <Link
               to="/Business-Impact-Analysis/bia-form"
