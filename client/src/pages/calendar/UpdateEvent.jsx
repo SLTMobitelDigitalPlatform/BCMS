@@ -12,7 +12,7 @@ const schema = yup
   .object({
     title: yup.string().required("Can't Be Empty"),
     start: yup.date().required("Please specify the time to start"),
-    end: yup.date().required("On update you must specify an end date"),
+    end: yup.date().required("Please specify an end date"),
   })
   .required();
 
@@ -37,73 +37,58 @@ const UpdateEvent = () => {
       start: "",
       end: "",
       describe: "",
+      attendees: [],
     },
   });
 
   useEffect(() => {
-    fetchEvent();
-    fetchEmployees();
+    fetchEventAndEmployees();
   }, [id]);
 
-  const fetchEvent = async () => {
+  const fetchEventAndEmployees = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/events/${id}`);
-      setEvent(response.data);
-      if (employees.length > 0) {
-        const eventAttendees = employees.filter((employee) =>
-          event.attendees.includes(employee._id)
-        );
-        setAttendees(eventAttendees);
-      }
-    } catch (error) {
-      console.error("Error fetching event:", error);
-      setDbError("Error fetching event");
-    }
-  };
+      const [eventResponse, employeesResponse] = await Promise.all([
+        axios.get(`http://localhost:5000/events/${id}`),
+        axios.get(`http://localhost:5000/users`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }),
+      ]);
 
-  const fetchEmployees = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/users`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const employees = response.data;
-      setEmployees(employees);
+      const eventData = eventResponse.data;
+      const employeesData = employeesResponse.data;
 
-      // If event is already fetched, match the event's attendees with employees
-      if (event) {
-        const eventAttendees = employees.filter((employee) =>
-          event.attendees.includes(employee._id)
-        );
-        setAttendees(eventAttendees);
-      }
-    } catch (error) {
-      console.error("Error fetching employees:", error);
-      setDbError("Error fetching employees");
-    }
-  };
+      setEvent(eventData);
+      setEmployees(employeesData);
 
-  useEffect(() => {
-    if (event && employees.length > 0) {
-      const eventAttendees = employees.filter((employee) =>
-        event.attendees.includes(employee._id)
+      // Set initial attendees
+      const eventAttendees = employeesData.filter((employee) =>
+        eventData.attendees.includes(employee._id)
       );
       setAttendees(eventAttendees);
+
       reset({
-        title: event.title,
-        start: new Date(event.start),
-        end: event.end ? new Date(event.end) : "",
-        describe: event.describe ? event.describe : "",
+        title: eventData.title,
+        start: new Date(eventData.start),
+        end: eventData.end ? new Date(eventData.end) : "",
+        describe: eventData.describe || "",
+        attendees: eventAttendees.map((attendee) => ({
+          value: attendee._id,
+          label: attendee.name,
+        })),
       });
+    } catch (error) {
+      console.error("Error fetching event or employees:", error);
+      setDbError("Error fetching data");
     }
-  }, [event, reset, employees]);
+  };
 
   const onSubmit = async (values) => {
     try {
       const updatedEvent = {
         ...values,
-        attendees: attendees.map((attendee) => attendee.value),
+        attendees: attendees.map((attendee) => attendee._id),
       };
       await axios.put(`http://localhost:5000/events/${id}`, updatedEvent);
       navigate("/calendar");
@@ -118,38 +103,8 @@ const UpdateEvent = () => {
     label: employee.name,
   }));
 
-  const handleAttendeeClick = (employee) => {
-    if (!employee || !employee._id) return;
-
-    setAttendees((prevAttendees) => {
-      if (
-        prevAttendees.some(
-          (attendee) => attendee && attendee._id === employee._id
-        )
-      ) {
-        return prevAttendees.filter(
-          (attendee) => attendee && attendee._id !== employee._id
-        );
-      } else {
-        return [...prevAttendees, employee];
-      }
-    });
-  };
-
-  const scrollToCalendar = () => {
-    window.location.href = "http://localhost:5173/calendar";
-  };
-
   return event ? (
-    // style={{ height: 400, width: 1000 }}
     <div className="h-full overflow-y-auto">
-      {/* <h1
-        className="cursor-pointer text-2xl font-bold mb-4"
-        onClick={scrollToCalendar}
-        style={{ color: "#52B14A" }}
-      >
-        Calendar
-      </h1> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-5 rounded-lg shadow-lg border border-gray-200"
