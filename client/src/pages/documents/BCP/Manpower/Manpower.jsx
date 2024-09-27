@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Select from "react-select";
 import Option1 from "./Option1";
 import Option2 from "./Option2";
 
 const Manpower = () => {
   const location = useLocation();
-  const { bcpid } = useParams();
   const [activeTab, setActiveTab] = useState("option1");
 
   useEffect(() => {
@@ -46,7 +45,7 @@ const Manpower = () => {
 
       {/* Tab Content */}
       <div className="h-full w-full overflow-auto">
-        {activeTab === "option1" ? <Option1 bcpid={bcpid} /> : <Option2 />}
+        {activeTab === "option1" ? <Option1 /> : <Option2 />}
       </div>
     </div>
   );

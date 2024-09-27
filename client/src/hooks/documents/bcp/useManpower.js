@@ -24,15 +24,12 @@ export const useManpower = () => {
 
   // Update manpower data
   const updateManpower = async (bcpid, option, tableData) => {
-    setLoading(true);
     try {
       await axiosInstance.put(`api/bcpManpower/${bcpid}/${option}`, {
         tableData,
       });
     } catch (err) {
       handleError("Error updating manpower data.", err);
-    } finally {
-      setLoading(false);
     }
   };
 

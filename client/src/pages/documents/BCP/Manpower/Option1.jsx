@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { useManpower } from "../../../../hooks/documents/bcp/useManpower";
 import { FaSpinner } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import { useManpower } from "../../../../hooks/documents/bcp/useManpower";
 
-const Option1 = ({ bcpid }) => {
+const Option1 = () => {
   const { manpower, loading, fetchManpower, updateManpower } = useManpower();
+
+  const { bcpid } = useParams();
+  console.log("bcpid", bcpid);
 
   const [inputValues, setInputValues] = useState({});
   const [editingCell, setEditingCell] = useState(null);
@@ -42,18 +46,6 @@ const Option1 = ({ bcpid }) => {
     fetchManpower(bcpid, "option1");
   }, [bcpid]);
 
-  // // State to track the input values for each cell
-  // const [inputValues, setInputValues] = useState({});
-  // const [editingCell, setEditingCell] = useState(null);
-
-  // // Handle input change event
-  // const handleInputChange = (rowIndex, colIndex, value) => {
-  //   setInputValues((prev) => ({
-  //     ...prev,
-  //     [`${rowIndex}-${colIndex}`]: value,
-  //   }));
-  // };
-
   // Populate the input values when manpower data is fetched
   useEffect(() => {
     if (manpower?.tableData) {
@@ -68,24 +60,17 @@ const Option1 = ({ bcpid }) => {
   }, [manpower]);
 
   // Save updates when input is changed
-  // const handleInputChange = (rowIndex, colIndex, value) => {
-  //   const updatedTableData = { ...manpower.tableData };
-  //   updatedTableData.rows[rowIndex].values[colIndex] = value;
-
-  //   updateManpower(bcpid, "option1", updatedTableData);
-  // };
-
-  // Save updates when input is changed
   const handleInputChange = (rowIndex, colIndex, value) => {
+    const numericValue = Number(value);
     const cellKey = `${rowIndex}-${colIndex}`;
     setInputValues((prev) => ({
       ...prev,
-      [cellKey]: value,
+      [cellKey]: numericValue,
     }));
 
     // Prepare updated data to send
     const updatedTableData = { ...manpower.tableData };
-    updatedTableData.rows[rowIndex].values[colIndex] = value;
+    updatedTableData.rows[rowIndex].values[colIndex] = numericValue;
 
     updateManpower(bcpid, "option1", updatedTableData);
   };
@@ -99,16 +84,6 @@ const Option1 = ({ bcpid }) => {
   const handleInputBlur = () => {
     setEditingCell(null);
   };
-
-  // // Handle cell click to switch to input mode
-  // const handleCellClick = (rowIndex, colIndex) => {
-  //   setEditingCell(`${rowIndex}-${colIndex}`);
-  // };
-
-  // // Handle blur (when the user clicks out of the input)
-  // const handleInputBlur = () => {
-  //   setEditingCell(null);
-  // };
 
   if (loading)
     return (
