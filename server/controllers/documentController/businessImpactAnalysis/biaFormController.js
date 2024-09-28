@@ -30,9 +30,9 @@ exports.getBIAForms = async (req, res) => {
 // Get last bia form
 exports.getLastbiaForm = async (req, res) => {
   try {
-    const { template } = req.params;
+    const { section } = req.params;
     const lastBIAForm = await BIAForm.findOne({
-      biaid: new RegExp(`^BIA-${template}-`),
+      biaid: new RegExp(`^BIA-${section}-`),
     }).sort({ _id: -1 });
 
     res.status(200).json(lastBIAForm);

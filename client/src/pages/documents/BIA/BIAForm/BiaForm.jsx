@@ -1,59 +1,74 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import { Link, useParams } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
 import { useBIAForm } from "../../../../hooks/documents/bia/useBIAForm";
 
 const BIAForm = () => {
+  const { biaid } = useParams();
+
   const {
     businessImpactAnalysisPlans,
     loading,
-    error,
-    fetchBIAForms,
-    deleteBIAForm,
+    fetchBIAFormByBIAID    
   } = useBIAForm();
 
   useEffect(() => {
-    fetchBIAForms();
+    fetchBIAFormByBIAID(biaid);
   }, []);
 
-  const deleteBusinessImpactAnalysisPlan = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteBIAForm(id);
-          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the record.",
-            "error"
-          );
-        }
-      }
-    });
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
-    <div className="pt-5 w-full h-full flex flex-col">
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">
-          Business Impact Analysis Plans
-        </h1>
-        <Link to="/createBIA" className="btn-primary">
-          Create Plan
-        </Link>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold text-indigo-900 mb-8">
+        Business Impact Analysis Plans: {businessImpactAnalysisPlans.bcpid}
+      </h1>
+
+      {/* Plan Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
+          <div className="text-md space-y-3">
+            <p>
+              <span className="font-semibold">BIA ID: </span>
+              {businessImpactAnalysisPlans.bcpid}
+            </p>
+            <p>
+              <span className="font-semibold">Section: </span>
+              {businessImpactAnalysisPlans.section}
+            </p>
+            <p>
+              <span className="font-semibold">Year: </span>
+              {businessImpactAnalysisPlans.year}
+            </p>
+            <p>
+              <span className="font-semibold">Date: </span>
+              {businessImpactAnalysisPlans.date}
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
+          {/* <h2 className="font-semibold text-lg">Template & Legal Info</h2> */}
+          <div className="text-md space-y-3">
+            <p>
+              <span className="font-semibold">Template: </span>
+              {businessImpactAnalysisPlans.template}
+            </p>
+            <p>
+              <span className="font-semibold">Legal Entity: </span>
+              {businessImpactAnalysisPlans.legalEntity}
+            </p>
+            <p>
+              <span className="font-semibold">Approver: </span>
+              {businessImpactAnalysisPlans.approver}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Table */}
@@ -79,7 +94,7 @@ const BIAForm = () => {
             {businessImpactAnalysisPlans.map((bia) => (
               <tr key={bia._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
-                  {bia.docNo}
+                  {bia.biaid}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
                   {bia.date}

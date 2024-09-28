@@ -29,10 +29,12 @@ const CreateBIA = () => {
 
   // useHooks
   const {
+    user,
     sortedUsers,
     loading: loadingUsers,
     error: errorUsers,
     fetchUsers,
+    fetchUserDetails
   } = useUsers();
 
   const {
@@ -52,46 +54,24 @@ const CreateBIA = () => {
 
   useEffect(() => {
     fetchUsers();
+    fetchUserDetails();
     fetchBIAForms();
     fetchSections();
   }, []);
 
   useEffect(() => {
-    const initializeForm = async () => {
-      try {
-        // Fetch necessary data
-        await fetchUsers();
-        await createDocNo();
+    if (user?.section) {
+      const currentYear = new Date().getFullYear();
+      const sectionValue = typeof user.section === "string" ? user.section : user.section?.sectionCode || ""; 
+      const newBIAID = `BIA-${sectionValue}-${currentYear}`;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        biaid: newBIAID,
+      }));
+    }
+  }, [user?.section]);
   
-        // Update dateDueForNextReview if dateLastReviewed is set
-        if (formData.dateLastReviewed) {
-          const lastReviewedDate = new Date(formData.dateLastReviewed);
-          const nextReviewDate = new Date(lastReviewedDate.setFullYear(lastReviewedDate.getFullYear() + 1));
-          setFormData((prev) => ({
-            ...prev,
-            dateDueForNextReview: nextReviewDate.toISOString().split("T")[0],
-          }));
-        }
-  
-        console.log("Template:", formData.template);
-        // Update biaid based on template and year
-        if (formData.template) {
-          const currentYear = new Date().getFullYear();
-          const newBIAID = `BIA-${formData.template}-${currentYear}`;
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            biaid: newBIAID,
-          }));
-        }
-      } catch (err) {
-        console.error("Error initializing form:", err);
-      }
-    };
-  
-    // Initialize form when any of these dependencies change
-    initializeForm();
-  }, [formData.dateLastReviewed, formData.template]);
-  
+
   // Validate dates
   const validateDates = () => {
     const {
@@ -128,53 +108,31 @@ const CreateBIA = () => {
     e.preventDefault();
     setIsCreating(true);
   
-    // Ensure biaid is generated
-    if (!formData.biaid && formData.template) {
-      const currentYear = new Date().getFullYear();
-      const newBIAID = `BIA-${formData.template}-${currentYear}`;
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        biaid: newBIAID,
-      }));
-    }
-  
     try {
-      // Check for duplicate BIA ID
       const isDuplicate = await checkDuplicateBIAID(formData.biaid);
       if (isDuplicate) {
-        errorAlert(
-          "Error",
-          `BIA ID "${formData.biaid}" already exists! Please choose a different ID.`
-        );
+        errorAlert("Error", `BIA ID "${formData.biaid}" already exists! Please choose a different ID.`);
         return;
       }
   
-      // Validate dates
       const dateError = validateDates();
       if (dateError) {
-        handleErrorAlert(dateError);
+        errorAlert("Error", dateError);
         return;
       }
   
-      // Submit BIA form
       await addBIAForm(formData);
-      createAlert(
-        "Business Impact Analysis Plan Added",
-        `Business Impact Analysis Plan "${formData.biaid}" added successfully!`
-      );
-  
+      createAlert("Business Impact Analysis Plan Added", `Business Impact Analysis Plan "${formData.biaid}" added successfully!`);
       navigate("/Business-Impact-Analysis/bia-form");
   
     } catch (error) {
-      errorAlert(
-        "Error",
-        error.message || "Error adding Business Impact Analysis Plan!"
-      );
+      errorAlert("Error", error.message || "Error adding Business Impact Analysis Plan!");
       console.error(error);
     } finally {
       setIsCreating(false);
     }
   };
+  
   
   const handleChange = (e) => {
     const { name, value } = e.target;
