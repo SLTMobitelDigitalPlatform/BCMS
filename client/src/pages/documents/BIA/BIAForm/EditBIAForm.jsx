@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useBIAForm } from "../../../../hooks/documents/bia/useBIAForm";
+import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, updateAlert } from "../../../../utilities/alert";
 
 const EditBIAForm = () => {
   const [formData, setFormData] = useState({
-    docNo: "",
+    biaid: "",
     date: "",
     template: "",
     legalEntity: "",
@@ -20,10 +22,13 @@ const EditBIAForm = () => {
     dateDueForNextReview: "",
   });
 
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { biaid } = useParams();
 
+  // useHooks
   const {
+    user,
     sortedUsers,
     loading: usersLoading,
     error: usersError,
@@ -31,23 +36,47 @@ const EditBIAForm = () => {
   } = useUsers();
 
   const {
+    sortedSections,
+    loading: loadingSections,
+    error: errorSections,
+    fetchSections,
+  } = useSections();
+
+  const {
     businessImpactAnalysisPlan,
     loading: biaLoading,
     error: biaError,
-    fetchBIAFormById,
-    updateBIAForm,
+    fetchBIAForms,
+    fetchBIAFormByBIAID,
+    updateBIAFormByBIAID,
+    checkDuplicateBIAID,
   } = useBIAForm();
 
   useEffect(() => {
     fetchUsers();
-    fetchBIAFormById(id);
+    fetchSections();
+    fetchBIAForms();
+    fetchBIAFormByBIAID(biaid);
   }, []);
+
+  // Update BIA ID based on user's section and year
+  useEffect(() => {
+    if (user?.section) {
+      const currentYear = new Date().getFullYear();
+      const sectionValue = typeof user.section === "string" ? user.section : user.section?.sectionCode || ""; 
+      const newBIAID = `BIA-${sectionValue}-${currentYear}`;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        biaid: newBIAID,
+      }));
+    }
+  }, [user?.section]);
 
   // Update formData when embeddedDocument is fetched
   useEffect(() => {
     if (businessImpactAnalysisPlan) {
       setFormData({
-        docNo: businessImpactAnalysisPlan.docNo || "",
+        biaid: businessImpactAnalysisPlan.biaid || "",
         date: businessImpactAnalysisPlan.date || "",
         template: businessImpactAnalysisPlan.template || "",
         legalEntity: businessImpactAnalysisPlan.legalEntity || "",
@@ -62,76 +91,85 @@ const EditBIAForm = () => {
     }
   }, [businessImpactAnalysisPlan]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await updateBIAForm(id, formData);
-      handleSuccessAlert();
-      navigate("/Business-Impact-Analysis/bia-form");
-    } catch (error) {
-      handleErrorAlert();
-      console.log(error);
+// Update a Bia Plan
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSaving(true);
+  try {
+    const isDuplicate = await checkDuplicateBIAID(
+      formData.biaid,
+      businessImpactAnalysisPlan.biaid
+    );
+
+    if (isDuplicate) {
+      errorAlert(
+        "Error",
+        `BIA ID "${formData.biaid}" already exists! Please choose a different ID.`
+      );
+      setIsSaving(false);
+      return;
     }
-  };
 
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Updated Successfully",
-      showConfirmButton: false,
-      timer: 2000,
+    const result = await updateAlert(
+      "Confirm Update",
+      `Are you sure you want to update "${businessImpactAnalysisPlan.biaid}"?`,
+      "Yes, Update it!",
+      `"${businessImpactAnalysisPlan.biaid}" has been updated successfully!`,
+      `Failed to update "${businessImpactAnalysisPlan.biaid}"!`,
+      () => updateBIAFormByBIAID(biaid, formData)
+    );
+
+    if (result === "success")
+      navigate(`/Business-Continuity-Plan/bia-form/${formData.biaid}`);
+  } catch (error) {
+    errorAlert(
+      "Error",
+      error.message || "Error updating Business Continuity Plan!"
+    );
+    console.log(error);
+  } finally {
+    setIsSaving(false);
+  }
+};
+
+const handleChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
+
+const handleSelectChange = (selectedOptions, name, isMulti = false) => {
+  if (isMulti) {
+    const selectedValues = selectedOptions
+      ? selectedOptions.map((option) => option.value)
+      : [];
+
+    setFormData({
+      ...formData,
+      [name]: selectedValues,
     });
-  };
-
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
+  } else {
+    setFormData({
+      ...formData,
+      [name]: selectedOptions ? selectedOptions.value : "",
     });
-  };
+  }
+};
 
-  // Updated handleChange with automatic "Date Due for Next Review" logic
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => {
-      const newFormData = { ...prev, [name]: value };
-
-      // Automatically set the "Date Due for Next Review" one year after "Date Last Reviewed"
-      if (name === "dateLastReviewed" && value) {
-        const lastReviewedDate = new Date(value);
-        const nextReviewDate = new Date(lastReviewedDate.setFullYear(lastReviewedDate.getFullYear() + 1));
-        newFormData.dateDueForNextReview = nextReviewDate.toISOString().split("T")[0];
-      }
-
-      return newFormData;
-    });
-  };
-
-  const handleSelectChange = (selectedOption, name) => {
-    if (Array.isArray(selectedOption)) {
-      setFormData({
-        ...formData,
-        [name]: selectedOption.map((option) => option.value),
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: selectedOption ? selectedOption.value : "",
-      });
-    }
-  };
-
-  if (usersLoading || biaLoading) return <div>Loading...</div>;
-  if (biaError || usersError) return <div>Error loading data.</div>;
+if (usersLoading || loadingSections || biaLoading)
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+    </div>
+  );
+if (usersError || errorSections || biaError)
+  return <div>Error loading data</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Update the Business Impact Analysis Plan
+        Edit Business Impact Analysis Plan - {businessImpactAnalysisPlan.biaid}
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -142,8 +180,8 @@ const EditBIAForm = () => {
               <label className="font-semibold">Document Number</label>
               <input
                 type="text"
-                name="docNo"
-                value={formData.docNo}
+                name="biaid"
+                value={formData.biaid}
                 disabled
                 readOnly
                 className="p-2 w-full rounded bg-white"

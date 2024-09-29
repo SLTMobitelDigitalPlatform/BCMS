@@ -59,6 +59,7 @@ const CreateBIA = () => {
     fetchSections();
   }, []);
 
+  // Update BIA ID based on user's section and year
   useEffect(() => {
     if (user?.section) {
       const currentYear = new Date().getFullYear();
@@ -120,10 +121,26 @@ const CreateBIA = () => {
         errorAlert("Error", dateError);
         return;
       }
+
+      // Convert IDs to user names for maintainers, owner, and approver
+      const maintainersNames = formData.maintainers.map((id) => {
+        const userObj = sortedUsers.find((user) => user.value === id);
+        return userObj ? userObj.label : "";
+      });
+      const ownerName = sortedUsers.find((user) => user.value === formData.owner)?.label || "";
+      const approverName = sortedUsers.find((user) => user.value === formData.approver)?.label || "";
+
+      // Prepare form data for submission
+      const updatedFormData = {
+        ...formData,
+        maintainers: maintainersNames, 
+        owner: ownerName,              
+        approver: approverName,        
+      };
   
-      await addBIAForm(formData);
-      createAlert("Business Impact Analysis Plan Added", `Business Impact Analysis Plan "${formData.biaid}" added successfully!`);
-      navigate("/Business-Impact-Analysis/bia-form");
+      await addBIAForm(updatedFormData);
+      createAlert("Business Impact Analysis Plan Added", `Business Impact Analysis Plan "${updatedFormData.biaid}" added successfully!`);
+      navigate("/business-impact-analysis-plans");
   
     } catch (error) {
       errorAlert("Error", error.message || "Error adding Business Impact Analysis Plan!");
@@ -132,8 +149,7 @@ const CreateBIA = () => {
       setIsCreating(false);
     }
   };
-  
-  
+   
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => {
@@ -343,7 +359,7 @@ const CreateBIA = () => {
               )}
             </button>
             <Link
-              to="/Business-Impact-Analysis/bia-form"
+              to="/business-impact-analysis-plans"
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

@@ -84,11 +84,14 @@ import Roles from "./pages/Roles_Responsibilities/Roles";
 import Section from "./pages/sections/Section";
 
 // BIA
-import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
+import BiaPlans from "./pages/documents/BIA/BusinessImpactAnalysisPlans";
+import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
-import BiaLayout from "./pages/documents/BIA/BiaLayout";
+
+
+import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
@@ -493,12 +496,15 @@ const router = createBrowserRouter([
       },
 
       // BIA (Business Impact Analysis)
+      //Layout
+      {path: "business-impact-analysis-plans",element: <BiaPlans />},
       {
         path: "Business-Impact-Analysis",
         element: <BiaLayout />,
         children: [
+          { path: "bia-form/:biaid", element: <BiaForm /> },
+
           { path: "document-control/:biaid", element: <BiaDocumentControl /> },
-          { path: "bia-form", element: <BiaForm /> },
           { path: "document-version", element: <BiaDocumentControl /> },
           { path: "operating-sites", element: <BiaOperatingSites /> },
           {
@@ -518,8 +524,9 @@ const router = createBrowserRouter([
         ],
       },
 
+      //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
-      { path: "editBIA/:id", element: <EditBIAForm /> },
+      { path: "editBIA/:biaid", element: <EditBIAForm /> },
       // { path: "impactAreas", element: <ImpactAreas /> },
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
