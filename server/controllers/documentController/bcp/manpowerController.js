@@ -7,9 +7,8 @@ exports.getManpower = async (req, res) => {
     const manpower = await Manpower.findOne({ bcpid, option });
 
     if (!manpower) {
-      return res.status(404).json({ message: "Manpower data not found" });
+      return res.status(404).json({ message: "No data found" });
     }
-
     res.json(manpower);
   } catch (err) {
     res.status(500).json({ message: "Error fetching manpower data" });
@@ -18,16 +17,18 @@ exports.getManpower = async (req, res) => {
 
 // Update manpower data
 exports.updateManpower = async (req, res) => {
+  const { bcpid, option } = req.params;
+  const { tableData } = req.body;
+
   try {
-    const { bcpid, option } = req.params;
-    const { tableData } = req.body;
+    let manpower = await Manpower.findOne({ bcpid, option });
+    if (!manpower) {
+      manpower = new Manpower({ bcpid, option, tableData });
+    } else {
+      manpower.tableData = tableData;
+    }
 
-    const manpower = await Manpower.findOneAndUpdate(
-      { bcpid, option },
-      { tableData },
-      { new: true, upsert: true }
-    );
-
+    await manpower.save();
     res.json(manpower);
   } catch (err) {
     res.status(500).json({ message: "Error updating manpower data" });
