@@ -17,22 +17,7 @@ const BCPRiskAssesement = () => {
       const response = await axios.get("http://localhost:5000/api/risksBCP/");
       const user = await getCurrentUser();
       let section = user.data.section.sectionCode;
-      // if (section === "Information Technology (IT)") {
-      //   section = "ITSE";
-      // } else if (section === "Marketing") {
-      //   section = "MARC";
-      // } else if (section === "Sales") {
-      //   section = "SALE";
-      // } else if (section === "Human Resources(HR)") {
-      //   section = "HRMA";
-      // } else if (section === "Finance") {
-      //   section = "FINA";
-      // } else if (section === "Operations") {
-      //   section = "OPER";
-      // } else if (section === "Customer Service") {
-      //   section = "CUSE";
-      // }
-      // console.log(section);
+
       setRisks(response.data);
       setSection(section);
       filterRisks(response.data, section);
@@ -152,9 +137,11 @@ const BCPRiskAssesement = () => {
             {currentRisks.map((r) => (
               <tr key={r._id}>
                 <td className="py-2 px-4 w-28 doc-table-data">{r.rid}</td>
-                <td className="py-2 px-4 w-28 doc-table-data">{r.owner}</td>
                 <td className="py-2 px-4 w-28 doc-table-data">
-                  {r.responsibility}
+                  {r.owner.name}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  {r.responsibility.name}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-data">
                   {r.description}
