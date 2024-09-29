@@ -2,7 +2,7 @@ import { Enabled, PageFitMode } from "basicprimitives";
 import { OrgDiagram } from "basicprimitivesreact";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getCurrentUser } from "../../services/userAPI";
+import { getCurrentUser } from "../../services/userApi";
 
 function CallTree() {
   const [items, setItems] = useState([]);
