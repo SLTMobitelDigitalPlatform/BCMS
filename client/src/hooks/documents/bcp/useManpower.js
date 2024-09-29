@@ -5,14 +5,13 @@ import { errorAlert } from "../../../utilities/alert";
 export const useManpower = () => {
   const [manpower, setManpower] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   // Fetch manpower data by BCP ID and option
   const fetchManpower = async (bcpid, option) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `api/bcpManpower/${bcpid}/${option}`
+        `/api/bcpManpower/${bcpid}/${option}`
       );
       setManpower(response.data);
     } catch (err) {
@@ -25,7 +24,7 @@ export const useManpower = () => {
   // Update manpower data
   const updateManpower = async (bcpid, option, tableData) => {
     try {
-      await axiosInstance.put(`api/bcpManpower/${bcpid}/${option}`, {
+      await axiosInstance.put(`/api/bcpManpower/${bcpid}/${option}`, {
         tableData,
       });
     } catch (err) {
@@ -33,16 +32,15 @@ export const useManpower = () => {
     }
   };
 
+  // Handle errors
   const handleError = (message, err) => {
     console.error(message, err.response?.data || err);
-    setError(message);
-    errorAlert("Error", err.response?.data || message);
+    errorAlert("Error", message);
   };
 
   return {
     manpower,
     loading,
-    error,
     fetchManpower,
     updateManpower,
   };

@@ -2,16 +2,8 @@ const mongoose = require("mongoose");
 
 const manpowerSchema = new mongoose.Schema({
   bcpid: { type: String, required: true },
-  option: { type: String, enum: ["option1", "option2"], required: true },
-  tableData: {
-    headers: [String],
-    rows: [
-      {
-        rowName: String,
-        values: [Number],
-      },
-    ],
-  },
+  option: { type: String, required: true },
+  tableData: { type: mongoose.Schema.Types.Mixed, required: true },
 });
 
 module.exports = mongoose.model("Manpower", manpowerSchema);
