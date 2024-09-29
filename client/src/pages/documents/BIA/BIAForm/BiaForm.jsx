@@ -31,56 +31,71 @@ const BIAForm = () => {
 
       {/* Plan Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+        {/*Section-1*/}
         <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
           <div className="text-md space-y-3">
+            {/* Template */}
             <p>
-              <span className="font-semibold">Document Number: </span>
-              {businessImpactAnalysisPlan.biaid}
+              <span className="font-semibold">Template : </span>
+              {businessImpactAnalysisPlan.template}
             </p>
+            {/* Legal Entity */}
             <p>
-              <span className="font-semibold">Date: </span>
+              <span className="font-semibold">Legal Entity : </span>
+              {businessImpactAnalysisPlan.legalEntity}
+            </p>
+            {/* Approver */}
+            <p>
+              <span className="font-semibold">Approver: </span>
+              {businessImpactAnalysisPlan.approver}
+            </p>
+            {/* Owner */}
+            <p>
+              <span className="font-semibold">Owner: </span>
+              {businessImpactAnalysisPlan.owner}
+            </p>
+          </div>
+        </div>
+
+        {/*Section-2*/}
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
+          <div className="text-md space-y-3">
+            {/* Dates */}
+            <p>
+              <span className="font-semibold">Date Created : </span>
               {businessImpactAnalysisPlan.date}
             </p>
             <p>
-              <span className="font-semibold">Template: </span>
-              {businessImpactAnalysisPlan.template}
-            </p>
-            <p>
-              <span className="font-semibold">Legal Entity: </span>
-              {businessImpactAnalysisPlan.legalEntity}
-            </p>
-            <p>
-              <span className="font-semibold">Date Approved: </span>
+              <span className="font-semibold">Date Approved : </span>
               {businessImpactAnalysisPlan.dateApproved}
             </p>
             <p>
-              <span className="font-semibold">Date Last Reviewed: </span>
+              <span className="font-semibold">Date Last Reviewed : </span>
               {businessImpactAnalysisPlan.dateLastReviewed}
             </p>
             <p>
-              <span className="font-semibold">Date Due for Next Review: </span>
+              <span className="font-semibold">Date Due for Next Review : </span>
               {businessImpactAnalysisPlan.dateDueForNextReview}
             </p>
           </div>
         </div>
 
+      </div>
+
+      {/*Section-3*/}
+      <div className="mb-6">
         <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
           <div className="text-md space-y-3">
+            {/* Maintainers */}
             <p>
-              <span className="font-semibold">Approver: </span>
-              {businessImpactAnalysisPlan.approver}
+              <span className="font-semibold">Maintainers : </span>
+              {businessImpactAnalysisPlan.maintainers?.join(" , ") || "N/A"}
             </p>
+            {/* Viewers */}
             <p>
-              <span className="font-semibold">Owner: </span>
-              {businessImpactAnalysisPlan.owner}
-            </p>
-            <p>
-              <span className="font-semibold">Maintainers: </span>
-              {businessImpactAnalysisPlan.maintainers}
-            </p>
-            <p>
-              <span className="font-semibold">Viewers: </span>
-              {businessImpactAnalysisPlan.viewers}
+              <span className="font-semibold">Viewers : </span>
+              {businessImpactAnalysisPlan.viewers?.join(" , ") || "N/A"}
             </p>
           </div>
         </div>
