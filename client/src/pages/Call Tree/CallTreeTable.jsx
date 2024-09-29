@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getCurrentUser } from "../../services/userAPI";
+import { getCurrentUser } from "../../services/userApi";
 import { useUsers } from "../../hooks/useUsers";
 import { useNavigate } from "react-router-dom";
 

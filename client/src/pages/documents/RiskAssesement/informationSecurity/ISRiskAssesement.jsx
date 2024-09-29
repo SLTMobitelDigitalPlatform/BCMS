@@ -186,9 +186,11 @@ const ISRiskAssesement = () => {
             {currentRisks.map((r) => (
               <tr key={r._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-28 doc-table-data">{r.rid}</td>
-                <td className="py-2 px-4 w-28 doc-table-data">{r.owner}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  {r.owner.name}
+                </td>
                 <td className="py-2 px-4 w-36 doc-table-data">
-                  {r.responsibility}
+                  {r.responsibility.name}
                 </td>
                 <td className="py-2 px-4 w-48 doc-table-data">
                   {r.description}
