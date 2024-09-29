@@ -26,9 +26,8 @@ const getRisks = async (req, res) => {
 // Get a single risk assessment by ID
 const getRiskById = async (req, res) => {
   try {
-    const risk = await QualityManagement.findById(req.params.id)
-      .populate("owner")
-      .populate("responsibility");
+    const risk = await QualityManagement.findById(req.params.id);
+
     if (!risk) return res.status(404).json({ message: "Risk not found" });
     res.status(200).json(risk);
   } catch (error) {
