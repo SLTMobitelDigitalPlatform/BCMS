@@ -24,11 +24,11 @@ export const useBIAForm = () => {
   };
 
   // Fetch the last BIA form
-  const fetchLastBIAForm = async (template) => {
+  const fetchLastBIAForm = async (section) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/biaForms/last/${template}`
+        `/api/biaForms/last/${section}`
       );
       setLastBusinessImpactAnalysisPlan(response.data);
     } catch (err) {

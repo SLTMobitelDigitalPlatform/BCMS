@@ -34,11 +34,11 @@ const BIAForm = () => {
         <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
           <div className="text-md space-y-3">
             <p>
-              <span className="font-semibold">Document Number:</span>
+              <span className="font-semibold">Document Number: </span>
               {businessImpactAnalysisPlan.biaid}
             </p>
             <p>
-              <span className="font-semibold">Date:</span>
+              <span className="font-semibold">Date: </span>
               {businessImpactAnalysisPlan.date}
             </p>
             <p>

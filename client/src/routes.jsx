@@ -495,7 +495,7 @@ const router = createBrowserRouter([
         element: <EditEmbeddedDocuments />,
       },
 
-      // BIA (Business Impact Analysis)
+      // -------------------------------- BIA (Business Impact Analysis)-------------------------------- 
       //Layout
       {path: "business-impact-analysis-plans",element: <BiaPlans />},
       {
@@ -527,6 +527,7 @@ const router = createBrowserRouter([
       //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:biaid", element: <EditBIAForm /> },
+      
       // { path: "impactAreas", element: <ImpactAreas /> },
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
