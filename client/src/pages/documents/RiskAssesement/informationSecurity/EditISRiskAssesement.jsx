@@ -87,7 +87,10 @@ const EditISRiskAssesement = () => {
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
-      const users = response.data.map((user) => user.name);
+      const users = response.data.map((user) => ({
+        name: user.name,
+        id: user._id,
+      }));
       console.log(users);
       setUsers(users);
     } catch (error) {
@@ -189,7 +192,7 @@ const EditISRiskAssesement = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="" className=" font-semibold mt-5">
+                  <label htmlFor="riskOwner" className=" font-semibold mt-5">
                     Risk Owner
                   </label>
                   <select
@@ -198,12 +201,9 @@ const EditISRiskAssesement = () => {
                     onChange={(e) => setOwner(e.target.value)}
                     className="p-2 rounded-lg bg-slate-100"
                   >
-                    <option value="" disabled>
-                      Select
-                    </option>
                     {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
+                      <option key={option.id} value={option.id}>
+                        {option.name}
                       </option>
                     ))}
                   </select>
@@ -218,12 +218,9 @@ const EditISRiskAssesement = () => {
                     onChange={(e) => setResponsibility(e.target.value)}
                     className="p-2 rounded-lg bg-slate-100"
                   >
-                    <option value="" disabled>
-                      Select
-                    </option>
                     {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
+                      <option key={option.id} value={option.id}>
+                        {option.name}
                       </option>
                     ))}
                   </select>
