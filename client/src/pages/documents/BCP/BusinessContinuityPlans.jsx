@@ -35,9 +35,7 @@ const BusinessContinuityPlans = () => {
       <div className="overflow-hidden h-screen rounded-2xl p-3">
         {/* Heading */}
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-3xl font-bold text-indigo-900">
-            Business Continuity Plans
-          </h1>
+          <h1 className="topic">Business Continuity Plans</h1>
           <Link to="/createBCP" className="btn-primary font-semibold">
             Create Plan
           </Link>
@@ -45,16 +43,16 @@ const BusinessContinuityPlans = () => {
 
         {/* Table */}
         <div className="overflow-auto">
-          <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
+          <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden border border-indigo-800">
             <thead className="bg-indigo-200">
               <tr>
-                <th className="w-32 doc-table-border">BCP ID</th>
-                <th className="w-44 doc-table-border">Legal Entity</th>
-                <th className="w-44 doc-table-border">Approver</th>
-                <th className="w-44 doc-table-border">Owner</th>
-                <th className="w-44 doc-table-border">Maintainer</th>
-                <th className="w-48 doc-table-border">Viewers</th>
-                <th className="w-44 doc-table-border text-center">Actions</th>
+                <th className="w-32 doc-table-head">BCP ID</th>
+                <th className="w-44 doc-table-head">Legal Entity</th>
+                <th className="w-44 doc-table-head">Approver</th>
+                <th className="w-44 doc-table-head">Owner</th>
+                <th className="w-44 doc-table-head">Maintainer</th>
+                <th className="w-48 doc-table-head">Viewers</th>
+                <th className="w-44 doc-table-head text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
