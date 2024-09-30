@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { getItemsInCategory } from "../../../../services/riskElementsApi";
+import { getUsers } from "../../../../services/userApi";
 
 const EditBCPRiskAssesement = () => {
   const [rid, setRid] = useState("");
@@ -127,7 +128,10 @@ const EditBCPRiskAssesement = () => {
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
-      const users = response.data.map((user) => user.name);
+      const users = response.data.map((user) => ({
+        name: user.name,
+        id: user._id,
+      }));
       console.log(users);
       setUsers(users);
     } catch (error) {
@@ -201,12 +205,9 @@ const EditBCPRiskAssesement = () => {
                     onChange={(e) => setOwner(e.target.value)}
                     className="p-2 rounded-lg bg-slate-100"
                   >
-                    <option value="" disabled>
-                      Select
-                    </option>
                     {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
+                      <option key={option.id} value={option.id}>
+                        {option.name}
                       </option>
                     ))}
                   </select>
@@ -221,12 +222,9 @@ const EditBCPRiskAssesement = () => {
                     onChange={(e) => setResponsibility(e.target.value)}
                     className="p-2 rounded-lg bg-slate-100"
                   >
-                    <option value="" disabled>
-                      Select
-                    </option>
                     {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
+                      <option key={option.id} value={option.id}>
+                        {option.name}
                       </option>
                     ))}
                   </select>

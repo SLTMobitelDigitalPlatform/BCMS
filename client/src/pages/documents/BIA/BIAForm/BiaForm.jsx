@@ -1,143 +1,120 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import { Link, useParams } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
 import { useBIAForm } from "../../../../hooks/documents/bia/useBIAForm";
 
 const BIAForm = () => {
+  const { biaid } = useParams();
+
   const {
-    businessImpactAnalysisPlans,
+    businessImpactAnalysisPlan,
     loading,
-    error,
-    fetchBIAForms,
-    deleteBIAForm,
+    fetchBIAFormByBIAID    
   } = useBIAForm();
 
   useEffect(() => {
-    fetchBIAForms();
+    fetchBIAFormByBIAID(biaid);
   }, []);
 
-  const deleteBusinessImpactAnalysisPlan = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteBIAForm(id);
-          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the record.",
-            "error"
-          );
-        }
-      }
-    });
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">
-          Business Impact Analysis Plans
-        </h1>
-        <Link to="/createBIA" className="btn-primary font-semibold">
-          Create Plan
-        </Link>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold text-indigo-900 mb-8">
+        Business Impact Analysis Plans: {businessImpactAnalysisPlan.biaid}
+      </h1>
+
+      {/* Plan Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+        {/*Section-1*/}
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
+          <div className="text-md space-y-3">
+            {/* Template */}
+            <p>
+              <span className="font-semibold">Template : </span>
+              {businessImpactAnalysisPlan.template}
+            </p>
+            {/* Legal Entity */}
+            <p>
+              <span className="font-semibold">Legal Entity : </span>
+              {businessImpactAnalysisPlan.legalEntity}
+            </p>
+            {/* Approver */}
+            <p>
+              <span className="font-semibold">Approver: </span>
+              {businessImpactAnalysisPlan.approver}
+            </p>
+            {/* Owner */}
+            <p>
+              <span className="font-semibold">Owner: </span>
+              {businessImpactAnalysisPlan.owner}
+            </p>
+          </div>
+        </div>
+
+        {/*Section-2*/}
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
+          <div className="text-md space-y-3">
+            {/* Dates */}
+            <p>
+              <span className="font-semibold">Date Created : </span>
+              {businessImpactAnalysisPlan.date}
+            </p>
+            <p>
+              <span className="font-semibold">Date Approved : </span>
+              {businessImpactAnalysisPlan.dateApproved}
+            </p>
+            <p>
+              <span className="font-semibold">Date Last Reviewed : </span>
+              {businessImpactAnalysisPlan.dateLastReviewed}
+            </p>
+            <p>
+              <span className="font-semibold">Date Due for Next Review : </span>
+              {businessImpactAnalysisPlan.dateDueForNextReview}
+            </p>
+          </div>
+        </div>
+
       </div>
 
-      {/* Table */}
-      <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
-            <tr>
-              <th className="w-20 doc-table-border">Document Number</th>
-              <th className="w-20 doc-table-border">Date</th>
-              <th className="w-20 doc-table-border">Template</th>
-              <th className="w-28 doc-table-border">Legal Entity</th>
-              <th className="w-28 doc-table-border">Approver</th>
-              <th className="w-28 doc-table-border">Owner</th>
-              <th className="w-28 doc-table-border">Maintainers</th>
-              <th className="w-28 doc-table-border">Viewers</th>
-              <th className="w-28 doc-table-border">Date Approved</th>
-              <th className="w-28 doc-table-border">Date Last Reviewed</th>
-              <th className="w-28 doc-table-border">
-                Date Due for Next Review
-              </th>          
-              <th className="w-28 doc-table-border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {businessImpactAnalysisPlans.map((bia) => (
-              <tr key={bia._id} className="hover:bg-indigo-100">
-                <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bia.docNo}
-                </td>
-                <td className="py-2 px-4 w-20 doc-table-border text-center">
-                  {bia.date}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.template}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.legalEntity}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.approver}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.owner}
-                </td>               
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.maintainers && bia.maintainers.length > 0 ? (
-                    bia.maintainers.join(", ")
-                  ) : (
-                    <span>No maintainers</span>
-                  )}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.viewers && bia.viewers.length > 0 ? (
-                    bia.viewers.join(", ")
-                  ) : (
-                    <span>No viewers</span>
-                  )}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.dateApproved}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.dateLastReviewed}
-                </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {bia.dateDueForNextReview}
-                </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  <div className="flex justify-center gap-2">
-                    <Link to={`/editBIA/${bia._id}`} className="doc-edit-btn">
-                      Edit
-                    </Link>
-                    <button
-                      className="doc-delete-btn"
-                      onClick={() => deleteBusinessImpactAnalysisPlan(bia._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/*Section-3*/}
+      <div className="mb-6">
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
+          <div className="text-md space-y-3">
+            {/* Maintainers */}
+            <p>
+              <span className="font-semibold">Maintainers : </span>
+              {businessImpactAnalysisPlan.maintainers?.join(" , ") || "N/A"}
+            </p>
+            {/* Viewers */}
+            <p>
+              <span className="font-semibold">Viewers : </span>
+              {businessImpactAnalysisPlan.viewers?.join(" , ") || "N/A"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-4 mt-8">
+        <Link
+          to={`/editBIA/${businessImpactAnalysisPlan.biaid}`}
+          className="text-white rounded px-4 py-2 bg-blue-500 hover:bg-blue-600 transition ease-in-out duration-300"
+        >
+          Edit
+        </Link>
+        <Link
+          to="/business-impact-analysis-plans"
+          className="text-white rounded px-4 py-2 bg-red-500 hover:bg-red-600 transition ease-in-out duration-300"
+        >
+          Back to Plans
+        </Link>
       </div>
     </div>
   );

@@ -1,26 +1,57 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useVersionControl } from "../../../../hooks/documents/Context of the Organization/useVersionControl";
+import { createAlert } from "../../../../utilities/alert";
+import Select from "react-select";
+import { useUsers } from "../../../../hooks/useUsers";
 
 const CreateVersionControl = () => {
-  const [serialNo, setSerialNo] = useState(0);
-  const [versionNo, setVersionNo] = useState(0);
-  const [prepare, setPrepare] = useState("");
-  const [checkedBy, setCheckedBy] = useState("");
-  const [approve, setApprove] = useState("");
-  const [reasons, setReasons] = useState("");
-  const [users, setUsers] = useState([]);
-  const [isApproved, setIsApproved] = useState("Pending");
-  const [isChecked, setIsChecked] = useState("Pending");
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    serialNo: 0,
+    versionNo: 0,
+    prepare: "",
+    checkedBy: "",
+    approve: "",
+    reasons: "",
+    isApproved: "Pending",
+    isChecked: "Pending",
+  });
 
-  const fetchLastVersion = async () => {
+  const navigate = useNavigate();
+  const path = "/Context-of-the-Organization/version-control";
+  const [isCreating, setIsCreating] = useState(false);
+
+  const {
+    versionControl,
+    loading: versionControlLoading,
+    fetchLastVersionControl,
+    createVersionControl,
+  } = useVersionControl();
+
+  const { sortedUsers, loading: usersLoading, fetchUsers } = useUsers();
+
+  useEffect(() => {
+    fetchLastVersionControl();
+    console.log(sortedUsers);
+    // fetchLastVersion();
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    createSerialVersionNumbers();
+    // if (versionControl) {
+    //   setFormData((prevData) => ({
+    //     ...prevData,
+    //     versionNo: versionControl.versionNo,
+    //     serialNo: versionControl.serialNo,
+    //   }));
+    // }
+  }, [versionControl]);
+
+  const createSerialVersionNumbers = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/versionControls/last"
-      );
-      const lastRecord = response.data;
+      const lastRecord = versionControl;
 
       const baseYear = 2024;
       const currentYear = new Date().getFullYear();
@@ -28,7 +59,6 @@ const CreateVersionControl = () => {
 
       let newVersionNo = `${yearOffset}.0`;
       let newSerialNo = 1;
-      // console.log(newVersionNo);
       let lastVersionYearOffset;
       let lastIndex;
 
@@ -45,80 +75,118 @@ const CreateVersionControl = () => {
         newVersionNo = `${yearOffset}.${lastIndex + 1}`;
       }
 
-      // console.log(newVersionNo);
-      setVersionNo(newVersionNo);
-      setSerialNo(newSerialNo);
+      console.log(newVersionNo);
+      console.log(newSerialNo);
+      setFormData((prevData) => ({
+        ...prevData,
+        versionNo: newVersionNo,
+        serialNo: newSerialNo,
+      }));
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/users", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const users = response.data.map((user) => user.name);
-      setUsers(users);
+  // const fetchUsers = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/users", {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     const users = response.data.map((user) => user.name);
+  //     setUsers(users);
 
-      // console.log(users);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     // console.log(users);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchLastVersion();
-    fetchUsers();
-  }, []);
+  // useEffect(() => {
+  //   fetchLastVersion();
+  //   fetchUsers();
+  // }, []);
 
-  const handleCreateVersion = (e) => {
+  const handleCreateVersion = async (e) => {
     e.preventDefault();
+    setIsCreating(true);
+    try {
+      await createVersionControl(formData);
+      createAlert(
+        "Version Control Added",
+        `Version Control "${formData.versionNo}" added successfully!`
+      );
+      navigate(path);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsCreating(false);
+    }
 
-    const data = {
-      serialNo,
-      versionNo,
-      prepare,
-      checkedBy,
-      approve,
-      reasons,
-      isApproved,
-      isChecked,
-    };
+    // const data = {
+    //   serialNo,
+    //   versionNo,
+    //   prepare,
+    //   checkedBy,
+    //   approve,
+    //   reasons,
+    //   isApproved,
+    //   isChecked,
+    // };
 
-    axios
-      .post("http://localhost:5000/api/versionControls/add", data)
-      .then(() => {
-        handleSuccessAlert();
-        navigate("/Context-of-the-Organization/version-control");
-      })
-      .catch((err) => {
-        handleErrorAlert();
-        console.log(err);
-      });
+    // axios
+    //   .post("http://localhost:5000/api/versionControls/add", data)
+    //   .then(() => {
+    //     handleSuccessAlert();
+    //     navigate("/Context-of-the-Organization/version-control");
+    //   })
+    //   .catch((err) => {
+    //     handleErrorAlert();
+    //     console.log(err);
+    //   });
   };
 
   // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Added Successfully",
-      showConfirmButton: false,
-      timer: 2000,
+  // const handleSuccessAlert = () => {
+  //   Swal.fire({
+  //     position: "top-end",
+  //     icon: "success",
+  //     title: "Record Added Successfully",
+  //     showConfirmButton: false,
+  //     timer: 2000,
+  //   });
+  // };
+
+  // // Error Alert
+  // const handleErrorAlert = () => {
+  //   Swal.fire({
+  //     title: "Something Went Wrong",
+  //     text: "Fix it and try again",
+  //     icon: "error",
+  //   });
+  // };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
   };
 
-  // Error Alert
-  const handleErrorAlert = () => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: "Fix it and try again",
-      icon: "error",
+  const handleSelectChange = (selectedOption, name) => {
+    setFormData({
+      ...formData,
+      [name]: selectedOption ? selectedOption.value : "",
     });
   };
+
+  if (versionControlLoading || usersLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -135,10 +203,11 @@ const CreateVersionControl = () => {
                 </label>
                 <input
                   type="number"
+                  name="serialNo"
                   placeholder="Serial Number"
                   readOnly
-                  value={serialNo}
-                  onChange={(e) => setSerialNo(e.target.value)}
+                  value={formData.serialNo}
+                  onChange={handleChange}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
@@ -148,10 +217,11 @@ const CreateVersionControl = () => {
                 </label>
                 <input
                   type="number"
+                  name="versionNo"
                   placeholder="Version Number"
                   readOnly
-                  value={versionNo}
-                  onChange={(e) => setVersionNo(e.target.value)}
+                  value={formData.versionNo}
+                  onChange={handleChange}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 />
               </div>
@@ -161,11 +231,21 @@ const CreateVersionControl = () => {
                 <label htmlFor="prepare" className="font-semibold">
                   Prepared By
                 </label>
-                <select
+                <Select
+                  options={sortedUsers}
+                  value={sortedUsers.find(
+                    (user) => user.value === formData.prepare
+                  )}
+                  onChange={(option) => handleSelectChange(option, "prepare")}
+                  isClearable={true}
+                  placeholder="Prepared Person"
+                  className="w-[500px]"
+                />
+                {/* <select
                   id="prepare"
                   placeholder="Prepared Person"
-                  value={prepare}
-                  onChange={(e) => setPrepare(e.target.value)}
+                  value={formData.prepare}
+                  onChange={handleChange}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
@@ -176,18 +256,28 @@ const CreateVersionControl = () => {
                       {option}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </div>
 
               <div className="flex flex-col gap-2">
                 <label htmlFor="approve" className="font-semibold">
                   Approved By
                 </label>
-                <select
+                <Select
+                  options={sortedUsers}
+                  value={sortedUsers.find(
+                    (user) => user.value === formData.approve
+                  )}
+                  onChange={(option) => handleSelectChange(option, "approve")}
+                  isClearable={true}
+                  placeholder="Approved Person"
+                  className="w-[500px]"
+                />
+                {/* <select
                   id="approve"
                   placeholder="Approved Person"
-                  value={approve}
-                  onChange={(e) => setApprove(e.target.value)}
+                  value={formData.approve}
+                  onChange={handleChange}
                   className="w-[500px] p-2 rounded-lg bg-slate-100"
                 >
                   <option value="" disabled>
@@ -198,18 +288,28 @@ const CreateVersionControl = () => {
                       {option}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </div>
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="prepare" className="font-semibold">
                 Checked By
               </label>
-              <select
+              <Select
+                options={sortedUsers}
+                value={sortedUsers.find(
+                  (user) => user.value === formData.checkedBy
+                )}
+                onChange={(option) => handleSelectChange(option, "checkedBy")}
+                isClearable={true}
+                placeholder="Checked Person"
+                className="w-[500px]"
+              />
+              {/* <select
                 id="prepare"
                 placeholder="Prepared Person"
-                value={checkedBy}
-                onChange={(e) => setCheckedBy(e.target.value)}
+                value={formData.checkedBy}
+                onChange={handleChange}
                 className="w-[500px] p-2 rounded-lg bg-slate-100"
               >
                 <option value="" disabled>
@@ -220,7 +320,7 @@ const CreateVersionControl = () => {
                     {option}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold">
@@ -228,10 +328,11 @@ const CreateVersionControl = () => {
               </label>
               <textarea
                 type="text"
+                name="reasons"
                 placeholder="Reasons"
-                value={reasons}
+                value={formData.reasons}
                 rows={4}
-                onChange={(e) => setReasons(e.target.value)}
+                onChange={handleChange}
                 className="w-full p-2 rounded-lg bg-slate-100"
               />
             </div>
@@ -257,12 +358,19 @@ const CreateVersionControl = () => {
             <div className="flex justify-start gap-2">
               <button
                 type="submit"
-                className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+                className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                  isCreating ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isCreating}
               >
-                Save
+                {isCreating ? (
+                  <FaSpinner className="animate-spin inline text-xl " />
+                ) : (
+                  "Create"
+                )}
               </button>
               <Link
-                to="/Context-of-the-Organization/version-control"
+                to={path}
                 className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
               >
                 Cancel
@@ -276,3 +384,17 @@ const CreateVersionControl = () => {
 };
 
 export default CreateVersionControl;
+
+// const [serialNo, setSerialNo] = useState(0);
+// const [versionNo, setVersionNo] = useState(0);
+// const [prepare, setPrepare] = useState("");
+// const [checkedBy, setCheckedBy] = useState("");
+// const [approve, setApprove] = useState("");
+// const [reasons, setReasons] = useState("");
+// const [users, setUsers] = useState([]);
+// const [isApproved, setIsApproved] = useState("Pending");
+// const [isChecked, setIsChecked] = useState("Pending");
+
+// const response = await axios.get(
+//   "http://localhost:5000/api/versionControls/last"
+// );

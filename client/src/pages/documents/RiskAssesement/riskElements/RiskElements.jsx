@@ -184,7 +184,7 @@ const RiskElements = () => {
         </h1>
 
         <button
-          className="btn-primary font-semibold"
+          className="btn-primary"
           onClick={() =>
             setCategoryModal({ isShown: true, type: "add", data: {} })
           }
@@ -209,7 +209,7 @@ const RiskElements = () => {
           </button>
         ))}
       </div>
-      <div className="flex-1 overflow-y-auto border-2 border-green-500 mb-2 bg-cyan-50">
+      <div className="flex-1 overflow-y-auto border-2 border-green-500 mb-2">
         {/* Items in selected category */}
         {selectedCategory &&
           categories

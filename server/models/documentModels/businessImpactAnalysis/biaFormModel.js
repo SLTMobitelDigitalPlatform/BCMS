@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const biaFormSchema = new Schema(
+const biaPlanSchema = new Schema(
   {
-    docNo: { type: String, required: true },
+    biaid: { type: String, required: true, unique: true },
     date: { type: String, required: true },
     template: { type: String, required: true },
     legalEntity: { type: String, required: true },
@@ -18,6 +18,6 @@ const biaFormSchema = new Schema(
   { timestamps: true }
 );
 
-const biaForm = mongoose.model("biaForm", biaFormSchema);
+const biaPlan = mongoose.model("biaPlan", biaPlanSchema);
 
-module.exports = biaForm;
+module.exports = biaPlan;

@@ -24,7 +24,7 @@ const BCPNavigation = () => {
       "Vital Records",
       "Work Area Recovery",
       "Manpower",
-      "Recovery and Resumption",
+      // "Recovery and Resumption",
       "Embedded Documents",
     ],
     []
@@ -64,7 +64,7 @@ const BCPNavigation = () => {
     if (tabIndex !== -1 && carouselRef.current) {
       const numItems = links.length;
       const centerOffset = Math.floor(responsive.desktop.items / 2);
-      const additionalOffset = -1.5;
+      const additionalOffset = -2.5;
       const centeredIndex = Math.max(
         Math.min(
           tabIndex - centerOffset + additionalOffset,
@@ -107,8 +107,8 @@ const BCPNavigation = () => {
               .replace(/\s+/g, "-")
               .toLowerCase()}/${bcpid}`}
             className={({ isActive }) =>
-              `block px-2 py-1 rounded text-white font-semibold text-center ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              `block px-2 py-1 rounded font-semibold ${
+                isActive ? "doc-nav-active" : "doc-nav-hover"
               }`
             }
             onClick={() => {

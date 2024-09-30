@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import { getCurrentUser, getUsers } from "../../services/userAPI";
+import { getCurrentUser } from "../../services/userApi";
 import { useUsers } from "../../hooks/useUsers";
+import { useNavigate } from "react-router-dom";
 
 function CallTreeTable() {
   const [items, setItems] = useState([]);
   const [parent, setParent] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
-  // const [users, setUsers] = useState([]);
+  const [showModal, setShowModal] = useState(false); // State to control the popup/modal
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -17,21 +18,8 @@ function CallTreeTable() {
     section: "",
   });
 
-  const { user, users, fetchUsers, fetchUserDetails } = useUsers();
-
-  // const fetchUsers = async () => {
-  //   try {
-  //     const response = await getUsers();
-  //     const users = response.data.map((user) => ({
-  //       userId: user._id,
-  //       userName: user.name,
-  //     }));
-  //     console.log(users);
-  //     setUsers(users);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const { users, fetchUsers, fetchUserDetails } = useUsers();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchItems();
@@ -43,48 +31,38 @@ function CallTreeTable() {
   const fetchItems = async () => {
     const loggedInUser = await getCurrentUser();
     const userSection = loggedInUser.data.section._id;
-    // const userSection = user?.data?.section?._id;
 
     const response = await fetch(
       `http://localhost:5000/callTree?section=${userSection}`
     );
     const data = await response.json();
-    console.log(data);
     setItems(data);
   };
 
   const fetchParents = async () => {
-    try {
-      const loggedInUser = await getCurrentUser();
-      const userSection = loggedInUser.data.section._id;
-      // const userSection = user?.data?.section?._id;
+    const loggedInUser = await getCurrentUser();
+    const userSection = loggedInUser.data.section._id;
 
-      const response = await fetch(
-        `http://localhost:5000/callTree?section=${userSection}`
-      );
-      const data = await response.json();
-      const parentNames = data.map((parent) => ({
-        id: parent._id,
-        name: parent.title,
-      }));
-      setParent(parentNames);
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await fetch(
+      `http://localhost:5000/callTree?section=${userSection}`
+    );
+    const data = await response.json();
+    const parentNames = data.map((parent) => ({
+      id: parent._id,
+      name: parent.title,
+    }));
+    setParent(parentNames);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // First ensure the form data is up-to-date before submission
     const loggedInUser = await getCurrentUser();
     const userSection = loggedInUser.data.section._id;
-    // const userSection = user?.data?.section?._id;
 
     const updatedFormData = {
       ...formData,
       section: userSection,
-      parent: formData.parent === "" ? null : formData.parent, // Ensure parent is null if not selected
+      parent: formData.parent === "" ? null : formData.parent,
     };
 
     try {
@@ -102,16 +80,17 @@ function CallTreeTable() {
         });
       }
 
-      // Clear the form and reset the state
       setFormData({
         title: "",
         description: "",
         personName: "",
         mobileNumber: "",
-        parent: null, // Reset parent to null after submission
+        parent: null,
       });
       setIsEditing(false);
-      fetchItems(); // Refresh the items list after submission
+      setShowModal(false); // Close the modal on form submit
+      fetchItems();
+      navigate("/call-tree");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -120,6 +99,7 @@ function CallTreeTable() {
   const handleEdit = (item) => {
     setIsEditing(true);
     setEditId(item._id);
+    setShowModal(true); // Open the modal when editing
     setFormData({
       title: item.title,
       description: item.description,
@@ -137,119 +117,152 @@ function CallTreeTable() {
   };
 
   return (
-    <div>
-      <div className="border">
-        <form className="mt-5" onSubmit={handleSubmit}>
-          <input
-            className="w-[200px] p-2 rounded-lg bg-slate-100"
-            type="text"
-            placeholder="Title"
-            value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-          />
-          <input
-            className="w-[200px] p-2 rounded-lg bg-slate-100"
-            type="text"
-            placeholder="Description"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-          />
-          {/* <input
-            className="w-[200px] p-2 rounded-lg bg-slate-100"
-            type="text"
-            placeholder="Person Name"
-            value={formData.personName}
-            onChange={(e) =>
-              setFormData({ ...formData, personName: e.target.value })
-            }
-          /> */}
-          <select
-            className="w-[200px] p-2 rounded-lg bg-slate-100"
-            type="text"
-            id="personName"
-            placeholder="Name"
-            value={formData.personName}
-            onChange={(e) =>
-              setFormData({ ...formData, personName: e.target.value })
-            }
-          >
-            <option value="" disabled>
-              Name
-            </option>
-            {users.map((user) => (
-              <option key={user._id} value={user._id}>
-                {user.name}
-              </option>
-            ))}
-          </select>
-          <input
-            className="w-[200px] p-2 rounded-lg bg-slate-100"
-            type="text"
-            placeholder="Mobile Number"
-            value={formData.mobileNumber}
-            onChange={(e) =>
-              setFormData({ ...formData, mobileNumber: e.target.value })
-            }
-          />
-          <select
-            className="w-[200px] p-2 rounded-lg bg-slate-100"
-            id="parent"
-            placeholder="Supervisor"
-            value={formData.parent || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, parent: e.target.value })
-            }
-          >
-            <option value="" disabled>
-              Supervisor
-            </option>
-            {parent.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
+    <div className="max-w-7xl mx-auto p-8 overflow-y-auto h-screen">
+      {" "}
+      {/* Make the page scrollable */}
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">
+        Call Tree Management
+      </h2>
+      {/* Button to open the modal */}
+      <button
+        className="p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+        onClick={() => setShowModal(true)} // Open modal on button click
+      >
+        Create Call Tree Entry
+      </button>
+      {/* Modal for Create/Edit Form */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <h2 className="text-2xl font-bold mb-4">
+              {isEditing ? "Edit Call Tree Entry" : "Create Call Tree Entry"}
+            </h2>
+            <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit}>
+              <input
+                className="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                type="text"
+                placeholder="Title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
+              <input
+                className="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                type="text"
+                placeholder="Description"
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+              />
+              <select
+                className="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                value={formData.personName}
+                onChange={(e) =>
+                  setFormData({ ...formData, personName: e.target.value })
+                }
+              >
+                <option value="" disabled>
+                  Select Person
+                </option>
+                {users.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.name}
+                  </option>
+                ))}
+              </select>
+              <input
+                className="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                type="text"
+                placeholder="Mobile Number"
+                value={formData.mobileNumber}
+                onChange={(e) =>
+                  setFormData({ ...formData, mobileNumber: e.target.value })
+                }
+              />
+              <select
+                className="w-full p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500"
+                value={formData.parent || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, parent: e.target.value })
+                }
+              >
+                <option value="" disabled>
+                  Select Supervisor
+                </option>
+                {parent.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
 
-          <button
-            type="submit"
-            className="p-2 w-32 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold"
-          >
-            {isEditing ? "Update" : "Add"}
-          </button>
-        </form>
-      </div>
-      <table className="mt-10">
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="p-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
+                  onClick={() => {
+                    setShowModal(false);
+                    setIsEditing(false); // Reset form state on modal close
+                    setFormData({
+                      title: "",
+                      description: "",
+                      personName: "",
+                      mobileNumber: "",
+                      parent: null,
+                    });
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                >
+                  {isEditing ? "Update" : "Add"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      <h2 className="text-2xl font-semibold text-gray-700 mt-5 mb-4">
+        Call Tree Records
+      </h2>
+      <table className="min-w-full bg-white shadow-md rounded-lg overflow-auto mb-20">
         <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Name</th>
-            <th>Mobile Number</th>
-            <th>Supervisor</th>
-            <th>Actions</th>
+          <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+            <th className="py-3 px-6 text-left">Title</th>
+            <th className="py-3 px-6 text-left">Description</th>
+            <th className="py-3 px-6 text-left">Person Name</th>
+            <th className="py-3 px-6 text-left">Mobile Number</th>
+            <th className="py-3 px-6 text-left">Supervisor</th>
+            <th className="py-3 px-6 text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
-            <tr key={item._id}>
-              <td>{item.title}</td>
-              <td>{item.description}</td>
-              <td>{item.personName?.name || "No Name"}</td>
-              <td>{item.mobileNumber}</td>
-              <td>{item.parent?.title || "No Supervisor"}</td>
-              <td>
+            <tr
+              key={item._id}
+              className="border-b border-gray-200 doc-table-hover"
+            >
+              <td className="p-3">{item.title}</td>
+              <td className="p-3">{item.description}</td>
+              <td className="p-3">{item.personName?.name || "No Name"}</td>
+              <td className="p-3">{item.mobileNumber}</td>
+              <td className="p-3">
+                {item.parent ? item.parent.title : "No Supervisor"}
+              </td>
+              <td className="p-3">
                 <button
-                  className="text-white bg-yellow-500 px-2 py-1 rounded-lg mr-2"
+                  className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
                   onClick={() => handleEdit(item)}
                 >
                   Edit
                 </button>
                 <button
-                  className="text-white bg-red-500 px-2 py-1 rounded-lg"
+                  className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition ml-2"
                   onClick={() => handleDelete(item._id)}
                 >
                   Delete

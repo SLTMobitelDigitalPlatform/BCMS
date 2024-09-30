@@ -183,7 +183,7 @@ const Employee = () => {
         )} */}
 
         <div className="mt-5">
-          <table className="table-fixed w-full min-w-full bg-cyan-50 border-green-500">
+          <table className="table-fixed w-full min-w-full border-green-500">
             <thead className="bg-indigo-800 text-white">
               <tr>
                 <th className="w-28 border border-green-500">Name</th>
@@ -199,7 +199,7 @@ const Employee = () => {
             <tbody>
               {paginatedemployeeData.length > 0 ? (
                 paginatedemployeeData.map((employee) => (
-                  <tr key={employee._id} className="hover:bg-indigo-100">
+                  <tr key={employee._id} className="doc-table-hover">
                     <td className="py-2 pl-1 border border-green-500 text-blue-900 text-sm">
                       {employee.name}
                     </td>

@@ -47,38 +47,38 @@ const Objectives = () => {
   }, []);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">Objectives</h1>
-        <Link to="/createObjective" className="btn-primary font-semibold">
+        <Link to="/createObjective" className="btn-primary">
           Add Details
         </Link>
       </div>
 
       {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="relative w-full py-10 bg-cyan-50 table-fixed">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="doc-table-border">Information Security</th>
-              <th className="doc-table-border">Business Continuity</th>
-              <th className="doc-table-border">Quality</th>
-              <th className="w-28 doc-table-border">Actions</th>
+              <th className="doc-table-head">Information Security</th>
+              <th className="doc-table-head">Business Continuity</th>
+              <th className="doc-table-head">Quality</th>
+              <th className="w-28 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
             {objectives.map((objective) => (
-              <tr key={objective._id} className="hover:bg-indigo-100">
-                <td className="py-2 px-4 doc-table-border">
+              <tr key={objective._id} className="doc-table-hover">
+                <td className="py-2 px-4 doc-table-data">
                   {objective.informationSecurity}
                 </td>
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {objective.businessContinuity}
                 </td>
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {objective.quality}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editObjective/${objective._id}`}

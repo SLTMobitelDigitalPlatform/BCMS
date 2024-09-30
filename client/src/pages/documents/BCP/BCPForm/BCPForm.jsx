@@ -28,7 +28,7 @@ const BCPForm = () => {
 
       {/* Plan Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
           {/* <h2 className="font-semibold text-lg">Plan Details</h2> */}
           <div className="text-md space-y-3">
             <p>
@@ -50,7 +50,7 @@ const BCPForm = () => {
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
           {/* <h2 className="font-semibold text-lg">Template & Legal Info</h2> */}
           <div className="text-md space-y-3">
             <p>
@@ -71,7 +71,7 @@ const BCPForm = () => {
 
       {/* Roles */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
           {/* <h2 className="font-semibold text-lg">Responsible Parties</h2> */}
           <div className="text-md space-y-3">
             <p>
@@ -89,7 +89,7 @@ const BCPForm = () => {
           </div>
         </div>
 
-        <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
+        <div className="bg-indigo-100 p-4 rounded-lg shadow-sm">
           {/* <h2 className="font-semibold text-lg">Review Information</h2> */}
           <div className="text-md space-y-3">
             <p>

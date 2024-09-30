@@ -52,44 +52,44 @@ const MasterProcedures = () => {
     fetchMasterProducers();
   }, []);
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
           Master List of Procedures/Process
         </h1>
-        <Link to="/createMasterProducers" className="btn-primary font-semibold">
+        <Link to="/createMasterProducers" className="btn-primary">
           Add Details
         </Link>
       </div>
 
       {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-24 doc-table-border">Process No</th>
-              <th className="doc-table-border">Process Name</th>
-              <th className="doc-table-border">Process KPI</th>
-              <th className="doc-table-border">Process Owner</th>
-              <th className="w-36 doc-table-border">Actions</th>
+              <th className="w-24 doc-table-head">Process No</th>
+              <th className="doc-table-head">Process Name</th>
+              <th className="doc-table-head">Process KPI</th>
+              <th className="doc-table-head">Process Owner</th>
+              <th className="w-36 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
             {masterProducers.map((masterProd) => (
-              <tr key={masterProd.processNo} className="hover:bg-indigo-100">
-                <td className="py-2 px-4 w-24 text-center doc-table-border">
+              <tr key={masterProd.processNo} className="doc-table-hover">
+                <td className="py-2 px-4 w-24 text-center doc-table-data">
                   {masterProd.processNo}
                 </td>
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {masterProd.processName}
                 </td>
-                <td className="py-2 px-4 doc-table-border">
+                <td className="py-2 px-4 doc-table-data">
                   {masterProd.processKpi}
                 </td>
-                <td className="py-2 px-4 doc-table-border">
-                  {masterProd.responsiblePerson}
+                <td className="py-2 px-4 doc-table-data">
+                  {masterProd.responsiblePerson.name}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-border">
+                <td className="py-2 px-4 w-36 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editMasterProcedures/${masterProd._id}`}

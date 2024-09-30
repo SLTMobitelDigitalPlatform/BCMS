@@ -94,9 +94,9 @@ const TeamList = () => {
     fetchUsers();
   };
 
-  const handleResponsibilityChange = (memberId, responsibility) => {
-    setResponsibilities({ ...responsibilities, [memberId]: responsibility });
-  };
+  // const handleResponsibilityChange = (memberId, responsibility) => {
+  //   setResponsibilities({ ...responsibilities, [memberId]: responsibility });
+  // };
 
   const handleSecondaryMemberChange = (memberId, secondaryMemberId) => {
     setSecondaryMembers({
@@ -105,23 +105,23 @@ const TeamList = () => {
     });
   };
 
-  const handleSubmitResponsibilities = async () => {
-    const updatedResponsibilities = selectedTeam.teamMembers.map((member) => ({
-      memberId: member._id,
-      responsibility: responsibilities[member._id],
-    }));
+  // const handleSubmitResponsibilities = async () => {
+  //   const updatedResponsibilities = selectedTeam.teamMembers.map((member) => ({
+  //     memberId: member._id,
+  //     responsibility: responsibilities[member._id],
+  //   }));
 
-    try {
-      await updateTeamResponsibilities(
-        selectedTeam._id,
-        updatedResponsibilities
-      );
-      setShowModal(false);
-      fetchTeams();
-    } catch (error) {
-      console.error("Error updating responsibilities:", error);
-    }
-  };
+  //   try {
+  //     await updateTeamResponsibilities(
+  //       selectedTeam._id,
+  //       updatedResponsibilities
+  //     );
+  //     setShowModal(false);
+  //     fetchTeams();
+  //   } catch (error) {
+  //     console.error("Error updating responsibilities:", error);
+  //   }
+  // };
 
   const handleSubmitSecondaryMembers = async () => {
     const updatedTeam = selectedTeam.teamMembers.map((member) => ({
@@ -257,7 +257,7 @@ const TeamList = () => {
                     View
                   </button>
                   <button
-                    className="bg-purple-500 text-white py-1 px-3 rounded hover:bg-purple-700"
+                    className="bg-sky-950 text-white py-1 px-3 rounded hover:bg-purple-700"
                     onClick={() => openEditMembersModal(team)}
                   >
                     Edit Members
@@ -345,7 +345,7 @@ const TeamList = () => {
       {/* View Team Modal */}
       {showViewTeamModal && selectedTeam && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg max-w-5xl mx-auto overflow-y-auto max-h-[90vh]">
+          <div className="bg-white p-6 rounded-lg w-3/5 mx-auto overflow-y-auto max-h-[90vh]">
             <h2 className="text-2xl font-semibold mb-4">
               Team Details for {selectedTeam.teamName}
             </h2>

@@ -1,17 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import BIANavigation from "../../../components/BIANavigation";
 
-const ImpactAnalysis = () => {
-  const navigate = useNavigate();
+const SeverityLevel = () => {
 
   return (
-    <div className="flex h-screen overflow-hidden">
-    
+    <div className="pt-5 w-full h-full flex flex-col">
       
       {/* Impact Analysis Container */}
-      <div className="impact-analysis-container flex-1 bg-sky-100 flex flex-col rounded-2xl pt-5 p-6 overflow-y-auto"> 
-     
+      <div className="impact-analysis-container flex-1 bg-sky-100 flex flex-col rounded-2xl pt-5 pb-80 overflow-y-auto " 
+           style={{ maxHeight: 'calc(100vh - 20px)' }}>
+
         <div className="impact-analysis-content mt-6 px-5">
           
           {/* Severity Level - Operational */}
@@ -101,42 +98,36 @@ const ImpactAnalysis = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Severity Level - Legal and Regulatory Compliance */}
+          <div className="severity-level-table bg-white rounded-xl p-5 shadow-md mt-6">
+            <h3 className="text-lg font-semibold mb-4">
+              Severity Level – Legal and Regulatory Compliance
+            </h3>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  <th className="border p-2 bg-blue-900 text-white">Measure Keys</th>
+                  <th className="border p-2 bg-blue-900 text-white">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border p-2 bg-teal-400">Not Breached</td>
+                  <td className="border p-2">Threshold not breached</td>
+                </tr>
+                <tr>
+                  <td className="border p-2 bg-orange-500">Breached</td>
+                  <td className="border p-2">Threshold breached</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>
   );
 };
 
-// Sidebar Component
-const Sidebar = () => (
-  <div className="sidebar bg-blue-900 text-white w-60 p-5 h-screen">
-    <div className="logo mb-10">
-      <img src="logo.png" alt="Logo" />
-    </div>
-    <nav className="nav flex flex-col gap-3">
-      <a href="#" className="font-semibold">
-        Employee
-      </a>
-      <a href="#" className="font-semibold">
-        Documents
-      </a>
-      <a href="#" className="font-semibold">
-        Meetings
-      </a>
-      <a href="#" className="font-semibold">
-        Calendar
-      </a>
-      <a href="#" className="font-semibold">
-        Risk Management
-      </a>
-      <a href="#" className="font-semibold">
-        Roles & Responsibilities
-      </a>
-    </nav>
-    <button className="bg-cyan-600 text-white p-2 mt-10 rounded">
-      Log Out
-    </button>
-  </div>
-);
-
-export default ImpactAnalysis;
+export default SeverityLevel;

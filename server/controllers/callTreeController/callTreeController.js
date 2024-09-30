@@ -9,7 +9,8 @@ const getCallTreee = async (req, res) => {
 
     const callTree = await CallTree.find({ section })
       .populate("parent", "title") // Populating 'parent' with only 'title'
-      .populate("personName", "name") // Populating 'personName' with 'name'
+      .populate("section", "name")
+      .populate("personName", "name email designation profileImg") // Populating 'personName' with 'name'
       .exec();
 
     res.status(200).json(callTree);

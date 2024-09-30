@@ -50,6 +50,8 @@ const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preInc
 const routerCriticalBusinessFunction = require("./routes/documentRoutes/bcp/criticalBusinessFunctionRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
+const routerWorkAreaRecovery = require("./routes/documentRoutes/bcp/workAreaRecoveryRoutes");
+const routerManpower = require("./routes/documentRoutes/bcp/manpowerRoutes");
 const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocumentRoutes");
 
 // Business Impact Analysis Routes
@@ -98,24 +100,26 @@ app.use(
   routerCriticalBusinessFunction,
   routerResourcesRequired,
   routerVitalRecords,
+  routerWorkAreaRecovery,
+  routerManpower,
   routerEmbeddedDocument,
   routerBiaForm
 );
 
-// Create uploads directory if it doesn't exist
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// // Create uploads directory if it doesn't exist
+// const uploadDir = path.join(__dirname, "uploads");
+// if (!fs.existsSync(uploadDir)) {
+//   fs.mkdirSync(uploadDir);
+// }
 
-// Create uploads directory if it doesn't exist
-const uploadDirCover = path.join(__dirname, "covers");
-if (!fs.existsSync(uploadDirCover)) {
-  fs.mkdirSync(uploadDirCover);
-}
+// // Create uploads directory if it doesn't exist
+// const uploadDirCover = path.join(__dirname, "covers");
+// if (!fs.existsSync(uploadDirCover)) {
+//   fs.mkdirSync(uploadDirCover);
+// }
 
-app.use("/uploads", express.static(uploadDir)); // Serve the uploads directory as a static folder
-app.use("/covers", express.static(uploadDirCover));
+// app.use("/uploads", express.static(uploadDir)); // Serve the uploads directory as a static folder
+// app.use("/covers", express.static(uploadDirCover));
 app.use("/userImages", express.static(path.join(__dirname, "userImages")));
 
 app.listen(PORT, () => {

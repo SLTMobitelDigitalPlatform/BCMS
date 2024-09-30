@@ -30,7 +30,7 @@ const NewSidebar = () => {
   };
 
   return (
-    <div className="bg-indigo-950 text-white w-1/5 p-5 rounded-2xl ml-5 mb-2 flex flex-col justify-between">
+    <div className="bg-indigo-950 text-white w-64 p-5 rounded-2xl mx-4 mb-4 flex flex-col justify-between">
       <div className="text-4xl text-center font-bold text-sky-400">
         <NavLink to={"/profile"}>BCMS</NavLink>
       </div>
@@ -53,7 +53,7 @@ const NewSidebar = () => {
                 System Management <FaChevronDown className="ml-2" />
               </button>
               {managementDropdown && (
-                <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
+                <ul className="absolute left-0 w-full bg-white text-black text-sm rounded-2xl py-1 z-10">
                   <li>
                     <NavLink
                       to="/employee"
@@ -118,7 +118,7 @@ const NewSidebar = () => {
                 System Documents <FaChevronDown className="ml-2" />
               </button>
               {documentDropdown && (
-                <ul className="absolute left-0 w-full bg-white text-black text-base rounded-2xl p-2 z-10">
+                <ul className="absolute left-0 w-full bg-white text-black text-sm rounded-2xl py-1 z-10">
                   <li>
                     <NavLink
                       to="/Risk-Assessment/versionControl"
@@ -163,7 +163,7 @@ const NewSidebar = () => {
                   <hr className="my-1 border-black opacity-50" />
                   <li>
                     <NavLink
-                      to="/Business-Impact-Analysis/bia-form"
+                      to="/business-impact-analysis-plans"
                       className={({ isActive }) =>
                         `sidebar-link ${
                           isActive ? "dropdown-active" : "dropdown-hover"
@@ -222,7 +222,7 @@ const NewSidebar = () => {
           {/* Call Tree */}
           <li>
             <NavLink
-              to="/testcalltree"
+              to="/call-tree"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
