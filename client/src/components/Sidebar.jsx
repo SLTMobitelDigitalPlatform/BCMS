@@ -157,8 +157,10 @@ const Sidebar = () => {
               <li>Call Tree</li>
             </Link>
             <hr className="opacity-50" />
-            <Link>
-              <li>Policies</li>
+            <Link to="/policies">
+              <li className="flex gap-4 items-center hover:underline">
+                Policies
+              </li>
             </Link>
           </ul>
         </div>

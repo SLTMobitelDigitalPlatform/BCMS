@@ -84,6 +84,7 @@ import CreateRoles from "./pages/Roles_Responsibilities/CreateRoles";
 import EditRoles from "./pages/Roles_Responsibilities/EditRoles";
 import Roles from "./pages/Roles_Responsibilities/Roles";
 import Section from "./pages/sections/Section";
+import OrgPolicies from "./pages/Policies/OrgPolicies";
 
 // BIA
 import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
@@ -127,6 +128,7 @@ import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/Crea
 import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
 import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
 import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
+import PoliciesPage from "./pages/Policies/OrgPolicies";
 
 const router = createBrowserRouter([
   {
@@ -232,7 +234,12 @@ const router = createBrowserRouter([
       { path: "calendar", element: <Calendar /> },
       { path: "event/:id/update", element: <UpdateEvent /> },
 
+      //Policies
+      { path: "policies", element: <OrgPolicies /> },
+
       //!  { path: "add-event", element: <AddEvents /> },
+
+      
 
       // Documents
       //?--------------------------  Risk Assessment  ----------------------------------------------
