@@ -9,40 +9,39 @@ const ISRiskAssesement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredRisks, setFilteredRisks] = useState([]);
   const [section, setSection] = useState("");
+  const [isAdminView, setIsAdminView] = useState(false);
+  const [sections, setSections] = useState([]);
   const risksPerPage = 5;
 
-  // Fetch all risks
+  // Fetch all risks and sections
   const fetchRisks = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/risksIS/");
       const user = await getCurrentUser();
-      let section = user.data.section.sectionCode;
-      console.log(section);
-      // if (section === "Information Technology (IT)") {
-      //   section = "ITSE";
-      // } else if (section === "Marketing") {
-      //   section = "MARC";
-      // } else if (section === "Sales") {
-      //   section = "SALE";
-      // } else if (section === "Human Resources(HR)") {
-      //   section = "HRMA";
-      // } else if (section === "Finance") {
-      //   section = "FINA";
-      // } else if (section === "Operations") {
-      //   section = "OPER";
-      // } else if (section === "Customer Service") {
-      //   section = "CUSE";
-      // }
-      // console.log(section);
+      let userSection = user.data.section.sectionCode;
       setRisks(response.data);
-      setSection(section);
-      filterRisks(response.data, section);
+      setSection(userSection);
+      if (!isAdminView) {
+        filterRisks(response.data, userSection);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const filterRisks = async (risks, section) => {
+  // Fetch available sections for dropdown
+  const fetchSections = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/sections");
+      // console.log(response.data);
+      setSections(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Filter risks based on section
+  const filterRisks = (risks, section) => {
     try {
       const filtered = risks.filter((risk) => {
         const sectionIdentifier = risk.rid.split("-")[1];
@@ -55,12 +54,29 @@ const ISRiskAssesement = () => {
   };
 
   useEffect(() => {
-    filterRisks(risks, section);
-  }, [risks, section]);
+    fetchRisks();
+    fetchSections();
+  }, [isAdminView]); // Refetch risks when switching views
 
   useEffect(() => {
-    fetchRisks();
-  }, []);
+    if (!isAdminView) {
+      filterRisks(risks, section);
+    } else {
+      setFilteredRisks(risks); // Show all risks in admin view
+    }
+  }, [risks, section, isAdminView]);
+
+  const toggleAdminView = () => {
+    setIsAdminView((prev) => !prev);
+  };
+
+  // Handle section change from the dropdown
+  const handleSectionChange = (e) => {
+    setSection(e.target.value);
+    if (!isAdminView) {
+      filterRisks(risks, e.target.value);
+    }
+  };
 
   // Delete a risk with SweetAlert2 confirmation
   const deleteRisk = async (id) => {
@@ -110,95 +126,115 @@ const ISRiskAssesement = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
           Information Security
         </h1>
 
-        <Link to="/createRiskIS" className="btn-primary font-semibold">
-          Create Risk Assessment
-        </Link>
+        <div className="flex space-x-4">
+          <button onClick={toggleAdminView} className="btn-primary">
+            {isAdminView ? "Default View" : "Admin View"}
+          </button>
+
+          <select
+            className="border rounded px-3 py-2"
+            value={section}
+            onChange={handleSectionChange}
+          >
+            <option value="">Select Section</option>
+            {sections.map((sec) => (
+              <option key={sec._id} value={sec.sectionCode}>
+                {sec.name} ({sec.sectionCode})
+              </option>
+            ))}
+          </select>
+
+          <Link to="/createRiskIS" className="btn-primary">
+            Create Risk Assessment
+          </Link>
+        </div>
       </div>
 
-      {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-28 doc-table-border">Risk ID</th>
-              <th className="w-28 doc-table-border">Risk owner</th>
-              <th className="w-36 doc-table-border">Responsible Person</th>
-              <th className="w-48 doc-table-border">Description</th>
-              <th className="w-28 doc-table-border">Sources</th>
-              <th className="w-28 doc-table-border">Assets</th>
-              <th className="w-28 doc-table-border">Element</th>
-              <th className="w-28 doc-table-border">Objectives</th>
-              <th className="w-28 doc-table-border">Controls</th>
-              <th className="w-28 doc-table-border">Impact</th>
-              <th className="w-28 doc-table-border">Likelihood</th>
-              <th className="w-28 doc-table-border">Impact Rating</th>
-              <th className="w-28 doc-table-border">Treat Method</th>
-              <th className="w-28 doc-table-border">Date</th>
-              <th className="w-28 doc-table-border">New Controls</th>
-              <th className="w-28 doc-table-border">Residual Impact</th>
-              <th className="w-28 doc-table-border">Probability</th>
-              <th className="w-28 doc-table-border">Residual Impact Rating</th>
-              <th className="w-28 doc-table-border">Status</th>
-              <th className="w-28 doc-table-border">Actions</th>
+              <th className="w-28 doc-table-head">Risk ID</th>
+              <th className="w-28 doc-table-head">Risk owner</th>
+              <th className="w-36 doc-table-head">Responsible Person</th>
+              <th className="w-48 doc-table-head">Description</th>
+              <th className="w-28 doc-table-head">Sources</th>
+              <th className="w-28 doc-table-head">Assets</th>
+              <th className="w-28 doc-table-head">Element</th>
+              <th className="w-28 doc-table-head">Objectives</th>
+              <th className="w-28 doc-table-head">Controls</th>
+              <th className="w-28 doc-table-head">Impact</th>
+              <th className="w-28 doc-table-head">Likelihood</th>
+              <th className="w-28 doc-table-head">Impact Rating</th>
+              <th className="w-28 doc-table-head">Treat Method</th>
+              <th className="w-28 doc-table-head">Date</th>
+              <th className="w-28 doc-table-head">New Controls</th>
+              <th className="w-28 doc-table-head">Residual Impact</th>
+              <th className="w-28 doc-table-head">Probability</th>
+              <th className="w-28 doc-table-head">Residual Impact Rating</th>
+              <th className="w-28 doc-table-head">Status</th>
+              <th className="w-28 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentRisks.map((r) => (
-              <tr key={r._id}>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.rid}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.owner}</td>
-                <td className="py-2 px-4 w-36 doc-table-border">
-                  {r.responsibility}
+              <tr key={r._id} className="doc-table-hover">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.rid}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  {r.owner.name}
                 </td>
-                <td className="py-2 px-4 w-48 doc-table-border">
+                <td className="py-2 px-4 w-36 doc-table-data">
+                  {r.responsibility.name}
+                </td>
+                <td className="py-2 px-4 w-48 doc-table-data">
                   {r.description}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.sources}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.assets}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.element}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.sources}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.assets}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.element}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.objectives}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  {r.controls}
-                </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.impact}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.controls}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.impact}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.likelihood}
                 </td>
                 <td
-                  className="py-2 px-4 w-28 doc-table-border"
+                  className="py-2 px-4 w-28 doc-table-data"
                   style={getRatingStyle(r.impactRating)}
                 >
                   {r.impactRating}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.treatMethod}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.date}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  {r.date.split("T")[0]}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.newControls}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.residualImpact}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.probability}
                 </td>
                 <td
-                  className="py-2 px-4 w-28 doc-table-border"
+                  className="py-2 px-4 w-28 doc-table-data"
                   style={getRatingStyle(r.residualImpactRating)}
                 >
                   {r.residualImpactRating}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.status}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.status}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link to={`/editISRisk/${r._id}`} className="doc-edit-btn">
                       Edit
@@ -215,23 +251,27 @@ const ISRiskAssesement = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-center mt-4">
+      </div>
+
+      <nav className="flex justify-center items-center mt-5">
+        <ul className="flex space-x-2">
           {Array.from(
-            { length: Math.ceil(risks.length / risksPerPage) },
+            { length: Math.ceil(filteredRisks.length / risksPerPage) },
             (_, i) => (
-              <button
-                key={i + 1}
-                onClick={() => paginate(i + 1)}
-                className={`px-3 py-1 mx-1 border ${
-                  currentPage === i + 1 ? "bg-gray-300" : "bg-white"
-                }`}
-              >
-                {i + 1}
-              </button>
+              <li key={i} className="inline-block">
+                <button
+                  onClick={() => paginate(i + 1)}
+                  className={`px-4 py-2 rounded-lg border border-indigo-500 text-indigo-100 hover:bg-indigo-500 hover:text-white transition-all duration-300 ${
+                    currentPage === i + 1 ? "bg-indigo-500 text-white" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              </li>
             )
           )}
-        </div>
-      </div>
+        </ul>
+      </nav>
     </div>
   );
 };

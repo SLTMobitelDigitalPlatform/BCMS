@@ -19,7 +19,7 @@ const InterestedParties = () => {
   };
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
           Interested Parties
@@ -28,20 +28,16 @@ const InterestedParties = () => {
         {/* Tab Navigation */}
         <div className="flex items-center gap-10">
           <button
-            className={`px-2 py-1 rounded-lg text-white font-semibold ${
-              activeTab === "internalParty"
-                ? "bg-green-500"
-                : "bg-indigo-900 hover:bg-indigo-600"
+            className={`whitespace-nowrap p-1 rounded font-semibold ${
+              activeTab === "internalParty" ? "doc-nav-active" : "doc-nav-hover"
             }`}
             onClick={() => handleTabChange("internalParty")}
           >
             Internal Party
           </button>
           <button
-            className={`px-2 py-1 rounded-lg text-white font-semibold ${
-              activeTab === "externalParty"
-                ? "bg-green-500"
-                : "bg-indigo-900 hover:bg-indigo-600"
+            className={`whitespace-nowrap p-1 rounded font-semibold ${
+              activeTab === "externalParty" ? "doc-nav-active" : "doc-nav-hover"
             }`}
             onClick={() => handleTabChange("externalParty")}
           >
@@ -54,7 +50,7 @@ const InterestedParties = () => {
           <Link
             to="/createInternalParty"
             state={{ activeTab: "internalParty" }}
-            className="btn-primary font-semibold"
+            className="btn-primary"
           >
             Create Internal Record
           </Link>
@@ -62,7 +58,7 @@ const InterestedParties = () => {
           <Link
             to="/createExternalParty"
             state={{ activeTab: "externalParty" }}
-            className="btn-primary font-semibold"
+            className="btn-primary"
           >
             Create External Record
           </Link>

@@ -145,11 +145,11 @@ const Section = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="px-5 pt-4 pb-20 rounded-2xl bg-indigo-100 w-full h-full overflow-hidden">
+    <div className="w-full h-full flex flex-col">
       <div className="flex items-center justify-between mb-5">
-        <h1 className="text-3xl mb-3 font-bold text-green-500">Sections</h1>
+        <h1 className="text-3xl font-bold text-green-500">Sections</h1>
         <button
-          className="btn-primary font-semibold"
+          className="btn-primary"
           onClick={() =>
             setAddEditSectionModal({
               isShown: true,
@@ -158,7 +158,7 @@ const Section = () => {
             })
           }
         >
-          Add
+          Add Section
         </button>
       </div>
 
@@ -255,32 +255,32 @@ const Section = () => {
       </Modal>
 
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="py-2 px-4 w-20 doc-table-border">Section Code</th>
-              <th className="py-2 px-4 w-20 doc-table-border">Section Name</th>
-              <th className="py-2 px-4 w-20 doc-table-border">
+              <th className="py-2 px-4 w-20 doc-table-head">Section Code</th>
+              <th className="py-2 px-4 w-20 doc-table-head">Section Name</th>
+              <th className="py-2 px-4 w-20 doc-table-head">
                 Section Coordinator
               </th>
-              <th className="py-2 px-4 w-20 doc-table-border">Action</th>
+              <th className="py-2 px-4 w-20 doc-table-head">Action</th>
             </tr>
           </thead>
           <tbody>
             {sections.map((section) => (
-              <tr key={section._id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 w-28 doc-table-border">
+              <tr key={section._id} className="doc-table-hover">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {section.sectionCode}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {section.name}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {section.sectionCoordinator && section.sectionCoordinator.name
                     ? section.sectionCoordinator.name
                     : "No Coordinator Assigned"}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <button
                       className="doc-edit-btn"

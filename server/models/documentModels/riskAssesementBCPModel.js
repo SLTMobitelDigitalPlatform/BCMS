@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const riskBCPSchema = new Schema(
   {
     rid: { type: String, required: true },
-    owner: { type: String, required: true },
-    responsibility: { type: String, required: true },
+    owner: { type: Schema.Types.ObjectId, ref: "User" },
+    responsibility: { type: Schema.Types.ObjectId, ref: "User" },
     description: { type: String, required: true },
     sources: { type: String, required: true },
     assets: { type: String, required: true },

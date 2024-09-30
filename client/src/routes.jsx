@@ -3,9 +3,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Profile from "./components/Profile";
 import Calendar from "./pages/calendar/Calendar";
 import UpdateEvent from "./pages/calendar/UpdateEvent";
-import CallTree from "./pages/Call Tree/CallTree";
 import CallTreeTable from "./pages/Call Tree/CallTreeTable";
-import TestCallTree from "./pages/Call Tree/TestCallTree";
 import Customer from "./pages/Customers/Customer";
 import BCPForm from "./pages/documents/BCP/BCPForm/BCPForm";
 import BusinessContinuityPlanLayout from "./pages/documents/BCP/BusinessContinuityPlanLayout";
@@ -86,47 +84,51 @@ import Roles from "./pages/Roles_Responsibilities/Roles";
 import Section from "./pages/sections/Section";
 
 // BIA
-import BiaDocumentControl from "./pages/documents/BIA/BiaDocumentControl";
+import BiaPlans from "./pages/documents/BIA/BusinessImpactAnalysisPlans";
 import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
-//import BiaOperatingSites from "./pages/documents/BIA/*";
-//import BiaCriticalBusinessFunction from "./pages/documents/BIA/*";
+
+
+import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
+import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
+import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
-//import BiaResources from "./pages/documents/BIA/*";
-import BiaImpactAnalysis from "./pages/documents/BIA/ImpactAnalysis";
+import BiaResources from "./pages/documents/BIA/Resources/resources";
+import BiaImpactAnalysis from "./pages/documents/BIA/Impact Analysis/impactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
-//import BiaDependencies from "./pages/documents/BIA/*";
-//import BiaWorkAreaRecovery from "./pages/documents/BIA/*";
-//import BiaManpower from "./pages/documents/BIA/*";
+import BiaDependencies from "./pages/documents/BIA/Dependencies/dependencies";
+import BiaWorkAreaRecovery from "./pages/documents/BIA/Work Area Recovery/workAreaRecovery";
+import BiaManpower from "./pages/documents/BIA/Manpower/manpower";
 
 import CreateBCP from "./pages/documents/BCP/BCPForm/CreateBCP";
+import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
+import CreateCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CreateCriticalBusinessFunction";
 import CreateEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/CreateEmbeddedDocuments";
+import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
+import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/CreateLegalRequirements";
+import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
+import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
+import CreateRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/CreateRecoveryStrategy";
 import CreateResourcesRequired from "./pages/documents/BCP/Resources Required/CreateResourcesRequired";
 import CreateVitalRecords from "./pages/documents/BCP/Vital Records/CreateVitalRecords";
 import CreateWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/CreateWorkAreaRecovery";
 import AddEditTeams from "./pages/teams/AddEditTeams";
 import TeamList from "./pages/teams/TeamList";
-import CreateCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/CreateCriticalBusinessFunction";
-import CreateRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/CreateRecoveryStrategy";
-import CreateLegalRequirements from "./pages/documents/BCP/Legal Requirements/CreateLegalRequirements";
-import CreatePreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/CreatePreIncidentPreparation";
-import EditEmbeddedDocuments from "./pages/documents/BCP/Embedded Documents/EditEmbeddedDocuments";
-import EditBCPForm from "./pages/documents/BCP/BCPForm/EditBCPForm";
-import EditPreIncidentPreparation from "./pages/documents/BCP/Pre-Incident Preparation/EditPreIncidentPreparation";
 
-import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
-import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
-import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
+import CallTree from "./pages/Call Tree/CallTree";
+import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
+import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
 import CreateDocumentControl from "./pages/documents/BCP/Document Control/CreateDocumentControl";
 import EditDocumentControl from "./pages/documents/BCP/Document Control/EditDocumentControl";
-import BusinessContinuityPlans from "./pages/documents/BCP/BusinessContinuityPlans";
-import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDocuments";
+import EditLegalRequirements from "./pages/documents/BCP/Legal Requirements/EditLegalRequirements";
+import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
 import CreateRelatedDocuments from "./pages/documents/BCP/Related Documents/CreateRelatedDocuments";
 import EditRelatedDocuments from "./pages/documents/BCP/Related Documents/EditRelatedDocuments";
-import EditRecoveryStrategy from "./pages/documents/BCP/Recovery Strategy/EditRecoveryStrategy";
-import EditCriticalBusinessFunction from "./pages/documents/BCP/Critical Business Function/EditCriticalBusinessFunction";
+import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDocuments";
+import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
+import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 
 const router = createBrowserRouter([
@@ -214,9 +216,8 @@ const router = createBrowserRouter([
       { path: "sections", element: <Section /> },
 
       // Call Tree
-      { path: "callTree", element: <CallTree /> },
-      { path: "testCallTree", element: <TestCallTree /> },
-      { path: "callTreeTable", element: <CallTreeTable /> },
+      { path: "call-tree", element: <CallTree /> },
+      { path: "call-tree-table", element: <CallTreeTable /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
@@ -494,30 +495,41 @@ const router = createBrowserRouter([
         element: <EditEmbeddedDocuments />,
       },
 
-      // BIA (Business Impact Analysis)
+      // -------------------------------- BIA (Business Impact Analysis)-------------------------------- 
+      //Layout
+      {path: "business-impact-analysis-plans",element: <BiaPlans />},
       {
         path: "Business-Impact-Analysis",
         element: <BiaLayout />,
         children: [
-          { path: "bia-form", element: <BiaForm /> },
+          { path: "bia-form/:biaid", element: <BiaForm /> },
+
+          { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "document-version", element: <BiaDocumentControl /> },
-          //{ path: "operating-sites", element: <BiaOperatingSites /> },
-          // { path: "critical-business-function", element: <BiaCriticalBusinessFunction /> },
+          { path: "operating-sites", element: <BiaOperatingSites /> },
+          {
+            path: "critical-business-function",
+            element: <BiaCriticalBusinessFunction />,
+          },
           {
             path: "business-peaks-and-deadlines",
             element: <BiaPeaksAndDeadlines />,
           },
-          //{ path: "resources", element: <BiaResources /> },
+          { path: "resources", element: <BiaResources /> },
           { path: "impact-analysis", element: <BiaImpactAnalysis /> },
           { path: "resources-required", element: <BiaResourcesRequired /> },
-          //{ path: "dependencies", element: <BiaDependencies /> },
-          //{ path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
-          //{ path: "manpower", element: <BiaManpower /> },
+          { path: "dependencies", element: <BiaDependencies /> },
+          { path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
+          { path: "manpower", element: <BiaManpower /> },
         ],
       },
 
+      //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
-      { path: "editBIA/:id", element: <EditBIAForm /> },
+      { path: "editBIA/:biaid", element: <EditBIAForm /> },
+      
+      // { path: "impactAreas", element: <ImpactAreas /> },
+      { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
       // Roles
       { path: "roles", element: <Roles /> },

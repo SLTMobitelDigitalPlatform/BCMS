@@ -17,22 +17,7 @@ const BCPRiskAssesement = () => {
       const response = await axios.get("http://localhost:5000/api/risksBCP/");
       const user = await getCurrentUser();
       let section = user.data.section.sectionCode;
-      // if (section === "Information Technology (IT)") {
-      //   section = "ITSE";
-      // } else if (section === "Marketing") {
-      //   section = "MARC";
-      // } else if (section === "Sales") {
-      //   section = "SALE";
-      // } else if (section === "Human Resources(HR)") {
-      //   section = "HRMA";
-      // } else if (section === "Finance") {
-      //   section = "FINA";
-      // } else if (section === "Operations") {
-      //   section = "OPER";
-      // } else if (section === "Customer Service") {
-      //   section = "CUSE";
-      // }
-      // console.log(section);
+
       setRisks(response.data);
       setSection(section);
       filterRisks(response.data, section);
@@ -110,95 +95,95 @@ const BCPRiskAssesement = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
           Business Continuity
         </h1>
 
-        <Link to="/createBCPRisk" className="btn-primary font-semibold">
+        <Link to="/createBCPRisk" className="btn-primary">
           Create Risk Assessment
         </Link>
       </div>
 
       {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-28 doc-table-border">Risk ID</th>
-              <th className="w-28 doc-table-border">Risk owner</th>
-              <th className="w-28 doc-table-border">Responsible Person</th>
-              <th className="w-28 doc-table-border">Description</th>
-              <th className="w-28 doc-table-border">Sources</th>
-              <th className="w-28 doc-table-border">Assets</th>
-              <th className="w-28 doc-table-border">Element</th>
-              <th className="w-28 doc-table-border">Objectives</th>
-              <th className="w-28 doc-table-border">Controls</th>
-              <th className="w-28 doc-table-border">Impact</th>
-              <th className="w-28 doc-table-border">Likelihood</th>
-              <th className="w-28 doc-table-border">Impact Rating</th>
-              <th className="w-28 doc-table-border">Treat Method</th>
-              <th className="w-28 doc-table-border">Date</th>
-              <th className="w-28 doc-table-border">New Controls</th>
-              <th className="w-28 doc-table-border">Residual Impact</th>
-              <th className="w-28 doc-table-border">Probability</th>
-              <th className="w-28 doc-table-border">Residual Impact Rating</th>
-              <th className="w-28 doc-table-border">Status</th>
-              <th className="w-28 doc-table-border">Actions</th>
+              <th className="w-28 doc-table-head">Risk ID</th>
+              <th className="w-28 doc-table-head">Risk owner</th>
+              <th className="w-28 doc-table-head">Responsible Person</th>
+              <th className="w-28 doc-table-head">Description</th>
+              <th className="w-28 doc-table-head">Sources</th>
+              <th className="w-28 doc-table-head">Assets</th>
+              <th className="w-28 doc-table-head">Element</th>
+              <th className="w-28 doc-table-head">Objectives</th>
+              <th className="w-28 doc-table-head">Controls</th>
+              <th className="w-28 doc-table-head">Impact</th>
+              <th className="w-28 doc-table-head">Likelihood</th>
+              <th className="w-28 doc-table-head">Impact Rating</th>
+              <th className="w-28 doc-table-head">Treat Method</th>
+              <th className="w-28 doc-table-head">Date</th>
+              <th className="w-28 doc-table-head">New Controls</th>
+              <th className="w-28 doc-table-head">Residual Impact</th>
+              <th className="w-28 doc-table-head">Probability</th>
+              <th className="w-28 doc-table-head">Residual Impact Rating</th>
+              <th className="w-28 doc-table-head">Status</th>
+              <th className="w-28 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
             {currentRisks.map((r) => (
               <tr key={r._id}>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.rid}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.owner}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  {r.responsibility}
+                <td className="py-2 px-4 w-28 doc-table-data">{r.rid}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  {r.owner.name}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  {r.responsibility.name}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.description}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.sources}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.assets}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.element}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.sources}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.assets}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.element}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.objectives}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  {r.controls}
-                </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.impact}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.controls}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.impact}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.likelihood}
                 </td>
                 <td
-                  className="py-2 px-4 w-28 doc-table-border"
+                  className="py-2 px-4 w-28 doc-table-data"
                   style={getRatingStyle(r.impactRating)}
                 >
                   {r.impactRating}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.treatMethod}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.date}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.date}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.newControls}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.residualImpact}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.probability}
                 </td>
                 <td
-                  className="py-2 px-4 w-28 doc-table-border"
+                  className="py-2 px-4 w-28 doc-table-data"
                   style={getRatingStyle(r.residualImpactRating)}
                 >
                   {r.residualImpactRating}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.status}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.status}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link to={`/editBCPRisk/${r._id}`} className="doc-edit-btn">
                       Edit
@@ -215,22 +200,22 @@ const BCPRiskAssesement = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-center mt-4">
-          {Array.from(
-            { length: Math.ceil(risks.length / risksPerPage) },
-            (_, i) => (
-              <button
-                key={i + 1}
-                onClick={() => paginate(i + 1)}
-                className={`px-3 py-1 mx-1 border ${
-                  currentPage === i + 1 ? "bg-gray-300" : "bg-white"
-                }`}
-              >
-                {i + 1}
-              </button>
-            )
-          )}
-        </div>
+      </div>
+      <div className="flex justify-center mt-4">
+        {Array.from(
+          { length: Math.ceil(risks.length / risksPerPage) },
+          (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => paginate(i + 1)}
+              className={`px-3 py-1 mx-1 border ${
+                currentPage === i + 1 ? "bg-gray-300" : "bg-white"
+              }`}
+            >
+              {i + 1}
+            </button>
+          )
+        )}
       </div>
     </div>
   );

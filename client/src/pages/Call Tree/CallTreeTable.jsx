@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { getCurrentUser } from "../../services/userAPI";
+import { getCurrentUser } from "../../services/userApi";
 import { useUsers } from "../../hooks/useUsers";
+import { useNavigate } from "react-router-dom";
 
 function CallTreeTable() {
   const [items, setItems] = useState([]);
@@ -18,6 +19,7 @@ function CallTreeTable() {
   });
 
   const { users, fetchUsers, fetchUserDetails } = useUsers();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchItems();
@@ -88,6 +90,7 @@ function CallTreeTable() {
       setIsEditing(false);
       setShowModal(false); // Close the modal on form submit
       fetchItems();
+      navigate("/call-tree");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -242,7 +245,7 @@ function CallTreeTable() {
           {items.map((item) => (
             <tr
               key={item._id}
-              className="border-b border-gray-200 hover:bg-gray-100"
+              className="border-b border-gray-200 doc-table-hover"
             >
               <td className="p-3">{item.title}</td>
               <td className="p-3">{item.description}</td>

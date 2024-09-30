@@ -131,7 +131,7 @@ const Login = () => {
             {/*Login button*/}
             <div>
               <button
-                className="btn-primary font-semibold w-full"
+                className="btn-primary w-full"
                 type="submit"
                 disabled={loading}
               >

@@ -42,20 +42,6 @@ const CreateBCPRiskAssesement = () => {
       const user = await getCurrentUser();
       let section = user.data.section.sectionCode;
 
-      // Map section names to abbreviations
-      // const sectionMap = {
-      //   "Information Technology (IT)": "ITSE",
-      //   Marketing: "MARC",
-      //   Sales: "SALE",
-      //   "Human Resources(HR)": "HRMA",
-      //   Finance: "FINA",
-      //   Operations: "OPER",
-      //   "Customer Service": "CUSE",
-      // };
-
-      // section = sectionMap[section] || section;
-
-      // Fetch the last record for the specific section
       const response = await axios.get(
         `http://localhost:5000/api/risksBCP/last/${section}`
       );
@@ -103,7 +89,10 @@ const CreateBCPRiskAssesement = () => {
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
-      const users = response.data.map((user) => user.name);
+      const users = response.data.map((user) => ({
+        name: user.name,
+        id: user._id,
+      }));
       // console.log(users);
       setUsers(users);
     } catch (error) {
@@ -223,8 +212,8 @@ const CreateBCPRiskAssesement = () => {
                       Select
                     </option>
                     {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
+                      <option key={option.id} value={option.id}>
+                        {option.name}
                       </option>
                     ))}
                   </select>
@@ -243,8 +232,8 @@ const CreateBCPRiskAssesement = () => {
                       Select
                     </option>
                     {users.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
+                      <option key={option.id} value={option.id}>
+                        {option.name}
                       </option>
                     ))}
                   </select>

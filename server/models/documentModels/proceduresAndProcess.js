@@ -12,7 +12,7 @@ const proceduresSchema = new Schema(
       required: true,
     },
     processKpi: { type: String, required: true },
-    responsiblePerson: { type: String, required: true },
+    responsiblePerson: { type: Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
