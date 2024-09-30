@@ -40,24 +40,11 @@ const Option1 = () => {
     "Total Staff",
   ];
 
-  // Fill table with default values when no data is fetched
-  const initializeDefaultValues = () => {
-    const defaultValues = {};
-    rows.forEach((_, rowIndex) => {
-      headers.forEach((_, colIndex) => {
-        const cellKey = `${rowIndex}-${colIndex}`;
-        defaultValues[cellKey] = 0;
-      });
-    });
-    setInputValues(defaultValues);
-  };
-
   // Handle input change
   const handleInputChange = (rowIndex, colIndex, value) => {
     const numericValue = Number(value);
     const cellKey = `${rowIndex}-${colIndex}`;
 
-    // Update local state
     setInputValues((prev) => ({
       ...prev,
       [cellKey]: numericValue,
@@ -80,14 +67,14 @@ const Option1 = () => {
   };
 
   useEffect(() => {
-    fetchManpower(bcpid, "option1").then(() => {
-      if (manpower && manpower.tableData) {
-        setInputValues(manpower.tableData);
-      } else {
-        initializeDefaultValues();
-      }
-    });
+    fetchManpower(bcpid, "option1");
   }, []);
+
+  useEffect(() => {
+    if (manpower && manpower.tableData) {
+      setInputValues(manpower.tableData);
+    }
+  }, [manpower]);
 
   if (loading) {
     return (
@@ -129,7 +116,7 @@ const Option1 = () => {
                     {editingCell === cellKey ? (
                       <input
                         type="number"
-                        value={inputValue}
+                        value={inputValue === 0 ? "" : inputValue}
                         onChange={(e) =>
                           handleInputChange(rowIndex, colIndex, e.target.value)
                         }
