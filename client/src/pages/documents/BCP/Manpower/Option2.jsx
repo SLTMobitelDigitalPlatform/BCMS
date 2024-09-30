@@ -88,9 +88,14 @@ const Option2 = () => {
       <table className="table-fixed w-full">
         <thead className="sticky bg-indigo-200">
           <tr>
-            <th className="w-20 sticky text-xs doc-table-head">Site</th>
+            <th className="w-20 p-2 sticky text-sm font-bold border border-indigo-800">
+              Site
+            </th>
             {headers.map((header) => (
-              <th key={header} className="w-14 text-xs doc-table-head">
+              <th
+                key={header}
+                className="w-14 p-2 text-sm font-bold border border-indigo-800"
+              >
                 {header}
               </th>
             ))}
@@ -99,7 +104,7 @@ const Option2 = () => {
         <tbody>
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              <td className="sticky left-0 text-xs h-16 doc-table-head bg-indigo-100">
+              <td className="sticky left-0 text-sm h-16 p-2 font-bold border border-indigo-800 bg-indigo-100 text-center">
                 {row}
               </td>
               {headers.map((_, colIndex) => {
@@ -109,7 +114,7 @@ const Option2 = () => {
                 return (
                   <td
                     key={colIndex}
-                    className="doc-table-data text-center"
+                    className="font-semibold text-sm border border-indigo-800 text-center"
                     onClick={() => handleCellClick(rowIndex, colIndex)}
                   >
                     {editingCell === cellKey ? (
