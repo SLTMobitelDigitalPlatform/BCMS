@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const operatingSitesSchema = new Schema(
   {
+    biaid: { type: String, required: true },
     address: { type: String, required: true },
     siteType: { 
         type: String, 
