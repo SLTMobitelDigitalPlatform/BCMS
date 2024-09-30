@@ -84,6 +84,7 @@ const BusinessContinuityPlans = () => {
                     </button>
                   </div>
                 </td>
+
               </tr>
             ))}
           </tbody>
