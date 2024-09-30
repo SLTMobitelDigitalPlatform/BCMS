@@ -1,4 +1,4 @@
-const OperatingSite = require("../../../models/documentModels/businessImpactAnalysis/operatingSites");
+const OperatingSite = require("../../../models/documentModels/businessImpactAnalysis/operatingSitesModel");
 
 // Create a new Operating Site
 exports.createOperatingSite = async (req, res) => {
@@ -14,22 +14,8 @@ exports.createOperatingSite = async (req, res) => {
 // Get all Operating Sites
 exports.getAllOperatingSites = async (req, res) => {
   try {
-    const documentControls = await OperatingSite.find();
-    res.status(200).json(documentControls);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// Get all Operating Sites by BCP ID
-exports.getOperatingSiteByBCPID = async (req, res) => {
-  const filter = { bcpid: req.params.bcpid };
-  try {
-    const documentControls = await OperatingSite.find(filter);
-    if (!documentControls) {
-      return res.status(404).json({ message: "Document Control not found" });
-    }
-    res.status(200).json(documentControls);
+    const operatingSite = await OperatingSite.find();
+    res.status(200).json(operatingSite);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -41,21 +27,40 @@ exports.getLastOperatingSite = async (req, res) => {
     const lastOperatingSite = await OperatingSite.findOne().sort({
       _id: -1,
     });
+
     res.status(200).json(lastOperatingSite);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Get a single Operating Site by BCP ID and MongoDB ID
-exports.getOperatingSiteByIds = async (req, res) => {
-  const { bcpid, id } = req.params;
+// Get all Operating Sites  by BIA ID
+exports.getOperatingSiteByBIAID = async (req, res) => {
+  const filter = { biaid: req.params.biaid };
   try {
-    const documentControl = await OperatingSite.findOne({ _id: id, bcpid });
-    if (!documentControl) {
-      return res.status(404).json({ message: "Document Control not found" });
+    const operatingSite = await OperatingSite.find(filter);
+    if (!operatingSite) {
+      return res.status(404).json({
+        message: "Operating Site not found",
+      });
     }
-    res.status(200).json(documentControl);
+    res.status(200).json(operatingSite);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Get a single Operating Site by BIA ID and ID
+exports.getOperatingSiteByIds = async (req, res) => {
+  const { biaid, id } = req.params;
+  try {
+    const operatingSite = await OperatingSite.findOne({ _id: id, biaid });
+    if (!operatingSite) {
+      return res.status(404).json({
+        message: "Operating Site not found",
+      });
+    }
+    res.status(200).json(operatingSite);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -70,7 +75,9 @@ exports.updateOperatingSite = async (req, res) => {
       { new: true }
     );
     if (!updatedOperatingSite) {
-      return res.status(404).json({ message: "Document Control not found" });
+      return res.status(404).json({
+        message: "Operating Site not found",
+      });
     }
     res.status(200).json(updatedOperatingSite);
   } catch (error) {
@@ -85,9 +92,14 @@ exports.deleteOperatingSite = async (req, res) => {
       req.params.id
     );
     if (!deletedOperatingSite) {
-      return res.status(404).json({ message: "Document Control not found" });
+      return res.status(404).json({
+        message: "Operating Site not found",
+      });
     }
-    res.status(200).json({ message: "Document Control deleted successfully" });
+    res.status(200).json({
+      message:
+        "Operating Site deleted successfully",
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
