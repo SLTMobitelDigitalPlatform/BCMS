@@ -1,35 +1,31 @@
 const express = require("express");
-const biaFormControllers = require("../../../controllers/documentController/businessImpactAnalysis/biaFormController");
+const {
+  createBIAForm,
+  getBIAForms,
+  getLastbiaForm,
+  getbiaFormByBIAID,
+  getbiaFormById,
+  updatebiaFormByBIAID,
+  updatebiaForm,
+  deletebiaForm,
+} = require("../../../controllers/documentController/businessImpactAnalysis/biaFormController");
+
 const router = express.Router();
 
-router.post(
-  "/api/biaForms/add",
-  biaFormControllers.createBiaForm
-);
+router.post("/api/biaForms/add", createBIAForm);
 
-router.get(
-  "/api/biaForms/last",
-  biaFormControllers.getLastBiaForm
-);
+router.get("/api/biaForms/", getBIAForms);
 
-router.get(
-  "/api/biaForms/",
-  biaFormControllers.getBiaForms
-);
+router.get("/api/biaForms/last/:template", getLastbiaForm);
 
-router.get(
-  "/api/biaForms/:id",
-  biaFormControllers.getBiaFormById
-);
+router.get("/api/biaForms/:biaid", getbiaFormByBIAID);
 
-router.put(
-  "/api/biaForms/edit/:id",
-  biaFormControllers.updateBiaForm
-);
+router.get("/api/biaForms/:id", getbiaFormById);
 
-router.delete(
-  "/api/biaForms/delete/:id",
-  biaFormControllers.deleteBiaForm
-);
+router.put("/api/biaForms/edit/:biaid", updatebiaFormByBIAID);
+
+router.put("/api/biaForms/edit/:id", updatebiaForm);
+
+router.delete("/api/biaForms/delete/:id", deletebiaForm);
 
 module.exports = router;
