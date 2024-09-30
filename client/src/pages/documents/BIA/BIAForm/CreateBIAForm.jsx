@@ -75,32 +75,17 @@ const CreateBIA = () => {
 
   // Validate dates
   const validateDates = () => {
-    const {
-      dateApproved,
-      dateLastReviewed, 
-      dateDueForNextReview,
-    } = formData;
+    const { dateApproved, dateLastReviewed, dateDueForNextReview } = formData;
+    const today = new Date().toISOString().split("T")[0];
   
-    const today = new Date().toISOString().split("T")[0]; 
-  
-    // Check if Date Approved and Date Last Reviewed are not in the future
-    if (dateApproved && dateApproved > today) {
+    if (dateApproved && dateApproved > today) 
       return "Date Approved cannot be a future date.";
-    }
-  
-    if (dateLastReviewed && dateLastReviewed > today) {
+    if (dateLastReviewed && dateLastReviewed > today) 
       return "Date Last Reviewed cannot be a future date.";
-    }
-  
-    // Ensure Date Last Reviewed is not before Date Approved
-    if (dateApproved && dateLastReviewed && dateLastReviewed < dateApproved) {
+    if (dateApproved && dateLastReviewed && dateLastReviewed < dateApproved) 
       return "Date Last Reviewed cannot be before Date Approved.";
-    }
-
-    // Ensure Date Due For Next Review is not before Date Last Reviewed
-    if (dateLastReviewed && dateDueForNextReview && dateDueForNextReview < dateLastReviewed) {
+    if (dateLastReviewed && dateDueForNextReview && dateDueForNextReview < dateLastReviewed) 
       return "Date Due for Next Review cannot be before Date Last Reviewed.";
-    }
   
     return null;
   };  

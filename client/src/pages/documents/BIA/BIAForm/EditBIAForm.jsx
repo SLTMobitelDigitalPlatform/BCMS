@@ -49,7 +49,6 @@ const EditBIAForm = () => {
     fetchBIAForms,
     fetchBIAFormByBIAID,
     updateBIAFormByBIAID,
-    checkDuplicateBIAID,
   } = useBIAForm();
 
   useEffect(() => {
@@ -59,20 +58,6 @@ const EditBIAForm = () => {
     fetchBIAFormByBIAID(biaid);
   }, []);
 
-  // Update BIA ID based on user's section and year
-  useEffect(() => {
-    if (user?.section) {
-      const currentYear = new Date().getFullYear();
-      const sectionValue = typeof user.section === "string" ? user.section : user.section?.sectionCode || ""; 
-      const newBIAID = `BIA-${sectionValue}-${currentYear}`;
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        biaid: newBIAID,
-      }));
-    }
-  }, [user?.section]);
-
-  // Update formData when embeddedDocument is fetched
   useEffect(() => {
     if (businessImpactAnalysisPlan) {
       setFormData({
@@ -95,21 +80,14 @@ const EditBIAForm = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   setIsSaving(true);
+
+  if (!formData.template || !formData.legalEntity || !formData.approver || !formData.owner) {
+    errorAlert("Validation Error", "Please fill out all required fields.");
+    setIsSaving(false);
+    return;
+  }
+
   try {
-    const isDuplicate = await checkDuplicateBIAID(
-      formData.biaid,
-      businessImpactAnalysisPlan.biaid
-    );
-
-    if (isDuplicate) {
-      errorAlert(
-        "Error",
-        `BIA ID "${formData.biaid}" already exists! Please choose a different ID.`
-      );
-      setIsSaving(false);
-      return;
-    }
-
     const result = await updateAlert(
       "Confirm Update",
       `Are you sure you want to update "${businessImpactAnalysisPlan.biaid}"?`,
@@ -120,11 +98,11 @@ const handleSubmit = async (e) => {
     );
 
     if (result === "success")
-      navigate(`/Business-Continuity-Plan/bia-form/${formData.biaid}`);
+      navigate(`/Business-Impact-Analysis/bia-form/${formData.biaid}`);
   } catch (error) {
     errorAlert(
       "Error",
-      error.message || "Error updating Business Continuity Plan!"
+      error.message || "Error updating Business Impact Analysis Plan!"
     );
     console.log(error);
   } finally {
@@ -260,8 +238,8 @@ if (usersError || errorSections || biaError)
             <Select
               isMulti
               options={sortedUsers}
-              value={sortedUsers.filter(user => formData.maintainers?.includes(user.value))}
-              onChange={(option) => handleSelectChange(option, "maintainers")}
+              value={sortedUsers.filter(user => formData.maintainers.includes(user.value))}
+              onChange={(option) => handleSelectChange(option, "maintainers", true)}
               isClearable={true}
               placeholder="Select Maintainers"
             />
@@ -272,9 +250,9 @@ if (usersError || errorSections || biaError)
             <label className="font-semibold">Viewers</label>
             <Select
               isMulti
-              options={sortedUsers}
-              value={sortedUsers.filter(user => formData.viewers?.includes(user.value))}
-              onChange={(option) => handleSelectChange(option, "viewers")}
+              options={sortedSections}
+              value={sortedSections.filter(section => formData.viewers.includes(section.value))}
+              onChange={(option) => handleSelectChange(option, "viewers", true)}
               isClearable={true}
               placeholder="Select Viewers"
             />
@@ -321,18 +299,24 @@ if (usersError || errorSections || biaError)
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isSaving ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isSaving}
             >
-              Save
+              {isSaving ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Save"
+              )}
             </button>
             <Link
-              to="/Business-Impact-Analysis/bia-form"
+              to={`/Business-Impact-Analysis/bia-form/${biaid}`}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
             </Link>
           </div>
-
         </form>
       </div>
     </div>
