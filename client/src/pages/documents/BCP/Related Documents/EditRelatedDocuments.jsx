@@ -29,8 +29,8 @@ const EditRelatedDocuments = () => {
   useEffect(() => {
     if (relatedDocument) {
       setFormData({
-        referenceDocument: relatedDocument.referenceDocument,
-        documentType: relatedDocument.documentType,
+        referenceDocument: relatedDocument.referenceDocument || "",
+        documentType: relatedDocument.documentType || "",
       });
     }
   }, [relatedDocument]);

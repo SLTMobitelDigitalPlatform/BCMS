@@ -14,7 +14,11 @@ const createVersionControl = async (req, res) => {
 // Get all version control
 const getVersionControls = async (req, res) => {
   try {
-    const versionControl = await vControl.find();
+    const versionControl = await vControl
+      .find()
+      .populate("prepare")
+      .populate("checkedBy")
+      .populate("approve");
     res.status(200).json(versionControl);
   } catch (error) {
     res.status(500).json({ message: error.message });

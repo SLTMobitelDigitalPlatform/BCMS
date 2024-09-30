@@ -2,7 +2,9 @@ const InterfaceDependancy = require("../../../models/documentModels/interfaceDep
 
 const getInterfaceDependacy = async (req, res) => {
   try {
-    const interfaceDependacy = await InterfaceDependancy.find();
+    const interfaceDependacy = await InterfaceDependancy.find().populate(
+      "externalEntityName"
+    );
     if (!interfaceDependacy) {
       return res.status(404).json({ message: "InterfaceDependancy not found" });
     }

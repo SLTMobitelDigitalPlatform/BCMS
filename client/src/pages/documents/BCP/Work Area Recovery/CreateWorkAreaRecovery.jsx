@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useWorkAreaRecovery } from "../../../../hooks/documents/bcp/useWorkAreaRecovery";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateWorkAreaRecovery = () => {
   const [formData, setFormData] = useState({
@@ -11,10 +14,32 @@ const CreateWorkAreaRecovery = () => {
     contactNumber: "",
   });
 
+  const { bcpid } = useParams();
+  const [isCreating, setIsCreating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/work-area-recovery/${bcpid}`;
+
+  const { addWorkAreaRecovery } = useWorkAreaRecovery();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Submit the form data to backend or API
+    setIsCreating(true);
+
+    try {
+      // ! Add duplicate id validation
+
+      const workAreaRecoveryData = { ...formData, bcpid };
+      await addWorkAreaRecovery(workAreaRecoveryData);
+      createAlert(
+        "Work Area Recovery Added",
+        `Work Area Recovery "${formData.site}" added successfully!`
+      );
+      navigate(path);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -109,12 +134,19 @@ const CreateWorkAreaRecovery = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isCreating}
             >
-              Save
+              {isCreating ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Create"
+              )}
             </button>
             <Link
-              to="/Business-Continuity-Plan/work-area-recovery"
+              to={path}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

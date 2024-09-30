@@ -14,7 +14,9 @@ const createRisk = async (req, res) => {
 // Get all risk assessments
 const getRisks = async (req, res) => {
   try {
-    const risks = await ISRiskAssessment.find();
+    const risks = await ISRiskAssessment.find()
+      .populate("owner")
+      .populate("responsibility");
     res.status(200).json(risks);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -25,6 +27,7 @@ const getRisks = async (req, res) => {
 const getRiskById = async (req, res) => {
   try {
     const risk = await ISRiskAssessment.findById(req.params.id);
+
     if (!risk) return res.status(404).json({ message: "Risk not found" });
     res.status(200).json(risk);
   } catch (error) {

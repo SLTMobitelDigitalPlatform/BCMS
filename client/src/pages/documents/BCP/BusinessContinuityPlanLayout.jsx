@@ -7,13 +7,13 @@ const BusinessContinuityPlanLayout = () => {
   return (
     <div className="h-full flex flex-col overflow-hidden">
       <Link
-        className="text-2xl mb-3 font-bold text-green-500"
+        className="text-2xl mb-5 font-bold text-green-500"
         to={"/business-continuity-plans"}
       >
         Business Continuity Plan: {bcpid}
       </Link>
       <BCPNavigation />
-      <div className="overflow-hidden h-screen rounded-2xl bg-indigo-200 mt-3">
+      <div className="overflow-hidden h-full">
         <Outlet />
       </div>
     </div>

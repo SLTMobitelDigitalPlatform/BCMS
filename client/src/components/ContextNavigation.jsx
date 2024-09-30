@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const ContextNavigation = () => {
   // const location = useLocation();
@@ -29,7 +29,7 @@ const ContextNavigation = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center text-white font-semibold">
+      <div className="flex justify-between items-center">
         {[
           "Version Control",
           "Interested Parties",
@@ -43,14 +43,9 @@ const ContextNavigation = () => {
             to={`/Context-of-the-Organization/${link
               .replace(/\s+/g, "-")
               .toLowerCase()}`}
-            // className={`px-2 py-1 rounded-lg ${
-            //   location.pathname.includes(link.path)
-            //     ? "bg-green-500"
-            //     : "bg-indigo-900 hover:bg-indigo-600"
-            // }`}
             className={({ isActive }) =>
-              `whitespace-nowrap px-2 py-1 rounded ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
+              `whitespace-nowrap px-2 py-1 rounded font-semibold ${
+                isActive ? "doc-nav-active" : "doc-nav-hover"
               }`
             }
           >

@@ -112,64 +112,60 @@ const ResidualRiskAssesement = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="px-5 pt-4 pb-16 w-full h-full overflow-hidden">
+    <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
-      <h1 className="text-xl font-bold text-indigo-900">
+        <h1 className="text-xl font-bold text-indigo-900">
           Residual Risk Assessment
         </h1>
       </div>
 
       {/* Table */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed relative w-full py-10 bg-cyan-50">
-          <thead className="sticky top-0 bg-indigo-800 text-white doc-table-border">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-28 doc-table-border">Risk ID</th>
-              <th className="w-28 doc-table-border">Residual Risk Rating</th>
-              <th className="w-28 doc-table-border">Treatment Method</th>
-              <th className="w-28 doc-table-border">Identified New Controls</th>
-              <th className="w-28 doc-table-border">
+              <th className="w-28 doc-table-head">Risk ID</th>
+              <th className="w-28 doc-table-head">Residual Risk Rating</th>
+              <th className="w-28 doc-table-head">Treatment Method</th>
+              <th className="w-28 doc-table-head">Identified New Controls</th>
+              <th className="w-28 doc-table-head">
                 Target Control Implementation completion Date
               </th>
-              <th className="w-28 doc-table-border">Impact</th>
-              <th className="w-28 doc-table-border">Likelihood</th>
-              <th className="w-28 doc-table-border">
+              <th className="w-28 doc-table-head">Impact</th>
+              <th className="w-28 doc-table-head">Likelihood</th>
+              <th className="w-28 doc-table-head">
                 Residual Risk Impact Rating
               </th>
-              <th className="w-28 doc-table-border">Action</th>
+              <th className="w-28 doc-table-head">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRisks.map((r) => (
               <tr key={r._id}>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.rid}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.rid}</td>
                 <td
-                  className="py-2 px-4 w-28 doc-table-border"
+                  className="py-2 px-4 w-28 doc-table-data"
                   style={getRatingStyle(r.residualImpactRating)}
                 >
                   {r.residualImpactRating}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  {r.newMethod}
-                </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.newMethod}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.newIdntifiedControls}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-border">{r.newDate}</td>
-                <td className="py-2 px-4 w-28 doc-table-border">
-                  {r.newImpact}
-                </td>
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">{r.newDate}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">{r.newImpact}</td>
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {r.newLikelihood}
                 </td>
                 <td
-                  className="py-2 px-4 w-28 doc-table-border"
+                  className="py-2 px-4 w-28 doc-table-data"
                   style={getRatingStyle(r.newResidualImpactRating)}
                 >
                   {r.newResidualImpactRating}
                 </td>
 
-                <td className="py-2 px-4 w-28 doc-table-border">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editResidualRisk/${r._id}/${r.source}`}

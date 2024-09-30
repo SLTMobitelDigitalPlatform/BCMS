@@ -7,6 +7,7 @@ import axios from "axios";
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [userName, setUserName] = useState("");
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
@@ -18,6 +19,7 @@ const Navbar = () => {
         });
         const fullImageUrl = `http://localhost:5000${response.data.profileImg}`;
         setUser(response.data);
+        setUserName(response.data.name);
         setPreviewUrl(fullImageUrl); // Set the initial previewUrl
       } catch (error) {
         console.error("Error fetching user details:", error);
@@ -31,12 +33,10 @@ const Navbar = () => {
   }, []);
   return (
     <nav className="flex items-center justify-between p-2 bg-white ">
-      {/* Logo */}
       <div className="flex items-center space-x-2 ml-4">
         <img src={logo} alt="Logo" className="w-32 h-auto" />
       </div>
 
-      {/* Navigation Links */}
       <div className="flex-1 flex justify-center space-x-8">
         <a href="/" className="text-black hover:text-blue-600 font-bold">
           Home
@@ -58,7 +58,6 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* User Icon */}
       {previewUrl ? (
         <div className="flex items-center mr-8">
           <Link to="/profile">
@@ -72,7 +71,11 @@ const Navbar = () => {
       ) : (
         <div className="flex items-center mr-8">
           <Link to="/profile">
-            <FaUserCircle className="text-black h-10 w-10" />
+            <img
+              src={`https://eu.ui-avatars.com/api/?name=${userName}&size=250`}
+              alt="Profile"
+              className="text-black h-11 w-11 rounded-full"
+            />
           </Link>
         </div>
       )}
