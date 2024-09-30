@@ -1,43 +1,46 @@
 import React from 'react';
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
 
 const PoliciesPage = () => {
-    return (
-      <div className="policies-page">
-        <div className="policies-header">
-          <h2>Organizational Policies</h2>
-          <p>Organizational Documents {'>'} Organizational Policies</p>
+  return (
+    <div className="bg-gray-100 border border-gray-300 p-6 rounded-lg"> {/* Main container padding */}
+      {/* Header section */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-semibold text-green-600">Organizational Policies</h2>
+        <p className="text-blue-900 mt-2">Organizational Documents {'>'} Organizational Policies</p>
+      </div>
+
+      {/* Policy section */}
+      <div className="bg-gray-100 border border-green-300 p-6 rounded-lg">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-xl font-medium text-blue-900">Business Continuity Management Policy</h3>
+          <button className="bg-blue-900 text-white py-2 px-4 rounded-md">Add Document</button>
         </div>
-  
-        <div className="policy-section">
-          <div className="policy-header">
-            <h3>Business Continuity Management Policy</h3>
-            <button className="add-document-button">Add Document</button>
-          </div>
-  
-          <div className="policy-list">
-            <PolicyItem title="Contact for Inquiries & Proposed Changes" />
-            <PolicyItem title="Document Preparation Committee" />
-            <PolicyItem title="Controlled Circulation List" />
-            <PolicyItem title="Enforcement/Revision Table" />
-          </div>
-        </div>
-  
-        <div className="version-controller">
-          <h3>Version Controller</h3>
+
+        {/* Policy list */}
+        <div className="space-y-4">
+          <PolicyItem title="Contact for Inquiries & Proposed Changes" />
+          <PolicyItem title="Document Preparation Committee" />
+          <PolicyItem title="Controlled Circulation List" />
+          <PolicyItem title="Enforcement/Revision Table" />
         </div>
       </div>
-    );
-  };
-  
-  const PolicyItem = ({ title }) => {
-    return (
-      <div className="policy-item">
-        <p>{title}</p>
-        <span>▼</span>
-      </div>
-    );
-  };
-  
-  export default PoliciesPage;
+
+      {/* Version Controller section */}
+      {/*<div className="mt-8">
+        <h3 className="text-lg font-medium text-blue-900">Version Controller</h3>
+      </div>*/}
+    </div>
+  );
+};
+
+// PolicyItem Component
+const PolicyItem = ({ title }) => {
+  return (
+    <div className="bg-blue-100 rounded-md p-4 flex justify-between items-center cursor-pointer hover:bg-blue-200 transition">
+      <p className="text-base font-medium">{title}</p>
+      <span>▼</span> {/* Can be replaced with an icon if needed */}
+    </div>
+  );
+};
+
+export default PoliciesPage;
