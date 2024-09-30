@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
-import Swal from "sweetalert2";
 import { useBIAForm } from "../../../../hooks/documents/bia/useBIAForm";
+import { useSections } from "../../../../hooks/useSections";
 import { useUsers } from "../../../../hooks/useUsers";
+import { errorAlert, createAlert } from "../../../../utilities/alert";
 
 const CreateBIA = () => {
   const today = new Date().toISOString().split("T")[0];
 
   const [formData, setFormData] = useState({
-    docNo: "",
+    biaid: "",
     date: today,
     template: "",
     legalEntity: "",
@@ -22,126 +24,117 @@ const CreateBIA = () => {
     dateDueForNextReview: "",
   });
 
+  const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
-  const { sortedUsers, loading, error, fetchUsers } = useUsers();
-  const { fetchLastBIAForm, addBIAForm } = useBIAForm();
 
-  // Create Plan Number
-  const createDocNo = async () => {
-    try {
-      const response = await fetchLastBIAForm();
-      if (response && response.data) {
-        const lastRecord = response.data;
-        let lastDocNo = lastRecord?.docNo || "P000";
-        let numericPart = parseInt(lastDocNo.slice(1)) + 1;
-        let newDocNo = `P${numericPart.toString().padStart(3, "0")}`;
-        setFormData((prev) => ({ ...prev, docNo: newDocNo }));
-      } else {
-        setFormData((prev) => ({ ...prev, docNo: "P001" }));
-      }
-    } catch (error) {
-      console.error("Error creating plan number:", error);
-    }
-  };
+  // useHooks
+  const {
+    user,
+    sortedUsers,
+    loading: loadingUsers,
+    error: errorUsers,
+    fetchUsers,
+    fetchUserDetails
+  } = useUsers();
+
+  const {
+    loading: loadingBIAForms,
+    error: errorBIAForms,
+    fetchBIAForms,
+    addBIAForm,
+    checkDuplicateBIAID,
+  } = useBIAForm();
+
+  const {
+    sortedSections,
+    loading: loadingSections,
+    error: errorSections,
+    fetchSections,
+  } = useSections();
 
   useEffect(() => {
-    const initializeForm = async () => {
-      try {
-        await fetchUsers();
-        await createDocNo();
+    fetchUsers();
+    fetchUserDetails();
+    fetchBIAForms();
+    fetchSections();
+  }, []);
 
-        // Set dateDueForNextReview based on dateLastReviewed if dateLastReviewed is already set
-        if (formData.dateLastReviewed) {
-          const lastReviewedDate = new Date(formData.dateLastReviewed);
-          const nextReviewDate = new Date(lastReviewedDate.setFullYear(lastReviewedDate.getFullYear() + 1));
-          setFormData((prev) => ({
-            ...prev,
-            dateDueForNextReview: nextReviewDate.toISOString().split("T")[0],
-          }));
-        }
-      } catch (err) {
-        console.error("Error initializing form:", err);
-      }
-    };
-    initializeForm();
-  }, [formData.dateLastReviewed]);
+  // Update BIA ID based on user's section and year
+  useEffect(() => {
+    if (user?.section) {
+      const currentYear = new Date().getFullYear();
+      const sectionValue = typeof user.section === "string" ? user.section : user.section?.sectionCode || ""; 
+      const newBIAID = `BIA-${sectionValue}-${currentYear}`;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        biaid: newBIAID,
+      }));
+    }
+  }, [user?.section]);
+  
 
   // Validate dates
   const validateDates = () => {
-    const {
-      dateApproved,
-      dateLastReviewed, 
-      dateDueForNextReview,
-    } = formData;
+    const { dateApproved, dateLastReviewed, dateDueForNextReview } = formData;
+    const today = new Date().toISOString().split("T")[0];
   
-    const today = new Date().toISOString().split("T")[0]; 
-  
-    // Check if Date Approved and Date Last Reviewed are not in the future
-    if (dateApproved && dateApproved > today) {
+    if (dateApproved && dateApproved > today) 
       return "Date Approved cannot be a future date.";
-    }
-  
-    if (dateLastReviewed && dateLastReviewed > today) {
+    if (dateLastReviewed && dateLastReviewed > today) 
       return "Date Last Reviewed cannot be a future date.";
-    }
-  
-    // Ensure Date Last Reviewed is not before Date Approved
-    if (dateApproved && dateLastReviewed && dateLastReviewed < dateApproved) {
+    if (dateApproved && dateLastReviewed && dateLastReviewed < dateApproved) 
       return "Date Last Reviewed cannot be before Date Approved.";
-    }
-
-    // Ensure Date Due For Next Review is not before Date Last Reviewed
-    if (dateLastReviewed && dateDueForNextReview && dateDueForNextReview < dateLastReviewed) {
+    if (dateLastReviewed && dateDueForNextReview && dateDueForNextReview < dateLastReviewed) 
       return "Date Due for Next Review cannot be before Date Last Reviewed.";
-    }
   
     return null;
   };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.viewers.length || !formData.maintainers.length) {
-      handleErrorAlert("Please select viewers and maintainers");
-      return;
-    }
-
-    const dateError = validateDates();
-    if (dateError) {
-      handleErrorAlert(dateError);
-      return;
-    }
-    
+    setIsCreating(true);
+  
     try {
-      await addBIAForm(formData);
-      handleSuccessAlert();
-      navigate("/Business-Impact-Analysis/bia-form");
+      const isDuplicate = await checkDuplicateBIAID(formData.biaid);
+      if (isDuplicate) {
+        errorAlert("Error", `BIA ID "${formData.biaid}" already exists! Please choose a different ID.`);
+        return;
+      }
+  
+      const dateError = validateDates();
+      if (dateError) {
+        errorAlert("Error", dateError);
+        return;
+      }
+
+      // Convert IDs to user names for maintainers, owner, and approver
+      const maintainersNames = formData.maintainers.map((id) => {
+        const userObj = sortedUsers.find((user) => user.value === id);
+        return userObj ? userObj.label : "";
+      });
+      const ownerName = sortedUsers.find((user) => user.value === formData.owner)?.label || "";
+      const approverName = sortedUsers.find((user) => user.value === formData.approver)?.label || "";
+
+      // Prepare form data for submission
+      const updatedFormData = {
+        ...formData,
+        maintainers: maintainersNames, 
+        owner: ownerName,              
+        approver: approverName,        
+      };
+  
+      await addBIAForm(updatedFormData);
+      createAlert("Business Impact Analysis Plan Added", `Business Impact Analysis Plan "${updatedFormData.biaid}" added successfully!`);
+      navigate("/business-impact-analysis-plans");
+  
     } catch (error) {
-      handleErrorAlert("Failed to add the record. Please try again later.");
-    console.error(error);
+      errorAlert("Error", error.message || "Error adding Business Impact Analysis Plan!");
+      console.error(error);
+    } finally {
+      setIsCreating(false);
     }
   };
-
-  // Success Alert
-  const handleSuccessAlert = () => {
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Record Added Successfully",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  };
-
-  // Error Alert
-  const handleErrorAlert = (message) => {
-    Swal.fire({
-      title: "Something Went Wrong",
-      text: message || "Fix it and try again",
-      icon: "error",
-    });
-  };
-
+   
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => {
@@ -172,8 +165,14 @@ const CreateBIA = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loadingUsers || loadingSections || loadingBIAForms)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+  if (errorUsers || errorSections || errorBIAForms)
+    return <div>Error loading data</div>;
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -189,8 +188,9 @@ const CreateBIA = () => {
               <label className="font-semibold">Document Number</label>
               <input
                 type="text"
-                name="docNo"
-                value={formData.docNo}
+                name="biaid"
+                value={formData.biaid}
+                onChange={handleChange}
                 disabled
                 readOnly
                 className="p-2 w-full rounded bg-white"
@@ -281,9 +281,9 @@ const CreateBIA = () => {
             <label className="font-semibold">Viewers</label>
             <Select
               isMulti
-              options={sortedUsers}
-              value={sortedUsers.filter((user) =>
-                formData.viewers.includes(user.value)
+              options={sortedSections}
+              value={sortedSections.filter((section) =>
+                formData.viewers.includes(section.value)
               )}
               onChange={(option) => handleSelectChange(option, "viewers")}
               isClearable={true}
@@ -332,12 +332,19 @@ const CreateBIA = () => {
           <div className="flex justify-start gap-2">
             <button
               type="submit"
-              className="p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold"
+              className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
+                isCreating ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={isCreating}
             >
-              Save
+              {isCreating ? (
+                <FaSpinner className="animate-spin inline text-xl " />
+              ) : (
+                "Create"
+              )}
             </button>
             <Link
-              to="/Business-Impact-Analysis/bia-form"
+              to="/business-impact-analysis-plans"
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
