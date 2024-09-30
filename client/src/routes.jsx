@@ -90,7 +90,6 @@ import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
 
-
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
@@ -495,9 +494,9 @@ const router = createBrowserRouter([
         element: <EditEmbeddedDocuments />,
       },
 
-      // -------------------------------- BIA (Business Impact Analysis)-------------------------------- 
+      // -------------------------------- BIA (Business Impact Analysis)--------------------------------
       //Layout
-      {path: "business-impact-analysis-plans",element: <BiaPlans />},
+      { path: "business-impact-analysis-plans", element: <BiaPlans /> },
       {
         path: "Business-Impact-Analysis",
         element: <BiaLayout />,
@@ -527,7 +526,7 @@ const router = createBrowserRouter([
       //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:biaid", element: <EditBIAForm /> },
-      
+
       // { path: "impactAreas", element: <ImpactAreas /> },
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 

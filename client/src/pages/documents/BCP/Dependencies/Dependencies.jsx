@@ -20,8 +20,8 @@ const Dependencies = () => {
 
   return (
     <div className="pt-5 w-full h-full flex flex-col">
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-indigo-900">Dependencies</h1>
+      <div className="flex justify-between items-center mx-1 mb-5">
+        {/* <h1 className="text-xl font-bold text-indigo-900">Dependencies</h1> */}
 
         {/* Tab Navigation */}
         <div className="flex items-center gap-10">
@@ -48,15 +48,7 @@ const Dependencies = () => {
         </div>
 
         {/* Create Record Button */}
-        {activeTab === "internalDependencies" ? (
-          <Link
-            to="/createInternalDependencies"
-            state={{ activeTab: "internalDependencies" }}
-            className="btn-primary"
-          >
-            Create Internal Record
-          </Link>
-        ) : (
+        {activeTab === "externalDependencies" ? (
           <Link
             to="/createExternalDependencies"
             state={{ activeTab: "externalDependencies" }}
@@ -64,6 +56,8 @@ const Dependencies = () => {
           >
             Create External Record
           </Link>
+        ) : (
+          ""
         )}
       </div>
 

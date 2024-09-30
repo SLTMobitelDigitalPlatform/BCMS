@@ -78,6 +78,11 @@ export const useCriticalBusinessFunction = () => {
     }
   };
 
+  const sortedCBFunctions = criticalBusinessFunctions
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((user) => ({ value: user._id, label: user.name }));
+
   // Handle errors
   const handleError = (message, err) => {
     console.error(message, err.response?.data || err);
@@ -87,6 +92,7 @@ export const useCriticalBusinessFunction = () => {
   return {
     criticalBusinessFunctions,
     criticalBusinessFunction,
+    sortedCBFunctions,
     loading,
     fetchCriticalBusinessFunctionsByBCPID,
     fetchCriticalBusinessFunctionsByIds,

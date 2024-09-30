@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Select from "react-select";
-import Upstream from "./Upstream";
+import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
 import Downstream from "./Downstream";
+import Upstream from "./Upstream";
 
 const InternalDependencies = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("upstream");
+  const [selectedCBFunction, setSelectedCBFunction] = useState(null);
+  const { bcpid } = useParams();
+
+  const { sortedCBFunctions, loading, fetchCriticalBusinessFunctionsByBCPID } =
+    useCriticalBusinessFunction();
 
   useEffect(() => {
     if (location.state?.activeTab) {
@@ -19,40 +26,71 @@ const InternalDependencies = () => {
     setActiveTab(tab);
   };
 
+  useEffect(() => {
+    fetchCriticalBusinessFunctionsByBCPID(bcpid);
+  }, []);
+
+  // Handle select dropdown change
+  const handleSelectChange = (selectedOption) => {
+    setSelectedCBFunction(selectedOption);
+    console.log(selectedOption);
+  };
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
+
   return (
-    <div className="pt-5 w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col">
       <Select
         className="mx-1 mb-5 w-1/3 font-semibold"
-        // value={options.find((option) => option.value === activeTab)}
-        // onChange={handleSelectChange}
-        // options={options}
-        placeholder="Select Option"
+        value={selectedCBFunction}
+        onChange={handleSelectChange}
+        options={sortedCBFunctions}
+        placeholder="Select Critical Business Function"
         isSearchable={false}
       />
-      <div className="flex items-center mx-1  mb-5 gap-5">
+      <div className="flex justify-between items-center mb-5 ">
         {/* Tab Navigation */}
-
-        <button
-          className={`px-2 py-1 rounded font-semibold ${
-            activeTab === "upstream" ? "doc-nav-active" : "doc-nav-hover"
-          }`}
-          onClick={() => handleTabChange("upstream")}
+        <div className="flex mx-1 gap-5">
+          <button
+            className={`px-2 py-1 rounded font-semibold ${
+              activeTab === "upstream" ? "doc-nav-active" : "doc-nav-hover"
+            }`}
+            onClick={() => handleTabChange("upstream")}
+          >
+            Upstream
+          </button>
+          <button
+            className={`px-2 py-1 rounded font-semibold ${
+              activeTab === "downstream" ? "doc-nav-active" : "doc-nav-hover"
+            }`}
+            onClick={() => handleTabChange("downstream")}
+          >
+            Downstream
+          </button>
+        </div>
+        <Link
+          to="/createInternalDependencies"
+          state={{ activeTab: "internalDependencies" }}
+          className="btn-primary"
         >
-          Upstream
-        </button>
-        <button
-          className={`px-2 py-1 rounded font-semibold ${
-            activeTab === "downstream" ? "doc-nav-active" : "doc-nav-hover"
-          }`}
-          onClick={() => handleTabChange("downstream")}
-        >
-          Downstream
-        </button>
+          Create Internal Record
+        </Link>
       </div>
 
       {/* Tab Content */}
       <div className="h-full w-full overflow-auto">
-        {activeTab === "upstream" ? <Upstream /> : <Downstream />}
+        {!selectedCBFunction ? (
+          <p>Please select a critical business function.</p>
+        ) : activeTab === "upstream" ? (
+          <Upstream cbFunction={selectedCBFunction} />
+        ) : (
+          <Downstream cbFunction={selectedCBFunction} />
+        )}
       </div>
     </div>
   );
