@@ -27,16 +27,6 @@ const Dependencies = () => {
         <div className="flex items-center gap-10">
           <button
             className={`px-2 py-1 rounded font-semibold ${
-              activeTab === "externalDependencies"
-                ? "doc-nav-active"
-                : "doc-nav-hover"
-            }`}
-            onClick={() => handleTabChange("externalDependencies")}
-          >
-            External Dependencies
-          </button>
-          <button
-            className={`px-2 py-1 rounded font-semibold ${
               activeTab === "internalDependencies"
                 ? "doc-nav-active"
                 : "doc-nav-hover"
@@ -44,6 +34,16 @@ const Dependencies = () => {
             onClick={() => handleTabChange("internalDependencies")}
           >
             Internal Dependencies
+          </button>
+          <button
+            className={`px-2 py-1 rounded font-semibold ${
+              activeTab === "externalDependencies"
+                ? "doc-nav-active"
+                : "doc-nav-hover"
+            }`}
+            onClick={() => handleTabChange("externalDependencies")}
+          >
+            External Dependencies
           </button>
         </div>
 

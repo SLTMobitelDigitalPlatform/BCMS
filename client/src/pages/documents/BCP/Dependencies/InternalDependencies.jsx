@@ -1,135 +1,58 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import Swal from "sweetalert2";
+import { Link, useLocation } from "react-router-dom";
+import Select from "react-select";
+import Upstream from "./Upstream";
+import Downstream from "./Downstream";
 
 const InternalDependencies = () => {
-  const [internalDependencies, setInternalDependencies] = useState([]);
-
-  const fetchInternalDependencies = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/internalDependencies"
-      );
-      setInternalDependencies(response.data);
-      // console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteInternal = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(
-            `http://localhost:5000/internalDependencies/delete/${id}`
-          );
-          setInternalDependencies(
-            internalDependencies.filter((internal) => internal._id !== id)
-          );
-          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the record.",
-            "error"
-          );
-        }
-      }
-    });
-  };
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState("upstream");
 
   useEffect(() => {
-    fetchInternalDependencies();
-  }, []);
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
+
+  // Handle tab change
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
 
   return (
     <div className="pt-5 w-full h-full flex flex-col">
-      {/* <div className="flex justify-between items-center mb-5">
-        <h1 className="text-xl font-bold text-blue-900">Internal Party</h1>
+      <Select
+        className="mx-1 mb-5 w-1/3 font-semibold"
+        // value={options.find((option) => option.value === activeTab)}
+        // onChange={handleSelectChange}
+        // options={options}
+        placeholder="Select Option"
+        isSearchable={false}
+      />
+      <div className="flex items-center mx-1  mb-5 gap-5">
+        {/* Tab Navigation */}
 
-        <div className="flex items-center gap-10">
-          <NavLink
-            to="/Context-of-the-Organization/interseted-parties/internal-party"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            Internal Party
-          </NavLink>
-          <NavLink
-            to="/Context-of-the-Organization/interseted-parties/external-party"
-            className={({ isActive }) =>
-              `px-2 py-1 rounded-lg text-white font-semibold ${
-                isActive ? "bg-green-500" : "bg-indigo-900 hover:bg-indigo-600"
-              }`
-            }
-          >
-            External Party
-          </NavLink>
-        </div>
-        <Link to="/createInternalDependencies" className="btn-primary font-semibold">
-          Create Record
-        </Link>
+        <button
+          className={`px-2 py-1 rounded font-semibold ${
+            activeTab === "upstream" ? "doc-nav-active" : "doc-nav-hover"
+          }`}
+          onClick={() => handleTabChange("upstream")}
+        >
+          Upstream
+        </button>
+        <button
+          className={`px-2 py-1 rounded font-semibold ${
+            activeTab === "downstream" ? "doc-nav-active" : "doc-nav-hover"
+          }`}
+          onClick={() => handleTabChange("downstream")}
+        >
+          Downstream
+        </button>
       </div>
-      {/* <div className="mt-5">
-        <h1 className="text-center text-2xl font-bold mb-3">Internal Issues</h1>
-      </div> */}
 
-      {/* Table */}
+      {/* Tab Content */}
       <div className="h-full w-full overflow-auto">
-        <table className="table-fixed w-full">
-          <thead className="sticky top-0 bg-indigo-200">
-            <tr>
-              <th className="doc-table-head">Internal Party</th>
-              <th className="doc-table-head">Requirments</th>
-
-              <th className="w-32 doc-table-head">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {internalDependencies.map((internal) => (
-              <tr key={internal._id} className="doc-table-hover">
-                <td className="py-2 px-4 doc-table-data">
-                  {internal.internalDependencies}
-                </td>
-                <td className="py-2 px-4 doc-table-data">
-                  {internal.requirments}
-                </td>
-
-                <td className="py-2 px-4 w-32 doc-table-data">
-                  <div className="flex justify-center gap-2">
-                    <Link
-                      to={`/editInternalDependencies/${internal._id}`}
-                      state={{ activeTab: "internalDependencies" }}
-                      className="doc-edit-btn"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      className="doc-delete-btn"
-                      onClick={() => deleteInternal(internal._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {activeTab === "upstream" ? <Upstream /> : <Downstream />}
       </div>
     </div>
   );
