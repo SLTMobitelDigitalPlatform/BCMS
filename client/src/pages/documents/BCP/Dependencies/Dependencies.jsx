@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ExternalDependencies from "./ExternalDependencies";
 import InternalDependencies from "./InternalDependencies";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const Dependencies = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState("internalDependencies");
+  const { bcpid } = useParams();
 
   useEffect(() => {
     if (location.state?.activeTab) {
@@ -50,7 +51,7 @@ const Dependencies = () => {
         {/* Create Record Button */}
         {activeTab === "externalDependencies" ? (
           <Link
-            to="/createExternalDependencies"
+            to={`/createExternalDependencies/${bcpid}`}
             state={{ activeTab: "externalDependencies" }}
             className="btn-primary"
           >

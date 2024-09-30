@@ -81,7 +81,7 @@ export const useCriticalBusinessFunction = () => {
   const sortedCBFunctions = criticalBusinessFunctions
     .slice()
     .sort((a, b) => a.name.localeCompare(b.name))
-    .map((user) => ({ value: user._id, label: user.name }));
+    .map((cbf) => ({ value: cbf, label: cbf.name }));
 
   // Handle errors
   const handleError = (message, err) => {

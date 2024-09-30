@@ -129,6 +129,7 @@ import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDoc
 import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
+import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/CreateExternalDependencies";
 
 const router = createBrowserRouter([
   {
@@ -463,6 +464,10 @@ const router = createBrowserRouter([
       },
 
       // * Dependencies
+      {
+        path: "createExternalDependencies/:bcpid",
+        element: <CreateExternalDependencies />,
+      },
 
       // * Vital Records
       { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },

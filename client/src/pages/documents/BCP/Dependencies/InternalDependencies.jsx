@@ -46,7 +46,7 @@ const InternalDependencies = () => {
   return (
     <div className="w-full h-full flex flex-col">
       <Select
-        className="mx-1 mb-5 w-1/3 font-semibold"
+        className="mx-1 mt-1 mb-5 w-1/3 font-semibold"
         value={selectedCBFunction}
         onChange={handleSelectChange}
         options={sortedCBFunctions}

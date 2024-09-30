@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const upstreamSchema = new mongoose.Schema({
+  bcpid: { type: String, required: true },
   criticalBusinessFunction: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "CriticalBusinessFunction",
