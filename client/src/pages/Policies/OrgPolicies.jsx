@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PoliciesPage = () => {
   return (
@@ -13,7 +14,10 @@ const PoliciesPage = () => {
       <div className="bg-gray-100 border border-green-300 p-6 rounded-lg">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-medium text-blue-900">Business Continuity Management Policy</h3>
+
+        <Link to="/policies/add-document">
           <button className="bg-blue-900 text-white py-2 px-4 rounded-md">Add Document</button>
+          </Link>
         </div>
 
         {/* Policy list */}

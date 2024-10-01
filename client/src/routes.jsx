@@ -131,6 +131,7 @@ import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDoc
 import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
+import AddDocument from "./pages/Policies/AddDocument";
 
 const router = createBrowserRouter([
   {
@@ -237,6 +238,7 @@ const router = createBrowserRouter([
 
       //Policies
       { path: "policies", element: <OrgPolicies /> },
+      { path: "policies/add-document", element: <AddDocument /> },
 
       //!  { path: "add-event", element: <AddEvents /> },
 
