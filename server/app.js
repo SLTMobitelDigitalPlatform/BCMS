@@ -60,6 +60,7 @@ const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocu
 // Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
 const routerOperatingSite = require("./routes/documentRoutes/businessImpactAnalysis/operatingSitesRoutes");
+const routerPeaksDeadline = require("./routes/documentRoutes/businessImpactAnalysis/peaksDeadlinesRoutes");
 
 const PORT = 5000;
 
@@ -111,7 +112,8 @@ app.use(
   routerManpower,
   routerEmbeddedDocument,
   routerBiaForm,
-  routerOperatingSite
+  routerOperatingSite,
+  routerPeaksDeadline
 );
 
 // // Create uploads directory if it doesn't exist
