@@ -89,9 +89,11 @@ import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
+
 import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
 import CreateBIAOSites from "./pages/documents/BIA/Operating Sites/CreateOperatingSites";
 import EditBIAOSites from "./pages/documents/BIA/Operating Sites/EditoperatingSites";
+
 
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
@@ -131,6 +133,7 @@ import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDoc
 import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
+import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/CreateExternalDependencies";
 
 const router = createBrowserRouter([
   {
@@ -465,6 +468,10 @@ const router = createBrowserRouter([
       },
 
       // * Dependencies
+      {
+        path: "createExternalDependencies/:bcpid",
+        element: <CreateExternalDependencies />,
+      },
 
       // * Vital Records
       { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
@@ -496,9 +503,9 @@ const router = createBrowserRouter([
         element: <EditEmbeddedDocuments />,
       },
 
-      // -------------------------------- BIA (Business Impact Analysis)-------------------------------- 
+      // -------------------------------- BIA (Business Impact Analysis)--------------------------------
       //Layout
-      {path: "business-impact-analysis-plans",element: <BiaPlans />},
+      { path: "business-impact-analysis-plans", element: <BiaPlans /> },
       {
         path: "Business-Impact-Analysis",
         element: <BiaLayout />,
@@ -529,11 +536,13 @@ const router = createBrowserRouter([
       //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:biaid", element: <EditBIAForm /> },
+
       //Operating Sites
       { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
       { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
       
       
+
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
       // Roles

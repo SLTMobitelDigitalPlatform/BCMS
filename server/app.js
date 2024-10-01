@@ -49,6 +49,9 @@ const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequir
 const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
 const routerCriticalBusinessFunction = require("./routes/documentRoutes/bcp/criticalBusinessFunctionRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
+const routerExternalDependencies = require("./routes/documentRoutes/bcp/externalDependenciesRoutes");
+const routerUpstream = require("./routes/documentRoutes/bcp/upstreamRoutes");
+const routerDownstream = require("./routes/documentRoutes/bcp/downstreamRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
 const routerWorkAreaRecovery = require("./routes/documentRoutes/bcp/workAreaRecoveryRoutes");
 const routerManpower = require("./routes/documentRoutes/bcp/manpowerRoutes");
@@ -100,6 +103,9 @@ app.use(
   routerPreIncidentPreparation,
   routerCriticalBusinessFunction,
   routerResourcesRequired,
+  routerExternalDependencies,
+  routerUpstream,
+  routerDownstream,
   routerVitalRecords,
   routerWorkAreaRecovery,
   routerManpower,
