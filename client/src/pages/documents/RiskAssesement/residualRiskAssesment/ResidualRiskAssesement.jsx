@@ -12,6 +12,8 @@ const ResidualRiskAssesement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredRisks, setFilteredRisks] = useState([]);
   const [section, setSection] = useState("");
+  const [isAdminView, setIsAdminView] = useState(false);
+  const [sections, setSections] = useState([]);
 
   const risksPerPage = 10;
 
@@ -36,19 +38,20 @@ const ResidualRiskAssesement = () => {
       const qmResponse = await axios.get(
         "http://localhost:5000/api/qualityRisks/"
       );
-
+      const user = await getCurrentUser();
+      let section = user.data.section.sectionCode;
       const filteredBCPRisks = bcpResponse.data
-        .filter((item) => item.residualImpactRating > 12)
+        .filter((item) => item.residualImpactRating >= 12)
         .map((risk) => ({ ...risk, source: "risksBCP" }));
 
       const filterIsRisks = isResponse.data
-        .filter((item) => item.residualImpactRating > 12)
+        .filter((item) => item.residualImpactRating >= 12)
         .map((risk) => ({ ...risk, source: "risksIS" }));
 
       const filterQmRisks = qmResponse.data
-        .filter((item) => item.residualImpactRating > 12)
+        .filter((item) => item.residualImpactRating >= 12)
         .map((risk) => ({ ...risk, source: "qualityRisks" }));
-
+      setSection(section);
       setBCPRisks(filteredBCPRisks);
       setIsRisks(filterIsRisks);
       setQmRisks(filterQmRisks);
@@ -61,48 +64,62 @@ const ResidualRiskAssesement = () => {
   const combinedRisks = [...bcpRisks, ...isRisks, ...qmRisks];
 
   // Fetch risks and filter by section
-  const fetchAndFilterRisks = async () => {
+  const fetchAndFilterRisks = (selectedSection) => {
+    const filtered = combinedRisks.filter((risk) => {
+      const sectionIdentifier = risk.rid.split("-")[1];
+      return sectionIdentifier === selectedSection;
+    });
+    setFilteredRisks(filtered);
+  };
+
+  const fetchSections = async () => {
     try {
-      const user = await getCurrentUser();
-      let section = user.data.section.sectionCode;
-      // console.log(user.data);
-
-      // if (section === "Information Technology (IT)") {
-      //   section = "ITSE";
-      // } else if (section === "Marketing") {
-      //   section = "MARC";
-      // } else if (section === "Sales") {
-      //   section = "SALE";
-      // } else if (section === "Human Resources(HR)") {
-      //   section = "HRMA";
-      // } else if (section === "Finance") {
-      //   section = "FINA";
-      // } else if (section === "Operations") {
-      //   section = "OPER";
-      // } else if (section === "Customer Service") {
-      //   section = "CUSE";
-      // }
-
-      setSection(section);
-      // console.log(combinedRisks);
-      const filtered = combinedRisks.filter((risk) => {
-        const sectionIdentifier = risk.rid.split("-")[1];
-        return sectionIdentifier === section;
-      });
-
-      setFilteredRisks(filtered);
+      const response = await axios.get("http://localhost:5000/api/sections");
+      setSections(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() => {
-    fetchBCPRisks();
-  }, []);
+  const toggleAdminView = () => {
+    setIsAdminView((prev) => !prev);
+  };
+
+  const handleSectionChange = (e) => {
+    const selectedSection = e.target.value;
+    setSection(selectedSection);
+
+    if (!isAdminView) {
+      fetchAndFilterRisks(selectedSection);
+    } else {
+      filterRisks(combinedRisks, section);
+    }
+  };
+
+  const filterRisks = async (risks, section) => {
+    try {
+      const filtered = risks.filter((risk) => {
+        const sectionIdentifier = risk.rid.split("-")[1];
+        return sectionIdentifier === section;
+      });
+      setFilteredRisks(filtered);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    fetchAndFilterRisks();
-  }, [bcpRisks, isRisks, qmRisks]);
+    fetchBCPRisks();
+    fetchSections();
+  }, [isAdminView]);
+
+  useEffect(() => {
+    if (!isAdminView && section) {
+      fetchAndFilterRisks(section);
+    } else {
+      setFilteredRisks(combinedRisks); // Show all risks in admin view
+    }
+  }, [bcpRisks, isRisks, qmRisks, isAdminView, section]);
 
   // Pagination logic
   const indexOfLastRisk = currentPage * risksPerPage;
@@ -117,6 +134,24 @@ const ResidualRiskAssesement = () => {
         <h1 className="text-xl font-bold text-indigo-900">
           Residual Risk Assessment
         </h1>
+        <div className="flex space-x-4">
+          <button onClick={toggleAdminView} className="btn-primary">
+            {isAdminView ? "Default View" : "Admin View"}
+          </button>
+
+          <select
+            className="border rounded px-3 py-2"
+            value={section}
+            onChange={handleSectionChange}
+          >
+            <option value="">Select Section</option>
+            {sections.map((sec) => (
+              <option key={sec._id} value={sec.sectionCode}>
+                {sec.name} ({sec.sectionCode})
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Table */}

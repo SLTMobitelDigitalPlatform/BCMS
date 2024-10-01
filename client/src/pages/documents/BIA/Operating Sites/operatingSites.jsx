@@ -1,114 +1,98 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
+import { useOperatingSite } from "../../../../hooks/documents/bia/useOperatingSite";
+import { deleteAlert } from "../../../../utilities/alert";
 
-const PeaksAndDeadlines = () => {
-  const [peaksAndDeadlines, setPeaksAndDeadlines] = useState([]);
+const operatingSites = () => {
+  const {
+    operatingSites,
+    loading,
+    fetchOperatingSitesByBIAID,
+    deleteOperatingSite,
+  } = useOperatingSite();
 
-  const fetchPeaksAndDeadlines = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/peaksAndDeadlines/"
-      );
-      setPeaksAndDeadlines(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { biaid } = useParams();
 
   useEffect(() => {
-    fetchPeaksAndDeadlines();
+    fetchOperatingSitesByBIAID(biaid);
   }, []);
 
-  // Delete a risk with SweetAlert2 confirmation
-  const deleteVersionControl = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(
-            `http://localhost:5000/api/peaksAndDeadlines/delete/${id}`
-          );
-          setPeaksAndDeadlines(
-            peaksAndDeadlines.filter(
-              (versionControl) => versionControl._id !== id
-            )
-          );
-          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the record.",
-            "error"
-          );
-        }
-      }
-    });
+  const handleDelete = async (id) => {
+    deleteAlert(
+      "Are you sure?",
+      "You are about to delete Operating Site. This action cannot be undone.",
+      "Yes, delete it!",
+      "Operating Site deleted successfully!",
+      "Error deleting Operating Site",
+      () => deleteOperatingSite(id, biaid)
+    );
   };
 
-  return (
-    <div className="bia-container w-full h-full bg-sky-100 flex flex-col rounded-2xl ">
-      <div className="p-5 h-full bg-sky-100 rounded-2xl mt-5">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-blue-900">Operating Sites</h1>
-          <Link to="/createVersion">
-            <button className="btn-primary">Add</button>
-          </Link>
-        </div>
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
-        {/* Table */}
-        <div className="mt-5 h-full overflow-auto">
-          <table className="relative w-full h-full bg-cyan-50">
-            <thead className="sticky top-0 bg-white">
-              <tr>
-                <th className="border-2 border-black">Location</th>
-                <th className="border-2 border-black">Primary/Secondary</th>
-                <th className="border-2 border-black">Address</th>
+  return (
+    <div className="pt-5 w-full h-full flex flex-col">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-xl font-bold text-indigo-900">
+          Operating Sites
+        </h1>
+        <Link to={`/createOperatingSites/${biaid}`} className="btn-primary">
+          Add Details
+        </Link>
+      </div>
+
+      {/* Table */}
+      <div className="h-full w-full overflow-auto">
+        <table className="table-fixed w-full">
+          <thead className="sticky top-0 bg-indigo-200">
+            <tr>
+              <th className="w-20 doc-table-head">Location</th>
+              <th className="w-20 doc-table-head">Primary/Secondary</th>
+              <th className="w-36 doc-table-head">Address</th>
+              <th className="w-28 doc-table-head">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {operatingSites.map((sites) => (
+              <tr key={sites._id} className="doc-table-hover">
+                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                  {sites.location}
+                </td>
+                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                  {sites.siteType}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-data">
+                  {sites.address}
+                </td>
+                <td className="py-2 px-4 w-28 doc-table-data">
+                  <div className="flex justify-center gap-2">
+                    <Link
+                      to={`/editOperatingSites/${biaid}/${sites._id}`}
+                      className="doc-edit-btn"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      className="doc-delete-btn"
+                      onClick={() => handleDelete(sites._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {peaksAndDeadlines.map((v) => (
-                <tr key={v.id}>
-                  <td className="p-3 border-2 border-black">{v.serialNo}</td>
-                  <td className="p-3 border-2 border-black">{v.versionNo}</td>
-                  <td className="p-3 border-2 border-black">{v.prepare}</td>
-                  <td className="p-3 border-2 border-black">{v.approve}</td>
-                  <td className="p-3 border-2 border-black w-96">
-                    {v.reasons}
-                  </td>
-                  <td className="border-2 border-black ">
-                    <div className="flex justify-center items-center gap-3">
-                      <Link to={`/editVersion/${v._id}`}>
-                        <button className="px-1 bg-blue-500 text-white rounded">
-                          Edit
-                        </button>
-                      </Link>
-                      <button
-                        className="px-1 bg-red-500 text-white rounded"
-                        onClick={() => deleteVersionControl(v._id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
-    // </div>
   );
 };
 
-export default PeaksAndDeadlines ;
+export default operatingSites;
