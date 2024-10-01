@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useExternalDependencies } from "../../../../hooks/documents/bcp/useExternalDependencies";
 import { FaSpinner } from "react-icons/fa";
-import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
+import { Link, useParams } from "react-router-dom";
+import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bcp/useCriticalBusinessFunction";
+import { useExternalDependencies } from "../../../../../hooks/documents/bcp/useExternalDependencies";
 
 const ExternalDependencies = () => {
   const {

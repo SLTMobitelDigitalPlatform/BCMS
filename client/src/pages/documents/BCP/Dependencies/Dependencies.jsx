@@ -1,7 +1,7 @@
-import { Link, useLocation, useParams } from "react-router-dom";
-import ExternalDependencies from "./ExternalDependencies";
-import InternalDependencies from "./InternalDependencies";
 import { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
+import ExternalDependencies from "./External Dependencies/ExternalDependencies";
+import InternalDependencies from "./Internal Dependencies/InternalDependencies";
 
 const Dependencies = () => {
   const location = useLocation();

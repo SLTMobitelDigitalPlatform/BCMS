@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useExternalDependencies } from "../../../../hooks/documents/bcp/useExternalDependencies";
-import { createAlert } from "../../../../utilities/alert";
 import Select from "react-select";
-import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
+import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bcp/useCriticalBusinessFunction";
+import { useExternalDependencies } from "../../../../../hooks/documents/bcp/useExternalDependencies";
+import { createAlert } from "../../../../../utilities/alert";
 
 const CreateExternalDependencies = () => {
   const [formData, setFormData] = useState({
@@ -39,8 +39,8 @@ const CreateExternalDependencies = () => {
       const externalDependencyData = { ...formData, bcpid };
       await createExternalDependency(externalDependencyData);
       createAlert(
-        "Document Control Added",
-        `Document Control "${formData.referenceDocument}" added successfully!`
+        "External Dependency Added",
+        `External Dependency added successfully!`
       );
       navigate(path, { state: { activeTab: "externalDependencies" } });
     } catch (error) {

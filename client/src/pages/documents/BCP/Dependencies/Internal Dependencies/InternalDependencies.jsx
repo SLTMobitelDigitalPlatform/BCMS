@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useLocation, useParams } from "react-router-dom";
 import Select from "react-select";
-import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
+import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bcp/useCriticalBusinessFunction";
 import Downstream from "./Downstream";
 import Upstream from "./Upstream";
 
@@ -78,7 +78,7 @@ const InternalDependencies = () => {
           state={{ activeTab: "internalDependencies" }}
           className="btn-primary"
         >
-          Create Internal Record
+          Create Internal Dependency
         </Link>
       </div>
 
