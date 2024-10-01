@@ -9,6 +9,8 @@ const QualityManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredRisks, setFilteredRisks] = useState([]);
   const [section, setSection] = useState("");
+  const [isAdminView, setIsAdminView] = useState(false);
+  const [sections, setSections] = useState([]);
   const risksPerPage = 5;
 
   // Fetch all risks
@@ -29,6 +31,16 @@ const QualityManagement = () => {
     }
   };
 
+  const fetchSections = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/sections");
+      // console.log(response.data);
+      setSections(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const filterRisks = async (risks, section) => {
     try {
       const filtered = risks.filter((risk) => {
@@ -41,13 +53,28 @@ const QualityManagement = () => {
     }
   };
 
+  const toggleAdminView = () => {
+    setIsAdminView((prev) => !prev);
+  };
+
+  const handleSectionChange = (e) => {
+    setSection(e.target.value);
+    if (!isAdminView) {
+      filterRisks(risks, e.target.value);
+    }
+  };
   useEffect(() => {
-    filterRisks(risks, section);
-  }, [risks, section]);
+    if (!isAdminView) {
+      filterRisks(risks, section);
+    } else {
+      setFilteredRisks(risks); // Show all risks in admin view
+    }
+  }, [risks, section, isAdminView]);
 
   useEffect(() => {
     fetchRisks();
-  }, []);
+    fetchSections();
+  }, [isAdminView]);
 
   // Delete a risk with SweetAlert2 confirmation
   const deleteRisk = async (id) => {
@@ -104,10 +131,28 @@ const QualityManagement = () => {
         <h1 className="text-xl font-bold text-indigo-900">
           Quality Management
         </h1>
+        <div className="flex space-x-4">
+          <button onClick={toggleAdminView} className="btn-primary">
+            {isAdminView ? "Default View" : "Admin View"}
+          </button>
 
-        <Link to="/createQualityManagement" className="btn-primary">
-          Create Risk Assessment
-        </Link>
+          <select
+            className="border rounded px-3 py-2"
+            value={section}
+            onChange={handleSectionChange}
+          >
+            <option value="">Select Section</option>
+            {sections.map((sec) => (
+              <option key={sec._id} value={sec.sectionCode}>
+                {sec.name} ({sec.sectionCode})
+              </option>
+            ))}
+          </select>
+
+          <Link to="/createQualityManagement" className="btn-primary">
+            Create Risk Assessment
+          </Link>
+        </div>
       </div>
 
       {/* Table */}

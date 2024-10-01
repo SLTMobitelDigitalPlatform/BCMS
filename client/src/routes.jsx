@@ -90,9 +90,12 @@ import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
 
+import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
+import CreateBIAOSites from "./pages/documents/BIA/Operating Sites/CreateOperatingSites";
+import EditBIAOSites from "./pages/documents/BIA/Operating Sites/EditoperatingSites";
+
 
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
-import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
 import BiaResources from "./pages/documents/BIA/Resources/resources";
@@ -130,6 +133,7 @@ import RelatedDocuments from "./pages/documents/BCP/Related Documents/RelatedDoc
 import EditResourcesRequired from "./pages/documents/BCP/Resources Required/EditResourcesRequired";
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
+import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/CreateExternalDependencies";
 
 const router = createBrowserRouter([
   {
@@ -464,6 +468,10 @@ const router = createBrowserRouter([
       },
 
       // * Dependencies
+      {
+        path: "createExternalDependencies/:bcpid",
+        element: <CreateExternalDependencies />,
+      },
 
       // * Vital Records
       { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
@@ -495,40 +503,46 @@ const router = createBrowserRouter([
         element: <EditEmbeddedDocuments />,
       },
 
-      // -------------------------------- BIA (Business Impact Analysis)-------------------------------- 
+      // -------------------------------- BIA (Business Impact Analysis)--------------------------------
       //Layout
-      {path: "business-impact-analysis-plans",element: <BiaPlans />},
+      { path: "business-impact-analysis-plans", element: <BiaPlans /> },
       {
         path: "Business-Impact-Analysis",
         element: <BiaLayout />,
         children: [
           { path: "bia-form/:biaid", element: <BiaForm /> },
+          { path: "operating-sites/:biaid", element: <BiaOperatingSites /> },
 
           { path: "document-control/:biaid", element: <BiaDocumentControl /> },
-          { path: "document-version", element: <BiaDocumentControl /> },
-          { path: "operating-sites", element: <BiaOperatingSites /> },
+          { path: "document-version/:biaid", element: <BiaDocumentControl /> },
+          
           {
-            path: "critical-business-function",
+            path: "critical-business-function/:biaid",
             element: <BiaCriticalBusinessFunction />,
           },
           {
-            path: "business-peaks-and-deadlines",
+            path: "business-peaks-and-deadlines/:biaid",
             element: <BiaPeaksAndDeadlines />,
           },
-          { path: "resources", element: <BiaResources /> },
-          { path: "impact-analysis", element: <BiaImpactAnalysis /> },
-          { path: "resources-required", element: <BiaResourcesRequired /> },
-          { path: "dependencies", element: <BiaDependencies /> },
-          { path: "work-area-recovery", element: <BiaWorkAreaRecovery /> },
-          { path: "manpower", element: <BiaManpower /> },
+          { path: "resources/:biaid", element: <BiaResources /> },
+          { path: "impact-analysis/:biaid", element: <BiaImpactAnalysis /> },
+          { path: "resources-required/:biaid", element: <BiaResourcesRequired /> },
+          { path: "dependencies/:biaid", element: <BiaDependencies /> },
+          { path: "work-area-recovery/:biaid", element: <BiaWorkAreaRecovery /> },
+          { path: "manpower/:biaid", element: <BiaManpower /> },
         ],
       },
 
       //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:biaid", element: <EditBIAForm /> },
+
+      //Operating Sites
+      { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
+      { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
       
-      // { path: "impactAreas", element: <ImpactAreas /> },
+      
+
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
       // Roles

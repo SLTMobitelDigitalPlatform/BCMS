@@ -3,19 +3,19 @@ import { OrgDiagram } from "basicprimitivesreact";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../../services/userApi";
+import axios from "axios";
 
 function CallTree() {
   const [items, setItems] = useState([]);
   const [sectionName, setSectionName] = useState("");
+  const [sections, setSections] = useState([]);
+  const [selectedSectionId, setSelectedSectionId] = useState("");
 
-  // Fetch organizational data from the backend
-  const fetchData = async () => {
+  // Fetch organizational data based on the section
+  const fetchData = async (sectionId) => {
     try {
-      const loggedInUser = await getCurrentUser();
-      const userSection = loggedInUser.data.section._id; // Ensure _id is fetched
-      const sectionName = loggedInUser.data.section.name;
       const response = await fetch(
-        `http://localhost:5000/callTree?section=${userSection}` // Use only the section ID
+        `http://localhost:5000/callTree?section=${sectionId}`
       );
       const data = await response.json();
 
@@ -33,20 +33,41 @@ function CallTree() {
         designation: item.personName?.designation || "N/A",
         image: item.personName?.profileImg
           ? `http://localhost:5000${item.personName.profileImg}`
-          : // : "https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109",
-            `https://eu.ui-avatars.com/api/?name=${item.personName?.name}&size=250`,
+          : `https://eu.ui-avatars.com/api/?name=${item.personName?.name}&size=250`,
         itemTitleColor: "#000b4d",
       }));
-      console.log(formattedItems);
       setItems(formattedItems);
-      setSectionName(sectionName);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
+  // Fetch the logged-in user's section and set it initially
+  const fetchInitialSection = async () => {
+    try {
+      const loggedInUser = await getCurrentUser();
+      const userSection = loggedInUser.data.section._id;
+      const sectionName = loggedInUser.data.section.name;
+      setSelectedSectionId(userSection);
+      setSectionName(sectionName);
+      fetchData(userSection);
+    } catch (error) {
+      console.error("Error fetching initial section:", error);
+    }
+  };
+
+  const fetchSections = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/sections");
+      setSections(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    fetchData();
+    fetchInitialSection();
+    fetchSections();
   }, []);
 
   const config = {
@@ -109,10 +130,32 @@ function CallTree() {
     ],
   };
 
+  const handleSectionChange = (e) => {
+    const selectedSection = e.target.value;
+    setSectionName(selectedSection);
+    const selectedSectionId = sections.find(
+      (sec) => sec.sectionCode === selectedSection
+    )._id; // Get the selected section ID based on the section code
+    setSelectedSectionId(selectedSectionId);
+    fetchData(selectedSectionId); // Fetch call tree data for the selected section
+  };
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
         <h1 className="font-semibold text-2xl">{sectionName}</h1>
+        <select
+          className="border rounded px-3 py-2"
+          value={sectionName}
+          onChange={handleSectionChange}
+        >
+          <option value="">Select Section</option>
+          {sections.map((sec) => (
+            <option key={sec._id} value={sec.sectionCode}>
+              {sec.name} ({sec.sectionCode})
+            </option>
+          ))}
+        </select>
         <Link to="/call-tree-table" className="btn-primary">
           Call Tree Table
         </Link>

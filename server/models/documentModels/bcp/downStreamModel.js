@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const externalDependenciesSchema = new mongoose.Schema({
+const downstreamSchema = new mongoose.Schema({
   bcpid: { type: String, required: true },
   criticalBusinessFunction: {
     type: mongoose.Schema.Types.ObjectId,
@@ -8,13 +8,11 @@ const externalDependenciesSchema = new mongoose.Schema({
     required: true,
   },
   organization: { type: String, required: true },
-  dependencies: { type: String, required: true },
+  forWhat: { type: String, required: true },
   primaryContact: { type: String, required: true },
   secondaryContact: { type: String, required: true },
+  rto: { type: String, required: true },
   justification: { type: String, required: true },
 });
 
-module.exports = mongoose.model(
-  "ExternalDependencies",
-  externalDependenciesSchema
-);
+module.exports = mongoose.model("Downstream", downstreamSchema);
