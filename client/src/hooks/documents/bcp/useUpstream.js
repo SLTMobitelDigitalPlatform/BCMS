@@ -3,8 +3,8 @@ import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
 export const useUpstream = () => {
-  const [upstreams, setUpstreams] = useState(null);
-  const [upstream, setUpstream] = useState(null);
+  const [upstreams, setUpstreams] = useState([]);
+  const [upstream, setUpstream] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // Fetch upstream data by BCP ID

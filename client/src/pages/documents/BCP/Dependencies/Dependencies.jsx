@@ -21,7 +21,7 @@ const Dependencies = () => {
 
   return (
     <div className="pt-5 w-full h-full flex flex-col">
-      <div className="flex justify-between items-center mx-1 mb-5">
+      <div className="flex justify-between items-center mb-5">
         {/* <h1 className="text-xl font-bold text-indigo-900">Dependencies</h1> */}
 
         {/* Tab Navigation */}

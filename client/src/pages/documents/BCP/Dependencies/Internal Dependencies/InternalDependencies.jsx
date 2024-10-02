@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bcp/useCriticalBusinessFunction";
 import Downstream from "./Downstream";
@@ -8,6 +8,7 @@ import Upstream from "./Upstream";
 
 const InternalDependencies = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("upstream");
   const [selectedCBFunction, setSelectedCBFunction] = useState(null);
   const { bcpid } = useParams();
@@ -21,11 +22,6 @@ const InternalDependencies = () => {
     }
   }, [location.state]);
 
-  // Handle tab change
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
   useEffect(() => {
     fetchCriticalBusinessFunctionsByBCPID(bcpid);
   }, []);
@@ -33,7 +29,24 @@ const InternalDependencies = () => {
   // Handle select dropdown change
   const handleSelectChange = (selectedOption) => {
     setSelectedCBFunction(selectedOption);
-    console.log(selectedOption);
+    setActiveTab("upstream");
+  };
+
+  // Handle tab change
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  // Handle creation logic for upstream or downstream
+  const handleCreateRecord = () => {
+    if (!selectedCBFunction) return;
+
+    // Redirect to the appropriate create record page based on activeTab
+    const createURL =
+      activeTab === "upstream" ? "/createUpstream" : "/createDownstream";
+    navigate(createURL, {
+      state: { cbFunction: selectedCBFunction, activeTab },
+    });
   };
 
   if (loading)
@@ -46,16 +59,69 @@ const InternalDependencies = () => {
   return (
     <div className="w-full h-full flex flex-col">
       <Select
-        className="mx-1 mt-1 mb-5 w-1/3 font-semibold"
+        className="m-0.5 w-1/3 font-semibold"
         value={selectedCBFunction}
         onChange={handleSelectChange}
         options={sortedCBFunctions}
         placeholder="Select Critical Business Function"
-        isSearchable={false}
+        isSearchable={true}
+        isClearable={true}
       />
-      <div className="flex justify-between items-center mb-5 ">
-        {/* Tab Navigation */}
-        <div className="flex mx-1 gap-5">
+      {/* Render tables and Create Record button if CBF is selected */}
+      {selectedCBFunction ? (
+        <>
+          <div className="flex justify-between items-center my-5">
+            {/* Tab Navigation */}
+            <div className="flex gap-5">
+              <button
+                className={`px-2 py-1 rounded font-semibold ${
+                  activeTab === "upstream" ? "doc-nav-active" : "doc-nav-hover"
+                }`}
+                onClick={() => handleTabChange("upstream")}
+              >
+                Upstream
+              </button>
+              <button
+                className={`px-2 py-1 rounded font-semibold ${
+                  activeTab === "downstream"
+                    ? "doc-nav-active"
+                    : "doc-nav-hover"
+                }`}
+                onClick={() => handleTabChange("downstream")}
+              >
+                Downstream
+              </button>
+            </div>
+
+            {/* Create Record Button */}
+            <button className="btn-primary" onClick={handleCreateRecord}>
+              Create {activeTab === "upstream" ? "Upstream" : "Downstream"}{" "}
+              Dependency
+            </button>
+          </div>
+
+          {/* Tab Content (Upstream / Downstream Tables) */}
+          <div className="h-full w-full overflow-auto">
+            {activeTab === "upstream" ? (
+              <Upstream cbFunction={selectedCBFunction} />
+            ) : (
+              <Downstream cbFunction={selectedCBFunction} />
+            )}
+          </div>
+        </>
+      ) : (
+        <p className="my-5">Please select a critical business function.</p>
+      )}
+    </div>
+  );
+};
+
+export default InternalDependencies;
+
+{
+  /* <div className="flex justify-between items-center mb-5 ">
+        
+        <div className="flex gap-5">
           <button
             className={`px-2 py-1 rounded font-semibold ${
               activeTab === "upstream" ? "doc-nav-active" : "doc-nav-hover"
@@ -82,7 +148,7 @@ const InternalDependencies = () => {
         </Link>
       </div>
 
-      {/* Tab Content */}
+      
       <div className="h-full w-full overflow-auto">
         {!selectedCBFunction ? (
           <p>Please select a critical business function.</p>
@@ -92,8 +158,5 @@ const InternalDependencies = () => {
           <Downstream cbFunction={selectedCBFunction} />
         )}
       </div>
-    </div>
-  );
-};
-
-export default InternalDependencies;
+    </div> */
+}
