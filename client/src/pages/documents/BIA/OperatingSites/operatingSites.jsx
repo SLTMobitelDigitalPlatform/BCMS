@@ -55,7 +55,7 @@ const operatingSites = () => {
               <th className="w-20 doc-table-head">Location</th>
               <th className="w-20 doc-table-head">Primary/Secondary</th>
               <th className="w-36 doc-table-head">Address</th>
-              <th className="w-28 doc-table-head">Actions</th>
+              <th className="w-20 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
