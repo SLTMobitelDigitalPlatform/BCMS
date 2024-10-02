@@ -52,41 +52,41 @@ const PeaksDeadlines = () => {
         <table className="table-fixed w-full">
           <thead className="sticky top-0 bg-indigo-200">
             <tr>
-                <th className="border-2 border-black">Name</th>
-                <th className="border-2 border-black">Description</th>
-                <th className="border-2 border-black">Time of Day</th>
-                <th className="border-2 border-black">Day of Week</th>
-                <th className="border-2 border-black">Business Day</th>
-                <th className="border-2 border-black">Calendar Day</th>
-                <th className="border-2 border-black">Month</th>
-                <th className="border-2 border-black">Actions</th>
+                <th className="w-20 doc-table-head">Name</th>
+                <th className="w-36 doc-table-head">Description</th>
+                <th className="w-12 doc-table-head">Time of Day</th>
+                <th className="w-12 doc-table-head">Day of Week</th>
+                <th className="w-12 doc-table-head">Business Day</th>
+                <th className="w-12 doc-table-head">Calendar Day</th>
+                <th className="w-12 doc-table-head">Month</th>
+                <th className="w-16 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
             {peaksDeadlines.map((peaksDeadlines) => (
               <tr key={peaksDeadlines._id} className="doc-table-hover">
-                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                <td className="py-2 px-4 w-20 doc-table-data">
                   {peaksDeadlines.peaksdeadlineName}
                 </td>
-                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                <td className="py-2 px-4 w-28 doc-table-data">
                   {peaksDeadlines.description}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
+                <td className="py-2 px-4 w-16 doc-table-data text-center">
                   {peaksDeadlines.timeOfDay}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
+                <td className="py-2 px-4 w-16 doc-table-data text-center">
                   {peaksDeadlines.dayOfWeek}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
+                <td className="py-2 px-4 w-16 doc-table-data text-center">
                   {peaksDeadlines.businessDay}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
+                <td className="py-2 px-4 w-16 doc-table-data text-center">
                   {peaksDeadlines.calendarDay}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
+                <td className="py-2 px-4 w-16 doc-table-data text-center">
                   {peaksDeadlines.month}
                 </td>
-                <td className="py-2 px-4 w-28 doc-table-data">
+                <td className="py-2 px-4 w-20 doc-table-data text-center">
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/editPeaksDeadlines/${biaid}/${peaksDeadlines._id}`}

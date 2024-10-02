@@ -62,16 +62,16 @@ const resources = () => {
           <tbody>
             {resources.map((resources) => (
               <tr key={resources._id} className="doc-table-hover">
-                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                <td className="py-2 px-4 w-20 doc-table-data">
                   {resources.resourceName}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
                   {resources.quantity}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
+                <td className="py-2 px-4 w-36 doc-table-data text-center">
                   {resources.RTO}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
+                <td className="py-2 px-4 w-36 doc-table-data text-center">
                   {resources.RPO}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-data">

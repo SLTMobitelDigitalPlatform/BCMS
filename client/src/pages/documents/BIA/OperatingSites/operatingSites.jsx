@@ -61,7 +61,7 @@ const operatingSites = () => {
           <tbody>
             {operatingSites.map((sites) => (
               <tr key={sites._id} className="doc-table-hover">
-                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                <td className="py-2 px-4 w-20 doc-table-data">
                   {sites.location}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
