@@ -1,31 +1,31 @@
 import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { useOperatingSite } from "../../../../hooks/documents/bia/useOperatingSite";
+import { useResource } from "../../../../hooks/documents/bia/useResource";
 import { deleteAlert } from "../../../../utilities/alert";
 
-const operatingSites = () => {
+const resources = () => {
   const {
-    operatingSites,
+    resources,
     loading,
-    fetchOperatingSitesByBIAID,
-    deleteOperatingSite,
-  } = useOperatingSite();
+    fetchResourcesByBIAID,
+    deleteResource,
+  } = useResource();
 
   const { biaid } = useParams();
 
   useEffect(() => {
-    fetchOperatingSitesByBIAID(biaid);
+    fetchResourcesByBIAID(biaid);
   }, []);
 
   const handleDelete = async (id) => {
     deleteAlert(
       "Are you sure?",
-      "You are about to delete Operating Site. This action cannot be undone.",
+      "You are about to delete Resource. This action cannot be undone.",
       "Yes, delete it!",
-      "Operating Site deleted successfully!",
-      "Error deleting Operating Site",
-      () => deleteOperatingSite(id, biaid)
+      "Resource deleted successfully!",
+      "Error deleting Resource",
+      () => deleteResource(id, biaid)
     );
   };
 
@@ -40,9 +40,9 @@ const operatingSites = () => {
     <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
-          Operating Sites
+            Resources
         </h1>
-        <Link to={`/createOperatingSites/${biaid}`} className="btn-primary">
+        <Link to={`/createResources/${biaid}`} className="btn-primary">
           Add Details
         </Link>
       </div>
@@ -52,35 +52,39 @@ const operatingSites = () => {
         <table className="table-fixed w-full">
           <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-20 doc-table-head">Location</th>
-              <th className="w-20 doc-table-head">Primary/Secondary</th>
-              <th className="w-36 doc-table-head">Address</th>
-              <th className="w-20 doc-table-head">Actions</th>
+              <th className="w-20 doc-table-head">Name</th>
+              <th className="w-12 doc-table-head">Quantity</th>
+              <th className="w-12 doc-table-head">RTO</th>
+              <th className="w-12 doc-table-head">RPO</th>
+              <th className="w-12 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {operatingSites.map((sites) => (
-              <tr key={sites._id} className="doc-table-hover">
+            {resources.map((resources) => (
+              <tr key={resources._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-data">
-                  {sites.location}
+                  {resources.resourceName}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
-                  {sites.siteType}
+                  {resources.quantity}
                 </td>
-                <td className="py-2 px-4 w-36 doc-table-data">
-                  {sites.address}
+                <td className="py-2 px-4 w-36 doc-table-data text-center">
+                  {resources.RTO}
+                </td>
+                <td className="py-2 px-4 w-36 doc-table-data text-center">
+                  {resources.RPO}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editOperatingSites/${biaid}/${sites._id}`}
+                      to={`/editResources/${biaid}/${resources._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => handleDelete(sites._id)}
+                      onClick={() => handleDelete(resources._id)}
                     >
                       Delete
                     </button>
@@ -95,4 +99,4 @@ const operatingSites = () => {
   );
 };
 
-export default operatingSites;
+export default resources;
