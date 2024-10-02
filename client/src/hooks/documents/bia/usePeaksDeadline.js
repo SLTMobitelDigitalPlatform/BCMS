@@ -3,11 +3,11 @@ import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
 export const usePeaksDeadline = () => {
-  const [PeaksDeadlines, setPeaksDeadlines] = useState([]);
-  const [PeaksDeadline, setPeaksDeadline] = useState([]);
+  const [peaksDeadlines, setPeaksDeadlines] = useState([]);
+  const [peaksDeadline, setPeaksDeadline] = useState([]);
   const [loading, setLoading] = useState(false);
 
-// Fetch Peaks And Deadlines by BIA ID
+// Fetch Operating Sites by BIA ID
 const fetchPeaksDeadlinesByBIAID = async (biaid) => {
     setLoading(true);
     try {
@@ -16,13 +16,13 @@ const fetchPeaksDeadlinesByBIAID = async (biaid) => {
       );
       setPeaksDeadlines(response.data);
     } catch (err) {
-      handleError("Error fetching Peaks And Deadline.",err);
+      handleError("Error fetching Operating Site.",err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch a single Peaks And Deadline by BIA ID and Mongo ID
+  // Fetch a single Operating Site by BIA ID and Mongo ID
   const fetchPeaksDeadlineByIds = async (biaid, id) => {
     setLoading(true);
     try {
@@ -31,22 +31,22 @@ const fetchPeaksDeadlinesByBIAID = async (biaid) => {
       );
       setPeaksDeadline(response.data);
     } catch (err) {
-      handleError("Error fetching Peaks And Deadlines.",err);
+      handleError("Error fetching Operating Sites.",err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Add a new Peaks And Deadline
+  // Add a new Operating Site
   const addPeaksDeadline = async (documentData) => {
     try {
       await axiosInstance.post("/api/biaPeaksDeadline/add", documentData);
     } catch (err) {
-      handleError("Error adding Peaks And Deadlines.",err);
+      handleError("Error adding Operating Sites.",err);
     }
   };
 
-  // Update an Peaks And Deadline
+  // Update an Operating Site
   const updatePeaksDeadline = async (id, documentData) => {
     try {
       await axiosInstance.put(
@@ -54,17 +54,17 @@ const fetchPeaksDeadlinesByBIAID = async (biaid) => {
         documentData
       );
     } catch (err) {
-      handleError("Error updating Peaks And Deadlines.",err);
+      handleError("Error updating Operating Sites.",err);
     }
   };
 
-  // Delete an Peaks And Deadline
+  // Delete an Operating Site
   const deletePeaksDeadline = async (id, biaid) => {
     try {
       await axiosInstance.delete(`/api/biaPeaksDeadline/delete/${id}`);
       await fetchPeaksDeadlinesByBIAID(biaid);
     } catch (err) {
-      handleError("Error deleting Peaks And Deadlines.",err);
+      handleError("Error deleting Operating Sites.",err);
     }
   };
 
@@ -75,8 +75,8 @@ const fetchPeaksDeadlinesByBIAID = async (biaid) => {
   };
 
   return {
-    PeaksDeadlines,
-    PeaksDeadline,
+    peaksDeadlines,
+    peaksDeadline,
     loading,
     fetchPeaksDeadlinesByBIAID,
     fetchPeaksDeadlineByIds,

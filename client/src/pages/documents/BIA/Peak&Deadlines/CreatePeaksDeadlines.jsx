@@ -6,7 +6,7 @@ import { createAlert } from "../../../../utilities/alert";
 
 const CreatePeaksDeadlines = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    peaksdeadlineName: "",
     description: "",
     timeOfDay: "",
     dayOfWeek: "",
@@ -25,9 +25,13 @@ const CreatePeaksDeadlines = () => {
   const [formErrors, setFormErrors] = useState({});
   const validateForm = () => {
     const errors = {};
-    // if (!formData.location) errors.location = "Location is required";
-    // if (!formData.siteType) errors.siteType = "Site Type is required";
-    // if (!formData.address) errors.address = "Address is required";
+      if (!formData.peaksdeadlineName) errors.peaksdeadlineName = "Name is required";
+      if (!formData.description) errors.description = "Description is required";
+      if (!formData.timeOfDay) errors.timeOfDay = "Time of day is required";
+      if (!formData.dayOfWeek) errors.dayOfWeek = "Day of week is required";
+      if (!formData.businessDay) errors.businessDay = "Business day is required";
+      if (!formData.calendarDay) errors.calendarDay = "Calendar day is required";
+      if (!formData.month) errors.month = "Month is required";
     return errors;
   };
 
@@ -43,11 +47,11 @@ const CreatePeaksDeadlines = () => {
         await addPeaksDeadline(peaksDeadlineData);
         createAlert(
           "Business Peaks and Deadlines Added",
-          `Business Peaks and Deadline "${formData.name}" added successfully!`
+          `Business Peaks and Deadline "${formData.peaksdeadlineName}" added successfully!`
         );
         navigate(path);
       } catch (error) {
-        console.log(error);
+        console.log("Error adding peaks deadline:", error);
       } finally {
         setIsCreating(false);
       }
@@ -75,14 +79,14 @@ const CreatePeaksDeadlines = () => {
             <label className="font-semibold">Name</label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="peaksdeadlineName"
+              value={formData.peaksdeadlineName}
               onChange={handleChange}
               placeholder="Enter Name"
-              className={`p-2 w-full rounded ${formErrors.name ? 'border-red-500' : ''}`}
+              className={`p-2 w-full rounded ${formErrors.peaksdeadlineName ? 'border-red-500' : ''}`}
             />
-            {formErrors.name && (
-              <p className="text-red-500">{formErrors.name}</p>
+            {formErrors.peaksdeadlineName && (
+              <p className="text-red-500">{formErrors.peaksdeadlineName}</p>
             )}
           </div>
 
@@ -182,6 +186,7 @@ const CreatePeaksDeadlines = () => {
             )}
           </div>  
           
+           {/* Submit Button */}
           <div className="flex justify-start gap-2">
             <button
               type="submit"

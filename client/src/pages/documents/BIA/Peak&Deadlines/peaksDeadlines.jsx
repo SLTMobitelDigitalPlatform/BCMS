@@ -6,7 +6,7 @@ import { deleteAlert } from "../../../../utilities/alert";
 
 const PeaksDeadlines = () => {
   const {
-    PeaksDeadlines,
+    peaksDeadlines,
     loading,
     fetchPeaksDeadlinesByBIAID,
     deletePeaksDeadline,
@@ -63,10 +63,10 @@ const PeaksDeadlines = () => {
             </tr>
           </thead>
           <tbody>
-            {PeaksDeadlines.map((peaksDeadlines) => (
+            {peaksDeadlines.map((peaksDeadlines) => (
               <tr key={peaksDeadlines._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
-                  {peaksDeadlines.name}
+                  {peaksDeadlines.peaksdeadlineName}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
                   {peaksDeadlines.description}

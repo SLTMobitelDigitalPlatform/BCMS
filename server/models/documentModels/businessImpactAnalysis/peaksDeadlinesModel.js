@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const peaksdeadlinesSchema = new Schema(
   {
     biaid: { type: String, required: true },
-    name: { type: String, required: true },
+    peaksdeadlineName: { type: String, required: true },
     description: { type: String, required: true },
     timeOfDay: { type: String, required: true },
     dayOfWeek: { type: String, required: true },
