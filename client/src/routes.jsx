@@ -142,6 +142,8 @@ import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/Exter
 import OrgCallTree from "./pages/Call Tree/OrgCallTree";
 import OrgCallTreeTable from "./pages/Call Tree/OrgCallTreeTable";
 import CallTreeHomePage from "./pages/Call Tree/CallTreeHomePage";
+import PoliciesPage from "./pages/Policies/OrgPolicies";
+import AddDocument from "./pages/Policies/AddDocument";
 
 const router = createBrowserRouter([
   {
@@ -215,6 +217,10 @@ const router = createBrowserRouter([
       },
       // Employee Table
       { path: "employee", element: <Employee /> },
+
+      // Policies
+      { path: "policies", element: <PoliciesPage /> },
+      { path: "policies/add-document", element: <AddDocument /> },
 
       //Teams
       { path: "teams", element: <AddEditTeams /> },
