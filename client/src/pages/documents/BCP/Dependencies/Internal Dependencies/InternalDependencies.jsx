@@ -70,18 +70,18 @@ const InternalDependencies = () => {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <Select
-        className="m-0.5 w-1/3 font-semibold"
-        value={selectedCBFunction}
-        onChange={handleSelectChange}
-        options={sortedCBFunctions}
-        placeholder="Select Critical Business Function"
-        isSearchable={true}
-        isClearable={true}
-      />
-      {selectedCBFunction ? (
-        <>
-          <div className="flex justify-between items-center my-5">
+      <div className="flex justify-between items-center mb-5">
+        <Select
+          className="m-0.5 w-1/3 font-semibold"
+          value={selectedCBFunction}
+          onChange={handleSelectChange}
+          options={sortedCBFunctions}
+          placeholder="Select Critical Business Function"
+          isSearchable={true}
+          isClearable={true}
+        />
+        {selectedCBFunction ? (
+          <>
             <div className="flex gap-5">
               <button
                 className={`px-2 py-1 rounded font-semibold ${
@@ -109,7 +109,42 @@ const InternalDependencies = () => {
               Create {activeStream === "upstream" ? "Upstream" : "Downstream"}{" "}
               Dependency
             </button>
-          </div>
+          </>
+        ) : (
+          ""
+        )}
+      </div>
+      {selectedCBFunction ? (
+        <>
+          {/* <div className="flex justify-between items-center my-5">
+            <div className="flex gap-5">
+              <button
+                className={`px-2 py-1 rounded font-semibold ${
+                  activeStream === "upstream"
+                    ? "doc-nav-active"
+                    : "doc-nav-hover"
+                }`}
+                onClick={() => handleTabChange("upstream")}
+              >
+                Upstream
+              </button>
+              <button
+                className={`px-2 py-1 rounded font-semibold ${
+                  activeStream === "downstream"
+                    ? "doc-nav-active"
+                    : "doc-nav-hover"
+                }`}
+                onClick={() => handleTabChange("downstream")}
+              >
+                Downstream
+              </button>
+            </div>
+
+            <button className="btn-primary" onClick={handleCreateRecord}>
+              Create {activeStream === "upstream" ? "Upstream" : "Downstream"}{" "}
+              Dependency
+            </button>
+          </div> */}
 
           <div className="h-full w-full overflow-auto">
             {activeStream === "upstream" ? (
