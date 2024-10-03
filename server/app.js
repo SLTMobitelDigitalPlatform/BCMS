@@ -33,6 +33,7 @@ const routerRiskElements = require("./routes/documentRoutes/riskAssesment/riskEl
 const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/externalPartyRoutes");
 const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
 const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
+const routerOrgCallTree = require("./routes/callTreeRoutes/orgCallTreeRoute");
 const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
@@ -49,6 +50,9 @@ const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequir
 const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
 const routerCriticalBusinessFunction = require("./routes/documentRoutes/bcp/criticalBusinessFunctionRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
+const routerExternalDependencies = require("./routes/documentRoutes/bcp/externalDependenciesRoutes");
+const routerUpstream = require("./routes/documentRoutes/bcp/upstreamRoutes");
+const routerDownstream = require("./routes/documentRoutes/bcp/downstreamRoutes");
 const routerVitalRecords = require("./routes/documentRoutes/bcp/vitalRecordsRoutes");
 const routerWorkAreaRecovery = require("./routes/documentRoutes/bcp/workAreaRecoveryRoutes");
 const routerManpower = require("./routes/documentRoutes/bcp/manpowerRoutes");
@@ -56,6 +60,9 @@ const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocu
 
 // Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
+const routerOperatingSite = require("./routes/documentRoutes/businessImpactAnalysis/operatingSitesRoutes");
+const routerPeaksDeadline = require("./routes/documentRoutes/businessImpactAnalysis/peaksDeadlinesRoutes");
+const routerBiaResource = require("./routes/documentRoutes/businessImpactAnalysis/resourcesRoutes");
 
 const PORT = 5000;
 
@@ -99,11 +106,18 @@ app.use(
   routerPreIncidentPreparation,
   routerCriticalBusinessFunction,
   routerResourcesRequired,
+  routerExternalDependencies,
+  routerUpstream,
+  routerDownstream,
   routerVitalRecords,
   routerWorkAreaRecovery,
   routerManpower,
   routerEmbeddedDocument,
-  routerBiaForm
+  routerBiaForm,
+  routerOperatingSite,
+  routerPeaksDeadline,
+  routerBiaResource,
+  routerOrgCallTree
 );
 
 // // Create uploads directory if it doesn't exist
