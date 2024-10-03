@@ -80,12 +80,60 @@ const updateVersion = async (req, res) => {
              Checking Status: ${isChecked}\n\n
              Note: This is an auto-generated email. Please do not reply to this email.`,
       };
-
       // Send the email but do not await it, so it doesn't block or potentially cause another response
       transporter.sendMail(mailOptions)
         .then(info => console.log("Email sent to:", checkedByEmails.join(", "), info.response))
         .catch(error => console.log("Error sending email:", error));
     }
+      if (isChecked === "Checked") {
+        const aprovedByDetails = await User.find({
+          _id: { $in: approve },
+        }).select("email name");
+  
+        const approvedByEmails = aprovedByDetails.map((user) => user.email);
+        const approvedByNames = aprovedByDetails.map((user) => user.name).join(", ");
+  
+        const mailOptions = {
+          from: "sltmobitelbcmssystem@gmail.com",
+          to: approvedByEmails,
+          subject: "Version Control",
+          text: `Dear ${approvedByNames},\n\nThe details of the event have been updated:\n
+               Title: Risk Management\n
+               Checking Status: ${isChecked}\n\n
+               Note: This is an auto-generated email. Please do not reply to this email.`,
+        };
+  
+          // Send the email but do not await it, so it doesn't block or potentially cause another response
+      transporter.sendMail(mailOptions)
+      .then(info => console.log("Email sent to:", approvedByEmails.join(", "), info.response))
+      .catch(error => console.log("Error sending email:", error));
+      };
+
+      if (isChecked === "Checked" && approve==="Not Approved") {
+        const aprovedByDetails = await User.find({
+          _id: { $in: isChecked },
+        }).select("email name");
+  
+        const approvedByEmails = aprovedByDetails.map((user) => user.email);
+        const approvedByNames = aprovedByDetails.map((user) => user.name).join(", ");
+  
+        const mailOptions = {
+          from: "sltmobitelbcmssystem@gmail.com",
+          to: approvedByEmails,
+          subject: "Version Control",
+          text: `Dear ${approvedByNames},\n\nThe details of the event have been updated:\n
+               Title: Risk Management\n
+               Checking Status: ${isChecked}\n\n
+               Note: This is an auto-generated email. Please do not reply to this email.`,
+        };
+  
+       // Send the email but do not await it, so it doesn't block or potentially cause another response
+       transporter.sendMail(mailOptions)
+       .then(info => console.log("Email sent to:", approvedByEmails.join(", "), info.response))
+       .catch(error => console.log("Error sending email:", error));
+      };
+
+    
   } catch (error) {
     // If an error occurs before sending a response, catch it here and send a response
     if (!res.headersSent) {
@@ -93,6 +141,8 @@ const updateVersion = async (req, res) => {
     } else {
       console.error("Error occurred:", error.message);
     }
+
+    
   }
 };
 // Delete a versionControl by ID
