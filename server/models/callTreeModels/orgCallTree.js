@@ -10,14 +10,14 @@ const orgCallTreeSchema = new Schema({
   },
   parent: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "OrgCallTree",
     default: null,
   },
-  section: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Section",
-    required: false,
-  },
+  //   section: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Section",
+  //     required: false,
+  //   },
 });
 
 const OrgCallTree = mongoose.model("OrgCallTree", orgCallTreeSchema);
