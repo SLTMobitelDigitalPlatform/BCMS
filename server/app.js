@@ -33,6 +33,7 @@ const routerRiskElements = require("./routes/documentRoutes/riskAssesment/riskEl
 const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/externalPartyRoutes");
 const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
 const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
+const routerOrgCallTree = require("./routes/callTreeRoutes/orgCallTreeRoute");
 const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
@@ -115,7 +116,8 @@ app.use(
   routerBiaForm,
   routerOperatingSite,
   routerPeaksDeadline,
-  routerBiaResource
+  routerBiaResource,
+  routerOrgCallTree
 );
 
 // // Create uploads directory if it doesn't exist
