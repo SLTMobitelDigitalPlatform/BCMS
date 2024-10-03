@@ -222,7 +222,7 @@ const Sidebar = () => {
           {/* Call Tree */}
           <li>
             <NavLink
-              to="/call-tree"
+              to="/call-tree-home"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
