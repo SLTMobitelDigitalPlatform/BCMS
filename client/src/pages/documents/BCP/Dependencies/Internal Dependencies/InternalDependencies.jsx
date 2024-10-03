@@ -9,7 +9,7 @@ import Upstream from "./Upstream";
 const InternalDependencies = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("upstream");
+  const [activeStream, setActiveStream] = useState("upstream");
   const [selectedCBFunction, setSelectedCBFunction] = useState(null);
   const { bcpid } = useParams();
 
@@ -17,35 +17,47 @@ const InternalDependencies = () => {
     useCriticalBusinessFunction();
 
   useEffect(() => {
-    if (location.state?.activeTab) {
-      setActiveTab(location.state.activeTab);
-    }
-  }, [location.state]);
-
-  useEffect(() => {
     fetchCriticalBusinessFunctionsByBCPID(bcpid);
   }, []);
+
+  useEffect(() => {
+    if (location.state?.cbfid) {
+      setSelectedCBFunction(location.state.cbfid);
+    }
+    if (location.state?.activeStream) {
+      setActiveStream(location.state.activeStream);
+    }
+  }, [location.state]);
 
   // Handle select dropdown change
   const handleSelectChange = (selectedOption) => {
     setSelectedCBFunction(selectedOption);
-    setActiveTab("upstream");
+    setActiveStream("upstream");
+
+    navigate(location.pathname, {
+      state: {
+        activeStream: "upstream",
+        cbfid: selectedOption,
+        activeTab: "internalDependencies",
+      },
+    });
   };
 
   // Handle tab change
   const handleTabChange = (tab) => {
-    setActiveTab(tab);
+    setActiveStream(tab);
   };
 
   // Handle creation logic for upstream or downstream
   const handleCreateRecord = () => {
     if (!selectedCBFunction) return;
 
-    // Redirect to the appropriate create record page based on activeTab
     const createURL =
-      activeTab === "upstream" ? "/createUpstream" : "/createDownstream";
+      activeStream === "upstream"
+        ? `/createUpstream/${bcpid}`
+        : `/createDownstream/${bcpid}`;
     navigate(createURL, {
-      state: { cbFunction: selectedCBFunction, activeTab },
+      state: { cbfid: selectedCBFunction, activeStream },
     });
   };
 
@@ -67,15 +79,15 @@ const InternalDependencies = () => {
         isSearchable={true}
         isClearable={true}
       />
-      {/* Render tables and Create Record button if CBF is selected */}
       {selectedCBFunction ? (
         <>
           <div className="flex justify-between items-center my-5">
-            {/* Tab Navigation */}
             <div className="flex gap-5">
               <button
                 className={`px-2 py-1 rounded font-semibold ${
-                  activeTab === "upstream" ? "doc-nav-active" : "doc-nav-hover"
+                  activeStream === "upstream"
+                    ? "doc-nav-active"
+                    : "doc-nav-hover"
                 }`}
                 onClick={() => handleTabChange("upstream")}
               >
@@ -83,7 +95,7 @@ const InternalDependencies = () => {
               </button>
               <button
                 className={`px-2 py-1 rounded font-semibold ${
-                  activeTab === "downstream"
+                  activeStream === "downstream"
                     ? "doc-nav-active"
                     : "doc-nav-hover"
                 }`}
@@ -93,19 +105,17 @@ const InternalDependencies = () => {
               </button>
             </div>
 
-            {/* Create Record Button */}
             <button className="btn-primary" onClick={handleCreateRecord}>
-              Create {activeTab === "upstream" ? "Upstream" : "Downstream"}{" "}
+              Create {activeStream === "upstream" ? "Upstream" : "Downstream"}{" "}
               Dependency
             </button>
           </div>
 
-          {/* Tab Content (Upstream / Downstream Tables) */}
           <div className="h-full w-full overflow-auto">
-            {activeTab === "upstream" ? (
-              <Upstream cbFunction={selectedCBFunction} />
+            {activeStream === "upstream" ? (
+              <Upstream cbfid={selectedCBFunction} />
             ) : (
-              <Downstream cbFunction={selectedCBFunction} />
+              <Downstream cbfid={selectedCBFunction} />
             )}
           </div>
         </>

@@ -94,7 +94,6 @@ import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSi
 import CreateBIAOSites from "./pages/documents/BIA/Operating Sites/CreateOperatingSites";
 import EditBIAOSites from "./pages/documents/BIA/Operating Sites/EditoperatingSites";
 
-
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
@@ -134,6 +133,8 @@ import EditResourcesRequired from "./pages/documents/BCP/Resources Required/Edit
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/CreateExternalDependencies";
+import CreateUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/CreateUpstream";
+import CreateDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/CreateDownstream";
 
 const router = createBrowserRouter([
   {
@@ -473,6 +474,9 @@ const router = createBrowserRouter([
         element: <CreateExternalDependencies />,
       },
 
+      { path: "createUpstream/:bcpid", element: <CreateUpstream /> },
+      { path: "createDownstream/:bcpid", element: <CreateDownstream /> },
+
       // * Vital Records
       { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
       { path: "editVitalRecords/:bcpid/:id", element: <EditVitalRecords /> },
@@ -515,7 +519,7 @@ const router = createBrowserRouter([
 
           { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "document-version/:biaid", element: <BiaDocumentControl /> },
-          
+
           {
             path: "critical-business-function/:biaid",
             element: <BiaCriticalBusinessFunction />,
@@ -526,9 +530,15 @@ const router = createBrowserRouter([
           },
           { path: "resources/:biaid", element: <BiaResources /> },
           { path: "impact-analysis/:biaid", element: <BiaImpactAnalysis /> },
-          { path: "resources-required/:biaid", element: <BiaResourcesRequired /> },
+          {
+            path: "resources-required/:biaid",
+            element: <BiaResourcesRequired />,
+          },
           { path: "dependencies/:biaid", element: <BiaDependencies /> },
-          { path: "work-area-recovery/:biaid", element: <BiaWorkAreaRecovery /> },
+          {
+            path: "work-area-recovery/:biaid",
+            element: <BiaWorkAreaRecovery />,
+          },
           { path: "manpower/:biaid", element: <BiaManpower /> },
         ],
       },
@@ -540,8 +550,6 @@ const router = createBrowserRouter([
       //Operating Sites
       { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
       { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
-      
-      
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 

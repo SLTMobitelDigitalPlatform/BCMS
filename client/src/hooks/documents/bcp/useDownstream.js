@@ -8,10 +8,14 @@ export const useDownstream = () => {
   const [loading, setLoading] = useState(false);
 
   // Fetch downstream data by BCP ID
-  const fetchDownstreamsByBCPID = async (bcpid) => {
+  const fetchDownstreamsByBCPID = async (bcpid, cbfid = null) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get(`/api/bcpDownstream/${bcpid}`);
+      const response = await axiosInstance.get(`/api/bcpDownstream/${bcpid}`, {
+        params: {
+          criticalBusinessFunction: cbfid ? cbfid : null,
+        },
+      });
       setDownstreams(response.data);
     } catch (err) {
       handleError("Error fetching upstream data.", err);
