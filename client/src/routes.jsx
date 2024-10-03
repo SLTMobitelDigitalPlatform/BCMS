@@ -97,7 +97,7 @@ import EditBIAOSites from "./pages/documents/BIA/OperatingSites/EditoperatingSit
 import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/peaksDeadlines";
 import CreatePeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/CreatePeaksDeadlines";
 import EditPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/EditPeaksDeadlines";
-//BIA Resources 
+//BIA Resources
 import BiaResources from "./pages/documents/BIA/Resources/Resource";
 import CreateBiaResources from "./pages/documents/BIA/Resources/CreateResources";
 import EditBiaResources from "./pages/documents/BIA/Resources/EditResources";
@@ -139,6 +139,11 @@ import EditResourcesRequired from "./pages/documents/BCP/Resources Required/Edit
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/CreateExternalDependencies";
+import OrgCallTree from "./pages/Call Tree/OrgCallTree";
+import OrgCallTreeTable from "./pages/Call Tree/OrgCallTreeTable";
+import CallTreeHomePage from "./pages/Call Tree/CallTreeHomePage";
+import PoliciesPage from "./pages/Policies/OrgPolicies";
+import AddDocument from "./pages/Policies/AddDocument";
 
 const router = createBrowserRouter([
   {
@@ -213,6 +218,10 @@ const router = createBrowserRouter([
       // Employee Table
       { path: "employee", element: <Employee /> },
 
+      // Policies
+      { path: "policies", element: <PoliciesPage /> },
+      { path: "policies/add-document", element: <AddDocument /> },
+
       //Teams
       { path: "teams", element: <AddEditTeams /> },
       { path: "teams/teamList", element: <TeamList /> },
@@ -225,8 +234,14 @@ const router = createBrowserRouter([
       { path: "sections", element: <Section /> },
 
       // Call Tree
+      { path: "call-tree-home", element: <CallTreeHomePage /> },
+
       { path: "call-tree", element: <CallTree /> },
       { path: "call-tree-table", element: <CallTreeTable /> },
+
+      // Oganizational Call Tree
+      { path: "org-call-tree", element: <OrgCallTree /> },
+      { path: "org-call-tree-table", element: <OrgCallTreeTable /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
@@ -512,20 +527,33 @@ const router = createBrowserRouter([
       //Layout
       { path: "business-impact-analysis-plans", element: <BiaPlans /> },
       {
-        path: "Business-Impact-Analysis", element: <BiaLayout />,
+        path: "Business-Impact-Analysis",
+        element: <BiaLayout />,
         children: [
           { path: "bia-form/:biaid", element: <BiaForm /> },
           { path: "operating-sites/:biaid", element: <BiaOperatingSites /> },
-          { path: "business-peaks-and-deadlines/:biaid",element: <BiaPeaksAndDeadlines /> },
+          {
+            path: "business-peaks-and-deadlines/:biaid",
+            element: <BiaPeaksAndDeadlines />,
+          },
           { path: "resources/:biaid", element: <BiaResources /> },
 
           { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "document-version/:biaid", element: <BiaDocumentControl /> },
-          { path: "critical-business-function/:biaid",element: <BiaCriticalBusinessFunction />},
+          {
+            path: "critical-business-function/:biaid",
+            element: <BiaCriticalBusinessFunction />,
+          },
           { path: "impact-analysis/:biaid", element: <BiaImpactAnalysis /> },
-          { path: "resources-required/:biaid", element: <BiaResourcesRequired /> },
+          {
+            path: "resources-required/:biaid",
+            element: <BiaResourcesRequired />,
+          },
           { path: "dependencies/:biaid", element: <BiaDependencies /> },
-          { path: "work-area-recovery/:biaid", element: <BiaWorkAreaRecovery /> },
+          {
+            path: "work-area-recovery/:biaid",
+            element: <BiaWorkAreaRecovery />,
+          },
           { path: "manpower/:biaid", element: <BiaManpower /> },
         ],
       },
@@ -537,8 +565,14 @@ const router = createBrowserRouter([
       { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
       { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
       //Peaks and Deadliness
-      { path: "createPeaksDeadlines/:biaid", element: <CreatePeaksAndDeadlines /> },
-      { path: "editPeaksDeadlines/:biaid/:id", element: <EditPeaksAndDeadlines /> },   
+      {
+        path: "createPeaksDeadlines/:biaid",
+        element: <CreatePeaksAndDeadlines />,
+      },
+      {
+        path: "editPeaksDeadlines/:biaid/:id",
+        element: <EditPeaksAndDeadlines />,
+      },
       //Resources
       { path: "createResources/:biaid", element: <CreateBiaResources /> },
       { path: "editResources/:biaid/:id", element: <EditBiaResources /> },

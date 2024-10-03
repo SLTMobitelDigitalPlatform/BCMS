@@ -2,18 +2,13 @@ const OrgCallTree = require("../../models/callTreeModels/orgCallTree");
 
 const getOrgCalltree = async (req, res) => {
   try {
-    const { section } = req.query;
-    if (!section) {
-      return res.statu(400).json({ message: "Section Required!" });
-    }
-
-    const calltree = await OrgCallTree.find({ section })
+    const calltree = await OrgCallTree.find()
       .populate("parent", "title")
-      .populate("section", "name")
       .populate(
         "personName",
-        "name email designation profileImg contactNumber"
+        "name email section designation profileImg contactNumber"
       );
+    // console.log(calltree);
 
     res.status(200).json(calltree);
   } catch (error) {
@@ -23,9 +18,12 @@ const getOrgCalltree = async (req, res) => {
 
 const createOrgCallTreeNode = async (req, res) => {
   try {
-    const calltree = new OrgCallTree(req.body);
-    const newNode = await calltree.save();
-    await newNode.populate.populate("personName", "name");
+    // Use the create() method to directly create and save the document
+    let newNode = await OrgCallTree.create(req.body);
+
+    newNode = await newNode.populate("personName", "name");
+
+    res.status(201).json(newNode);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
