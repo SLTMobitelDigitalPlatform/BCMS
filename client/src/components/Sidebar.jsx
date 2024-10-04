@@ -222,7 +222,7 @@ const Sidebar = () => {
           <hr className="opacity-50" />
           <li>
             <NavLink
-              to="/"
+              to="/policies"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
@@ -234,7 +234,7 @@ const Sidebar = () => {
           <hr className="opacity-50" />
           <li>
             <NavLink
-              to="/call-tree"
+              to="/call-tree-home"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }

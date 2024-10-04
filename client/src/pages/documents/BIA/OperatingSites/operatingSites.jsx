@@ -55,13 +55,13 @@ const operatingSites = () => {
               <th className="w-20 doc-table-head">Location</th>
               <th className="w-20 doc-table-head">Primary/Secondary</th>
               <th className="w-36 doc-table-head">Address</th>
-              <th className="w-28 doc-table-head">Actions</th>
+              <th className="w-20 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
             {operatingSites.map((sites) => (
               <tr key={sites._id} className="doc-table-hover">
-                <td className="py-2 px-4 w-20 doc-table-data text-center">
+                <td className="py-2 px-4 w-20 doc-table-data">
                   {sites.location}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
