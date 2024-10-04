@@ -409,10 +409,10 @@ const router = createBrowserRouter([
           { path: "vital-records/:bcpid", element: <VitalRecords /> },
           { path: "work-area-recovery/:bcpid", element: <WorkAreaRecovery /> },
           { path: "manpower/:bcpid", element: <Manpower /> },
-          {
-            path: "recovery-and-resumption/:bcpid",
-            element: <RecoveryAndResumption />,
-          },
+          // {
+          //   path: "recovery-and-resumption/:bcpid",
+          //   element: <RecoveryAndResumption />,
+          // },
           { path: "embedded-documents/:bcpid", element: <EmbeddedDocuments /> },
         ],
       },
@@ -471,6 +471,10 @@ const router = createBrowserRouter([
       },
 
       // * Critical Business Function
+      {
+        path: "recovery-and-resumption/:bcpid/:id",
+        element: <RecoveryAndResumption />,
+      },
       {
         path: "createCriticalBusinessFunction/:bcpid",
         element: <CreateCriticalBusinessFunction />,
@@ -582,7 +586,6 @@ const router = createBrowserRouter([
       //Resources
       { path: "createResources/:biaid", element: <CreateBiaResources /> },
       { path: "editResources/:biaid/:id", element: <EditBiaResources /> },
-
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 

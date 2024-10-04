@@ -78,7 +78,10 @@ const CriticalBusinessFunction = () => {
 
                 <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
-                    <Link className="py-1 px-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded">
+                    <Link
+                      className="py-1 px-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded"
+                      to={`/recovery-and-resumption/${bcpid}/${cbf._id}`}
+                    >
                       View
                     </Link>
                     <Link

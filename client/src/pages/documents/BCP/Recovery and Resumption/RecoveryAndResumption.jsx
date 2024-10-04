@@ -12,19 +12,19 @@ const RecoveryResumption = () => {
     deleteRecoveryResumption,
   } = useRecoveryAndResumptions();
 
-  const { bcpid } = useParams();
+  const { bcpid, id } = useParams();
 
   useEffect(() => {
     fetchRecoveryResumptionsByBCPID(bcpid);
   }, []);
 
-  const handleDelete = async (id, number) => {
+  const handleDelete = async (id) => {
     deleteAlert(
       "Are you sure?",
-      `You are about to delete "${number}" Embedded Document. This action cannot be undone.`,
+      `You are about to delete Recovery Resumption. This action cannot be undone.`,
       "Yes, delete it!",
-      `"${number}" Embedded Document deleted successfully!`,
-      "Error deleting Embedded Document",
+      `Recovery Resumption deleted successfully!`,
+      "Error deleting Recovery Resumption",
       () => deleteRecoveryResumption(id, bcpid)
     );
   };
@@ -94,12 +94,7 @@ const RecoveryResumption = () => {
                       </Link>
                       <button
                         className="doc-delete-btn"
-                        onClick={() =>
-                          handleDelete(
-                            recoveryResumption._id,
-                            recoveryResumption.number
-                          )
-                        }
+                        onClick={() => handleDelete(recoveryResumption._id)}
                       >
                         Delete
                       </button>
