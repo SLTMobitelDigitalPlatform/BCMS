@@ -24,9 +24,6 @@ const Navbar = () => {
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
-      // } finally {
-      //   setLoading(false);
-      // }
     };
 
     fetchUserDetails();
@@ -34,7 +31,7 @@ const Navbar = () => {
   return (
     <nav className="flex items-center justify-between p-2 bg-white ">
       <div className="flex items-center space-x-2 ml-4">
-        <img src={logo} alt="Logo" className="w-32 h-auto" />
+        {/* <img src={logo} alt="Logo" className="w-32 h-auto" /> */}
       </div>
 
       <div className="flex-1 flex justify-center space-x-8">

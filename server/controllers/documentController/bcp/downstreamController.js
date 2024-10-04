@@ -13,7 +13,13 @@ exports.createDownstream = async (req, res) => {
 
 // Get all downstreams by BCP ID
 exports.getDownstreamsByBCPID = async (req, res) => {
-  const filter = { bcpid: req.params.bcpid };
+  const { bcpid } = req.params;
+  const { criticalBusinessFunction } = req.query;
+
+  const filter = { bcpid };
+  if (criticalBusinessFunction) {
+    filter.criticalBusinessFunction = criticalBusinessFunction;
+  }
   try {
     const downstreams = await Downstream.find(filter);
     if (!downstreams) {

@@ -3,15 +3,19 @@ import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
 export const useDownstream = () => {
-  const [downstreams, setDownstreams] = useState(null);
-  const [downstream, setDownstream] = useState(null);
+  const [downstreams, setDownstreams] = useState([]);
+  const [downstream, setDownstream] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // Fetch downstream data by BCP ID
-  const fetchDownstreamsByBCPID = async (bcpid) => {
+  const fetchDownstreamsByBCPID = async (bcpid, cbfid = null) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get(`/api/bcpDownstream/${bcpid}`);
+      const response = await axiosInstance.get(`/api/bcpDownstream/${bcpid}`, {
+        params: {
+          criticalBusinessFunction: cbfid ? cbfid : null,
+        },
+      });
       setDownstreams(response.data);
     } catch (err) {
       handleError("Error fetching upstream data.", err);

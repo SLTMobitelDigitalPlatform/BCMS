@@ -89,6 +89,7 @@ import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
+
 // BIA Operating Sites
 import BiaOperatingSites from "./pages/documents/BIA/OperatingSites/operatingSites";
 import CreateBIAOSites from "./pages/documents/BIA/OperatingSites/CreateOperatingSites";
@@ -139,6 +140,8 @@ import EditResourcesRequired from "./pages/documents/BCP/Resources Required/Edit
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/CreateExternalDependencies";
+import CreateUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/CreateUpstream";
+import CreateDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/CreateDownstream";
 import OrgCallTree from "./pages/Call Tree/OrgCallTree";
 import OrgCallTreeTable from "./pages/Call Tree/OrgCallTreeTable";
 import CallTreeHomePage from "./pages/Call Tree/CallTreeHomePage";
@@ -493,6 +496,9 @@ const router = createBrowserRouter([
         element: <CreateExternalDependencies />,
       },
 
+      { path: "createUpstream/:bcpid", element: <CreateUpstream /> },
+      { path: "createDownstream/:bcpid", element: <CreateDownstream /> },
+
       // * Vital Records
       { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
       { path: "editVitalRecords/:bcpid/:id", element: <EditVitalRecords /> },
@@ -576,6 +582,7 @@ const router = createBrowserRouter([
       //Resources
       { path: "createResources/:biaid", element: <CreateBiaResources /> },
       { path: "editResources/:biaid/:id", element: <EditBiaResources /> },
+
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
