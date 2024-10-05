@@ -143,7 +143,9 @@ function CallTree() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-2xl">{sectionName}</h1>
+        <Link to="/call-tree-home" className="font-semibold text-2xl">
+          {sectionName}
+        </Link>
         <select
           className="border rounded px-3 py-2"
           value={sectionName}

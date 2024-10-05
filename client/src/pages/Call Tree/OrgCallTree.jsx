@@ -106,7 +106,9 @@ const OrgCallTree = () => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-3xl">Organizational Call Tree</h1>
+        <Link to="/call-tree-home" className="font-semibold text-3xl">
+          Organizational Call Tree
+        </Link>
 
         <Link to="/org-call-tree-table" className="btn-primary">
           Call Tree Table
