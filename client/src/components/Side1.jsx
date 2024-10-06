@@ -254,7 +254,7 @@ const Side1 = () => {
 
               {/* Tooltip for collapsed sidebar */}
               {!expanded && hoveredMenu === index && (
-                <div className="absolute bg-indigo-600 text-xs text-white p-2 rounded-md ml-14 -mt-10 z-10 transition-all duration-300">
+                <div className="absolute bg-indigo-600 text-xs text-white p-2 rounded-md ml-14 -mt-10 z-20 transition-all duration-300">
                   {menu.title}
                 </div>
               )}
@@ -299,7 +299,7 @@ const Side1 = () => {
             Logout
           </span>
           {!expanded && hoveredMenu === "logout" && (
-            <div className="absolute bg-indigo-600 text-xs text-white p-2 rounded-md ml-28 z-10 transition-all duration-300">
+            <div className="absolute bg-indigo-600 text-xs text-white p-2 rounded-md ml-28 z-20 transition-all duration-300">
               Logout
             </div>
           )}
