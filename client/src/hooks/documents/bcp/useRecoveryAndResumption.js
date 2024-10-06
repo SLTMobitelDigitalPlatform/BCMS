@@ -23,11 +23,11 @@ export const useRecoveryAndResumptions = () => {
   };
 
   // Fetch a single recovery and resumption by BCP ID and Mongo ID
-  const fetchRecoveryResumptionByIds = async (bcpid, id) => {
+  const fetchRecoveryResumptionByIds = async (bcpid, cbfid, id) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/bcpRecoveryResumption/${bcpid}/${id}`
+        `/api/bcpRecoveryResumption/${bcpid}/${cbfid}/${id}`
       );
       setRecoveryResumption(response.data);
     } catch (err) {

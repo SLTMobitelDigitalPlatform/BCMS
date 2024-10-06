@@ -1,9 +1,8 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import { createAlert } from "../../../../utilities/alert";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoveryAndResumptions } from "../../../../hooks/documents/bcp/useRecoveryAndResumption";
+import { createAlert } from "../../../../utilities/alert";
 
 const CreateRecoveryResumption = () => {
   const [formData, setFormData] = useState({
@@ -31,26 +30,16 @@ const CreateRecoveryResumption = () => {
   useEffect(() => {
     // Fetch recovery resumptions based on bcpid and cbfid
     fetchRecoveryResumptionsByBCPID(bcpid, cbfid);
+  }, []);
 
-    const newNumber =
-      recoveryResumptions.length === 0 ? 1 : recoveryResumptions.length + 1;
+  useEffect(() => {
+    const newNumber = recoveryResumptions.length + 1;
 
     setFormData((prevData) => ({
       ...prevData,
       number: newNumber,
     }));
-    //   .then((res) => {
-    //     // If the count is 0, start from 1, else add 1 to the length
-    //     const newNumber = res.length === 0 ? 1 : res.length + 1;
-    //     setFormData((prevData) => ({
-    //       ...prevData,
-    //       number: newNumber,
-    //     }));
-    //   })
-    //   .catch((err) => {
-    //     createAlert("Error fetching recovery and resumptions", err);
-    //   });
-  }, []);
+  }, [recoveryResumptions]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

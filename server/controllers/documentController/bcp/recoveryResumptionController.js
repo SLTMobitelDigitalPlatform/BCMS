@@ -29,11 +29,12 @@ exports.getRecoveryResumptionsByBCPID = async (req, res) => {
 
 // Get a single Recovery Resumption by BCP ID and MongoDB ID
 exports.getRecoveryResumptionByIds = async (req, res) => {
-  const { bcpid, id } = req.params;
+  const { bcpid, cbfid, id } = req.params;
   try {
     const recoveryResumption = await RecoveryResumption.findOne({
       _id: id,
       bcpid,
+      cbfid,
     });
     if (!recoveryResumption) {
       return res.status(404).json({ message: "Recovery Resumption not found" });

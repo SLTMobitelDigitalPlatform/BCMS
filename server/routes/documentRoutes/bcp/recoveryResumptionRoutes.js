@@ -17,7 +17,10 @@ router.get(
   getRecoveryResumptionsByBCPID
 );
 
-router.get("/api/bcpRecoveryResumption/:bcpid/:id", getRecoveryResumptionByIds);
+router.get(
+  "/api/bcpRecoveryResumption/:bcpid/:cbfid/:id",
+  getRecoveryResumptionByIds
+);
 
 router.put("/api/bcpRecoveryResumption/edit/:id", updateRecoveryResumption);
 

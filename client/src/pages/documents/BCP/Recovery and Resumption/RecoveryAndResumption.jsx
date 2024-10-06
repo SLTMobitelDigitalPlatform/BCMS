@@ -41,6 +41,11 @@ const RecoveryResumption = () => {
       <div className="overflow-hidden h-screen rounded-2xl p-3">
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-xl font-bold text-indigo-900">
+            <Link
+              to={`/Business-Continuity-Plan/critical-business-function/${bcpid}`}
+            >
+              Critical Business Function:{" "}
+            </Link>
             Recovery and Resumption
           </h1>
           <Link
