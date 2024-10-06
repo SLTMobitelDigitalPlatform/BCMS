@@ -4,7 +4,7 @@
 
 @layer components {
   .topic {
-    @apply text-3xl font-bold text-green-500;
+    @apply text-3xl font-bold text-indigo-800;
   }
 
   .profile-pic {
