@@ -12,7 +12,10 @@ const router = express.Router();
 
 router.post("/api/bcpRecoveryResumption/add", createRecoveryResumption);
 
-router.get("/api/bcpRecoveryResumption/:bcpid", getRecoveryResumptionsByBCPID);
+router.get(
+  "/api/bcpRecoveryResumption/:bcpid/:cbfid",
+  getRecoveryResumptionsByBCPID
+);
 
 router.get("/api/bcpRecoveryResumption/:bcpid/:id", getRecoveryResumptionByIds);
 

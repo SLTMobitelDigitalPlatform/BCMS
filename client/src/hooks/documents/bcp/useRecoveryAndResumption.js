@@ -8,16 +8,11 @@ export const useRecoveryAndResumptions = () => {
   const [loading, setLoading] = useState(false);
 
   // Fetch recovery and resumptions by BCP ID
-  const fetchRecoveryResumptionsByBCPID = async (bcpid, cbfid = null) => {
+  const fetchRecoveryResumptionsByBCPID = async (bcpid, cbfid) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/bcpRecoveryResumption/${bcpid}`,
-        {
-          params: {
-            criticalBusinessFunction: cbfid ? cbfid : null,
-          },
-        }
+        `/api/bcpRecoveryResumption/${bcpid}/${cbfid}`
       );
       setRecoveryResumptions(response.data);
     } catch (err) {

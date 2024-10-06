@@ -13,10 +13,9 @@ const RecoveryResumption = () => {
   } = useRecoveryAndResumptions();
 
   const { bcpid, cbfid } = useParams();
-  console.log(bcpid, cbfid);
 
   useEffect(() => {
-    fetchRecoveryResumptionsByBCPID(bcpid);
+    fetchRecoveryResumptionsByBCPID(bcpid, cbfid);
   }, []);
 
   const handleDelete = async (id) => {
@@ -57,9 +56,10 @@ const RecoveryResumption = () => {
           <table className="table-fixed relative w-full py-10 border bg-white border-indigo-800">
             <thead className="bg-indigo-200">
               <tr>
+                <th className="w-20 doc-table-head">No</th>
                 <th className="w-20 doc-table-head">Description</th>
-                <th className="w-20 doc-table-head">Timing of Item</th>
-                <th className="w-36 doc-table-head">Duration Person</th>
+                <th className="w-20 doc-table-head">Timing</th>
+                <th className="w-36 doc-table-head">Duration</th>
                 <th className="w-36 doc-table-head">Role</th>
                 <th className="w-36 doc-table-head">
                   At Time Of Incident Actions
@@ -67,16 +67,23 @@ const RecoveryResumption = () => {
                 <th className="w-28 doc-table-head">
                   At Time Of Incident Comments
                 </th>
+                <th className="w-28 doc-table-head">Actions</th>
               </tr>
             </thead>
             <tbody>
               {recoveryResumptions.map((recoveryResumption) => (
                 <tr key={recoveryResumption._id} className="hover:bg-gray-100">
                   <td className="py-2 px-4 w-20 doc-table-data text-center">
+                    {recoveryResumption.number}
+                  </td>
+                  <td className="py-2 px-4 w-20 doc-table-data text-center">
                     {recoveryResumption.description}
                   </td>
                   <td className="py-2 px-4 w-20 doc-table-data text-center">
                     {recoveryResumption.timing}
+                  </td>
+                  <td className="py-2 px-4 w-20 doc-table-data text-center">
+                    {recoveryResumption.duration}
                   </td>
                   <td className="py-2 px-4 w-36 doc-table-data">
                     {recoveryResumption.role}

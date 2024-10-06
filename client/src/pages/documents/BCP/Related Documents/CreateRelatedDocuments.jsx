@@ -26,8 +26,8 @@ const CreateRelatedDocuments = () => {
       const relatedDocumentData = { ...formData, bcpid };
       await addRelatedDocument(relatedDocumentData);
       createAlert(
-        "Document Control Added",
-        `Document Control "${formData.referenceDocument}" added successfully!`
+        "Related Document Added",
+        `Related Document "${formData.referenceDocument}" added successfully!`
       );
       navigate(path);
     } catch (error) {

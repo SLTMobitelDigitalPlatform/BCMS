@@ -13,13 +13,8 @@ exports.createRecoveryResumption = async (req, res) => {
 
 // Get all Recovery Resumptions by BCP ID
 exports.getRecoveryResumptionsByBCPID = async (req, res) => {
-  const { bcpid } = req.params;
-  const { criticalBusinessFunction } = req.query;
-
-  const filter = { bcpid };
-  if (criticalBusinessFunction) {
-    filter.criticalBusinessFunction = criticalBusinessFunction;
-  }
+  const { bcpid, cbfid } = req.params;
+  const filter = { bcpid, cbfid };
 
   try {
     const recoveryResumptions = await RecoveryResumption.find(filter);
