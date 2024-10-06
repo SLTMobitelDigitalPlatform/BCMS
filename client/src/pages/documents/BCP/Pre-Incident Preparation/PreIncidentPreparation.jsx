@@ -1,31 +1,26 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { usePreIncidentPreparation } from "../../../../hooks/documents/bcp/usePreIncidentPreparation";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const PreIncidentPreparation = () => {
-  const {
-    preIncidentPreparations,
-    loading,
-    fetchPreIncidentPreparationByBCPID,
-    deletePreIncidentPreparation,
-  } = usePreIncidentPreparation();
-
   const { bcpid } = useParams();
 
-  useEffect(() => {
-    fetchPreIncidentPreparationByBCPID(bcpid);
-  }, []);
+  const {
+    allDocuments: preIncidentPreparations,
+    isLoading: loading,
 
-  const handleDelete = async (id) => {
+    deleteDocument,
+  } = usePreIncidentPreparation(bcpid);
+
+  const handleDelete = (id) => {
     deleteAlert(
       "Are you sure?",
       "You are about to delete Pre-Incident Preparation. This action cannot be undone.",
       "Yes, delete it!",
       "Pre-Incident Preparation deleted successfully!",
       "Error deleting Pre-Incident Preparation",
-      () => deletePreIncidentPreparation(id, bcpid)
+      () => deleteDocument(id)
     );
   };
 
