@@ -210,7 +210,7 @@ const Sidebar = () => {
           {/* Policies */}
           <li>
             <NavLink
-              to="/"
+              to="/policies"
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
               }
