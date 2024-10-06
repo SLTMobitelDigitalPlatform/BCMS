@@ -1,75 +1,95 @@
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
-export const useDocumentControl = () => {
-  const [documentControls, setDocumentControls] = useState([]);
-  const [documentControl, setDocumentControl] = useState([]);
-  const [loading, setLoading] = useState(false);
+export const useDocumentControl = (bcpid, id) => {
+  const queryClient = useQueryClient();
 
-  // Fetch document controls by BCP ID
-  const fetchDocumentControlsByBCPID = async (bcpid) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpDocumentControl/${bcpid}`
-      );
-      setDocumentControls(response.data);
-    } catch (err) {
-      handleError("Error fetching document controls.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch all document controls by BCP ID and cache the result
+  const { data: allDocuments, isLoading: isLoadingAll } = useQuery({
+    queryKey: ["documentControls", bcpid],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpDocumentControl/${bcpid}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching all document controls.", err);
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !id,
+  });
 
-  // Fetch a single legal requirement by BCP ID and Mongo ID
-  const fetchDocumentControlsByIds = async (bcpid, id) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpDocumentControl/${bcpid}/${id}`
-      );
-      setDocumentControl(response.data);
-    } catch (err) {
-      handleError("Error fetching document control.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch a single document control by BCP ID and Mongo ID
+  const { data: singleDocument, isLoading: isLoadingSingle } = useQuery({
+    queryKey: ["documentControl", bcpid, id],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpDocumentControl/${bcpid}/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching single document control.", err);
+      }
+    },
+    enabled: !!id,
+  });
 
-  // Add a new document control
-  const addDocumentControl = async (documentControlData) => {
-    try {
-      await axiosInstance.post(
-        "/api/bcpDocumentControl/add",
-        documentControlData
-      );
-    } catch (err) {
-      handleError("Error adding document control.", err);
-    }
-  };
+  // Create new document control
+  const { mutate: createDocument } = useMutation({
+    mutationFn: async (data) => {
+      try {
+        const response = await axiosInstance.post(
+          "/api/bcpDocumentControl/add",
+          data
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error creating document control.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["documentControls", bcpid]);
+    },
+  });
 
-  // Update a document control
-  const updateDocumentControl = async (id, documentControlData) => {
-    try {
-      await axiosInstance.put(
-        `/api/bcpDocumentControl/edit/${id}`,
-        documentControlData
-      );
-    } catch (err) {
-      handleError("Error updating document control.", err);
-    }
-  };
+  // Update an existing document control
+  const { mutate: updateDocument } = useMutation({
+    mutationFn: async (updateData) => {
+      try {
+        const response = await axiosInstance.put(
+          `/api/bcpDocumentControl/edit/${id}`,
+          updateData
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error updating document control.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["documentControls", bcpid]);
+    },
+  });
 
-  // Delete a document control
-  const deleteDocumentControl = async (id, bcpid) => {
-    try {
-      await axiosInstance.delete(`/api/bcpDocumentControl/delete/${id}`);
-      await fetchDocumentControlsByBCPID(bcpid);
-    } catch (err) {
-      handleError("Error deleting document control.", err);
-    }
-  };
+  // Delete an existing document control
+  const { mutate: deleteDocument } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const response = await axiosInstance.delete(
+          `/api/bcpDocumentControl/delete/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error deleting document control.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["documentControls", bcpid]);
+    },
+  });
 
   // Handle errors
   const handleError = (message, err) => {
@@ -78,42 +98,11 @@ export const useDocumentControl = () => {
   };
 
   return {
-    documentControls,
-    documentControl,
-    loading,
-    // error,
-    // fetchDocumentControls,
-    fetchDocumentControlsByBCPID,
-    fetchDocumentControlsByIds,
-    // fetchLastDocumentControl,
-    addDocumentControl,
-    updateDocumentControl,
-    deleteDocumentControl,
+    allDocuments,
+    singleDocument,
+    isLoading: id ? isLoadingSingle : isLoadingAll,
+    createDocument,
+    updateDocument,
+    deleteDocument,
   };
 };
-
-// Fetch all document controls
-// const fetchDocumentControls = async () => {
-//   setLoading(true);
-//   try {
-//     const response = await axiosInstance.get("/api/bcpDocumentControl");
-//     setDocumentControls(response.data);
-//   } catch (err) {
-//     handleError("Error fetching document controls.", err);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
-//  Fetch the last document control
-// const fetchLastDocumentControl = async () => {
-//   setLoading(true);
-//   try {
-//     const response = await axiosInstance.get("/api/bcpDocumentControl/last");
-//     return response.data;
-//   } catch (err) {
-//     handleError("Error fetching last document control.", err);
-//   } finally {
-//     setLoading(false);
-//   }
-// };

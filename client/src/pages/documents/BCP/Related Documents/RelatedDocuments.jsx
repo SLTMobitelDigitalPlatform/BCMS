@@ -12,7 +12,7 @@ const RelatedDocuments = () => {
     deleteDocument,
   } = useRelatedDocuments(bcpid);
 
-  const handleDelete = async (id, refDoc) => {
+  const handleDelete = (id, refDoc) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete "${refDoc}" Related Document. This action cannot be undone.`,

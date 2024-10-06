@@ -16,15 +16,10 @@ const EditRecoveryStrategy = () => {
   const path = `/Business-Continuity-Plan/recovery-strategy/${bcpid}`;
 
   const {
-    recoveryStrategy,
-    loading,
-    fetchRecoveryStrategyByIds,
-    updateRecoveryStrategy,
-  } = useRecoveryStrategy();
-
-  useEffect(() => {
-    fetchRecoveryStrategyByIds(bcpid, id);
-  }, []);
+    singleDocument: recoveryStrategy,
+    isLoading: loading,
+    updateDocument,
+  } = useRecoveryStrategy(bcpid, id);
 
   useEffect(() => {
     if (recoveryStrategy) {
@@ -49,7 +44,7 @@ const EditRecoveryStrategy = () => {
         "Yes, Update it!",
         `"${recoveryStrategy.primaryOperatingSite}" has been updated successfully!`,
         `Failed to update "${recoveryStrategy.primaryOperatingSite}"!`,
-        () => updateRecoveryStrategy(id, recoveryStrategyData)
+        () => updateDocument(recoveryStrategyData)
       );
 
       if (result === "success") {
