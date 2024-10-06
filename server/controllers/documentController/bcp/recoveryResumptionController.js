@@ -13,13 +13,8 @@ exports.createRecoveryResumption = async (req, res) => {
 
 // Get all Recovery Resumptions by BCP ID
 exports.getRecoveryResumptionsByBCPID = async (req, res) => {
-  const { bcpid } = req.params;
-  const { criticalBusinessFunction } = req.query;
-
-  const filter = { bcpid };
-  if (criticalBusinessFunction) {
-    filter.criticalBusinessFunction = criticalBusinessFunction;
-  }
+  const { bcpid, cbfid } = req.params;
+  const filter = { bcpid, cbfid };
 
   try {
     const recoveryResumptions = await RecoveryResumption.find(filter);
@@ -34,11 +29,12 @@ exports.getRecoveryResumptionsByBCPID = async (req, res) => {
 
 // Get a single Recovery Resumption by BCP ID and MongoDB ID
 exports.getRecoveryResumptionByIds = async (req, res) => {
-  const { bcpid, id } = req.params;
+  const { bcpid, cbfid, id } = req.params;
   try {
     const recoveryResumption = await RecoveryResumption.findOne({
       _id: id,
       bcpid,
+      cbfid,
     });
     if (!recoveryResumption) {
       return res.status(404).json({ message: "Recovery Resumption not found" });

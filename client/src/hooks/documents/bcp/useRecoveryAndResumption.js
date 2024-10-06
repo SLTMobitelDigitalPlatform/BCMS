@@ -8,16 +8,11 @@ export const useRecoveryAndResumptions = () => {
   const [loading, setLoading] = useState(false);
 
   // Fetch recovery and resumptions by BCP ID
-  const fetchRecoveryResumptionsByBCPID = async (bcpid, cbfid = null) => {
+  const fetchRecoveryResumptionsByBCPID = async (bcpid, cbfid) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/bcpRecoveryResumption/${bcpid}`,
-        {
-          params: {
-            criticalBusinessFunction: cbfid ? cbfid : null,
-          },
-        }
+        `/api/bcpRecoveryResumption/${bcpid}/${cbfid}`
       );
       setRecoveryResumptions(response.data);
     } catch (err) {
@@ -28,11 +23,11 @@ export const useRecoveryAndResumptions = () => {
   };
 
   // Fetch a single recovery and resumption by BCP ID and Mongo ID
-  const fetchRecoveryResumptionByIds = async (bcpid, id) => {
+  const fetchRecoveryResumptionByIds = async (bcpid, cbfid, id) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/bcpRecoveryResumption/${bcpid}/${id}`
+        `/api/bcpRecoveryResumption/${bcpid}/${cbfid}/${id}`
       );
       setRecoveryResumption(response.data);
     } catch (err) {
