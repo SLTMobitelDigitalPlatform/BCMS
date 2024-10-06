@@ -147,6 +147,8 @@ import OrgCallTreeTable from "./pages/Call Tree/OrgCallTreeTable";
 import CallTreeHomePage from "./pages/Call Tree/CallTreeHomePage";
 import PoliciesPage from "./pages/Policies/OrgPolicies";
 import AddDocument from "./pages/Policies/AddDocument";
+import CreateRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/CreateRecoveryResumption";
+import EditRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/EditRecoveryResumption";
 
 const router = createBrowserRouter([
   {
@@ -472,16 +474,27 @@ const router = createBrowserRouter([
 
       // * Critical Business Function
       {
-        path: "recovery-and-resumption/:bcpid/:id",
-        element: <RecoveryAndResumption />,
-      },
-      {
         path: "createCriticalBusinessFunction/:bcpid",
         element: <CreateCriticalBusinessFunction />,
       },
       {
         path: "editCriticalBusinessFunction/:bcpid/:id",
         element: <EditCriticalBusinessFunction />,
+      },
+
+      // * Recovery And Resumption
+      {
+        path: "recovery-and-resumption/:bcpid/:cbfid",
+        element: <RecoveryAndResumption />,
+      },
+      {
+        path: "createRecoveryResumption/:bcpid/:cbfid",
+        element: <CreateRecoveryResumption />,
+      },
+
+      {
+        path: "editRecoveryResumption/:bcpid/:cbfid/:id",
+        element: <EditRecoveryResumption />,
       },
 
       // * Resources Required
@@ -571,7 +584,7 @@ const router = createBrowserRouter([
       //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:biaid", element: <EditBIAForm /> },
-      //Operating Sites
+      //Operating Sites
       { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
       { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
       //Peaks and Deadliness

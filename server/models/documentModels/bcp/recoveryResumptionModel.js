@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 
 const recoveryResumptionSchema = new mongoose.Schema({
-    description: { type: String, required: true },
+  bcpid: { type: String, required: true },
+  criticalBusinessFunction: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "CriticalBusinessFunction",
+    required: true,
+  },
+  description: { type: String, required: true },
   timing: { type: String, required: true },
   duration: { type: String, required: true },
   role: { type: String, required: true },

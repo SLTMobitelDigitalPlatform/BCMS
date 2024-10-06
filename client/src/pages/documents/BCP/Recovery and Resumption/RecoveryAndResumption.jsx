@@ -12,7 +12,8 @@ const RecoveryResumption = () => {
     deleteRecoveryResumption,
   } = useRecoveryAndResumptions();
 
-  const { bcpid, id } = useParams();
+  const { bcpid, cbfid } = useParams();
+  console.log(bcpid, cbfid);
 
   useEffect(() => {
     fetchRecoveryResumptionsByBCPID(bcpid);
@@ -40,9 +41,11 @@ const RecoveryResumption = () => {
     <div className="h-full flex felx-col overflow-hidden">
       <div className="overflow-hidden h-screen rounded-2xl p-3">
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-xl font-bold text-indigo-900">XXXX</h1>
+          <h1 className="text-xl font-bold text-indigo-900">
+            Recovery and Resumption
+          </h1>
           <Link
-            to={`/createRecoveryResumption/${bcpid}`}
+            to={`/createRecoveryResumption/${bcpid}/${cbfid}`}
             className="btn-primary font-semibold"
           >
             Add Details
@@ -87,7 +90,7 @@ const RecoveryResumption = () => {
                   <td className="py-2 px-4 w-28 doc-table-data">
                     <div className="flex justify-center gap-2">
                       <Link
-                        to={`/editRecoveryResumption/${bcpid}/${recoveryResumption._id}`}
+                        to={`/editRecoveryResumption/${bcpid}/${cbfid}/${recoveryResumption._id}`}
                         className="doc-edit-btn"
                       >
                         Edit

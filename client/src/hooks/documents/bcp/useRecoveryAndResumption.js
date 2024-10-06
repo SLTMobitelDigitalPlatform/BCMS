@@ -8,11 +8,16 @@ export const useRecoveryAndResumptions = () => {
   const [loading, setLoading] = useState(false);
 
   // Fetch recovery and resumptions by BCP ID
-  const fetchRecoveryResumptionsByBCPID = async (bcpid) => {
+  const fetchRecoveryResumptionsByBCPID = async (bcpid, cbfid = null) => {
     setLoading(true);
     try {
       const response = await axiosInstance.get(
-        `/api/bcpRecoveryResumption/${bcpid}`
+        `/api/bcpRecoveryResumption/${bcpid}`,
+        {
+          params: {
+            criticalBusinessFunction: cbfid ? cbfid : null,
+          },
+        }
       );
       setRecoveryResumptions(response.data);
     } catch (err) {
@@ -78,38 +83,10 @@ export const useRecoveryAndResumptions = () => {
     recoveryResumptions,
     recoveryResumption,
     loading,
-    // fetchRecoveryResumptions,
     fetchRecoveryResumptionsByBCPID,
     fetchRecoveryResumptionByIds,
-    // fetchLastRecoveryResumption,
     addRecoveryResumption,
     updateRecoveryResumption,
     deleteRecoveryResumption,
   };
 };
-
-// Fetch all recovery and resumptions
-// const fetchRecoveryResumptions = async () => {
-//   setLoading(true);
-//   try {
-//     const response = await axiosInstance.get("/api/bcpRecoveryResumption");
-//     setRecoveryResumptions(response.data);
-//   } catch (err) {
-//     handleError("Error fetching recovery and resumptions.", err);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
-// Fetch the last recovery and resumption
-// const fetchLastRecoveryResumption = async () => {
-//   setLoading(true);
-//   try {
-//     const response = await axiosInstance.get("/api/bcpRecoveryResumption/last");
-//     return response.data;
-//   } catch (err) {
-//     handleError("Error fetching last recovery and resumption.", err);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
