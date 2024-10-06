@@ -21,10 +21,10 @@ export const updateAlert = (
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText,
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
         try {
-          await updateFunction();
+          updateFunction();
           Swal.fire("Updated!", successMessage, "success");
           resolve("success");
         } catch (error) {
@@ -55,10 +55,10 @@ export const deleteAlert = (
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     confirmButtonText,
-  }).then(async (result) => {
+  }).then((result) => {
     if (result.isConfirmed) {
       try {
-        await deleteFunction();
+        deleteFunction();
         Swal.fire("Deleted!", successMessage, "success");
       } catch (error) {
         console.error(errorMessage, error);

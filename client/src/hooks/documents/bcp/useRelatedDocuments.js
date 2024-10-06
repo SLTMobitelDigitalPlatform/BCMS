@@ -5,7 +5,7 @@ import { errorAlert } from "../../../utilities/alert";
 export const useRelatedDocuments = (bcpid, id) => {
   const queryClient = useQueryClient();
 
-  // Fetch all related documents by bcpid and cache the result
+  // Fetch all related documents by BCP ID and cache the result
   const { data: allDocuments, isLoading: isLoadingAll } = useQuery({
     queryKey: ["relatedDocuments", bcpid],
     queryFn: async () => {
@@ -22,7 +22,7 @@ export const useRelatedDocuments = (bcpid, id) => {
     enabled: !id,
   });
 
-  // Fetch a single related document by bcpid and mongo id
+  // Fetch a single related document by BCP ID and Mongo ID
   const { data: singleDocument, isLoading: isLoadingSingle } = useQuery({
     queryKey: ["relatedDocument", bcpid, id],
     queryFn: async () => {
@@ -40,11 +40,11 @@ export const useRelatedDocuments = (bcpid, id) => {
 
   // Create new related document
   const { mutate: createDocument } = useMutation({
-    mutationFn: async (newDoc) => {
+    mutationFn: async (data) => {
       try {
         const response = await axiosInstance.post(
           "/api/bcpRelatedDocuments/add",
-          newDoc
+          data
         );
         return response.data;
       } catch (err) {
@@ -58,11 +58,11 @@ export const useRelatedDocuments = (bcpid, id) => {
 
   // Update an existing related document
   const { mutate: updateDocument } = useMutation({
-    mutationFn: async (updatedDoc) => {
+    mutationFn: async (updateData) => {
       try {
         const response = await axiosInstance.put(
           `/api/bcpRelatedDocuments/edit/${id}`,
-          updatedDoc
+          updateData
         );
         return response.data;
       } catch (err) {

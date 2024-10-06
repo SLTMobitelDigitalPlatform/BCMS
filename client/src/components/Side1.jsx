@@ -113,6 +113,19 @@ const Side1 = () => {
         },
       ],
     },
+
+    {
+      title: "Meetings",
+      spacing: true,
+      icon: <FaVideo />,
+      link: "/meeting",
+    },
+    { title: "Calendar", icon: <FaCalendarDays />, link: "/calendar" },
+    {
+      title: "Roles & Responsibilities",
+      icon: <FaListCheck />,
+      link: "/roles",
+    },
     {
       title: "Organizational Documents",
       icon: <FaFolderTree />,
@@ -129,29 +142,17 @@ const Side1 = () => {
           icon: <FaSitemap />,
           link: "/call-tree-home",
         },
-        {
-          title: "Audit Report",
-          icon: <FaFileInvoiceDollar />,
-          link: "/a",
-        },
-        {
-          title: "Drill Report",
-          icon: <FaFileShield />,
-          link: "/d",
-        },
+        // {
+        //   title: "Audit Report",
+        //   icon: <FaFileInvoiceDollar />,
+        //   link: "/a",
+        // },
+        // {
+        //   title: "Drill Report",
+        //   icon: <FaFileShield />,
+        //   link: "/d",
+        // },
       ],
-    },
-    {
-      title: "Meetings",
-      spacing: true,
-      icon: <FaVideo />,
-      link: "/meeting",
-    },
-    { title: "Calendar", icon: <FaCalendarDays />, link: "/calendar" },
-    {
-      title: "Roles & Responsibilities",
-      icon: <FaListCheck />,
-      link: "/roles",
     },
     { title: "Home", spacing: true, icon: <FaHouse />, link: "/" },
     { title: "Profile", icon: <FaUser />, link: "/profile" },

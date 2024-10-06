@@ -17,14 +17,14 @@ const CreateRelatedDocuments = () => {
 
   const { createDocument } = useRelatedDocuments(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
       const relatedDocumentData = { ...formData, bcpid };
-      await createDocument(relatedDocumentData);
+      createDocument(relatedDocumentData);
       createAlert(
         "Related Document Added",
         `Related Document "${formData.referenceDocument}" added successfully!`
