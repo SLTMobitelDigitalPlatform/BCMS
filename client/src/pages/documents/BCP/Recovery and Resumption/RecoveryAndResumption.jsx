@@ -44,7 +44,7 @@ const RecoveryResumption = () => {
             <Link
               to={`/Business-Continuity-Plan/critical-business-function/${bcpid}`}
             >
-              Critical Business Function:{" "}
+              Critical Business Function{">"}
             </Link>
             Recovery and Resumption
           </h1>
