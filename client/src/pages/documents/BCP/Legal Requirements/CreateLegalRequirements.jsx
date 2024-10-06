@@ -14,26 +14,25 @@ const CreateLegalRequirements = () => {
   });
 
   const { bcpid } = useParams();
-
   const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/legal-requirements/${bcpid}`;
 
   const { sortedUsers, loading, fetchUsers } = useUsers();
-  const { addLegalRequirement } = useLegalRequirements();
+  const { createDocument } = useLegalRequirements(bcpid);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
       const legalRequirementData = { ...formData, bcpid };
-      await addLegalRequirement(legalRequirementData);
+      createDocument(legalRequirementData);
       createAlert(
         "Legal Requirement Added",
         `Legal Requirement "${formData.name}" added successfully!`

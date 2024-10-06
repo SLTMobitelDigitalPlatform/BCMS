@@ -21,15 +21,14 @@ const EditLegalRequirements = () => {
   const { sortedUsers, loading: usersLoading, fetchUsers } = useUsers();
 
   const {
-    legalRequirement,
-    loading: legalRequirementLoading,
-    fetchLegalRequirementByIds,
-    updateLegalRequirement,
-  } = useLegalRequirements();
+    singleDocument: legalRequirement,
+    isLoading: legalRequirementLoading,
+
+    updateDocument,
+  } = useLegalRequirements(bcpid, id);
 
   useEffect(() => {
     fetchUsers();
-    fetchLegalRequirementByIds(bcpid, id);
   }, []);
 
   useEffect(() => {
@@ -46,7 +45,7 @@ const EditLegalRequirements = () => {
     e.preventDefault();
     setIsUpdating(true);
     try {
-      // ! Add duplicate id validation
+      // ! Add duplicate id validation false
 
       const legalRequirementData = { ...formData, bcpid };
 
@@ -56,7 +55,7 @@ const EditLegalRequirements = () => {
         "Yes, Update it!",
         `"${legalRequirement.name}" has been updated successfully!`,
         `Failed to update "${legalRequirement.name}"!`,
-        () => updateLegalRequirement(id, legalRequirementData)
+        () => updateDocument(legalRequirementData)
       );
 
       if (result === "success") {
@@ -64,6 +63,8 @@ const EditLegalRequirements = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
