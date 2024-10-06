@@ -1,75 +1,95 @@
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
-export const useRelatedDocuments = () => {
-  const [relatedDocuments, setRelatedDocuments] = useState([]);
-  const [relatedDocument, setRelatedDocument] = useState([]);
-  const [loading, setLoading] = useState(false);
+export const useRelatedDocuments = (bcpid, id) => {
+  const queryClient = useQueryClient();
 
-  // Fetch document controls by BCP ID
-  const fetchRelatedDocumentsByBCPID = async (bcpid) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpRelatedDocuments/${bcpid}`
-      );
-      setRelatedDocuments(response.data);
-    } catch (err) {
-      handleError("Error fetching related documents.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch all related documents by bcpid and cache the result
+  const { data: allDocuments, isLoading: isLoadingAll } = useQuery({
+    queryKey: ["relatedDocuments", bcpid],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpRelatedDocuments/${bcpid}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching all related documents.", err);
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !id,
+  });
 
-  // Fetch a single related document by BCP ID and Mongo ID
-  const fetchRelatedDocumentByIds = async (bcpid, id) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpRelatedDocuments/${bcpid}/${id}`
-      );
-      setRelatedDocument(response.data);
-    } catch (err) {
-      handleError("Error fetching related document.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch a single related document by bcpid and mongo id
+  const { data: singleDocument, isLoading: isLoadingSingle } = useQuery({
+    queryKey: ["relatedDocument", bcpid, id],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpRelatedDocuments/${bcpid}/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching single related document.", err);
+      }
+    },
+    enabled: !!id,
+  });
 
-  // Add a new related document
-  const addRelatedDocument = async (relatedDocumentData) => {
-    try {
-      await axiosInstance.post(
-        "/api/bcpRelatedDocuments/add",
-        relatedDocumentData
-      );
-    } catch (err) {
-      handleError("Error adding related document.", err);
-    }
-  };
+  // Create new related document
+  const { mutate: createDocument } = useMutation({
+    mutationFn: async (newDoc) => {
+      try {
+        const response = await axiosInstance.post(
+          "/api/bcpRelatedDocuments/add",
+          newDoc
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error creating related document.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["relatedDocuments", bcpid]);
+    },
+  });
 
-  // Update a related document
-  const updateRelatedDocument = async (id, relatedDocumentData) => {
-    try {
-      await axiosInstance.put(
-        `/api/bcpRelatedDocuments/edit/${id}`,
-        relatedDocumentData
-      );
-    } catch (err) {
-      handleError("Error updating related document.", err);
-    }
-  };
+  // Update an existing related document
+  const { mutate: updateDocument } = useMutation({
+    mutationFn: async (updatedDoc) => {
+      try {
+        const response = await axiosInstance.put(
+          `/api/bcpRelatedDocuments/edit/${id}`,
+          updatedDoc
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error updating related document.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["relatedDocuments", bcpid]);
+    },
+  });
 
-  // Delete a related document
-  const deleteRelatedDocument = async (id, bcpid) => {
-    try {
-      await axiosInstance.delete(`/api/bcpRelatedDocuments/delete/${id}`);
-      await fetchRelatedDocumentsByBCPID(bcpid);
-    } catch (err) {
-      handleError("Error deleting related document.", err);
-    }
-  };
+  // Delete an existing related document
+  const { mutate: deleteDocument } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const response = await axiosInstance.delete(
+          `/api/bcpRelatedDocuments/delete/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error deleting related document.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["relatedDocuments", bcpid]);
+    },
+  });
 
   // Handle errors
   const handleError = (message, err) => {
@@ -78,13 +98,11 @@ export const useRelatedDocuments = () => {
   };
 
   return {
-    relatedDocument,
-    relatedDocuments,
-    loading,
-    fetchRelatedDocumentsByBCPID,
-    fetchRelatedDocumentByIds,
-    addRelatedDocument,
-    updateRelatedDocument,
-    deleteRelatedDocument,
+    allDocuments,
+    singleDocument,
+    isLoading: id ? isLoadingSingle : isLoadingAll,
+    createDocument,
+    updateDocument,
+    deleteDocument,
   };
 };

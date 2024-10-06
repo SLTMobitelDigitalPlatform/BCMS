@@ -16,15 +16,10 @@ const EditRelatedDocuments = () => {
   const path = `/Business-Continuity-Plan/related-documents/${bcpid}`;
 
   const {
-    relatedDocument,
-    loading,
-    fetchRelatedDocumentByIds,
-    updateRelatedDocument,
-  } = useRelatedDocuments();
-
-  useEffect(() => {
-    fetchRelatedDocumentByIds(bcpid, id);
-  }, []);
+    singleDocument: relatedDocument,
+    isLoading: loading,
+    updateDocument,
+  } = useRelatedDocuments(bcpid, id);
 
   useEffect(() => {
     if (relatedDocument) {
@@ -49,7 +44,7 @@ const EditRelatedDocuments = () => {
         "Yes, Update it!",
         `"${relatedDocument.referenceDocument}" has been updated successfully!`,
         `Failed to update "${relatedDocument.referenceDocument}"!`,
-        () => updateRelatedDocument(id, relatedDocumentData)
+        () => updateDocument(relatedDocumentData)
       );
 
       if (result === "success") {

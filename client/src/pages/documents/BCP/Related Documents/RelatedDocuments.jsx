@@ -1,22 +1,16 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useRelatedDocuments } from "../../../../hooks/documents/bcp/useRelatedDocuments";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const RelatedDocuments = () => {
-  const {
-    relatedDocuments,
-    loading,
-    fetchRelatedDocumentsByBCPID,
-    deleteRelatedDocument,
-  } = useRelatedDocuments();
-
   const { bcpid } = useParams();
 
-  useEffect(() => {
-    fetchRelatedDocumentsByBCPID(bcpid);
-  }, [bcpid]);
+  const {
+    allDocuments: relatedDocuments,
+    isLoading: loading,
+    deleteDocument,
+  } = useRelatedDocuments(bcpid);
 
   const handleDelete = async (id, refDoc) => {
     deleteAlert(
@@ -25,7 +19,7 @@ const RelatedDocuments = () => {
       "Yes, delete it!",
       `"${refDoc}" Related Document deleted successfully!`,
       "Error deleting Related Document",
-      () => deleteRelatedDocument(id, bcpid)
+      () => deleteDocument(id)
     );
   };
 

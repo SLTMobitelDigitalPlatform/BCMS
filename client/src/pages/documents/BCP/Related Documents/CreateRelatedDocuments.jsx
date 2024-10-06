@@ -15,7 +15,7 @@ const CreateRelatedDocuments = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/related-documents/${bcpid}`;
 
-  const { addRelatedDocument } = useRelatedDocuments();
+  const { createDocument } = useRelatedDocuments(bcpid);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ const CreateRelatedDocuments = () => {
       // ! Add duplicate id validation
 
       const relatedDocumentData = { ...formData, bcpid };
-      await addRelatedDocument(relatedDocumentData);
+      await createDocument(relatedDocumentData);
       createAlert(
         "Related Document Added",
         `Related Document "${formData.referenceDocument}" added successfully!`
