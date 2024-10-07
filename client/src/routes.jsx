@@ -176,11 +176,7 @@ const router = createBrowserRouter([
     element: <Feedback />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/feedbacks",
-    element: <FeedbackList />,
-    errorElement: <ErrorPage />,
-  },
+
   {
     path: "/description/:id",
     element: <DescriptionPage />,
@@ -222,6 +218,12 @@ const router = createBrowserRouter([
       },
       // Employee Table
       { path: "employee", element: <Employee /> },
+
+      {
+        path: "/feedbacks",
+        element: <FeedbackList />,
+        errorElement: <ErrorPage />,
+      },
 
       // Policies
       { path: "policies", element: <PoliciesPage /> },
