@@ -42,8 +42,8 @@ const MyMiniCalendar = () => {
   };
 
   return (
-    <div className="flex flex-col bg-indigo-200 rounded-lg">
-      <h1 className="text-2xl sm:text-3xl mt-1 font-bold text-blue-600 text-center">
+    <div className="flex flex-col bg-indigo-900 rounded-lg">
+      <h1 className="text-2xl sm:text-3xl mt-1 font-bold text-white text-center">
         Calendar
       </h1>
       <div className="bg-white shadow-lg rounded-lg p-4 m-2">

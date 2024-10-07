@@ -37,7 +37,7 @@ const OrgCallTree = () => {
   };
 
   const config = {
-    // PageFitMode: PageFitMode.FitToPage,
+    pageFitMode: PageFitMode.None,
     autoSizeMaximum: { width: 1200, height: 600 },
     cursorItem: 0,
     highlightItem: 0,
@@ -48,7 +48,7 @@ const OrgCallTree = () => {
       {
         name: "CustomTemplate",
         itemSize: { width: 305, height: 130 },
-        // minimizedItemSize: { width: 3, height: 3 },
+        minimizedItemSize: { width: 3, height: 3 },
         highlightPadding: { left: 2, top: 2, right: 2, bottom: 2 },
         onItemRender: ({ context: itemConfig }) => {
           return (
