@@ -105,11 +105,13 @@ import EditBiaResources from "./pages/documents/BIA/Resources/EditResources";
 import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/CriticalBusinessFunction";
 import CreateBiaCBF from "./pages/documents/BIA/BIACriticalBusinessFunction/CreateCriticalBusinessFunction";
 import EditBiaCBF from "./pages/documents/BIA/BIACriticalBusinessFunction/EditCriticalBusinessFunction";
+//BIA Dependencies
+import BiaDependencies from "./pages/documents/BIA/Dependencies/DependenciesLayout";
+import CreateBiaExternalDependencies from "./pages/documents/BIA/Dependencies/External Dependencies/CreateExternalDependencies";
 
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaImpactAnalysis from "./pages/documents/BIA/Impact Analysis/impactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
-import BiaDependencies from "./pages/documents/BIA/Dependencies/dependencies";
 import BiaWorkAreaRecovery from "./pages/documents/BIA/Work Area Recovery/workAreaRecovery";
 import BiaManpower from "./pages/documents/BIA/Manpower/manpower";
 
@@ -587,9 +589,9 @@ const router = createBrowserRouter([
       //Critical Business Function
       { path: "createBIACriticalBusinessFunction/:biaid", element: <CreateBiaCBF /> },
       { path: "editBIACriticalBusinessFunction/:biaid/:id", element: <EditBiaCBF /> },
-      // External Dependency
-      { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaCBF /> },
-      { path: "editBIAExternalDependencies/:biaid/:id", element: <EditBiaCBF /> },
+      //Dependency
+      { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaExternalDependencies/> },
+
 
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },

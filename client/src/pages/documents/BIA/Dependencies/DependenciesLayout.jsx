@@ -65,7 +65,7 @@ const Dependencies = () => {
       {/* Tab Content */}
       <div className="h-full w-full overflow-auto">
         {activeTab === "internalDependencies" ? (
-          <InternalDependencies />
+          <ExternalDependencies /> //<InternalDependencies />
         ) : (
           <ExternalDependencies />
         )}
