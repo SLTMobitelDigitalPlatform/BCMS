@@ -14,19 +14,14 @@ const MeetingCard = () => {
       console.log("Fetched Meetings:", response.data); // Log fetched meetings
 
       const meetingArray = Array.isArray(response.data) ? response.data : [];
+
       const formattedMeetings = meetingArray.map((meeting) => ({
         ...meeting,
-        start: new Date(meeting.startTime), // Ensure this matches your API response
-        end: new Date(meeting.endTime), // Ensure this matches your API response
+        start: new Date(meeting.date),
       }));
-
+      console.log("formattedMeetings:", formattedMeetings);
       const upcomingMeetings = formattedMeetings.filter((meeting) => {
-        console.log(
-          "Checking meeting:",
-          meeting.title,
-          "Start:",
-          meeting.start
-        );
+        console.log("Start:", meeting.start);
         return meeting.start > new Date(); // Only upcoming meetings
       });
 
@@ -37,8 +32,8 @@ const MeetingCard = () => {
   };
 
   return (
-    <div className="bg-green-100 p-4 w-full h-full rounded-2xl overflow-y-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold text-green-600 text-center mb-4">
+    <div className="bg-indigo-900 p-4 w-full h-full rounded-2xl overflow-y-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-4">
         Upcoming Meetings
       </h1>
       <div className="flex flex-col gap-4">
@@ -46,13 +41,16 @@ const MeetingCard = () => {
           meetings.map((meeting, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
               <h2 className="font-bold text-lg text-green-800">
-                {meeting.title}
+                {meeting.purpose}
               </h2>
-              <p className="text-md text-gray-600">
-                {new Date(meeting.start).toLocaleDateString()} -{" "}
-                {new Date(meeting.end).toLocaleDateString()}
-              </p>
-              <p className="text-sm text-gray-500">{meeting.description}</p>
+              <div className="flex justify-between items-center text-md text-gray-600">
+                <p>{new Date(meeting.start).toLocaleDateString()}</p>
+                <p>
+                  {meeting.startTime} - {meeting.endTime}
+                </p>
+                <p>{meeting.location}</p>
+              </div>
+              <p className="text-sm text-gray-500"></p>
             </div>
           ))
         ) : (
