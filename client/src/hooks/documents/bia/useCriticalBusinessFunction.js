@@ -76,6 +76,11 @@ export const useCriticalBusinessFunction = () => {
     }
   };
 
+  const sortedCBFunctions = criticalBusinessFunctions
+  .slice()
+  .sort((a, b) => a.functionName.localeCompare(b.functionName))
+  .map((cbf) => ({ value: cbf._id, label: cbf.functionName }));
+
   // Handle errors
   const handleError = (message, err) => {
     console.error(message, err.response?.data || err);
@@ -85,6 +90,7 @@ export const useCriticalBusinessFunction = () => {
   return {
     criticalBusinessFunctions,
     criticalBusinessFunction,
+    sortedCBFunctions,
     loading,
     fetchCriticalBusinessFunctionsByBIAID,
     fetchCriticalBusinessFunctionsByIds,
