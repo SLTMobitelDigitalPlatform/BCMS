@@ -37,7 +37,7 @@ const OrgCallTree = () => {
   };
 
   const config = {
-    PageFitMode: PageFitMode.None,
+    // PageFitMode: PageFitMode.FitToPage,
     autoSizeMaximum: { width: 1200, height: 600 },
     cursorItem: 0,
     highlightItem: 0,
@@ -47,16 +47,15 @@ const OrgCallTree = () => {
     templates: [
       {
         name: "CustomTemplate",
-        itemSize: { width: 310, height: 135 },
-        minimizedItemSize: { width: 3, height: 3 },
+        itemSize: { width: 305, height: 130 },
+        // minimizedItemSize: { width: 3, height: 3 },
         highlightPadding: { left: 2, top: 2, right: 2, bottom: 2 },
         onItemRender: ({ context: itemConfig }) => {
           return (
             <div
               className="ContactTemplate bg-slate-200 h-full"
               style={{
-                borderRadius: "15px",
-                padding: "2px",
+                borderRadius: "10px",
                 overflow: "hidden",
               }}
             >
