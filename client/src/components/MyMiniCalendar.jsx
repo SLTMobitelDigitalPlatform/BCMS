@@ -42,17 +42,17 @@ const MyMiniCalendar = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl sm:text-3xl font-bold text-blue-600 text-center mt-6">
-        Events in Calendar
+    <div className="flex flex-col bg-indigo-200 rounded-lg">
+      <h1 className="text-2xl sm:text-3xl mt-1 font-bold text-blue-600 text-center">
+        Calendar
       </h1>
-      <div className="bg-white shadow-lg rounded-lg p-4 mb-10">
+      <div className="bg-white shadow-lg rounded-lg p-4 m-2">
         <Calendar
           localizer={localizer}
           events={events}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 340 }} // Smaller height for mini calendar
+          style={{ height: 340 }}
           views={["month"]}
         />
       </div>

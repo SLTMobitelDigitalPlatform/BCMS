@@ -32,8 +32,8 @@ const MeetingCard = () => {
   };
 
   return (
-    <div className="bg-indigo-900 p-4 w-full h-full rounded-2xl overflow-y-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-4">
+    <div className="bg-lime-200 p-4 w-full h-full rounded-2xl overflow-y-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold text-blue-600 text-center mb-4">
         Upcoming Meetings
       </h1>
       <div className="flex flex-col gap-4">

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { getInitials } from "../utilities/helper";
 import { FaSpinner } from "react-icons/fa";
+import { FaPenToSquare, FaTrash } from "react-icons/fa6";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -135,11 +136,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="md:w-11/12 h-min mx-auto p-4 bg-blue-100 shadow-md rounded-lg space-y-6 mt-4">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-blue-600">User Profile</h1>
-      </div>
-
+    <div className="flex justify-between items-center p-4 gap-10 bg-slate-300 shadow-md rounded-lg">
       <div className="flex flex-col items-center space-y-5">
         <div className="relative w-32 h-32 rounded-full overflow-hidden bg-green-500 shadow-lg">
           {previewUrl ? (
@@ -169,14 +166,14 @@ const UserProfile = () => {
               className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
               onClick={handleEdit}
             >
-              Edit Photo
+              <FaPenToSquare />
             </button>
             {user?.profileImg && (
               <button
                 className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
                 onClick={handleDelete}
               >
-                Delete Photo
+                <FaTrash />
               </button>
             )}
           </div>
@@ -204,12 +201,15 @@ const UserProfile = () => {
       </div>
 
       {user ? (
-        <div className="bg-gray-50 p-2 rounded-lg shadow-inner text-center">
-          <h2 className="text-lg font-semibold text-gray-800">{user.name}</h2>
-          <p className="text-gray-600 text-base">{user.email}</p>
-          <p className="text-gray-600">{user.role}</p>
-          <p className="text-gray-600 capitalize">{user.section.name}</p>
-          <p className="text-gray-600">Service No: {user.serviceNumber}</p>
+        <div className="bg-gray-50 p-4 rounded-lg w-full space-y-1">
+          <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
+          <p className="font-medium text-sm">Email: {user.email}</p>
+          <p className="font-medium text-sm">Role: {user.role}</p>
+          <p className="font-medium text-sm">Designation: {user.designation}</p>
+          <p className="font-medium text-sm">Section: {user.section.name}</p>
+          <p className="font-medium text-sm">
+            Service No: {user.serviceNumber}
+          </p>
         </div>
       ) : (
         <p className="text-red-500">No user details found.</p>
