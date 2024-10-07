@@ -587,6 +587,9 @@ const router = createBrowserRouter([
       //Critical Business Function
       { path: "createBIACriticalBusinessFunction/:biaid", element: <CreateBiaCBF /> },
       { path: "editBIACriticalBusinessFunction/:biaid/:id", element: <EditBiaCBF /> },
+      // External Dependency
+      { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaCBF /> },
+      { path: "editBIAExternalDependencies/:biaid/:id", element: <EditBiaCBF /> },
 
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
