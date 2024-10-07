@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bcp/useCriticalBusinessFunction";
 import { useExternalDependencies } from "../../../../../hooks/documents/bcp/useExternalDependencies";
-import { createAlert } from "../../../../../utilities/alert";
+import { updateAlert } from "../../../../../utilities/alert";
 
-const CreateExternalDependencies = () => {
+const EditExternalDependencies = () => {
   const [formData, setFormData] = useState({
     criticalBusinessFunction: "",
     organization: "",
@@ -16,33 +16,58 @@ const CreateExternalDependencies = () => {
     justification: "",
   });
 
-  const { bcpid } = useParams();
-  const [isCreating, setIsCreating] = useState(false);
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
 
-  const { createDocument } = useExternalDependencies(bcpid);
+  const {
+    singleDocument: externalDependency,
+    isLoading: externalDependencyLoading,
+    updateDocument,
+  } = useExternalDependencies(bcpid, id);
 
-  const { sortedCBFunctions, isLoading: loading } =
+  const { sortedCBFunctions, isLoading: criticalBusinessFunctionLoading } =
     useCriticalBusinessFunction(bcpid);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (externalDependency) {
+      setFormData({
+        criticalBusinessFunction:
+          externalDependency.criticalBusinessFunction || "",
+        organization: externalDependency.organization || "",
+        dependencies: externalDependency.dependencies || "",
+        primaryContact: externalDependency.primaryContact || "",
+        secondaryContact: externalDependency.secondaryContact || "",
+        justification: externalDependency.justification || "",
+      });
+    }
+  }, [externalDependency]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true);
+    setIsUpdating(true);
     try {
-      // ! Add duplicate id validation
+      // ! Add duplicate id validation related
 
       const externalDependencyData = { ...formData, bcpid };
-      createDocument(externalDependencyData);
-      createAlert(
-        "External Dependency Added",
-        `External Dependency added successfully!`
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update "${externalDependency.referenceDocument}"?`,
+        "Yes, Update it!",
+        `"${externalDependency.referenceDocument}" has been updated successfully!`,
+        `Failed to update "${externalDependency.referenceDocument}"!`,
+        () => updateDocument(externalDependencyData)
       );
-      navigate(path, { state: { activeTab: "externalDependencies" } });
+
+      if (result === "success") {
+        navigate(path, { state: { activeTab: "externalDependencies" } });
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsUpdating(false);
     }
   };
 
@@ -60,7 +85,7 @@ const CreateExternalDependencies = () => {
     });
   };
 
-  if (loading)
+  if (criticalBusinessFunctionLoading || externalDependencyLoading)
     return (
       <div className="flex items-center justify-center h-screen">
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
@@ -70,7 +95,7 @@ const CreateExternalDependencies = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New External Dependency
+        Edit External Dependency
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -149,14 +174,14 @@ const CreateExternalDependencies = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isCreating ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isCreating}
+              disabled={isUpdating}
             >
-              {isCreating ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
-                "Create"
+                "Update"
               )}
             </button>
             <Link
@@ -173,4 +198,4 @@ const CreateExternalDependencies = () => {
   );
 };
 
-export default CreateExternalDependencies;
+export default EditExternalDependencies;

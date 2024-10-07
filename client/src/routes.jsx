@@ -149,6 +149,7 @@ import PoliciesPage from "./pages/Policies/OrgPolicies";
 import AddDocument from "./pages/Policies/AddDocument";
 import CreateRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/CreateRecoveryResumption";
 import EditRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/EditRecoveryResumption";
+import EditExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/EditExternalDependencies";
 
 const router = createBrowserRouter([
   {
@@ -513,6 +514,11 @@ const router = createBrowserRouter([
       {
         path: "createExternalDependencies/:bcpid",
         element: <CreateExternalDependencies />,
+      },
+
+      {
+        path: "editExternalDependencies/:bcpid/:id",
+        element: <EditExternalDependencies />,
       },
 
       { path: "createUpstream/:bcpid", element: <CreateUpstream /> },
