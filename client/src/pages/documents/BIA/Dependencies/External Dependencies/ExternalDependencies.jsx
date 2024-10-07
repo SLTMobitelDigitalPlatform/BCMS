@@ -60,7 +60,7 @@ const ExternalDependencies = () => {
             {externalDependencies.map((external) => (
               <tr key={external._id} className="doc-table-hover">
                 <td className="py-2 px-4 doc-table-data">
-                  {getCBFName(external.criticalBusinessFunction)}
+                  {getCBFName(external.criticalBusinessFunctions)}
                 </td>
                 <td className="py-2 px-4 doc-table-data">
                   {external.organization}
