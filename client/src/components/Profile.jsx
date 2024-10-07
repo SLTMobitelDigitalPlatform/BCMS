@@ -5,8 +5,8 @@ import MyMiniCalendar from "./MyMiniCalendar"; // Mini version of your calendar
 
 const Profile = () => {
   return (
-    <div className="flex flex-col md:flex-row h-full gap-3">
-      <div className="h-full w-full space-y-5">
+    <div className="flex flex-col md:flex-row h-full gap-3 bg-blue-200">
+      <div className="h-full w-full space-y-10">
         <UserProfile />
         <MyMiniCalendar />
       </div>

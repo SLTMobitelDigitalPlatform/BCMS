@@ -136,7 +136,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="flex justify-between items-center p-4 gap-10 bg-slate-300 shadow-md rounded-lg">
+    <div className="flex h-56 justify-between items-center p-4 gap-10 bg-indigo-900 shadow-md rounded-lg">
       <div className="flex flex-col items-center space-y-5">
         <div className="relative w-32 h-32 rounded-full overflow-hidden bg-green-500 shadow-lg">
           {previewUrl ? (
