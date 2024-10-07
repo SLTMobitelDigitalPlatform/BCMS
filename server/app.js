@@ -65,6 +65,7 @@ const routerOperatingSite = require("./routes/documentRoutes/businessImpactAnaly
 const routerPeaksDeadline = require("./routes/documentRoutes/businessImpactAnalysis/peaksDeadlinesRoutes");
 const routerBiaResource = require("./routes/documentRoutes/businessImpactAnalysis/resourcesRoutes");
 const routerBIACriticalBusinessFunction = require("./routes/documentRoutes/businessImpactAnalysis/criticalBusinessFunctionRoutes");
+const routerBIAExternalDependencies = require("./routes/documentRoutes/businessImpactAnalysis/externalDependenciesRoutes");
 
 const PORT = 5000;
 
@@ -121,7 +122,8 @@ app.use(
   routerPeaksDeadline,
   routerBiaResource,
   routerOrgCallTree,
-  routerBIACriticalBusinessFunction
+  routerBIACriticalBusinessFunction,
+  routerBIAExternalDependencies
 );
 
 // // Create uploads directory if it doesn't exist
