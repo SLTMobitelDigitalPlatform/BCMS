@@ -7,9 +7,6 @@ import axios from "axios";
 
 const OrgCallTree = () => {
   const [items, setItems] = useState([]);
-  const [sectionName, setSectionName] = useState("");
-  const [sections, setSections] = useState([]);
-  const [selectedSectionId, setSelectedSectionId] = useState("");
 
   const fetchData = async () => {
     try {
@@ -21,6 +18,7 @@ const OrgCallTree = () => {
       }
       const formattedItems = data.map((item) => ({
         id: item._id,
+        title: item.title,
         parent: item.parent ? item.parent._id : null,
         name: item.personName?.name || "NA",
         email: item.personName?.email || "NA",
@@ -49,7 +47,7 @@ const OrgCallTree = () => {
     templates: [
       {
         name: "CustomTemplate",
-        itemSize: { width: 310, height: 120 },
+        itemSize: { width: 310, height: 135 },
         minimizedItemSize: { width: 3, height: 3 },
         highlightPadding: { left: 2, top: 2, right: 2, bottom: 2 },
         onItemRender: ({ context: itemConfig }) => {
@@ -57,7 +55,7 @@ const OrgCallTree = () => {
             <div
               className="ContactTemplate bg-slate-200 h-full"
               style={{
-                borderRadius: "10px",
+                borderRadius: "15px",
                 padding: "2px",
                 overflow: "hidden",
               }}
