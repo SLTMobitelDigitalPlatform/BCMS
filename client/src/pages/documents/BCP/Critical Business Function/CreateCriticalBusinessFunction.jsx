@@ -17,16 +17,16 @@ const CreateCriticalBusinessFunction = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/critical-business-function/${bcpid}`;
 
-  const { addCriticalBusinessFunction } = useCriticalBusinessFunction();
+  const { createDocument } = useCriticalBusinessFunction(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
       const criticalBusinessFunctionData = { ...formData, bcpid };
-      await addCriticalBusinessFunction(criticalBusinessFunctionData);
+      createDocument(criticalBusinessFunctionData);
       createAlert(
         "Critical Business Function Added",
         `Critical Business Function "${formData.name}" added successfully!`

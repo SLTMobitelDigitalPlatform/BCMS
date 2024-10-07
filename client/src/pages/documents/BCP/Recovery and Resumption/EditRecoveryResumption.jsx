@@ -21,15 +21,11 @@ const EditRecoveryResumption = () => {
   const path = `/recovery-and-resumption/${bcpid}/${cbfid}`;
 
   const {
-    recoveryResumption,
-    loading,
-    fetchRecoveryResumptionByIds,
-    updateRecoveryResumption,
-  } = useRecoveryAndResumptions();
+    singleDocument: recoveryResumption,
+    isLoading: loading,
 
-  useEffect(() => {
-    fetchRecoveryResumptionByIds(bcpid, cbfid, id);
-  }, []);
+    updateDocument,
+  } = useRecoveryAndResumptions(bcpid, cbfid, id);
 
   useEffect(() => {
     if (recoveryResumption) {
@@ -59,7 +55,7 @@ const EditRecoveryResumption = () => {
         "Yes, Update it!",
         `Recovery and Resumption "${recoveryResumption.number}" has been updated successfully!`,
         `Failed to update "${recoveryResumption.referenceDocument}"!`,
-        () => updateRecoveryResumption(id, recoveryResumptionData)
+        () => updateDocument(recoveryResumptionData)
       );
 
       if (result === "success") {
