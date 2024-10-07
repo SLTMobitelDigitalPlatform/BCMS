@@ -20,21 +20,20 @@ const CreateResourcesRequired = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/resources-required/${bcpid}`;
 
-  const { addResourceRequired } = useResourcesRequired();
+  const { createDocument } = useResourcesRequired(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
       const resourcesRequiredData = { ...formData, bcpid };
-      await addResourceRequired(resourcesRequiredData);
+      createDocument(resourcesRequiredData);
       createAlert(
         "Resource Required Added",
         `Resource Required "${formData.name}" added successfully!`
       );
-
       navigate(path);
     } catch (error) {
       console.log(error);
