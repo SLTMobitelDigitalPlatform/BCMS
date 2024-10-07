@@ -1,4 +1,4 @@
-const CriticalBusinessFunction = require("../../../models/documentModels/bia/criticalBusinessFunctionModel");
+const CriticalBusinessFunction = require("../../../models/documentModels/businessImpactAnalysis/criticalBusinessFunctionModel");
 
 // Create a new critical business function
 exports.createCriticalBusinessFunction = async (req, res) => {
