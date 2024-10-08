@@ -29,25 +29,29 @@ const EventCard = () => {
   };
 
   return (
-    <div className="bg-indigo-900 p-4 w-full h-full rounded-2xl overflow-y-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-4">
+    <div className="bg-indigo-900 p-4 w-full h-full rounded-2xl overflow-hidden">
+      {/* <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-4">
         Upcoming Events
-      </h1>
-      <div className="flex flex-col gap-4">
-        {events.length > 0 ? (
-          events.map((event, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
-              <h2 className="font-bold text-lg text-blue-800">{event.title}</h2>
-              <p className="text-md text-gray-600 font-semibold">
-                {new Date(event.start).toLocaleDateString()} -{" "}
-                {new Date(event.end).toLocaleDateString()}
-              </p>
-              <p className="text-sm text-gray-500">{event.description}</p>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-600 text-center">No upcoming events.</p>
-        )}
+      </h1> */}
+      <div className="h-full rounded-2xl overflow-y-auto">
+        <div className="flex flex-col gap-4">
+          {events.length > 0 ? (
+            events.map((event, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
+                <h2 className="font-bold text-lg text-blue-800">
+                  {event.title}
+                </h2>
+                <p className="text-md text-gray-600 font-semibold">
+                  {new Date(event.start).toLocaleDateString()} -{" "}
+                  {new Date(event.end).toLocaleDateString()}
+                </p>
+                <p className="text-sm text-gray-500">{event.description}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-600 text-center">No upcoming events.</p>
+          )}
+        </div>
       </div>
     </div>
   );
