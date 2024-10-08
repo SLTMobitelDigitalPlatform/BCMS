@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useUpstream } from "../../../../../hooks/documents/bcp/useUpstream";
+import { updateAlert } from "../../../../../utilities/alert";
 
-import { createAlert } from "../../../../../utilities/alert";
-import { useDownstream } from "../../../../../hooks/documents/bcp/useDownstream";
-
-const CreateDownstream = () => {
+const EditUpstream = () => {
   const location = useLocation();
   const { cbfid } = location.state || {};
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
 
   const [formData, setFormData] = useState({
     criticalBusinessFunction: cbfid ? cbfid.value : "",
@@ -20,34 +23,57 @@ const CreateDownstream = () => {
     options: "",
   });
 
-  const { bcpid } = useParams();
-  const [isCreating, setIsCreating] = useState(false);
-  const navigate = useNavigate();
-  const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
+  const {
+    singleDocument: upstream,
+    isLoading: loading,
+    updateDocument,
+  } = useUpstream(bcpid, cbfid.value, id);
 
-  const { createDocument } = useDownstream(bcpid);
+  useEffect(() => {
+    if (upstream) {
+      setFormData({
+        criticalBusinessFunction: upstream.criticalBusinessFunction || "",
+        organization: upstream.organization || "",
+        forWhat: upstream.forWhat || "",
+        primaryContact: upstream.primaryContact || "",
+        secondaryContact: upstream.secondaryContact || "",
+        rto: upstream.rto || "",
+        justification: upstream.justification || "",
+        options: upstream.options || "",
+      });
+    }
+  }, [upstream]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
 
-      const downstreamData = {
+      const upstreamData = {
         ...formData,
         bcpid,
         criticalBusinessFunction: cbfid.value,
       };
-      createDocument(downstreamData);
-      createAlert(
-        "Downstream Added",
-        `Downstream for ${cbfid.label} added successfully!`
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update Upstream?`,
+        "Yes, Update it!",
+        `Upstream has been updated successfully!`,
+        `Failed to update Upstream!`,
+        () => updateDocument(upstreamData)
       );
-      navigate(path, { state: { activeStream: "downstream", cbfid: cbfid } });
+
+      if (result === "success") {
+        navigate(path, {
+          state: { activeStream: "upstream", cbfid: cbfid },
+        });
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsUpdating(false);
     }
   };
 
@@ -58,9 +84,16 @@ const CreateDownstream = () => {
     });
   };
 
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
+
   return (
     <div className="flex flex-col w-full h-full">
-      <h1 className="text-2xl font-bold text-green-500">Create Downstream</h1>
+      <h1 className="text-2xl font-bold text-green-500">Create Upstream</h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
@@ -145,11 +178,11 @@ const CreateDownstream = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isCreating ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isCreating}
+              disabled={isUpdating}
             >
-              {isCreating ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
                 "Create"
@@ -157,7 +190,7 @@ const CreateDownstream = () => {
             </button>
             <Link
               to={path}
-              state={{ activeStream: "downstream", cbfid: cbfid }}
+              state={{ activeStream: "upstream", cbfid: cbfid }}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
@@ -169,4 +202,4 @@ const CreateDownstream = () => {
   );
 };
 
-export default CreateDownstream;
+export default EditUpstream;

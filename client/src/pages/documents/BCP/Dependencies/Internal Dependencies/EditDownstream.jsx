@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
-import { createAlert } from "../../../../../utilities/alert";
+import { updateAlert } from "../../../../../utilities/alert";
 import { useDownstream } from "../../../../../hooks/documents/bcp/useDownstream";
 
-const CreateDownstream = () => {
+const EditDownstream = () => {
   const location = useLocation();
   const { cbfid } = location.state || {};
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const navigate = useNavigate();
+  const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
 
   const [formData, setFormData] = useState({
     criticalBusinessFunction: cbfid ? cbfid.value : "",
@@ -20,16 +24,30 @@ const CreateDownstream = () => {
     options: "",
   });
 
-  const { bcpid } = useParams();
-  const [isCreating, setIsCreating] = useState(false);
-  const navigate = useNavigate();
-  const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
+  const {
+    singleDocument: downstream,
+    isLoading: loading,
+    updateDocument,
+  } = useDownstream(bcpid, cbfid.value, id);
 
-  const { createDocument } = useDownstream(bcpid);
+  useEffect(() => {
+    if (downstream) {
+      setFormData({
+        criticalBusinessFunction: downstream.criticalBusinessFunction || "",
+        organization: downstream.organization || "",
+        forWhat: downstream.forWhat || "",
+        primaryContact: downstream.primaryContact || "",
+        secondaryContact: downstream.secondaryContact || "",
+        rto: downstream.rto || "",
+        justification: downstream.justification || "",
+        options: downstream.options || "",
+      });
+    }
+  }, [downstream]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
 
@@ -38,16 +56,25 @@ const CreateDownstream = () => {
         bcpid,
         criticalBusinessFunction: cbfid.value,
       };
-      createDocument(downstreamData);
-      createAlert(
-        "Downstream Added",
-        `Downstream for ${cbfid.label} added successfully!`
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update Downstream?`,
+        "Yes, Update it!",
+        `Downstream has been updated successfully!`,
+        `Failed to update Downstream!`,
+        () => updateDocument(downstreamData)
       );
-      navigate(path, { state: { activeStream: "downstream", cbfid: cbfid } });
+
+      if (result === "success") {
+        navigate(path, {
+          state: { activeStream: "downstream", cbfid: cbfid },
+        });
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsUpdating(false);
     }
   };
 
@@ -58,9 +85,16 @@ const CreateDownstream = () => {
     });
   };
 
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
+      </div>
+    );
+
   return (
     <div className="flex flex-col w-full h-full">
-      <h1 className="text-2xl font-bold text-green-500">Create Downstream</h1>
+      <h1 className="text-2xl font-bold text-green-500">Edit Downstream</h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
@@ -145,11 +179,11 @@ const CreateDownstream = () => {
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isCreating ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isCreating}
+              disabled={isUpdating}
             >
-              {isCreating ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
                 "Create"
@@ -169,4 +203,4 @@ const CreateDownstream = () => {
   );
 };
 
-export default CreateDownstream;
+export default EditDownstream;

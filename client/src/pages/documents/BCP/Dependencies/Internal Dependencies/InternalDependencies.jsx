@@ -16,10 +16,6 @@ const InternalDependencies = () => {
   const { sortedCBFunctions, isLoading: loading } =
     useCriticalBusinessFunction(bcpid);
 
-  // useEffect(() => {
-  //   fetchCriticalBusinessFunctionsByBCPID(bcpid);
-  // }, []);
-
   useEffect(() => {
     if (location.state?.cbfid) {
       setSelectedCBFunction(location.state.cbfid);
@@ -147,11 +143,7 @@ const InternalDependencies = () => {
           </div> */}
 
           <div className="h-full w-full overflow-auto">
-            {activeStream === "upstream" ? (
-              <Upstream cbfid={selectedCBFunction} />
-            ) : (
-              <Downstream cbfid={selectedCBFunction} />
-            )}
+            {activeStream === "upstream" ? <Upstream /> : <Downstream />}
           </div>
         </>
       ) : (
