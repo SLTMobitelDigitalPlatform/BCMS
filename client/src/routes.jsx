@@ -578,7 +578,6 @@ const router = createBrowserRouter([
           { path: "critical-business-function/:biaid", element: <BiaCriticalBusinessFunction />},
 
 
-          { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "document-version/:biaid", element: <BiaDocumentControl /> },
           { path: "impact-analysis/:biaid", element: <BiaImpactAnalysis /> },
           { path: "resources-required/:biaid", element: <BiaResourcesRequired /> },
