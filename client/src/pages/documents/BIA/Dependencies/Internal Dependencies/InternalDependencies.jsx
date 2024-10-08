@@ -116,36 +116,6 @@ const InternalDependencies = () => {
       </div>
       {selectedCBFunction ? (
         <>
-          {/* <div className="flex justify-between items-center my-5">
-            <div className="flex gap-5">
-              <button
-                className={`px-2 py-1 rounded font-semibold ${
-                  activeStream === "upstream"
-                    ? "doc-nav-active"
-                    : "doc-nav-hover"
-                }`}
-                onClick={() => handleTabChange("upstream")}
-              >
-                Upstream
-              </button>
-              <button
-                className={`px-2 py-1 rounded font-semibold ${
-                  activeStream === "downstream"
-                    ? "doc-nav-active"
-                    : "doc-nav-hover"
-                }`}
-                onClick={() => handleTabChange("downstream")}
-              >
-                Downstream
-              </button>
-            </div>
-
-            <button className="btn-primary" onClick={handleCreateRecord}>
-              Create {activeStream === "upstream" ? "Upstream" : "Downstream"}{" "}
-              Dependency
-            </button>
-          </div> */}
-
           <div className="h-full w-full overflow-auto">
             {activeStream === "upstream" ? (
               <Upstream cbfid={selectedCBFunction} />
@@ -162,46 +132,3 @@ const InternalDependencies = () => {
 };
 
 export default InternalDependencies;
-
-{
-  /* <div className="flex justify-between items-center mb-5 ">
-        
-        <div className="flex gap-5">
-          <button
-            className={`px-2 py-1 rounded font-semibold ${
-              activeTab === "upstream" ? "doc-nav-active" : "doc-nav-hover"
-            }`}
-            onClick={() => handleTabChange("upstream")}
-          >
-            Upstream
-          </button>
-          <button
-            className={`px-2 py-1 rounded font-semibold ${
-              activeTab === "downstream" ? "doc-nav-active" : "doc-nav-hover"
-            }`}
-            onClick={() => handleTabChange("downstream")}
-          >
-            Downstream
-          </button>
-        </div>
-        <Link
-          to="/createInternalDependencies"
-          state={{ activeTab: "internalDependencies" }}
-          className="btn-primary"
-        >
-          Create Internal Dependency
-        </Link>
-      </div>
-
-      
-      <div className="h-full w-full overflow-auto">
-        {!selectedCBFunction ? (
-          <p>Please select a critical business function.</p>
-        ) : activeTab === "upstream" ? (
-          <Upstream cbFunction={selectedCBFunction} />
-        ) : (
-          <Downstream cbFunction={selectedCBFunction} />
-        )}
-      </div>
-    </div> */
-}

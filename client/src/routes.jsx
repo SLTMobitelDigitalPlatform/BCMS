@@ -108,6 +108,8 @@ import EditBiaCBF from "./pages/documents/BIA/BIACriticalBusinessFunction/EditCr
 //BIA Dependencies
 import BiaDependencies from "./pages/documents/BIA/Dependencies/DependenciesLayout";
 import CreateBiaExternalDependencies from "./pages/documents/BIA/Dependencies/External Dependencies/CreateExternalDependencies";
+import CreateBiaUpstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/CreateUpstream";
+import CreateBiaDownstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/CreateDownstream";
 
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaImpactAnalysis from "./pages/documents/BIA/Impact Analysis/impactAnalysis";
@@ -593,6 +595,8 @@ const router = createBrowserRouter([
       { path: "editBIACriticalBusinessFunction/:biaid/:id", element: <EditBiaCBF /> },
       //Dependency
       { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaExternalDependencies/> },
+      { path: "createBIAUpstream/:biaid", element: <CreateBiaUpstream /> },
+      { path: "createBIADownstream/:biaid", element: <CreateBiaDownstream /> },
 
 
 

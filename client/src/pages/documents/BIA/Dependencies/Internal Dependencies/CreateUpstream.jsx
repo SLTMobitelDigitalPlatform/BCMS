@@ -10,13 +10,10 @@ const CreateUpstream = () => {
 
   const [formData, setFormData] = useState({
     criticalBusinessFunction: cbfid ? cbfid.value : "",
-    organization: "",
-    forWhat: "",
+    section: "",
     primaryContact: "",
     secondaryContact: "",
-    rto: "",
     justification: "",
-    options: "",
   });
 
   const { biaid } = useParams();
@@ -63,24 +60,13 @@ const CreateUpstream = () => {
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Name of the Organization</label>
+            <label className="font-semibold">Section/Business Unit</label>
             <input
               type="text"
-              name="organization"
-              value={formData.organization}
+              name="section"
+              value={formData.section}
               onChange={handleChange}
-              placeholder="Enter Name of the Organization"
-              className="p-2 w-full rounded"
-            />
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">For What</label>
-            <input
-              type="text"
-              name="forWhat"
-              value={formData.forWhat}
-              onChange={handleChange}
-              placeholder="For What"
+              placeholder="Enter Name of the Section/Business Unit"
               className="p-2 w-full rounded"
             />
           </div>
@@ -107,17 +93,6 @@ const CreateUpstream = () => {
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">RTO</label>
-            <input
-              type="text"
-              name="rto"
-              value={formData.rto}
-              onChange={handleChange}
-              placeholder="Enter RTO"
-              className="p-2 w-full rounded"
-            />
-          </div>
-          <div className="flex flex-col gap-2 w-full">
             <label className="font-semibold">Justification</label>
             <input
               type="text"
@@ -125,17 +100,6 @@ const CreateUpstream = () => {
               value={formData.justification}
               onChange={handleChange}
               placeholder="Enter Justification"
-              className="p-2 w-full rounded"
-            />
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Options</label>
-            <input
-              type="text"
-              name="options"
-              value={formData.options}
-              onChange={handleChange}
-              placeholder="Enter Options"
               className="p-2 w-full rounded"
             />
           </div>
