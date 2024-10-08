@@ -18,16 +18,16 @@ const CreateDocumentControl = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/document-control/${bcpid}`;
 
-  const { addDocumentControl } = useDocumentControl();
+  const { createDocument } = useDocumentControl(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
       const documentControlData = { ...formData, bcpid };
-      await addDocumentControl(documentControlData);
+      createDocument(documentControlData);
       createAlert(
         "Document Control Added",
         `Document Control "${formData.version}" added successfully!`

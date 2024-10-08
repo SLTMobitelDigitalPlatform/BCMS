@@ -35,6 +35,10 @@ exports.createCustomer = async (req, res) => {
       res.status(400).json({ error: "Please Enter Mandatory Data!" });
     }
 
+    if (mobileNumber === null) {
+      return res.status(400).json({ error: "Contact Number cannot be null!" });
+    }
+
     const customerExist = await Customer.findOne({ email });
     if (customerExist) {
       res.status(400).json({ error: "This Customer Already Exist in Db" });
@@ -47,7 +51,10 @@ exports.createCustomer = async (req, res) => {
         company,
         subPreference,
       });
+      // console.log(`customerRegister : ${customerRegister}`);
       const storedData = await customerRegister.save();
+      // console.log(`storedData : ${storedData}`);
+
       res.status(200).json(storedData);
     }
   } catch (error) {

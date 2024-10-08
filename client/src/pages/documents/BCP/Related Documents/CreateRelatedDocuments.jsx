@@ -15,19 +15,19 @@ const CreateRelatedDocuments = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/related-documents/${bcpid}`;
 
-  const { addRelatedDocument } = useRelatedDocuments();
+  const { createDocument } = useRelatedDocuments(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
       const relatedDocumentData = { ...formData, bcpid };
-      await addRelatedDocument(relatedDocumentData);
+      createDocument(relatedDocumentData);
       createAlert(
-        "Document Control Added",
-        `Document Control "${formData.referenceDocument}" added successfully!`
+        "Related Document Added",
+        `Related Document "${formData.referenceDocument}" added successfully!`
       );
       navigate(path);
     } catch (error) {

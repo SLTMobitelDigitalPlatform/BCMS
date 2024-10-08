@@ -1,75 +1,95 @@
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
-export const useRecoveryStrategy = () => {
-  const [recoveryStrategies, setRecoveryStrategies] = useState([]);
-  const [recoveryStrategy, setRecoveryStrategy] = useState([]);
-  const [loading, setLoading] = useState(false);
+export const useRecoveryStrategy = (bcpid, id) => {
+  const queryClient = useQueryClient();
 
-  // Fetch recovery strategies by BCP ID
-  const fetchRecoveryStrategiesByBCPID = async (bcpid) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpRecoveryStrategy/${bcpid}`
-      );
-      setRecoveryStrategies(response.data);
-    } catch (err) {
-      handleError("Error fetching recovery strategies.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch all recovery strategies by BCP ID and cache the result
+  const { data: allDocuments, isLoading: isLoadingAll } = useQuery({
+    queryKey: ["recoveryStrategies", bcpid],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpRecoveryStrategy/${bcpid}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching all recovery strategies.", err);
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !id,
+  });
 
   // Fetch a single recovery strategy by BCP ID and Mongo ID
-  const fetchRecoveryStrategyByIds = async (bcpid, id) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpRecoveryStrategy/${bcpid}/${id}`
-      );
-      setRecoveryStrategy(response.data);
-    } catch (err) {
-      handleError("Error fetching recovery strategy.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: singleDocument, isLoading: isLoadingSingle } = useQuery({
+    queryKey: ["recoveryStrategy", bcpid, id],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpRecoveryStrategy/${bcpid}/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching single recovery strategy.", err);
+      }
+    },
+    enabled: !!id,
+  });
 
-  //   Add a new recovery strategy
-  const addRecoveryStrategy = async (recoveryStrategyData) => {
-    try {
-      await axiosInstance.post(
-        "/api/bcpRecoveryStrategy/add",
-        recoveryStrategyData
-      );
-    } catch (err) {
-      handleError("Error adding recovery strategy.", err);
-    }
-  };
+  // Create new recovery strategy
+  const { mutate: createDocument } = useMutation({
+    mutationFn: async (data) => {
+      try {
+        const response = await axiosInstance.post(
+          "/api/bcpRecoveryStrategy/add",
+          data
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error creating recovery strategy.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["recoveryStrategies", bcpid]);
+    },
+  });
 
-  //   Update a recovery strategy
-  const updateRecoveryStrategy = async (id, recoveryStrategyData) => {
-    try {
-      await axiosInstance.put(
-        `/api/bcpRecoveryStrategy/edit/${id}`,
-        recoveryStrategyData
-      );
-    } catch (err) {
-      handleError("Error updating recovery strategy.", err);
-    }
-  };
+  // Update an existing recovery strategy
+  const { mutate: updateDocument } = useMutation({
+    mutationFn: async (updateData) => {
+      try {
+        const response = await axiosInstance.put(
+          `/api/bcpRecoveryStrategy/edit/${id}`,
+          updateData
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error updating recovery strategy.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["recoveryStrategies", bcpid]);
+    },
+  });
 
-  //   Delete a recovery strategy
-  const deleteRecoveryStrategy = async (id, bcpid) => {
-    try {
-      await axiosInstance.delete(`/api/bcpRecoveryStrategy/delete/${id}`);
-      await fetchRecoveryStrategiesByBCPID(bcpid);
-    } catch (err) {
-      handleError("Error deleting recovery strategy.", err);
-    }
-  };
+  // Delete an existing recovery strategy
+  const { mutate: deleteDocument } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const response = await axiosInstance.delete(
+          `/api/bcpRecoveryStrategy/delete/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error deleting recovery strategy.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["recoveryStrategies", bcpid]);
+    },
+  });
 
   // Handle errors
   const handleError = (message, err) => {
@@ -78,14 +98,11 @@ export const useRecoveryStrategy = () => {
   };
 
   return {
-    recoveryStrategies,
-    recoveryStrategy,
-    loading,
-    fetchRecoveryStrategiesByBCPID,
-    fetchRecoveryStrategyByIds,
-    addRecoveryStrategy,
-    updateRecoveryStrategy,
-    deleteRecoveryStrategy,
-    handleError,
+    allDocuments,
+    singleDocument,
+    isLoading: id ? isLoadingSingle : isLoadingAll,
+    createDocument,
+    updateDocument,
+    deleteDocument,
   };
 };

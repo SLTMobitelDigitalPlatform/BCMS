@@ -1,31 +1,25 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useRecoveryAndResumptions } from "../../../../hooks/documents/bcp/useRecoveryAndResumption";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const RecoveryResumption = () => {
+  const { bcpid, cbfid } = useParams();
+
   const {
-    recoveryResumptions,
-    loading,
-    fetchRecoveryResumptionsByBCPID,
-    deleteRecoveryResumption,
-  } = useRecoveryAndResumptions();
+    allDocuments: recoveryResumptions,
+    isLoading: loading,
+    deleteDocument,
+  } = useRecoveryAndResumptions(bcpid, cbfid);
 
-  const { bcpid } = useParams();
-
-  useEffect(() => {
-    fetchRecoveryResumptionsByBCPID(bcpid);
-  }, []);
-
-  const handleDelete = async (id, number) => {
+  const handleDelete = (id) => {
     deleteAlert(
       "Are you sure?",
-      `You are about to delete "${number}" Embedded Document. This action cannot be undone.`,
+      `You are about to delete Recovery Resumption. This action cannot be undone.`,
       "Yes, delete it!",
-      `"${number}" Embedded Document deleted successfully!`,
-      "Error deleting Embedded Document",
-      () => deleteRecoveryResumption(id, bcpid)
+      `Recovery Resumption deleted successfully!`,
+      "Error deleting Recovery Resumption",
+      () => deleteDocument(id)
     );
   };
 
@@ -40,9 +34,16 @@ const RecoveryResumption = () => {
     <div className="h-full flex felx-col overflow-hidden">
       <div className="overflow-hidden h-screen rounded-2xl p-3">
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-xl font-bold text-indigo-900">XXXX</h1>
+          <h1 className="text-xl font-bold text-indigo-900">
+            <Link
+              to={`/Business-Continuity-Plan/critical-business-function/${bcpid}`}
+            >
+              Critical Business Function{">"}
+            </Link>
+            Recovery and Resumption
+          </h1>
           <Link
-            to={`/createRecoveryResumption/${bcpid}`}
+            to={`/createRecoveryResumption/${bcpid}/${cbfid}`}
             className="btn-primary font-semibold"
           >
             Add Details
@@ -54,9 +55,10 @@ const RecoveryResumption = () => {
           <table className="table-fixed relative w-full py-10 border bg-white border-indigo-800">
             <thead className="bg-indigo-200">
               <tr>
+                <th className="w-20 doc-table-head">No</th>
                 <th className="w-20 doc-table-head">Description</th>
-                <th className="w-20 doc-table-head">Timing of Item</th>
-                <th className="w-36 doc-table-head">Duration Person</th>
+                <th className="w-20 doc-table-head">Timing</th>
+                <th className="w-36 doc-table-head">Duration</th>
                 <th className="w-36 doc-table-head">Role</th>
                 <th className="w-36 doc-table-head">
                   At Time Of Incident Actions
@@ -64,16 +66,23 @@ const RecoveryResumption = () => {
                 <th className="w-28 doc-table-head">
                   At Time Of Incident Comments
                 </th>
+                <th className="w-28 doc-table-head">Actions</th>
               </tr>
             </thead>
             <tbody>
               {recoveryResumptions.map((recoveryResumption) => (
                 <tr key={recoveryResumption._id} className="hover:bg-gray-100">
                   <td className="py-2 px-4 w-20 doc-table-data text-center">
+                    {recoveryResumption.number}
+                  </td>
+                  <td className="py-2 px-4 w-20 doc-table-data text-center">
                     {recoveryResumption.description}
                   </td>
                   <td className="py-2 px-4 w-20 doc-table-data text-center">
                     {recoveryResumption.timing}
+                  </td>
+                  <td className="py-2 px-4 w-20 doc-table-data text-center">
+                    {recoveryResumption.duration}
                   </td>
                   <td className="py-2 px-4 w-36 doc-table-data">
                     {recoveryResumption.role}
@@ -87,19 +96,14 @@ const RecoveryResumption = () => {
                   <td className="py-2 px-4 w-28 doc-table-data">
                     <div className="flex justify-center gap-2">
                       <Link
-                        to={`/editRecoveryResumption/${bcpid}/${recoveryResumption._id}`}
+                        to={`/editRecoveryResumption/${bcpid}/${cbfid}/${recoveryResumption._id}`}
                         className="doc-edit-btn"
                       >
                         Edit
                       </Link>
                       <button
                         className="doc-delete-btn"
-                        onClick={() =>
-                          handleDelete(
-                            recoveryResumption._id,
-                            recoveryResumption.number
-                          )
-                        }
+                        onClick={() => handleDelete(recoveryResumption._id)}
                       >
                         Delete
                       </button>

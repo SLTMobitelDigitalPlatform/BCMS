@@ -197,13 +197,13 @@ const SubscriptionForm = () => {
         >
           {/* Full Name */}
           <div className="relative">
-            <FaUser className="icon" />
+            <FaUser className="icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
             <input
-              className={` input-field ${
+              className={`input-field pl-10 ${
                 hasError && !name.trim()
                   ? "input-field-error"
                   : "input-field-border"
-              } `}
+              }`}
               id="fullName"
               type="text"
               placeholder="Full Name"
@@ -215,9 +215,9 @@ const SubscriptionForm = () => {
 
           {/* Email */}
           <div className="relative">
-            <FaEnvelope className="icon" />
+            <FaEnvelope className="icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-00" />
             <input
-              className={`input-field ${
+              className={`input-field pl-10 ${
                 hasError && !validateEmail(email)
                   ? "input-field-error"
                   : "input-field-border"
@@ -233,9 +233,9 @@ const SubscriptionForm = () => {
 
           {/*Mobile Phone*/}
           <div className="relative">
-            <FaPhone className="icon" />
+            <FaPhone className="icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
             <input
-              className={`input-field ${
+              className={`input-field pl-10 ${
                 hasError && !validateMobileNumber(mobileNumber)
                   ? "input-field-error"
                   : "input-field-border"
@@ -251,10 +251,10 @@ const SubscriptionForm = () => {
 
           {/* Province */}
           <div className="relative">
-            <FaMapMarkerAlt className="icon" />
+            <FaMapMarkerAlt className="icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
 
             <select
-              className={`input-field ${
+              className={`input-field pl-10 ${
                 hasError && !province
                   ? "input-field-error"
                   : "input-field-border"
@@ -281,9 +281,9 @@ const SubscriptionForm = () => {
 
           {/* Company */}
           <div className="relative">
-            <FaBuilding className="icon" />
+            <FaBuilding className="icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
             <input
-              className={`input-field ${
+              className={`input-field pl-10 ${
                 hasError && !company
                   ? "input-field-error"
                   : "input-field-border"

@@ -12,14 +12,13 @@ const CreatePreIncidentPreparation = () => {
   });
 
   const { bcpid } = useParams();
-
   const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/pre-incident-preparation/${bcpid}`;
 
-  const { addPreIncidentPreparation } = usePreIncidentPreparation();
+  const { createDocument } = usePreIncidentPreparation(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
@@ -30,7 +29,7 @@ const CreatePreIncidentPreparation = () => {
         bcpid,
       };
 
-      await addPreIncidentPreparation(preIncidentPreparationData);
+      createDocument(preIncidentPreparationData);
       createAlert(
         "Pre-Incident Preparation Added",
         `Pre-Incident Preparation "${formData.preIncidentMeasures}" added successfully!`

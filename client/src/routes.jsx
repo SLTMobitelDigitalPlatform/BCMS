@@ -89,19 +89,31 @@ import BiaLayout from "./pages/documents/BIA/BiaLayout";
 import BiaForm from "./pages/documents/BIA/BIAForm/BiaForm";
 import CreateBIAForm from "./pages/documents/BIA/BIAForm/CreateBIAForm";
 import EditBIAForm from "./pages/documents/BIA/BIAForm/EditBIAForm";
-
-import BiaOperatingSites from "./pages/documents/BIA/Operating Sites/operatingSites";
-import CreateBIAOSites from "./pages/documents/BIA/Operating Sites/CreateOperatingSites";
-import EditBIAOSites from "./pages/documents/BIA/Operating Sites/EditoperatingSites";
-
+// BIA Operating Sites
+import BiaOperatingSites from "./pages/documents/BIA/OperatingSites/operatingSites";
+import CreateBIAOSites from "./pages/documents/BIA/OperatingSites/CreateOperatingSites";
+import EditBIAOSites from "./pages/documents/BIA/OperatingSites/EditoperatingSites";
+//BIA Peaks And Deadlines
+import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/peaksDeadlines";
+import CreatePeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/CreatePeaksDeadlines";
+import EditPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/EditPeaksDeadlines";
+//BIA Resources
+import BiaResources from "./pages/documents/BIA/Resources/Resource";
+import CreateBiaResources from "./pages/documents/BIA/Resources/CreateResources";
+import EditBiaResources from "./pages/documents/BIA/Resources/EditResources";
+//BIA Critical Business Function
+import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/CriticalBusinessFunction";
+import CreateBiaCBF from "./pages/documents/BIA/BIACriticalBusinessFunction/CreateCriticalBusinessFunction";
+import EditBiaCBF from "./pages/documents/BIA/BIACriticalBusinessFunction/EditCriticalBusinessFunction";
+//BIA Dependencies
+import BiaDependencies from "./pages/documents/BIA/Dependencies/DependenciesLayout";
+import CreateBiaExternalDependencies from "./pages/documents/BIA/Dependencies/External Dependencies/CreateExternalDependencies";
+import CreateBiaUpstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/CreateUpstream";
+import CreateBiaDownstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/CreateDownstream";
 
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
-import BiaCriticalBusinessFunction from "./pages/documents/BIA/BIACriticalBusinessFunction/BiaCriticalBusinessFunction";
-import BiaPeaksAndDeadlines from "./pages/documents/BIA/Peak&Deadlines/Peaks&Deadlines";
-import BiaResources from "./pages/documents/BIA/Resources/resources";
 import BiaImpactAnalysis from "./pages/documents/BIA/Impact Analysis/impactAnalysis";
 import BiaResourcesRequired from "./pages/documents/BIA/ResourcesRequired";
-import BiaDependencies from "./pages/documents/BIA/Dependencies/dependencies";
 import BiaWorkAreaRecovery from "./pages/documents/BIA/Work Area Recovery/workAreaRecovery";
 import BiaManpower from "./pages/documents/BIA/Manpower/manpower";
 
@@ -134,6 +146,16 @@ import EditResourcesRequired from "./pages/documents/BCP/Resources Required/Edit
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/CreateExternalDependencies";
+import CreateUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/CreateUpstream";
+import CreateDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/CreateDownstream";
+import OrgCallTree from "./pages/Call Tree/OrgCallTree";
+import OrgCallTreeTable from "./pages/Call Tree/OrgCallTreeTable";
+import CallTreeHomePage from "./pages/Call Tree/CallTreeHomePage";
+import CreateRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/CreateRecoveryResumption";
+import EditRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/EditRecoveryResumption";
+import EditExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/EditExternalDependencies";
+import EditUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditUpstream";
+import EditDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditDownstream";
 import OrganizationalDocuments from "./pages/Policies/OrgDocuments";
 import OrgPolicies from "./pages/Policies/OrgPolicies";
 import AddDocument from "./pages/Policies/AddDocument";
@@ -164,11 +186,7 @@ const router = createBrowserRouter([
     element: <Feedback />,
     errorElement: <ErrorPage />,
   },
-  {
-    path: "/feedbacks",
-    element: <FeedbackList />,
-    errorElement: <ErrorPage />,
-  },
+
   {
     path: "/description/:id",
     element: <DescriptionPage />,
@@ -211,6 +229,16 @@ const router = createBrowserRouter([
       // Employee Table
       { path: "employee", element: <Employee /> },
 
+      {
+        path: "/feedbacks",
+        element: <FeedbackList />,
+        errorElement: <ErrorPage />,
+      },
+
+      // Policies
+      { path: "policies", element: <PoliciesPage /> },
+      { path: "policies/add-document", element: <AddDocument /> },
+
       //Teams
       { path: "teams", element: <AddEditTeams /> },
       { path: "teams/teamList", element: <TeamList /> },
@@ -223,8 +251,14 @@ const router = createBrowserRouter([
       { path: "sections", element: <Section /> },
 
       // Call Tree
+      { path: "call-tree-home", element: <CallTreeHomePage /> },
+
       { path: "call-tree", element: <CallTree /> },
       { path: "call-tree-table", element: <CallTreeTable /> },
+
+      // Oganizational Call Tree
+      { path: "org-call-tree", element: <OrgCallTree /> },
+      { path: "org-call-tree-table", element: <OrgCallTreeTable /> },
 
       // Meetings
       { path: "meeting", element: <Meeting /> },
@@ -394,10 +428,10 @@ const router = createBrowserRouter([
           { path: "vital-records/:bcpid", element: <VitalRecords /> },
           { path: "work-area-recovery/:bcpid", element: <WorkAreaRecovery /> },
           { path: "manpower/:bcpid", element: <Manpower /> },
-          {
-            path: "recovery-and-resumption/:bcpid",
-            element: <RecoveryAndResumption />,
-          },
+          // {
+          //   path: "recovery-and-resumption/:bcpid",
+          //   element: <RecoveryAndResumption />,
+          // },
           { path: "embedded-documents/:bcpid", element: <EmbeddedDocuments /> },
         ],
       },
@@ -465,6 +499,21 @@ const router = createBrowserRouter([
         element: <EditCriticalBusinessFunction />,
       },
 
+      // * Recovery And Resumption
+      {
+        path: "recovery-and-resumption/:bcpid/:cbfid",
+        element: <RecoveryAndResumption />,
+      },
+      {
+        path: "createRecoveryResumption/:bcpid/:cbfid",
+        element: <CreateRecoveryResumption />,
+      },
+
+      {
+        path: "editRecoveryResumption/:bcpid/:cbfid/:id",
+        element: <EditRecoveryResumption />,
+      },
+
       // * Resources Required
       {
         path: "createResourcesRequired/:bcpid",
@@ -480,6 +529,18 @@ const router = createBrowserRouter([
         path: "createExternalDependencies/:bcpid",
         element: <CreateExternalDependencies />,
       },
+
+      {
+        path: "editExternalDependencies/:bcpid/:id",
+        element: <EditExternalDependencies />,
+      },
+
+      { path: "createUpstream/:bcpid", element: <CreateUpstream /> },
+
+      { path: "editUpstream/:bcpid/:id", element: <EditUpstream /> },
+      { path: "createDownstream/:bcpid", element: <CreateDownstream /> },
+
+      { path: "editDownstream/:bcpid/:id", element: <EditDownstream /> },
 
       // * Vital Records
       { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
@@ -520,23 +581,16 @@ const router = createBrowserRouter([
         children: [
           { path: "bia-form/:biaid", element: <BiaForm /> },
           { path: "operating-sites/:biaid", element: <BiaOperatingSites /> },
-
-          { path: "document-control/:biaid", element: <BiaDocumentControl /> },
-          { path: "document-version/:biaid", element: <BiaDocumentControl /> },
-          
-          {
-            path: "critical-business-function/:biaid",
-            element: <BiaCriticalBusinessFunction />,
-          },
-          {
-            path: "business-peaks-and-deadlines/:biaid",
-            element: <BiaPeaksAndDeadlines />,
-          },
+          { path: "business-peaks-and-deadlines/:biaid", element: <BiaPeaksAndDeadlines />},
           { path: "resources/:biaid", element: <BiaResources /> },
+          { path: "critical-business-function/:biaid", element: <BiaCriticalBusinessFunction />},
+
+
+          { path: "document-version/:biaid", element: <BiaDocumentControl /> },
           { path: "impact-analysis/:biaid", element: <BiaImpactAnalysis /> },
           { path: "resources-required/:biaid", element: <BiaResourcesRequired /> },
           { path: "dependencies/:biaid", element: <BiaDependencies /> },
-          { path: "work-area-recovery/:biaid", element: <BiaWorkAreaRecovery /> },
+          { path: "work-area-recovery/:biaid", element: <BiaWorkAreaRecovery />},
           { path: "manpower/:biaid", element: <BiaManpower /> },
         ],
       },
@@ -544,12 +598,24 @@ const router = createBrowserRouter([
       //BIA Form
       { path: "createBIA", element: <CreateBIAForm /> },
       { path: "editBIA/:biaid", element: <EditBIAForm /> },
-
-      //Operating Sites
+      //Operating Sites
       { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
       { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
-      
-      
+      //Peaks and Deadliness
+      { path: "createPeaksDeadlines/:biaid", element: <CreatePeaksAndDeadlines /> },
+      { path: "editPeaksDeadlines/:biaid/:id", element: <EditPeaksAndDeadlines /> },
+      //Resources
+      { path: "createResources/:biaid", element: <CreateBiaResources /> },
+      { path: "editResources/:biaid/:id", element: <EditBiaResources /> },
+      //Critical Business Function
+      { path: "createBIACriticalBusinessFunction/:biaid", element: <CreateBiaCBF /> },
+      { path: "editBIACriticalBusinessFunction/:biaid/:id", element: <EditBiaCBF /> },
+      //Dependency
+      { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaExternalDependencies/> },
+      { path: "createBIAUpstream/:biaid", element: <CreateBiaUpstream /> },
+      { path: "createBIADownstream/:biaid", element: <CreateBiaDownstream /> },
+
+
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
