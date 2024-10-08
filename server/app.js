@@ -64,6 +64,7 @@ const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/bi
 const routerOperatingSite = require("./routes/documentRoutes/businessImpactAnalysis/operatingSitesRoutes");
 const routerPeaksDeadline = require("./routes/documentRoutes/businessImpactAnalysis/peaksDeadlinesRoutes");
 const routerBiaResource = require("./routes/documentRoutes/businessImpactAnalysis/resourcesRoutes");
+const routerBiaDocumentControl = require("./routes/documentRoutes/businessImpactAnalysis/BiaDocumentControlRoutes");
 
 const PORT = 5000;
 
@@ -118,6 +119,7 @@ app.use(
   routerBiaForm,
   routerOperatingSite,
   routerPeaksDeadline,
+  routerBiaDocumentControl,
   routerBiaResource,
   routerOrgCallTree
 );

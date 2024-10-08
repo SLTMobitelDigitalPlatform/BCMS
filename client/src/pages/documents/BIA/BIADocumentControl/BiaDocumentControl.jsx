@@ -1,49 +1,40 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import { useBIAForm } from "../../../../hooks/documents/bia/useBIAForm";
+import { FaSpinner } from "react-icons/fa";
+import { useBiaDocumentControl } from "../../../../hooks/documents/bia/useBiaDocumentControl";
+import { deleteAlert } from "../../../../utilities/alert";
+import { Link, useParams } from "react-router-dom";
 
 const BiaDocumentControl = () => {
   const {
-    businessImpactAnalysisPlans,
+    BiaDocumentControls,
     loading,
-    error,
-    fetchBIAForms,
-    deleteBIAForm,
-  } = useBIAForm();
+    fetchBiaDocumentControlsByBIAID,
+    deleteBiaDocumentControl,
+  } = useBiaDocumentControl();
+
+  const { biaid } = useParams();
 
   useEffect(() => {
-    fetchBIAForms();
+    fetchBiaDocumentControlsByBIAID(biaid);
   }, []);
 
-  const deleteBusinessImpactAnalysisPlan = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteBIAForm(id);
-          Swal.fire("Deleted!", "Version Control has been deleted.", "success");
-        } catch (error) {
-          console.error(error);
-          Swal.fire(
-            "Error!",
-            "There was a problem deleting the record.",
-            "error"
-          );
-        }
-      }
-    });
+  const handleDelete = async (id) => {
+    deleteAlert(
+      "Are you sure?",
+      "You are about to delete Document Control. This action cannot be undone.",
+      "Yes, delete it!",
+      "Document Control deleted successfully!",
+      "Error deleting Document Control",
+      () => deleteBiaDocumentControl(id, biaid)
+    );
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
     <div className="pt-5 w-full h-full flex flex-col">
@@ -68,25 +59,25 @@ const BiaDocumentControl = () => {
             </tr>
           </thead>
           <tbody>
-            {businessImpactAnalysisPlans.map((bia) => (
-              <tr key={bia.version} className="doc-table-hover">
+            {BiaDocumentControls.map((BiaDocumentControls) => (
+              <tr key={BiaDocumentControls._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
-                  {bia.version}
+                  {BiaDocumentControls.version}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
-                  {bia.description}
+                  {BiaDocumentControls.description}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-data">
-                  {bia.date}
+                  {BiaDocumentControls.date}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
-                    <Link to={`/editBIA/${bia.version}`} className="doc-edit-btn">
+                    <Link to={`/editBiaDocumentControl/${biaid}/${BiaDocumentControls._id}`} className="doc-edit-btn">
                       Edit
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => deleteBusinessImpactAnalysisPlan(bia.version)}
+                      onClick={() => handleDelete(BiaDocumentControls._id)}
                     >
                       Delete
                     </button>

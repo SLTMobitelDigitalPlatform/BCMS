@@ -561,7 +561,6 @@ const router = createBrowserRouter([
           },
           { path: "resources/:biaid", element: <BiaResources /> },
 
-          { path: "document-control/:biaid", element: <BiaDocumentControl /> },
           { path: "document-version/:biaid", element: <BiaDocumentControl /> },
           {
             path: "critical-business-function/:biaid",
