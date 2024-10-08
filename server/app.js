@@ -67,6 +67,8 @@ const routerBiaResource = require("./routes/documentRoutes/businessImpactAnalysi
 const routerBiaDocumentControl = require("./routes/documentRoutes/businessImpactAnalysis/BiaDocumentControlRoutes");
 const routerBIACriticalBusinessFunction = require("./routes/documentRoutes/businessImpactAnalysis/criticalBusinessFunctionRoutes");
 const routerBIAExternalDependencies = require("./routes/documentRoutes/businessImpactAnalysis/externalDependenciesRoutes");
+const routerBIAUpstream = require("./routes/documentRoutes/businessImpactAnalysis/upstreamRoutes");
+const routerBIADownstream = require("./routes/documentRoutes/businessImpactAnalysis/downstreamRoutes");
 
 const PORT = 5000;
 
@@ -125,7 +127,9 @@ app.use(
   routerBiaResource,
   routerOrgCallTree,
   routerBIACriticalBusinessFunction,
-  routerBIAExternalDependencies
+  routerBIAExternalDependencies,
+  routerBIAUpstream,
+  routerBIADownstream,
 );
 
 // // Create uploads directory if it doesn't exist
