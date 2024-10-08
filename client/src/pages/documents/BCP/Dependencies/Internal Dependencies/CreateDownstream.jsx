@@ -25,9 +25,9 @@ const CreateDownstream = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
 
-  const { createDownstream } = useDownstream();
+  const { createDocument } = useDownstream(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
@@ -38,7 +38,7 @@ const CreateDownstream = () => {
         bcpid,
         criticalBusinessFunction: cbfid.value,
       };
-      await createDownstream(downstreamData);
+      createDocument(downstreamData);
       createAlert(
         "Downstream Added",
         `Downstream for ${cbfid.label} added successfully!`

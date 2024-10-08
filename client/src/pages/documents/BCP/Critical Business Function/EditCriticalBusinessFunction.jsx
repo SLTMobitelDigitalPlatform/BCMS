@@ -18,15 +18,11 @@ const EditCriticalBusinessFunction = () => {
   const path = `/Business-Continuity-Plan/critical-business-function/${bcpid}`;
 
   const {
-    criticalBusinessFunction,
-    loading,
-    fetchCriticalBusinessFunctionsByIds,
-    updateCriticalBusinessFunction,
-  } = useCriticalBusinessFunction();
+    singleDocument: criticalBusinessFunction,
+    isLoading: loading,
 
-  useEffect(() => {
-    fetchCriticalBusinessFunctionsByIds(bcpid, id);
-  }, []);
+    updateDocument,
+  } = useCriticalBusinessFunction(bcpid, id);
 
   useEffect(() => {
     if (criticalBusinessFunction) {
@@ -51,7 +47,7 @@ const EditCriticalBusinessFunction = () => {
         "Yes, Update it!",
         `"${criticalBusinessFunction.name}" has been updated successfully!`,
         `Failed to update "${criticalBusinessFunction.name}"!`,
-        () => updateCriticalBusinessFunction(id, criticalBusinessFunctionData)
+        () => updateDocument(criticalBusinessFunctionData)
       );
 
       if (result === "success") {

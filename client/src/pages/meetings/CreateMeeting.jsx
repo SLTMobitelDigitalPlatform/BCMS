@@ -47,22 +47,58 @@ const CreateMeeting = () => {
   };
 
   // Store form data in database
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   fetch("http://localhost:5000/createMeeting", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       purpose: purpose,
+  //       location: location,
+  //       date: date,
+  //       startTime: startTime,
+  //       endTime: endTime,
+  //       attendees: attendees.map((attendee) => attendee.value),
+  //       chairedBy: chairedBy,
+  //     }),
+  //   })
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("Submit Response:", data);
+  //       window.location.reload();
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const meetingData = {
+      purpose,
+      location,
+      date,
+      startTime,
+      endTime,
+      attendees: attendees.map((attendee) => attendee.value),
+      chairedBy,
+    };
+
+    console.log("Creating Meeting with Data:", meetingData); // Log data being sent
+
     fetch("http://localhost:5000/createMeeting", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        purpose: purpose,
-        location: location,
-        date: date,
-        startTime: startTime,
-        endTime: endTime,
-        attendees: attendees.map((attendee) => attendee.value),
-        chairedBy: chairedBy,
-      }),
+      body: JSON.stringify(meetingData),
     })
       .then((res) => {
         if (!res.ok) {

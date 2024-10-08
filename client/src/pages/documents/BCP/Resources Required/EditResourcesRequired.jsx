@@ -21,15 +21,10 @@ const EditResourcesRequired = () => {
   const path = `/Business-Continuity-Plan/resources-required/${bcpid}`;
 
   const {
-    resourceRequired,
-    loading: resourceRequiredLoading,
-    fetchResourceRequiredByIds,
-    updateResourceRequired,
-  } = useResourcesRequired();
-
-  useEffect(() => {
-    fetchResourceRequiredByIds(bcpid, id);
-  }, []);
+    singleDocument: resourceRequired,
+    isLoading: loading,
+    updateDocument,
+  } = useResourcesRequired(bcpid, id);
 
   useEffect(() => {
     if (resourceRequired) {
@@ -59,7 +54,7 @@ const EditResourcesRequired = () => {
         "Yes, Update it!",
         `"${resourceRequired.name}" has been updated successfully!`,
         `Failed to update "${resourceRequired.name}"!`,
-        () => updateResourceRequired(id, resourceRequiredData)
+        () => updateDocument(resourceRequiredData)
       );
 
       if (result === "success") {
@@ -79,7 +74,7 @@ const EditResourcesRequired = () => {
     });
   };
 
-  if (resourceRequiredLoading)
+  if (loading)
     return (
       <div className="flex items-center justify-center h-screen">
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
