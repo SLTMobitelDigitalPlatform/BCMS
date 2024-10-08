@@ -38,7 +38,7 @@ const Home = () => {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <div className="relative w-screen md:h-1/2 bg-black overflow-hidden mb-0">
+    <div className="relative w-screen min-h-screen bg-black">
       {/* Carousel section */}
       <header className="w-full md:h-1/2 flex justify-center items-center">
         <div className="md:w-2/3">
@@ -106,10 +106,8 @@ const Home = () => {
       {/* Main content: Links with icons at the bottom */}
       <div className="absolute bottom-0 left-0 w-full bg-sky-100">
         <div className="flex justify-center">
-          {/* Container with max width and padding */}
           <div className="w-full max-w-5xl p-4 bg-sky-50 rounded-lg">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {/* Risk Management */}
               <Link
                 to="/risk-management"
                 className="text-center p-4 border-blue-500 border-2 rounded-lg relative hover:shadow-xl"
@@ -123,7 +121,6 @@ const Home = () => {
                   your assets or business.
                 </p>
               </Link>
-              {/* About Us */}
               <Link
                 to="/about-us"
                 className="text-center p-4 border-blue-500 border-2 rounded-lg relative hover:shadow-xl"
@@ -137,7 +134,6 @@ const Home = () => {
                   commitment to diversity.
                 </p>
               </Link>
-              {/* Contact Us */}
               <Link
                 to="/contact-us"
                 className="text-center p-4 border-blue-500 border-2 rounded-lg relative hover:shadow-xl"
@@ -150,7 +146,6 @@ const Home = () => {
                   Get in touch with us for inquiries, support, or assistance.
                 </p>
               </Link>
-              {/* Feedback */}
               <Link
                 to="/feedback"
                 className="text-center p-4 border-blue-500 border-2 rounded-lg relative hover:shadow-xl"
