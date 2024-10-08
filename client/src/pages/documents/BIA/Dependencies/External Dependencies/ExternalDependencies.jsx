@@ -28,7 +28,7 @@ const ExternalDependencies = () => {
 
   const getCBFName = (id) => {
     const cbf = criticalBusinessFunctions.find((cbf) => cbf._id === id);
-    return cbf ? cbf.name : "Unknown CBF";
+    return cbf ? cbf.functionName : "Unknown CBF";
   };
 
   if (loadingCBF || loadingED)
@@ -60,7 +60,7 @@ const ExternalDependencies = () => {
             {externalDependencies.map((external) => (
               <tr key={external._id} className="doc-table-hover">
                 <td className="py-2 px-4 doc-table-data">
-                  {getCBFName(external.criticalBusinessFunctions)}
+                  {getCBFName(external.criticalBusinessFunction)}
                 </td>
                 <td className="py-2 px-4 doc-table-data">
                   {external.organization}

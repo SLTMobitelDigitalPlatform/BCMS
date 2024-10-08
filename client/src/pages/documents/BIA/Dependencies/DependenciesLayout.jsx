@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import ExternalDependencies from "./External Dependencies/ExternalDependencies";
-//import InternalDependencies from "./Internal Dependencies/InternalDependencies";
+import InternalDependencies from "./Internal Dependencies/InternalDependencies";
 
 const Dependencies = () => {
   const location = useLocation();
@@ -48,14 +48,14 @@ const Dependencies = () => {
           </button>
         </div>
 
-        {/* Create Record Button */}
+        {/* Create Dependency Button */}
         {activeTab === "externalDependencies" ? (
           <Link
-            to={`/createExternalDependencies/${biaid}`}
+            to={`/createBIAExternalDependencies/${biaid}`}
             state={{ activeTab: "externalDependencies" }}
             className="btn-primary"
           >
-            Create External Record
+            Create External Dependency
           </Link>
         ) : (
           ""
@@ -65,7 +65,7 @@ const Dependencies = () => {
       {/* Tab Content */}
       <div className="h-full w-full overflow-auto">
         {activeTab === "internalDependencies" ? (
-          <ExternalDependencies /> //<InternalDependencies />
+          <InternalDependencies />
         ) : (
           <ExternalDependencies />
         )}
