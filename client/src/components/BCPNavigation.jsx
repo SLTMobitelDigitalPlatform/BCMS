@@ -19,6 +19,7 @@ const BCPNavigation = () => {
       "Legal Requirements",
       "Pre-Incident Preparation",
       "Critical Business Function",
+      "Recovery and Resumption",
       "Resources Required",
       "Dependencies",
       "Vital Records",
@@ -63,7 +64,7 @@ const BCPNavigation = () => {
     if (tabIndex !== -1 && carouselRef.current) {
       const numItems = links.length;
       const centerOffset = Math.floor(responsive.desktop.items / 2);
-      const additionalOffset = -4;
+      const additionalOffset = -3.5;
       const centeredIndex = Math.max(
         Math.min(
           tabIndex - centerOffset + additionalOffset,
