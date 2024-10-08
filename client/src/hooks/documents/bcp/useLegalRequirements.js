@@ -1,87 +1,110 @@
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
-export const useLegalRequirements = () => {
-  const [legalRequirements, setLegalRequirements] = useState([]);
-  const [legalRequirement, setLegalRequirement] = useState([]);
-  const [loading, setLoading] = useState(false);
+export const useLegalRequirements = (bcpid, id) => {
+  const queryClient = useQueryClient();
 
-  // Fetch legal requirements by BCP ID
-  const fetchLegalRequirementsByBCPID = async (bcpid) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpLegalRequirement/${bcpid}`
-      );
-      setLegalRequirements(response.data);
-    } catch (err) {
-      handleError(
-        "Error fetching legal, regualtory and contractual requirements.",
-        err
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch all legal requirements by BCP ID and cache the result
+  const { data: allDocuments, isLoading: isLoadingAll } = useQuery({
+    queryKey: ["legalRequirements", bcpid],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpLegalRequirement/${bcpid}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError(
+          "Error fetching all legal, regualtory and contractual requirements.",
+          err
+        );
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !id,
+  });
 
   // Fetch a single legal requirement by BCP ID and Mongo ID
-  const fetchLegalRequirementByIds = async (bcpid, id) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpLegalRequirement/${bcpid}/${id}`
-      );
-      setLegalRequirement(response.data);
-    } catch (err) {
-      handleError(
-        "Error fetching legal, regualtory and contractual requirements.",
-        err
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: singleDocument, isLoading: isLoadingSingle } = useQuery({
+    queryKey: ["legalRequirement", bcpid, id],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpLegalRequirement/${bcpid}/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError(
+          "Error fetching single legal, regualtory and contractual requirement.",
+          err
+        );
+      }
+    },
+    enabled: !!id,
+  });
 
-  // Add a new legal requirement
-  const addLegalRequirement = async (documentData) => {
-    try {
-      await axiosInstance.post("/api/bcpLegalRequirement/add", documentData);
-    } catch (err) {
-      handleError(
-        "Error adding legal, regualtory and contractual requirements.",
-        err
-      );
-    }
-  };
+  // Create new legal requirement
+  const { mutate: createDocument } = useMutation({
+    mutationFn: async (data) => {
+      try {
+        const response = await axiosInstance.post(
+          "/api/bcpLegalRequirement/add",
+          data
+        );
+        return response.data;
+      } catch (err) {
+        handleError(
+          "Error creating legal, regualtory and contractual requirement.",
+          err
+        );
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["legalRequirements", bcpid]);
+    },
+  });
 
-  // Update an legal requirement
-  const updateLegalRequirement = async (id, documentData) => {
-    try {
-      await axiosInstance.put(
-        `/api/bcpLegalRequirement/edit/${id}`,
-        documentData
-      );
-    } catch (err) {
-      handleError(
-        "Error updating legal, regualtory and contractual requirements.",
-        err
-      );
-    }
-  };
+  // Update an existing legal requirement
+  const { mutate: updateDocument } = useMutation({
+    mutationFn: async (updateData) => {
+      try {
+        const response = await axiosInstance.put(
+          `/api/bcpLegalRequirement/edit/${id}`,
+          updateData
+        );
+        return response.data;
+      } catch (err) {
+        handleError(
+          "Error updating legal, regualtory and contractual requirement.",
+          err
+        );
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["legalRequirements", bcpid]);
+    },
+  });
 
-  // Delete an legal requirement
-  const deleteLegalRequirement = async (id, bcpid) => {
-    try {
-      await axiosInstance.delete(`/api/bcpLegalRequirement/delete/${id}`);
-      await fetchLegalRequirementsByBCPID(bcpid);
-    } catch (err) {
-      handleError(
-        "Error deleting legal, regualtory and contractual requirements.",
-        err
-      );
-    }
-  };
+  // Delete an existing legal requirement
+  const { mutate: deleteDocument } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const response = await axiosInstance.delete(
+          `/api/bcpLegalRequirement/delete/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError(
+          "Error deleting legal, regualtory and contractual requirement.",
+          err
+        );
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["legalRequirements", bcpid]);
+    },
+  });
 
   // Handle errors
   const handleError = (message, err) => {
@@ -90,47 +113,11 @@ export const useLegalRequirements = () => {
   };
 
   return {
-    legalRequirements,
-    legalRequirement,
-    loading,
-    // fetchLegalRequirements,
-    fetchLegalRequirementsByBCPID,
-    // fetchLastLegalRequirement,
-    fetchLegalRequirementByIds,
-    addLegalRequirement,
-    updateLegalRequirement,
-    deleteLegalRequirement,
+    allDocuments,
+    singleDocument,
+    isLoading: id ? isLoadingSingle : isLoadingAll,
+    createDocument,
+    updateDocument,
+    deleteDocument,
   };
 };
-
-// Fetch all legal regulatory and contractual requirements
-// const fetchLegalRequirements = async () => {
-//   setLoading(true);
-//   try {
-//     const response = await axiosInstance.get("/api/bcpLegalRequirement");
-//     setLegalRequirements(response.data);
-//   } catch (err) {
-//     handleError(
-//       "Error fetching legal, regualtory and contractual requirements.",
-//       err
-//     );
-//   } finally {
-//     setLoading(false);
-//   }
-// };
-
-// Fetch the last legal requirement
-// const fetchLastLegalRequirement = async () => {
-//   setLoading(true);
-//   try {
-//     const response = await axiosInstance.get("/api/bcpLegalRequirement/last");
-//     setLegalRequirement(response.data);
-//   } catch (err) {
-//     handleError(
-//       "Error fetching last legal, regualtory and contractual requirements",
-//       err
-//     );
-//   } finally {
-//     setLoading(false);
-//   }
-// };

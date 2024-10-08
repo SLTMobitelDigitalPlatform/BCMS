@@ -17,15 +17,10 @@ const EditDocumentControl = () => {
   const path = `/Business-Continuity-Plan/document-control/${bcpid}`;
 
   const {
-    documentControl,
-    loading,
-    fetchDocumentControlsByIds,
-    updateDocumentControl,
-  } = useDocumentControl();
-
-  useEffect(() => {
-    fetchDocumentControlsByIds(bcpid, id);
-  }, []);
+    singleDocument: documentControl,
+    isLoading: loading,
+    updateDocument,
+  } = useDocumentControl(bcpid, id);
 
   useEffect(() => {
     if (documentControl) {
@@ -51,7 +46,7 @@ const EditDocumentControl = () => {
         "Yes, Update it!",
         `"${documentControl.version}" has been updated successfully!`,
         `Failed to update "${documentControl.version}"!`,
-        () => updateDocumentControl(id, documentControlData)
+        () => updateDocument(documentControlData)
       );
 
       if (result === "success") {

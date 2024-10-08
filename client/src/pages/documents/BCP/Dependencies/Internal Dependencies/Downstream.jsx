@@ -1,10 +1,36 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { FaSpinner } from "react-icons/fa";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { useDownstream } from "../../../../../hooks/documents/bcp/useDownstream";
+import { deleteAlert } from "../../../../../utilities/alert";
 
 const Downstream = () => {
-  const [upstream, setUpstream] = useState([]);
+  const { bcpid } = useParams();
+  const location = useLocation();
+  const cbfid = location.state?.cbfid;
 
-  const handleDelete = async (id) => {};
+  const {
+    allDocuments: downstreams,
+    isLoading: downstreamLoading,
+    deleteDocument,
+  } = useDownstream(bcpid, cbfid.value);
+
+  const handleDelete = async (id) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete Downstream. This action cannot be undone.`,
+      "Yes, delete it!",
+      `Downstream deleted successfully!`,
+      "Error deleting Downstream",
+      () => deleteDocument(id)
+    );
+  };
+
+  if (downstreamLoading)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      </div>
+    );
 
   return (
     <div className="h-full w-full overflow-auto">
@@ -22,27 +48,36 @@ const Downstream = () => {
           </tr>
         </thead>
         <tbody>
-          {upstream.map((external) => (
-            <tr key={external._id} className="doc-table-hover">
+          {downstreams.map((downstream) => (
+            <tr key={downstream._id} className="doc-table-hover">
               <td className="py-2 px-4 doc-table-data">
-                {external.externalDependencies}
+                {downstream.organization}
+              </td>
+              <td className="py-2 px-4 doc-table-data">{downstream.forWhat}</td>
+              <td className="py-2 px-4 doc-table-data">
+                {downstream.primaryContact}
               </td>
               <td className="py-2 px-4 doc-table-data">
-                {external.requirments}
+                {downstream.secondaryContact}
               </td>
+              <td className="py-2 px-4 doc-table-data">{downstream.rto}</td>
+              <td className="py-2 px-4 doc-table-data">
+                {downstream.justification}
+              </td>
+              <td className="py-2 px-4 doc-table-data">{downstream.options}</td>
 
               <td className="py-2 px-4 w-32 doc-table-data">
                 <div className="flex justify-center gap-2">
                   <Link
-                    to={`/editExternalDependencies/${external._id}`}
-                    state={{ activeTab: "externalDependencies" }}
+                    to={`/editDownstream/${bcpid}/${downstream._id}`}
+                    state={{ activeTab: "internalDependencies", cbfid }}
                     className="doc-edit-btn"
                   >
                     Edit
                   </Link>
                   <button
                     className="doc-delete-btn"
-                    onClick={() => handleDelete(external._id)}
+                    onClick={() => handleDelete(downstream._id)}
                   >
                     Delete
                   </button>

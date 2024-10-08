@@ -16,15 +16,15 @@ const CreateRecoveryStrategy = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/recovery-strategy/${bcpid}`;
 
-  const { addRecoveryStrategy } = useRecoveryStrategy();
+  const { createDocument } = useRecoveryStrategy(bcpid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
       const recoveryStrategyData = { ...formData, bcpid };
-      await addRecoveryStrategy(recoveryStrategyData);
+      createDocument(recoveryStrategyData);
       createAlert(
         "Recovery Strategy Added",
         `Recovery Strategy "${formData.primaryOperatingSite}" added successfully!`

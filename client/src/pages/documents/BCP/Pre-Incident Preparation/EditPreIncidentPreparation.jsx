@@ -17,15 +17,10 @@ const EditPreIncidentPreparation = () => {
   const path = `/Business-Continuity-Plan/pre-incident-preparation/${bcpid}`;
 
   const {
-    preIncidentPreparation,
-    loading,
-    fetchPreIncidentPreparationByIds,
-    updatePreIncidentPreparation,
-  } = usePreIncidentPreparation();
-
-  useEffect(() => {
-    fetchPreIncidentPreparationByIds(bcpid, id);
-  }, []);
+    singleDocument: preIncidentPreparation,
+    isLoading: loading,
+    updateDocument,
+  } = usePreIncidentPreparation(bcpid, id);
 
   useEffect(() => {
     if (preIncidentPreparation) {
@@ -52,7 +47,7 @@ const EditPreIncidentPreparation = () => {
         "Yes, Update it!",
         `"${preIncidentPreparation.preIncidentMeasures}" has been updated successfully!`,
         `Failed to update "${preIncidentPreparation.preIncidentMeasures}"!`,
-        () => updatePreIncidentPreparation(id, preIncidentPreparationData)
+        () => updateDocument(preIncidentPreparationData)
       );
 
       if (result === "success") {

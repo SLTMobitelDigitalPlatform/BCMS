@@ -1,31 +1,25 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useRecoveryStrategy } from "../../../../hooks/documents/bcp/useRecoveryStrategy";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const RecoveryStrategy = () => {
-  const {
-    recoveryStrategies,
-    loading,
-    fetchRecoveryStrategiesByBCPID,
-    deleteRecoveryStrategy,
-  } = useRecoveryStrategy();
-
   const { bcpid } = useParams();
 
-  useEffect(() => {
-    fetchRecoveryStrategiesByBCPID(bcpid);
-  }, [bcpid]);
+  const {
+    allDocuments: recoveryStrategies,
+    isLoading: loading,
+    deleteDocument,
+  } = useRecoveryStrategy(bcpid);
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
     deleteAlert(
       "Are you sure?",
       "You are about to delete Recovery Strategy. This action cannot be undone.",
       "Yes, delete it!",
       "Recovery Strategy deleted successfully!",
       "Error deleting Recovery Strategy",
-      () => deleteRecoveryStrategy(id, bcpid)
+      () => deleteDocument(id)
     );
   };
 

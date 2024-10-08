@@ -1,30 +1,31 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bcp/useCriticalBusinessFunction";
 import { useExternalDependencies } from "../../../../../hooks/documents/bcp/useExternalDependencies";
+import { deleteAlert } from "../../../../../utilities/alert";
 
 const ExternalDependencies = () => {
-  const {
-    externalDependencies,
-    loading: loadingED,
-    fetchExternalDependenciesByBCPID,
-  } = useExternalDependencies();
-
-  const {
-    criticalBusinessFunctions,
-    loading: loadingCBF,
-    fetchCriticalBusinessFunctionsByBCPID,
-  } = useCriticalBusinessFunction();
-
   const { bcpid } = useParams();
 
-  useEffect(() => {
-    fetchCriticalBusinessFunctionsByBCPID(bcpid);
-    fetchExternalDependenciesByBCPID(bcpid);
-  }, []);
+  const {
+    allDocuments: externalDependencies,
+    isLoading: loadingED,
+    deleteDocument,
+  } = useExternalDependencies(bcpid);
 
-  const handleDelete = async (id) => {};
+  const { allDocuments: criticalBusinessFunctions, isLoading: loadingCBF } =
+    useCriticalBusinessFunction(bcpid);
+
+  const handleDelete = (id) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete External Dependency. This action cannot be undone.`,
+      "Yes, delete it!",
+      `External Dependency deleted successfully!`,
+      "Error deleting External Dependency",
+      () => deleteDocument(id)
+    );
+  };
 
   const getCBFName = (id) => {
     const cbf = criticalBusinessFunctions.find((cbf) => cbf._id === id);
@@ -81,7 +82,7 @@ const ExternalDependencies = () => {
                 <td className="py-2 px-4 w-32 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editExternalDependencies/${external._id}`}
+                      to={`/editExternalDependencies/${bcpid}/${external._id}`}
                       state={{ activeTab: "externalDependencies" }}
                       className="doc-edit-btn"
                     >
