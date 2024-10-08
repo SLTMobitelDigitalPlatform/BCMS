@@ -151,13 +151,14 @@ import CreateDownstream from "./pages/documents/BCP/Dependencies/Internal Depend
 import OrgCallTree from "./pages/Call Tree/OrgCallTree";
 import OrgCallTreeTable from "./pages/Call Tree/OrgCallTreeTable";
 import CallTreeHomePage from "./pages/Call Tree/CallTreeHomePage";
-import PoliciesPage from "./pages/Policies/OrgPolicies";
-import AddDocument from "./pages/Policies/AddDocument";
 import CreateRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/CreateRecoveryResumption";
 import EditRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/EditRecoveryResumption";
 import EditExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/EditExternalDependencies";
 import EditUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditUpstream";
 import EditDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditDownstream";
+import OrganizationalDocuments from "./pages/Policies/OrgDocuments";
+import OrgPolicies from "./pages/Policies/OrgPolicies";
+import AddDocument from "./pages/Policies/AddDocument";
 
 const router = createBrowserRouter([
   {
@@ -273,6 +274,11 @@ const router = createBrowserRouter([
       // Calendar
       { path: "calendar", element: <Calendar /> },
       { path: "event/:id/update", element: <UpdateEvent /> },
+
+      //Policies
+      { path: "policies", element: <OrgPolicies /> },
+      { path: "policies/add-document", element: <AddDocument /> },
+   
 
       //!  { path: "add-event", element: <AddEvents /> },
 
