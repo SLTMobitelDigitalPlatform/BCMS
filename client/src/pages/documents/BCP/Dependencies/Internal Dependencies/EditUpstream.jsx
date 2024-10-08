@@ -1,48 +1,79 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import Select from "react-select";
-import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bcp/useCriticalBusinessFunction";
-import { useExternalDependencies } from "../../../../../hooks/documents/bcp/useExternalDependencies";
-import { createAlert } from "../../../../../utilities/alert";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useUpstream } from "../../../../../hooks/documents/bcp/useUpstream";
+import { updateAlert } from "../../../../../utilities/alert";
 
-const CreateExternalDependencies = () => {
-  const [formData, setFormData] = useState({
-    criticalBusinessFunction: "",
-    organization: "",
-    dependencies: "",
-    primaryContact: "",
-    secondaryContact: "",
-    justification: "",
-  });
-
-  const { bcpid } = useParams();
-  const [isCreating, setIsCreating] = useState(false);
+const EditUpstream = () => {
+  const location = useLocation();
+  const { cbfid } = location.state || {};
+  const { bcpid, id } = useParams();
+  const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
 
-  const { createDocument } = useExternalDependencies(bcpid);
+  const [formData, setFormData] = useState({
+    criticalBusinessFunction: cbfid ? cbfid.value : "",
+    organization: "",
+    forWhat: "",
+    primaryContact: "",
+    secondaryContact: "",
+    rto: "",
+    justification: "",
+    options: "",
+  });
 
-  const { sortedCBFunctions, isLoading: loading } =
-    useCriticalBusinessFunction(bcpid);
+  const {
+    singleDocument: upstream,
+    isLoading: loading,
+    updateDocument,
+  } = useUpstream(bcpid, cbfid.value, id);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (upstream) {
+      setFormData({
+        criticalBusinessFunction: upstream.criticalBusinessFunction || "",
+        organization: upstream.organization || "",
+        forWhat: upstream.forWhat || "",
+        primaryContact: upstream.primaryContact || "",
+        secondaryContact: upstream.secondaryContact || "",
+        rto: upstream.rto || "",
+        justification: upstream.justification || "",
+        options: upstream.options || "",
+      });
+    }
+  }, [upstream]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsCreating(true);
+    setIsUpdating(true);
     try {
       // ! Add duplicate id validation
 
-      const externalDependencyData = { ...formData, bcpid };
-      createDocument(externalDependencyData);
-      createAlert(
-        "External Dependency Added",
-        `External Dependency added successfully!`
+      const upstreamData = {
+        ...formData,
+        bcpid,
+        criticalBusinessFunction: cbfid.value,
+      };
+
+      const result = await updateAlert(
+        "Confirm Update",
+        `Are you sure you want to update Upstream?`,
+        "Yes, Update it!",
+        `Upstream has been updated successfully!`,
+        `Failed to update Upstream!`,
+        () => updateDocument(upstreamData)
       );
-      navigate(path, { state: { activeTab: "externalDependencies" } });
+
+      if (result === "success") {
+        navigate(path, {
+          state: { activeStream: "upstream", cbfid: cbfid },
+        });
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsUpdating(false);
     }
   };
 
@@ -53,42 +84,18 @@ const CreateExternalDependencies = () => {
     });
   };
 
-  const handleSelectChange = (selectedOption, name) => {
-    setFormData({
-      ...formData,
-      [name]: selectedOption ? selectedOption.value : "",
-    });
-  };
-
   if (loading)
     return (
-      <div className="flex items-center justify-center h-screen">
-        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+      <div className="flex justify-center items-center h-full">
+        <FaSpinner className="animate-spin text-4xl text-green-500" />
       </div>
     );
 
   return (
     <div className="flex flex-col w-full h-full">
-      <h1 className="text-2xl font-bold text-green-500">
-        Add New External Dependency
-      </h1>
+      <h1 className="text-2xl font-bold text-green-500">Create Upstream</h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Critical Business Function</label>
-            <Select
-              className="mx-1 mt-1 mb-5 w-1/3 font-semibold"
-              value={sortedCBFunctions.find(
-                (cbf) => cbf.value === formData.criticalBusinessFunction
-              )}
-              onChange={(option) =>
-                handleSelectChange(option, "criticalBusinessFunction")
-              }
-              options={sortedCBFunctions}
-              placeholder="Select Critical Business Function"
-              isSearchable={false}
-            />
-          </div>
           <div className="flex flex-col gap-2 w-full">
             <label className="font-semibold">Name of the Organization</label>
             <input
@@ -101,13 +108,13 @@ const CreateExternalDependencies = () => {
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Dependencies</label>
+            <label className="font-semibold">For What</label>
             <input
               type="text"
-              name="dependencies"
-              value={formData.dependencies}
+              name="forWhat"
+              value={formData.forWhat}
               onChange={handleChange}
-              placeholder="Enter Dependencies"
+              placeholder="For What"
               className="p-2 w-full rounded"
             />
           </div>
@@ -134,6 +141,17 @@ const CreateExternalDependencies = () => {
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">RTO</label>
+            <input
+              type="text"
+              name="rto"
+              value={formData.rto}
+              onChange={handleChange}
+              placeholder="Enter RTO"
+              className="p-2 w-full rounded"
+            />
+          </div>
+          <div className="flex flex-col gap-2 w-full">
             <label className="font-semibold">Justification</label>
             <input
               type="text"
@@ -144,16 +162,27 @@ const CreateExternalDependencies = () => {
               className="p-2 w-full rounded"
             />
           </div>
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">Options</label>
+            <input
+              type="text"
+              name="options"
+              value={formData.options}
+              onChange={handleChange}
+              placeholder="Enter Options"
+              className="p-2 w-full rounded"
+            />
+          </div>
 
           <div className="flex justify-start gap-2">
             <button
               type="submit"
               className={`p-2 w-32 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold ${
-                isCreating ? "opacity-50 cursor-not-allowed" : ""
+                isUpdating ? "opacity-50 cursor-not-allowed" : ""
               }`}
-              disabled={isCreating}
+              disabled={isUpdating}
             >
-              {isCreating ? (
+              {isUpdating ? (
                 <FaSpinner className="animate-spin inline text-xl " />
               ) : (
                 "Create"
@@ -161,7 +190,7 @@ const CreateExternalDependencies = () => {
             </button>
             <Link
               to={path}
-              state={{ activeTab: "externalDependencies" }}
+              state={{ activeStream: "upstream", cbfid: cbfid }}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
@@ -173,4 +202,4 @@ const CreateExternalDependencies = () => {
   );
 };
 
-export default CreateExternalDependencies;
+export default EditUpstream;

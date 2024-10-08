@@ -1,31 +1,25 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useRecoveryAndResumptions } from "../../../../hooks/documents/bcp/useRecoveryAndResumption";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const RecoveryResumption = () => {
-  const {
-    recoveryResumptions,
-    loading,
-    fetchRecoveryResumptionsByBCPID,
-    deleteRecoveryResumption,
-  } = useRecoveryAndResumptions();
-
   const { bcpid, cbfid } = useParams();
 
-  useEffect(() => {
-    fetchRecoveryResumptionsByBCPID(bcpid, cbfid);
-  }, []);
+  const {
+    allDocuments: recoveryResumptions,
+    isLoading: loading,
+    deleteDocument,
+  } = useRecoveryAndResumptions(bcpid, cbfid);
 
-  const handleDelete = async (id) => {
+  const handleDelete = (id) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Recovery Resumption. This action cannot be undone.`,
       "Yes, delete it!",
       `Recovery Resumption deleted successfully!`,
       "Error deleting Recovery Resumption",
-      () => deleteRecoveryResumption(id, bcpid)
+      () => deleteDocument(id)
     );
   };
 

@@ -1,45 +1,49 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useRecoveryAndResumptions } from "../../../../hooks/documents/bcp/useRecoveryAndResumption";
-import { updateAlert } from "../../../../utilities/alert";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
-const EditRecoveryResumption = () => {
-  const [formData, setFormData] = useState({
-    number: "",
-    description: "",
-    timing: "",
-    duration: "",
-    role: "",
-    timeOfIncidentActions: "",
-    timeOfIncidentComments: "",
-  });
+import { updateAlert } from "../../../../../utilities/alert";
+import { useDownstream } from "../../../../../hooks/documents/bcp/useDownstream";
 
-  const { bcpid, cbfid, id } = useParams();
+const EditDownstream = () => {
+  const location = useLocation();
+  const { cbfid } = location.state || {};
+  const { bcpid, id } = useParams();
   const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
-  const path = `/recovery-and-resumption/${bcpid}/${cbfid}`;
+  const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
+
+  const [formData, setFormData] = useState({
+    criticalBusinessFunction: cbfid ? cbfid.value : "",
+    organization: "",
+    forWhat: "",
+    primaryContact: "",
+    secondaryContact: "",
+    rto: "",
+    justification: "",
+    options: "",
+  });
 
   const {
-    singleDocument: recoveryResumption,
+    singleDocument: downstream,
     isLoading: loading,
-
     updateDocument,
-  } = useRecoveryAndResumptions(bcpid, cbfid, id);
+  } = useDownstream(bcpid, cbfid.value, id);
 
   useEffect(() => {
-    if (recoveryResumption) {
+    if (downstream) {
       setFormData({
-        number: recoveryResumption.number || "",
-        description: recoveryResumption.description || "",
-        timing: recoveryResumption.timing || "",
-        duration: recoveryResumption.duration || "",
-        role: recoveryResumption.role || "",
-        timeOfIncidentActions: recoveryResumption.timeOfIncidentActions || "",
-        timeOfIncidentComments: recoveryResumption.timeOfIncidentComments || "",
+        criticalBusinessFunction: downstream.criticalBusinessFunction || "",
+        organization: downstream.organization || "",
+        forWhat: downstream.forWhat || "",
+        primaryContact: downstream.primaryContact || "",
+        secondaryContact: downstream.secondaryContact || "",
+        rto: downstream.rto || "",
+        justification: downstream.justification || "",
+        options: downstream.options || "",
       });
     }
-  }, [recoveryResumption]);
+  }, [downstream]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,19 +51,25 @@ const EditRecoveryResumption = () => {
     try {
       // ! Add duplicate id validation
 
-      const recoveryResumptionData = { ...formData, bcpid, cbfid };
+      const downstreamData = {
+        ...formData,
+        bcpid,
+        criticalBusinessFunction: cbfid.value,
+      };
 
       const result = await updateAlert(
         "Confirm Update",
-        `Are you sure you want to update Recovery and Resumption "${recoveryResumption.number}"?`,
+        `Are you sure you want to update Downstream?`,
         "Yes, Update it!",
-        `Recovery and Resumption "${recoveryResumption.number}" has been updated successfully!`,
-        `Failed to update "${recoveryResumption.referenceDocument}"!`,
-        () => updateDocument(recoveryResumptionData)
+        `Downstream has been updated successfully!`,
+        `Failed to update Downstream!`,
+        () => updateDocument(downstreamData)
       );
 
       if (result === "success") {
-        navigate(path);
+        navigate(path, {
+          state: { activeStream: "downstream", cbfid: cbfid },
+        });
       }
     } catch (error) {
       console.log(error);
@@ -84,85 +94,83 @@ const EditRecoveryResumption = () => {
 
   return (
     <div className="flex flex-col w-full h-full">
-      <h1 className="text-2xl font-bold text-green-500">
-        Edit Recovery and Resumption
-      </h1>
+      <h1 className="text-2xl font-bold text-green-500">Edit Downstream</h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Number</label>
+            <label className="font-semibold">Name of the Organization</label>
             <input
               type="text"
-              name="number"
-              value={formData.number}
+              name="organization"
+              value={formData.organization}
               onChange={handleChange}
-              className="p-2 w-full rounded"
-              disabled
-            />
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Description</label>
-            <input
-              type="text"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              placeholder="Enter Description"
+              placeholder="Enter Name of the Organization"
               className="p-2 w-full rounded"
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Timing</label>
+            <label className="font-semibold">For What</label>
             <input
               type="text"
-              name="timing"
-              value={formData.timing}
+              name="forWhat"
+              value={formData.forWhat}
               onChange={handleChange}
-              placeholder="Enter Timing"
+              placeholder="For What"
               className="p-2 w-full rounded"
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Duration</label>
+            <label className="font-semibold">Primary Contact</label>
             <input
               type="text"
-              name="duration"
-              value={formData.duration}
+              name="primaryContact"
+              value={formData.primaryContact}
               onChange={handleChange}
-              placeholder="Enter Duration"
+              placeholder="Enter Primary Contact"
               className="p-2 w-full rounded"
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Role</label>
+            <label className="font-semibold">Secondary Contact</label>
             <input
               type="text"
-              name="role"
-              value={formData.role}
+              name="secondaryContact"
+              value={formData.secondaryContact}
               onChange={handleChange}
-              placeholder="Enter Role"
+              placeholder="Enter Secondary Contact"
               className="p-2 w-full rounded"
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Time Of Incident Actions</label>
+            <label className="font-semibold">RTO</label>
             <input
               type="text"
-              name="timeOfIncidentActions"
-              value={formData.timeOfIncidentActions}
+              name="rto"
+              value={formData.rto}
               onChange={handleChange}
-              placeholder="Enter Time Of Incident Actions"
+              placeholder="Enter RTO"
               className="p-2 w-full rounded"
             />
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Time Of Incident Comments</label>
+            <label className="font-semibold">Justification</label>
             <input
               type="text"
-              name="timeOfIncidentComments"
-              value={formData.timeOfIncidentComments}
+              name="justification"
+              value={formData.justification}
               onChange={handleChange}
-              placeholder="Enter Time Of Incident Comments"
+              placeholder="Enter Justification"
+              className="p-2 w-full rounded"
+            />
+          </div>
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">Options</label>
+            <input
+              type="text"
+              name="options"
+              value={formData.options}
+              onChange={handleChange}
+              placeholder="Enter Options"
               className="p-2 w-full rounded"
             />
           </div>
@@ -183,6 +191,7 @@ const EditRecoveryResumption = () => {
             </button>
             <Link
               to={path}
+              state={{ activeStream: "downstream", cbfid: cbfid }}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
@@ -194,4 +203,4 @@ const EditRecoveryResumption = () => {
   );
 };
 
-export default EditRecoveryResumption;
+export default EditDownstream;

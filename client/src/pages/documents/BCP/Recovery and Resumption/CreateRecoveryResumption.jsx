@@ -21,16 +21,10 @@ const CreateRecoveryResumption = () => {
   const path = `/recovery-and-resumption/${bcpid}/${cbfid}`;
 
   const {
-    recoveryResumptions,
-    loading,
-    addRecoveryResumption,
-    fetchRecoveryResumptionsByBCPID,
-  } = useRecoveryAndResumptions();
-
-  useEffect(() => {
-    // Fetch recovery resumptions based on bcpid and cbfid
-    fetchRecoveryResumptionsByBCPID(bcpid, cbfid);
-  }, []);
+    allDocuments: recoveryResumptions,
+    isLoading: loading,
+    createDocument,
+  } = useRecoveryAndResumptions(bcpid, cbfid);
 
   useEffect(() => {
     const newNumber = recoveryResumptions.length + 1;
@@ -41,7 +35,7 @@ const CreateRecoveryResumption = () => {
     }));
   }, [recoveryResumptions]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
@@ -52,7 +46,7 @@ const CreateRecoveryResumption = () => {
         bcpid,
         cbfid,
       };
-      await addRecoveryResumption(relatedDocumentData);
+      createDocument(relatedDocumentData);
       createAlert(
         "Recovery and Resumption Added",
         `Recovery and Resumption "${formData.number}" added successfully!`

@@ -1,71 +1,100 @@
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../../services/axiosInstance";
 import { errorAlert } from "../../../utilities/alert";
 
-export const useDownstream = () => {
-  const [downstreams, setDownstreams] = useState([]);
-  const [downstream, setDownstream] = useState([]);
-  const [loading, setLoading] = useState(false);
+export const useDownstream = (bcpid, cbfid, id) => {
+  const queryClient = useQueryClient();
 
-  // Fetch downstream data by BCP ID
-  const fetchDownstreamsByBCPID = async (bcpid, cbfid = null) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(`/api/bcpDownstream/${bcpid}`, {
-        params: {
-          criticalBusinessFunction: cbfid ? cbfid : null,
-        },
-      });
-      setDownstreams(response.data);
-    } catch (err) {
-      handleError("Error fetching upstream data.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch all downstreams by BCP ID and cache the result
+  const { data: allDocuments, isLoading: isLoadingAll } = useQuery({
+    queryKey: ["downstreams", bcpid, cbfid],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpDownstream/${bcpid}`,
+          {
+            params: {
+              criticalBusinessFunction: cbfid,
+            },
+          }
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching all downstreams.", err);
+      }
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !id,
+  });
 
-  //   Fetch downstream data by BCP ID and Mongo ID
-  const fetchDownstreamByIds = async (bcpid, id) => {
-    setLoading(true);
-    try {
-      const response = await axiosInstance.get(
-        `/api/bcpDownstream/${bcpid}/${id}`
-      );
-      setDownstream(response.data);
-    } catch (err) {
-      handleError("Error fetching downstream data.", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch a single downstream by BCP ID and Mongo ID
+  const { data: singleDocument, isLoading: isLoadingSingle } = useQuery({
+    queryKey: ["downstream", bcpid, id],
+    queryFn: async () => {
+      try {
+        const response = await axiosInstance.get(
+          `/api/bcpDownstream/${bcpid}/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error fetching single downstream.", err);
+      }
+    },
+    enabled: !!id,
+  });
 
-  //   Create a new downstream
-  const createDownstream = async (data) => {
-    try {
-      await axiosInstance.post("/api/bcpDownstream/add", data);
-    } catch (err) {
-      handleError("Error creating downstream.", err);
-    }
-  };
+  // Create new downstream
+  const { mutate: createDocument } = useMutation({
+    mutationFn: async (data) => {
+      try {
+        const response = await axiosInstance.post(
+          "/api/bcpDownstream/add",
+          data
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error creating downstream.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["downstreams", bcpid]);
+    },
+  });
 
-  //   Update a downstream
-  const updateDownstream = async (id, updatedData) => {
-    try {
-      await axiosInstance.put(`/api/bcpDownstream/edit/${id}`, updatedData);
-    } catch (err) {
-      handleError("Error updating downstream.", err);
-    }
-  };
+  // Update an existing downstream
+  const { mutate: updateDocument } = useMutation({
+    mutationFn: async (updateData) => {
+      try {
+        const response = await axiosInstance.put(
+          `/api/bcpDownstream/edit/${id}`,
+          updateData
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error updating downstream.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["downstreams", bcpid]);
+    },
+  });
 
-  //   Delete a downstream
-  const deleteDownstream = async (id, bcpid) => {
-    try {
-      await axiosInstance.delete(`/api/bcpDownstream/delete/${id}`);
-      await fetchDownstreamsByBCPID(bcpid);
-    } catch (err) {
-      handleError("Error deleting downstream.", err);
-    }
-  };
+  // Delete an existing downstream
+  const { mutate: deleteDocument } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const response = await axiosInstance.delete(
+          `/api/bcpDownstream/delete/${id}`
+        );
+        return response.data;
+      } catch (err) {
+        handleError("Error deleting downstream.", err);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["downstreams", bcpid]);
+    },
+  });
 
   // Handle errors
   const handleError = (message, err) => {
@@ -74,13 +103,11 @@ export const useDownstream = () => {
   };
 
   return {
-    downstream,
-    downstreams,
-    loading,
-    createDownstream,
-    fetchDownstreamsByBCPID,
-    fetchDownstreamByIds,
-    updateDownstream,
-    deleteDownstream,
+    allDocuments,
+    singleDocument,
+    isLoading: id ? isLoadingSingle : isLoadingAll,
+    createDocument,
+    updateDocument,
+    deleteDocument,
   };
 };

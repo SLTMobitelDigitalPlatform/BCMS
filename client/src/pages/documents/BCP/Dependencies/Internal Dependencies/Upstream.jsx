@@ -1,24 +1,29 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useUpstream } from "../../../../../hooks/documents/bcp/useUpstream";
+import { deleteAlert } from "../../../../../utilities/alert";
 
 const Upstream = () => {
-  const {
-    upstreams,
-    loading: upstreamsLoading,
-    fetchUpstreamsByBCPID,
-  } = useUpstream();
-
   const { bcpid } = useParams();
   const location = useLocation();
   const cbfid = location.state?.cbfid;
 
-  useEffect(() => {
-    fetchUpstreamsByBCPID(bcpid, cbfid.value);
-  }, [cbfid]);
+  const {
+    allDocuments: upstreams,
+    isLoading: upstreamsLoading,
+    deleteDocument,
+  } = useUpstream(bcpid, cbfid.value);
 
-  const handleDelete = async (id) => {};
+  const handleDelete = async (id) => {
+    deleteAlert(
+      "Are you sure?",
+      `You are about to delete Upstream. This action cannot be undone.`,
+      "Yes, delete it!",
+      `Upstream deleted successfully!`,
+      "Error deleting Upstream",
+      () => deleteDocument(id)
+    );
+  };
 
   if (upstreamsLoading)
     return (
@@ -64,8 +69,8 @@ const Upstream = () => {
               <td className="py-2 px-4 w-32 doc-table-data">
                 <div className="flex justify-center gap-2">
                   <Link
-                    to={`/editExternalDependencies/${upstream._id}`}
-                    state={{ activeTab: "internalDependencies" }}
+                    to={`/editUpstream/${bcpid}/${upstream._id}`}
+                    state={{ activeTab: "internalDependencies", cbfid }}
                     className="doc-edit-btn"
                   >
                     Edit

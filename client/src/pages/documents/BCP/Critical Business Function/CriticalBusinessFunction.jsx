@@ -1,31 +1,25 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const CriticalBusinessFunction = () => {
-  const {
-    criticalBusinessFunctions,
-    loading,
-    fetchCriticalBusinessFunctionsByBCPID,
-    deleteCriticalBusinessFunction,
-  } = useCriticalBusinessFunction();
-
   const { bcpid } = useParams();
 
-  useEffect(() => {
-    fetchCriticalBusinessFunctionsByBCPID(bcpid);
-  }, [bcpid]);
+  const {
+    allDocuments: criticalBusinessFunctions,
+    isLoading: loading,
+    deleteDocument,
+  } = useCriticalBusinessFunction(bcpid);
 
-  const handleDelete = async (id, name) => {
+  const handleDelete = (id, name) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Critical Business Function "${name}". This action cannot be undone.`,
       "Yes, delete it!",
       `Critical Business Function "${name}" deleted successfully!`,
       `Error deleting Critical Business Function "${name}"`,
-      () => deleteCriticalBusinessFunction(id, bcpid)
+      () => deleteDocument(id)
     );
   };
 

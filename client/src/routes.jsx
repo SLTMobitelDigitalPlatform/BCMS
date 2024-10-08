@@ -153,6 +153,9 @@ import PoliciesPage from "./pages/Policies/OrgPolicies";
 import AddDocument from "./pages/Policies/AddDocument";
 import CreateRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/CreateRecoveryResumption";
 import EditRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/EditRecoveryResumption";
+import EditExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/EditExternalDependencies";
+import EditUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditUpstream";
+import EditDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditDownstream";
 
 const router = createBrowserRouter([
   {
@@ -519,8 +522,17 @@ const router = createBrowserRouter([
         element: <CreateExternalDependencies />,
       },
 
+      {
+        path: "editExternalDependencies/:bcpid/:id",
+        element: <EditExternalDependencies />,
+      },
+
       { path: "createUpstream/:bcpid", element: <CreateUpstream /> },
+
+      { path: "editUpstream/:bcpid/:id", element: <EditUpstream /> },
       { path: "createDownstream/:bcpid", element: <CreateDownstream /> },
+
+      { path: "editDownstream/:bcpid/:id", element: <EditDownstream /> },
 
       // * Vital Records
       { path: "createVitalRecord/:bcpid", element: <CreateVitalRecords /> },
