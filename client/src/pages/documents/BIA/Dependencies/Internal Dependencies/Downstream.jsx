@@ -32,34 +32,28 @@ const Downstream = () => {
       <table className="table-fixed w-full">
         <thead className="sticky top-0 bg-indigo-200">
           <tr>
-            <th className="doc-table-head">Name of the Organization</th>
-            <th className="w-32 doc-table-head">For What</th>
-            <th className="w-32 doc-table-head">Primary Contact</th>
-            <th className="w-32 doc-table-head">Secondary Contact</th>
-            <th className="w-32 doc-table-head">RTO</th>
-            <th className="w-32 doc-table-head">Justification</th>
-            <th className="w-32 doc-table-head">Options</th>
-            <th className="w-32 doc-table-head">Actions</th>
+            <th className="w-20 doc-table-head">Name of the Section/Business Unit</th>
+            <th className="w-16 doc-table-head">Primary Contact</th>
+            <th className="w-16 doc-table-head">Secondary Contact</th>
+            <th className="w-20 doc-table-head">Justification</th>
+            <th className="w-16 doc-table-head">Actions</th>
           </tr>
         </thead>
         <tbody>
           {downstreams.map((downstream) => (
             <tr key={downstream._id} className="doc-table-hover">
               <td className="py-2 px-4 doc-table-data">
-                {downstream.organization}
+                {downstream.section}
               </td>
-              <td className="py-2 px-4 doc-table-data">{downstream.forWhat}</td>
               <td className="py-2 px-4 doc-table-data">
                 {downstream.primaryContact}
               </td>
               <td className="py-2 px-4 doc-table-data">
                 {downstream.secondaryContact}
               </td>
-              <td className="py-2 px-4 doc-table-data">{downstream.rto}</td>
               <td className="py-2 px-4 doc-table-data">
                 {downstream.justification}
               </td>
-              <td className="py-2 px-4 doc-table-data">{downstream.options}</td>
 
               <td className="py-2 px-4 w-32 doc-table-data">
                 <div className="flex justify-center gap-2">

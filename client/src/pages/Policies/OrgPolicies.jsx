@@ -17,7 +17,7 @@ const PoliciesPage = () => {
 
         <Link to="/policies/add-document">
           <button className="bg-blue-900 text-white py-2 px-4 rounded-md">Add Document</button>
-          </Link>
+        </Link>
         </div>
 
         {/* Policy list */}
