@@ -10,7 +10,7 @@ exports.createBiaDocumentControl = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
+//
 // Get all Document Control
 exports.getAllBiaDocumentControl = async (req, res) => {
   try {
