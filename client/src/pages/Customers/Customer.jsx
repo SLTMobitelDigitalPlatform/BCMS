@@ -198,7 +198,7 @@ const Customer = () => {
 
                     <td className="border border-green-500 p-1">
                       <div className="flex justify-center gap-2">
-                        <button
+                        {/* <button
                           className="doc-edit-btn"
                           // onClick={() => {
                           //   setOpenAddEditModal({
@@ -209,7 +209,7 @@ const Customer = () => {
                           // }}
                         >
                           Edit
-                        </button>
+                        </button> */}
                         <button
                           className="doc-delete-btn"
                           onClick={() => handleDelete(customer._id)}

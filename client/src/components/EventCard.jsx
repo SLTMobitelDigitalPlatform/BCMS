@@ -11,8 +11,6 @@ const EventCard = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get("http://localhost:5000/events");
-      console.log("Fetched events:", response.data);
-
       const eventArray = Array.isArray(response.data) ? response.data : [];
 
       const formattedEvents = eventArray
@@ -21,8 +19,8 @@ const EventCard = () => {
           start: new Date(event.start),
           end: new Date(event.end),
         }))
-        .filter((event) => event.start >= new Date()) // Filter events that haven't started yet
-        .sort((a, b) => a.start - b.start); // Sort events by start date in ascending order
+        .filter((event) => event.start >= new Date()) // Only upcoming events
+        .sort((a, b) => a.start - b.start); // Sort events by start date
 
       setEvents(formattedEvents);
     } catch (error) {
@@ -31,53 +29,32 @@ const EventCard = () => {
   };
 
   return (
-    <div className="bg-blue-100 p-4 w-full h-full rounded-2xl overflow-y-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold text-blue-600 text-center mb-8">
+    <div className="bg-indigo-900 p-4 w-full h-full rounded-2xl overflow-hidden">
+      {/* <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-4">
         Upcoming Events
-      </h1>
-      <div className="flex flex-col gap-4">
-        {events.length > 0 ? (
-          events.map((event, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
-              <h2 className="font-bold text-lg text-blue-800">{event.title}</h2>
-              <p className="text-md text-gray-600">
-                {new Date(event.start).toLocaleDateString()} -{" "}
-                {new Date(event.end).toLocaleDateString()}
-              </p>
-              <p className="text-sm text-gray-500">{event.description}</p>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-600 text-center">No events found.</p>
-        )}
+      </h1> */}
+      <div className="h-full rounded-2xl overflow-y-auto">
+        <div className="flex flex-col gap-4">
+          {events.length > 0 ? (
+            events.map((event, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
+                <h2 className="font-bold text-lg text-blue-800">
+                  {event.title}
+                </h2>
+                <p className="text-md text-gray-600 font-semibold">
+                  {new Date(event.start).toLocaleDateString()} -{" "}
+                  {new Date(event.end).toLocaleDateString()}
+                </p>
+                <p className="text-sm text-gray-500">{event.description}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-600 text-center">No upcoming events.</p>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default EventCard;
-
-{
-  /* <div className="h-full overflow-y-auto p-4">
-      <h2 className="text-lg font-semibold mb-4 text-center">
-        Upcoming Events
-      </h2>
-      <div className="space-y-4">
-        {events.map((event, index) => (
-          <div
-            key={index}
-            className="bg-white p-4 rounded-lg shadow-lg flex flex-col space-y-2"
-          >
-            <h3 className="text-lg font-semibold text-blue-900">
-              {event.title}
-            </h3>
-            <p className="text-sm text-gray-700">
-              {event.start.toLocaleDateString()} -{" "}
-              {event.end.toLocaleDateString()}
-            </p>
-            <p className="text-sm text-gray-500">{event.description}</p>
-          </div>
-        ))}
-      </div>
-    </div> */
-}

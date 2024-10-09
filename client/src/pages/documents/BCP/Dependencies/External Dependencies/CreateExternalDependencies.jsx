@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
@@ -21,23 +21,19 @@ const CreateExternalDependencies = () => {
   const navigate = useNavigate();
   const path = `/Business-Continuity-Plan/dependencies/${bcpid}`;
 
-  const { createExternalDependency } = useExternalDependencies();
+  const { createDocument } = useExternalDependencies(bcpid);
 
-  const { sortedCBFunctions, loading, fetchCriticalBusinessFunctionsByBCPID } =
-    useCriticalBusinessFunction();
+  const { sortedCBFunctions, isLoading: loading } =
+    useCriticalBusinessFunction(bcpid);
 
-  useEffect(() => {
-    fetchCriticalBusinessFunctionsByBCPID(bcpid);
-  }, []);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
       // ! Add duplicate id validation
 
       const externalDependencyData = { ...formData, bcpid };
-      await createExternalDependency(externalDependencyData);
+      createDocument(externalDependencyData);
       createAlert(
         "External Dependency Added",
         `External Dependency added successfully!`
@@ -60,7 +56,7 @@ const CreateExternalDependencies = () => {
   const handleSelectChange = (selectedOption, name) => {
     setFormData({
       ...formData,
-      [name]: selectedOption ? selectedOption.value._id : "",
+      [name]: selectedOption ? selectedOption.value : "",
     });
   };
 
@@ -74,7 +70,7 @@ const CreateExternalDependencies = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl font-bold text-green-500">
-        Add New Related Document
+        Add New External Dependency
       </h1>
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -83,7 +79,7 @@ const CreateExternalDependencies = () => {
             <Select
               className="mx-1 mt-1 mb-5 w-1/3 font-semibold"
               value={sortedCBFunctions.find(
-                (cbf) => cbf.value._id === formData.criticalBusinessFunction
+                (cbf) => cbf.value === formData.criticalBusinessFunction
               )}
               onChange={(option) =>
                 handleSelectChange(option, "criticalBusinessFunction")

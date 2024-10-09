@@ -33,6 +33,7 @@ const routerRiskElements = require("./routes/documentRoutes/riskAssesment/riskEl
 const routerExternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/externalPartyRoutes");
 const routerInternalParty = require("./routes/documentRoutes/contexOfOrgRoutes/internalPartyRoutes");
 const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
+const routerOrgCallTree = require("./routes/callTreeRoutes/orgCallTreeRoute");
 const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
 
@@ -48,6 +49,7 @@ const routerRecoveryStrategy = require("./routes/documentRoutes/bcp/recoveryStra
 const routerlegalRequirements = require("./routes/documentRoutes/bcp/legalRequirementRoutes");
 const routerPreIncidentPreparation = require("./routes/documentRoutes/bcp/preIncidentPreparationRoutes");
 const routerCriticalBusinessFunction = require("./routes/documentRoutes/bcp/criticalBusinessFunctionRoutes");
+const routerRecoveryResumption = require("./routes/documentRoutes/bcp/recoveryResumptionRoutes");
 const routerResourcesRequired = require("./routes/documentRoutes/bcp/resourcesRequiredRoutes");
 const routerExternalDependencies = require("./routes/documentRoutes/bcp/externalDependenciesRoutes");
 const routerUpstream = require("./routes/documentRoutes/bcp/upstreamRoutes");
@@ -60,6 +62,13 @@ const routerEmbeddedDocument = require("./routes/documentRoutes/bcp/embeddedDocu
 // Business Impact Analysis Routes
 const routerBiaForm = require("./routes/documentRoutes/businessImpactAnalysis/biaFormRoutes");
 const routerOperatingSite = require("./routes/documentRoutes/businessImpactAnalysis/operatingSitesRoutes");
+const routerPeaksDeadline = require("./routes/documentRoutes/businessImpactAnalysis/peaksDeadlinesRoutes");
+const routerBiaResource = require("./routes/documentRoutes/businessImpactAnalysis/resourcesRoutes");
+const routerBiaDocumentControl = require("./routes/documentRoutes/businessImpactAnalysis/BiaDocumentControlRoutes");
+const routerBIACriticalBusinessFunction = require("./routes/documentRoutes/businessImpactAnalysis/criticalBusinessFunctionRoutes");
+const routerBIAExternalDependencies = require("./routes/documentRoutes/businessImpactAnalysis/externalDependenciesRoutes");
+const routerBIAUpstream = require("./routes/documentRoutes/businessImpactAnalysis/upstreamRoutes");
+const routerBIADownstream = require("./routes/documentRoutes/businessImpactAnalysis/downstreamRoutes");
 
 const PORT = 5000;
 
@@ -102,6 +111,7 @@ app.use(
   routerlegalRequirements,
   routerPreIncidentPreparation,
   routerCriticalBusinessFunction,
+  routerRecoveryResumption,
   routerResourcesRequired,
   routerExternalDependencies,
   routerUpstream,
@@ -111,7 +121,15 @@ app.use(
   routerManpower,
   routerEmbeddedDocument,
   routerBiaForm,
-  routerOperatingSite
+  routerOperatingSite,
+  routerPeaksDeadline,
+  routerBiaDocumentControl,
+  routerBiaResource,
+  routerOrgCallTree,
+  routerBIACriticalBusinessFunction,
+  routerBIAExternalDependencies,
+  routerBIAUpstream,
+  routerBIADownstream,
 );
 
 // // Create uploads directory if it doesn't exist

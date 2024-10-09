@@ -1,31 +1,25 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useResourcesRequired } from "../../../../hooks/documents/bcp/useResourcesRequired";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const ResourcesRequired = () => {
-  const {
-    resourcesRequired,
-    loading,
-    fetchResourcesRequiredByBCPID,
-    deleteResourceRequired,
-  } = useResourcesRequired();
-
   const { bcpid } = useParams();
 
-  useEffect(() => {
-    fetchResourcesRequiredByBCPID(bcpid);
-  }, []);
+  const {
+    allDocuments: resourcesRequired,
+    isLoading: loading,
+    deleteDocument,
+  } = useResourcesRequired(bcpid);
 
-  const handleDelete = async (id, name) => {
+  const handleDelete = (id, name) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Resource Required "${name}". This action cannot be undone.`,
       "Yes, delete it!",
       `Resource Reqired "${name}" deleted successfully!`,
       `Error deleting Resource Required "${name}"`,
-      () => deleteResourceRequired(id, bcpid)
+      () => deleteDocument(id)
     );
   };
 

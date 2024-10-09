@@ -13,6 +13,7 @@ const downstreamSchema = new mongoose.Schema({
   secondaryContact: { type: String, required: true },
   rto: { type: String, required: true },
   justification: { type: String, required: true },
+  options: { type: String, required: true },
 });
 
 module.exports = mongoose.model("Downstream", downstreamSchema);

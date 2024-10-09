@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const FeedbackList = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -15,6 +16,9 @@ const FeedbackList = () => {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-6">Customer Feedbacks</h1>
+      <div className="m-2 bg-sky-900 text-white w-36 p-2 rounded-lg">
+        <Link to="/customers">Customer Table</Link>
+      </div>
       {feedbacks.length > 0 ? (
         <div className="grid gap-6">
           {feedbacks.map((feedback) => (

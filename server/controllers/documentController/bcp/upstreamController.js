@@ -13,7 +13,13 @@ exports.createUpstream = async (req, res) => {
 
 // Get all upstreams by BCP ID
 exports.getUpstreamsByBCPID = async (req, res) => {
-  const filter = { bcpid: req.params.bcpid };
+  const { bcpid } = req.params;
+  const { criticalBusinessFunction } = req.query;
+
+  const filter = { bcpid };
+  if (criticalBusinessFunction) {
+    filter.criticalBusinessFunction = criticalBusinessFunction;
+  }
   try {
     const upstreams = await Upstream.find(filter);
     if (!upstreams) {

@@ -1,31 +1,31 @@
 import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
-import { useOperatingSite } from "../../../../hooks/documents/bia/useOperatingSite";
+import { useCriticalBusinessFunction } from "../../../../hooks/documents/bia/useCriticalBusinessFunction";
 import { deleteAlert } from "../../../../utilities/alert";
 
-const operatingSites = () => {
+const CriticalBusinessFunction = () => {
   const {
-    operatingSites,
+    criticalBusinessFunctions,
     loading,
-    fetchOperatingSitesByBIAID,
-    deleteOperatingSite,
-  } = useOperatingSite();
+    fetchCriticalBusinessFunctionsByBIAID,
+    deleteCriticalBusinessFunction,
+  } = useCriticalBusinessFunction();
 
   const { biaid } = useParams();
 
   useEffect(() => {
-    fetchOperatingSitesByBIAID(biaid);
-  }, []);
+    fetchCriticalBusinessFunctionsByBIAID(biaid);
+  }, [biaid]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, functionName) => {
     deleteAlert(
       "Are you sure?",
-      "You are about to delete Operating Site. This action cannot be undone.",
+      `You are about to delete Critical Business Function "${functionName}". This action cannot be undone.`,
       "Yes, delete it!",
-      "Operating Site deleted successfully!",
-      "Error deleting Operating Site",
-      () => deleteOperatingSite(id, biaid)
+      `Critical Business Function "${functionName}" deleted successfully!`,
+      `Error deleting Critical Business Function "${functionName}"`,
+      () => deleteCriticalBusinessFunction(id, biaid)
     );
   };
 
@@ -40,9 +40,12 @@ const operatingSites = () => {
     <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">
         <h1 className="text-xl font-bold text-indigo-900">
-          Operating Sites
+          Critical Business Functions
         </h1>
-        <Link to={`/createOperatingSites/${biaid}`} className="btn-primary">
+        <Link
+          to={`/createBIACriticalBusinessFunction/${biaid}`}
+          className="btn-primary"
+        >
           Add Details
         </Link>
       </div>
@@ -52,35 +55,40 @@ const operatingSites = () => {
         <table className="table-fixed w-full">
           <thead className="sticky top-0 bg-indigo-200">
             <tr>
-              <th className="w-20 doc-table-head">Location</th>
-              <th className="w-20 doc-table-head">Primary/Secondary</th>
-              <th className="w-36 doc-table-head">Address</th>
-              <th className="w-28 doc-table-head">Actions</th>
+              <th className="w-28 doc-table-head">Name</th>
+              <th className="w-36 doc-table-head">Description</th>
+              <th className="w-20 doc-table-head">Criticality</th>
+              <th className="w-12 doc-table-head">RTO</th>
+              <th className="w-12 doc-table-head">RPO</th>
+              <th className="w-16 doc-table-head">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {operatingSites.map((sites) => (
-              <tr key={sites._id} className="doc-table-hover">
+            {criticalBusinessFunctions.map((biacbf) => (
+              <tr key={biacbf._id} className="doc-table-hover">
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
-                  {sites.location}
+                  {biacbf.functionName}
                 </td>
                 <td className="py-2 px-4 w-20 doc-table-data text-center">
-                  {sites.siteType}
+                  {biacbf.description}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-data">
-                  {sites.address}
+                  {biacbf.criticality}
                 </td>
+                <td className="py-2 px-4 w-36 doc-table-data">{biacbf.rto}</td>
+                <td className="py-2 px-4 w-36 doc-table-data">{biacbf.rpo}</td>
+
                 <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editOperatingSites/${biaid}/${sites._id}`}
+                      to={`/editBIACriticalBusinessFunction/${biaid}/${biacbf._id}`}
                       className="doc-edit-btn"
                     >
                       Edit
                     </Link>
                     <button
                       className="doc-delete-btn"
-                      onClick={() => handleDelete(sites._id)}
+                      onClick={() => handleDelete(biacbf._id, biacbf.functionName)}
                     >
                       Delete
                     </button>
@@ -95,4 +103,4 @@ const operatingSites = () => {
   );
 };
 
-export default operatingSites;
+export default CriticalBusinessFunction;

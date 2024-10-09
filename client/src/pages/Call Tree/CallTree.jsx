@@ -70,6 +70,16 @@ function CallTree() {
     fetchSections();
   }, []);
 
+  const handleSectionChange = (e) => {
+    const selectedSection = e.target.value;
+    setSectionName(selectedSection);
+    const selectedSectionId = sections.find(
+      (sec) => sec.sectionCode === selectedSection
+    )._id; // Get the selected section ID based on the section code
+    setSelectedSectionId(selectedSectionId);
+    fetchData(selectedSectionId); // Fetch call tree data for the selected section
+  };
+
   const config = {
     pageFitMode: PageFitMode.None,
     autoSizeMaximum: { width: 1200, height: 600 },
@@ -130,20 +140,12 @@ function CallTree() {
     ],
   };
 
-  const handleSectionChange = (e) => {
-    const selectedSection = e.target.value;
-    setSectionName(selectedSection);
-    const selectedSectionId = sections.find(
-      (sec) => sec.sectionCode === selectedSection
-    )._id; // Get the selected section ID based on the section code
-    setSelectedSectionId(selectedSectionId);
-    fetchData(selectedSectionId); // Fetch call tree data for the selected section
-  };
-
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
-        <h1 className="font-semibold text-2xl">{sectionName}</h1>
+        <Link to="/call-tree-home" className="font-semibold text-2xl">
+          {sectionName}
+        </Link>
         <select
           className="border rounded px-3 py-2"
           value={sectionName}

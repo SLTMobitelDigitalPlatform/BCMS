@@ -1,21 +1,23 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useLegalRequirements } from "../../../../hooks/documents/bcp/useLegalRequirements";
 import { deleteAlert } from "../../../../utilities/alert";
+import { useUsers } from "../../../../hooks/useUsers";
+import { useEffect } from "react";
 
 const LegalRequirements = () => {
-  const {
-    legalRequirements,
-    loading,
-    fetchLegalRequirementsByBCPID,
-    deleteLegalRequirement,
-  } = useLegalRequirements();
-
   const { bcpid } = useParams();
 
+  const {
+    allDocuments: legalRequirements,
+    isLoading: loading,
+    deleteDocument,
+  } = useLegalRequirements(bcpid);
+
+  const { users, loading: usersLoading, fetchUsers } = useUsers();
+
   useEffect(() => {
-    fetchLegalRequirementsByBCPID(bcpid);
+    fetchUsers();
   }, []);
 
   const handleDelete = async (id) => {
@@ -25,11 +27,16 @@ const LegalRequirements = () => {
       "Yes, delete it!",
       "Legal, Regulatory and Contractual Requirement deleted successfully!",
       "Error deleting Legal, Regulatory and Contractual Requirement",
-      () => deleteLegalRequirement(id, bcpid)
+      () => deleteDocument(id)
     );
   };
 
-  if (loading)
+  const getUserName = (id) => {
+    const user = users.find((user) => user._id === id);
+    return user ? user.name : "Unknown User";
+  };
+
+  if (loading || usersLoading)
     return (
       <div className="flex items-center justify-center h-screen">
         <FaSpinner className="animate-spin text-blue-500 text-3xl" />
@@ -70,7 +77,7 @@ const LegalRequirements = () => {
                   {legalReq.legalRequirement}
                 </td>
                 <td className="py-2 px-4 w-36 doc-table-data">
-                  {legalReq.monitoredBy}
+                  {getUserName(legalReq.monitoredBy)}
                 </td>
                 <td className="py-2 px-4 w-28 doc-table-data">
                   <div className="flex justify-center gap-2">
