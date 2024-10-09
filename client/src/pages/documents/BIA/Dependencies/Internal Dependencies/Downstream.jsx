@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useDownstream } from "../../../../../hooks/documents/bia/useDownstream";
+import { deleteAlert } from "../../../../../utilities/alert";
 
 const Downstream = () => {
   const {
     downstreams,
     loading: downstreamLoading,
     fetchDownstreamsByBIAID,
+    deleteDownstream,
   } = useDownstream();
 
   const { biaid } = useParams();
@@ -18,7 +20,16 @@ const Downstream = () => {
     fetchDownstreamsByBIAID(biaid, cbfid.value);
   }, [cbfid]);
 
-  const handleDelete = async (id) => {};
+  const handleDelete = async (id) => {
+    deleteAlert(
+      "Are you sure?",
+      "You are about to delete Operating Site. This action cannot be undone.",
+      "Yes, delete it!",
+      "Operating Site deleted successfully!",
+      "Error deleting Operating Site",
+      () => deleteDownstream(id, biaid)
+    );
+  };
 
   if (downstreamLoading)
     return (
