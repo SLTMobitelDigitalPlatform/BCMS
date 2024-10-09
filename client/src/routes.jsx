@@ -160,6 +160,9 @@ import EditDownstream from "./pages/documents/BCP/Dependencies/Internal Dependen
 import OrgPolicies from "./pages/Policies/OrgPolicies";
 import AddDocument from "./pages/Policies/AddDocument";
 import PoliciesPage from "./pages/Policies/OrgPolicies";
+import PoliciesHomePage from "./pages/Policies/PoliciesHomePage";
+import TeamsDocuments from "./pages/Policies/TeamsDocuments";
+import OtherDocuments from "./pages/Policies/OtherDocuments";
 
 const router = createBrowserRouter([
   {
@@ -277,6 +280,9 @@ const router = createBrowserRouter([
       { path: "event/:id/update", element: <UpdateEvent /> },
 
       //Policies
+      { path: "policiesHome", element: <PoliciesHomePage /> },
+      { path: "teamsDoc", element: <TeamsDocuments /> },
+      { path: "otherDoc", element: <OtherDocuments /> },
       { path: "policies", element: <OrgPolicies /> },
       { path: "policies/add-document", element: <AddDocument /> },
 

@@ -131,7 +131,7 @@ const Sidebar = () => {
         {
           title: "Policies & Guidelines",
           icon: <FaFileContract />,
-          link: "/policies",
+          link: "/policiesHome",
         },
         {
           title: "Call Tree",
