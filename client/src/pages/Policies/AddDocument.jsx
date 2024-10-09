@@ -1,43 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AddDocument = () => {
+  const [formData, setFormData] = useState({
+    cINumber: "",
+    contactInquiriesPerson: "",
+    dPNumber: "",
+    documentPrepPerson: "",
+    cCNumber: "",
+    controlledCirculationPerson: "",
+    iRNumber: "",
+    issueNumber: "",
+    issueDate: "",
+    riviseNumber: "",
+    rivisedDate: "",
+    rivisedDescription: "",
+    introduction: "",
+  });
+
   const [currentStep, setCurrentStep] = useState(1);
+  const navigate = useNavigate();
 
-  const nextStep = () => {
-    setCurrentStep(prev => (prev < 4 ? prev + 1 : prev));
-  };
-  const prevStep = () => {
-    setCurrentStep(prev => (prev > 1 ? prev - 1 : prev));
-  };
+  const nextStep = () => setCurrentStep((prev) => (prev < 4 ? prev + 1 : prev));
+  const prevStep = () => setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (currentStep === 4) {
-      // Final submission logic
-      console.log('Form submitted');
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/policy/create",
+          formData
+        ); // Assuming your backend endpoint
+        console.log("Form submitted", response.data);
+        navigate("/policies"); // Redirect to the Policies page after successful submission
+      } catch (error) {
+        console.error("Error submitting form", error);
+      }
     } else {
       nextStep();
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   return (
     <div className="p-4 bg-white rounded-lg shadow-lg max-w-lg mx-auto relative">
-      {/* Close button */}
-      
-      <button className="absolute top-4 right-4 text-black text-xl font-semibold">✕</button>
-      
-
-      {/* Title */}
-      <h2 className="text-2xl font-semibold text-blue-900 text-center mb-6">Add Document</h2>
+      <button className="absolute top-4 right-4 text-black text-xl font-semibold">
+        ✕
+      </button>
+      <h2 className="text-2xl font-semibold text-blue-900 text-center mb-6">
+        Add Document
+      </h2>
 
       {/* Progress Bar */}
       <div className="flex justify-around items-center mb-6">
-        {[1, 2, 3, 4].map(step => (
+        {[1, 2, 3, 4].map((step) => (
           <div key={step} className="text-center">
             <p className="text-sm font-medium">Section {step}</p>
             <div
               className={`w-4 h-4 ${
-                currentStep >= step ? 'bg-green-500' : 'bg-gray-300'
+                currentStep >= step ? "bg-green-500" : "bg-gray-300"
               } rounded-full mx-auto`}
             ></div>
           </div>
@@ -52,38 +83,22 @@ const AddDocument = () => {
               <h3 className="text-lg font-semibold text-black">
                 Section 1 - Contact for Inquiries & Proposed Changes
               </h3>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Name" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Designation" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Contact No" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="email" 
-                  placeholder="Email" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
+              <input
+                name="cINumber"
+                type="text"
+                placeholder="CIN Number"
+                value={formData.cINumber}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <input
+                name="contactInquiriesPerson"
+                type="text"
+                placeholder="Contact Inquiries Person"
+                value={formData.contactInquiriesPerson}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
             </div>
           )}
 
@@ -92,31 +107,22 @@ const AddDocument = () => {
               <h3 className="text-lg font-semibold text-black">
                 Section 2 - Document Preparation Committee
               </h3>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Name" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Designation" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                type="text" 
-                placeholder="Revision No" 
-                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              
+              <input
+                name="dPNumber"
+                type="text"
+                placeholder="DP Number"
+                value={formData.dPNumber}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <input
+                name="documentPrepPerson"
+                type="text"
+                placeholder="Document Prep Person"
+                value={formData.documentPrepPerson}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
             </div>
           )}
 
@@ -125,106 +131,49 @@ const AddDocument = () => {
               <h3 className="text-lg font-semibold text-black">
                 Section 3 - Controlled Circulation List
               </h3>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Designation of the Officer" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Group" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Copy No" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
+              <input
+                name="cCNumber"
+                type="text"
+                placeholder="Controlled Circulation Number"
+                value={formData.cCNumber}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <input
+                name="controlledCirculationPerson"
+                type="text"
+                placeholder="Controlled Circulation Person"
+                value={formData.controlledCirculationPerson}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
             </div>
           )}
 
           {currentStep === 4 && (
             <div>
               <h3 className="text-lg font-semibold text-black">
-                Section 4 - Contact for Inquiries & Proposed Changes
+                Section 4 - Enforcement/Revision Table
               </h3>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Issue No" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Issue Date" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Revision No" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Revision Date" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Updated By" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Checked By" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Approved By" 
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
-                />
-              </div>
-              <br />
-              <div>
-                <input 
-                  type="text" 
-                  placeholder="Description of Changes"
-                  className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
+              <input
+                name="riviseNumber"
+                type="text"
+                placeholder="Revise Number"
+                value={formData.riviseNumber}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <input
+                name="rivisedDescription"
+                type="text"
+                placeholder="Revision Description"
+                value={formData.rivisedDescription}
+                onChange={handleInputChange}
+                className="w-full border border-green-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
             </div>
           )}
 
-           {/* Navigation Buttons */}
           <div className="mt-4 flex justify-between">
             {currentStep > 1 && (
               <button
@@ -235,11 +184,11 @@ const AddDocument = () => {
                 &lt; Previous
               </button>
             )}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-blue-900 text-white py-2 px-6 rounded-md hover:bg-blue-700"
             >
-              {currentStep === 4 ? 'Submit' : 'Next >'}
+              {currentStep === 4 ? "Submit" : "Next >"}
             </button>
           </div>
         </form>

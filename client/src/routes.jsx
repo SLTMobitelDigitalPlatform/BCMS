@@ -163,6 +163,7 @@ import PoliciesPage from "./pages/Policies/OrgPolicies";
 import PoliciesHomePage from "./pages/Policies/PoliciesHomePage";
 import TeamsDocuments from "./pages/Policies/TeamsDocuments";
 import OtherDocuments from "./pages/Policies/OtherDocuments";
+import ViewPolicyPage from "./pages/Policies/ViewPolicyPage";
 
 const router = createBrowserRouter([
   {
@@ -241,6 +242,7 @@ const router = createBrowserRouter([
 
       // Policies
       { path: "policies", element: <PoliciesPage /> },
+      { path: "viewPolicy/:id", element: <ViewPolicyPage /> },
       { path: "policies/add-document", element: <AddDocument /> },
 
       //Teams
