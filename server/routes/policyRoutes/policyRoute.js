@@ -13,6 +13,11 @@ router.get("/policies/last", policyController.getLastPolicy);
 
 router.put("/policy/edit/:id", policyController.editPolicy);
 
+router.patch(
+  "/policy/:id/introduction",
+  policyController.patchPolicyIntroduction
+);
+
 router.delete("/policy/delete/:id", policyController.deletePolicy);
 
 module.exports = router;

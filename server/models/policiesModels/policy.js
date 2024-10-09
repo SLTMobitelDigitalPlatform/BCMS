@@ -26,7 +26,7 @@ const policySchema = new Schema({
   riviseNumber: { type: String, required: false },
   rivisedDate: { type: Date, default: "" },
   rivisedDescription: { type: String, required: false },
-  intoduction: { type: String },
+  introduction: { type: String },
 });
 
 const Policy = mongoose.model("Policy", policySchema);
