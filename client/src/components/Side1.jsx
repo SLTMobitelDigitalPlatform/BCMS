@@ -54,8 +54,6 @@ const Side1 = () => {
   const { logout } = useAuth();
   const handleLogout = async () => {
     try {
-      localStorage.removeItem("scrollPosition");
-      localStorage.removeItem("carouselIndex");
       logout();
       window.location.href = "/login";
     } catch (error) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoveryAndResumptions } from "../../../../hooks/documents/bcp/useRecoveryAndResumption";
 import { updateAlert } from "../../../../utilities/alert";
 
@@ -15,17 +15,18 @@ const EditRecoveryResumption = () => {
     timeOfIncidentComments: "",
   });
 
-  const { bcpid, cbfid, id } = useParams();
+  const location = useLocation();
+  const cbfid = location.state?.cbfid;
+  const { bcpid, id } = useParams();
   const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
-  const path = `/recovery-and-resumption/${bcpid}/${cbfid}`;
+  const path = `/Business-Continuity-Plan/recovery-and-resumption/${bcpid}`;
 
   const {
     singleDocument: recoveryResumption,
     isLoading: loading,
-
     updateDocument,
-  } = useRecoveryAndResumptions(bcpid, cbfid, id);
+  } = useRecoveryAndResumptions(bcpid, cbfid.value, id);
 
   useEffect(() => {
     if (recoveryResumption) {
@@ -47,7 +48,7 @@ const EditRecoveryResumption = () => {
     try {
       // ! Add duplicate id validation
 
-      const recoveryResumptionData = { ...formData, bcpid, cbfid };
+      const recoveryResumptionData = { ...formData, bcpid, cbfid: cbfid.value };
 
       const result = await updateAlert(
         "Confirm Update",
@@ -59,7 +60,7 @@ const EditRecoveryResumption = () => {
       );
 
       if (result === "success") {
-        navigate(path);
+        navigate(path, { state: { cbfid } });
       }
     } catch (error) {
       console.log(error);
@@ -183,6 +184,7 @@ const EditRecoveryResumption = () => {
             </button>
             <Link
               to={path}
+              state={{ cbfid }}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel
