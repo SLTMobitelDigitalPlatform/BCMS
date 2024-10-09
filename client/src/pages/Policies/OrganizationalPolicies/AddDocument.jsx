@@ -33,7 +33,7 @@ const AddDocument = () => {
         const response = await axios.post(
           "http://localhost:5000/policy/create",
           formData
-        ); // Assuming your backend endpoint
+        );
         console.log("Form submitted", response.data);
         navigate("/policies"); // Redirect to the Policies page after successful submission
       } catch (error) {

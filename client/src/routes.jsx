@@ -157,13 +157,12 @@ import EditExternalDependencies from "./pages/documents/BCP/Dependencies/Externa
 import EditUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditUpstream";
 import EditDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditDownstream";
 
-import OrgPolicies from "./pages/Policies/OrgPolicies";
-import AddDocument from "./pages/Policies/AddDocument";
-import PoliciesPage from "./pages/Policies/OrgPolicies";
 import PoliciesHomePage from "./pages/Policies/PoliciesHomePage";
-import TeamsDocuments from "./pages/Policies/TeamsDocuments";
-import OtherDocuments from "./pages/Policies/OtherDocuments";
-import ViewPolicyPage from "./pages/Policies/ViewPolicyPage";
+import TeamsDocuments from "./pages/Policies/TeamsDocuments/TeamsDocuments";
+import OtherDocuments from "./pages/Policies/OtherDocuments/OtherDocuments";
+import ViewPolicyPage from "./pages/Policies/OrganizationalPolicies/ViewPolicyPage";
+import AddDocument from "./pages/Policies/OrganizationalPolicies/AddDocument";
+import PoliciesPage from "./pages/Policies/OrganizationalPolicies/OrgPolicies";
 
 const router = createBrowserRouter([
   {
@@ -285,7 +284,7 @@ const router = createBrowserRouter([
       { path: "policiesHome", element: <PoliciesHomePage /> },
       { path: "teamsDoc", element: <TeamsDocuments /> },
       { path: "otherDoc", element: <OtherDocuments /> },
-      { path: "policies", element: <OrgPolicies /> },
+
       { path: "policies/add-document", element: <AddDocument /> },
 
       //!  { path: "add-event", element: <AddEvents /> },

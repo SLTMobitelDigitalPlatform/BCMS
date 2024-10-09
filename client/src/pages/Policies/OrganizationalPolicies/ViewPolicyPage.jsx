@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import JoditEditor from "jodit-react";
 import axios from "axios";
-import "./joditEditor.css"; // Assuming you have custom CSS for the Jodit editor
+import "./joditEditor.css";
 
 const ViewPolicyPage = () => {
   const { id } = useParams(); // Get the policy ID from the URL
-  const [policy, setPolicy] = useState(null); // State to hold the policy data
-  const [introduction, setIntroduction] = useState(""); // State for the introduction
-  const [isEditing, setIsEditing] = useState(false); // State to track editing mode
+  const [policy, setPolicy] = useState(null);
+  const [introduction, setIntroduction] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   const editor = useRef(null);
 
@@ -27,7 +27,7 @@ const ViewPolicyPage = () => {
       try {
         const response = await axios.get(`http://localhost:5000/policy/${id}`);
         setPolicy(response.data);
-        setIntroduction(response.data.introduction || ""); // Set the introduction state
+        setIntroduction(response.data.introduction || "");
       } catch (error) {
         console.error("Error fetching policy details", error);
       }
@@ -42,7 +42,7 @@ const ViewPolicyPage = () => {
         introduction: introduction, // Payload for the introduction field
       });
       alert("Introduction updated successfully!");
-      setIsEditing(false); // Exit editing mode after saving
+      setIsEditing(false);
     } catch (error) {
       console.error("Error updating introduction", error);
     }
@@ -74,7 +74,6 @@ const ViewPolicyPage = () => {
               <h3 className="text-xl font-semibold">Introduction</h3>
 
               {isEditing ? (
-                // Show JoditEditor when in editing mode
                 <JoditEditor
                   ref={editor}
                   value={introduction}
