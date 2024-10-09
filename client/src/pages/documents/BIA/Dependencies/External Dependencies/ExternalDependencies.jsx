@@ -3,12 +3,14 @@ import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useCriticalBusinessFunction } from "../../../../../hooks/documents/bia/useCriticalBusinessFunction";
 import { useExternalDependencies } from "../../../../../hooks/documents/bia/useExternalDependencies";
+import { deleteAlert } from "../../../../../utilities/alert";
 
 const ExternalDependencies = () => {
   const {
     externalDependencies,
     loading: loadingED,
     fetchExternalDependenciesByBIAID,
+    deleteExternalDependency,
   } = useExternalDependencies();
 
   const {
@@ -24,7 +26,16 @@ const ExternalDependencies = () => {
     fetchExternalDependenciesByBIAID(biaid);
   }, []);
 
-  const handleDelete = async (id) => {};
+  const handleDelete = async (id) => {
+    deleteAlert(
+      "Are you sure?",
+      "You are about to delete Operating Site. This action cannot be undone.",
+      "Yes, delete it!",
+      "Operating Site deleted successfully!",
+      "Error deleting Operating Site",
+      () => deleteExternalDependency(id, biaid)
+    );
+  };
 
   const getCBFName = (id) => {
     const cbf = criticalBusinessFunctions.find((cbf) => cbf._id === id);
@@ -81,7 +92,7 @@ const ExternalDependencies = () => {
                 <td className="py-2 px-4 w-32 doc-table-data">
                   <div className="flex justify-center gap-2">
                     <Link
-                      to={`/editBIAExternalDependencies/${external._id}`}
+                      to={`/editBIAExternalDependencies/${biaid}/${external._id}`}
                       state={{ activeTab: "externalDependencies" }}
                       className="doc-edit-btn"
                     >
