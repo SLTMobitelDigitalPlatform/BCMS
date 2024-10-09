@@ -88,6 +88,7 @@ const CreateExternalDependencies = () => {
               }
               options={sortedCBFunctions}
               placeholder="Select Critical Business Function"
+              isDisabled={sortedCBFunctions.length === 0}
               isSearchable={false}
             />
           </div>
