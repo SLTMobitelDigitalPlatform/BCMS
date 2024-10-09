@@ -10,7 +10,7 @@ const getAllPolicies = async (req, res) => {
     if (!policies) {
       return res.status(404).json({ message: "Policies Not Found!" });
     }
-    res.status(201).json(policies);
+    res.status(200).json(policies);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -28,7 +28,7 @@ const getPolicyById = async (req, res) => {
     if (!policyById) {
       return res.status(404).json({ message: "Policy Not Found!" });
     }
-    res.status(201).json(policyById);
+    res.status(200).json(policyById);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -66,7 +66,7 @@ const deletePolicy = async (req, res) => {
     const policyToDelete = await Policy.findByIdAndDelete(req.params.id);
     if (!policyToDelete)
       return res.status(404).json({ message: "Policy not found" });
-    res.status.json({ message: "Policy Deleted!" });
+    res.status(200).json({ message: "Policy Deleted!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
