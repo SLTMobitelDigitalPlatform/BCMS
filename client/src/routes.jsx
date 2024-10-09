@@ -134,7 +134,6 @@ import EditResourcesRequired from "./pages/documents/BCP/Resources Required/Edit
 import EditVitalRecords from "./pages/documents/BCP/Vital Records/EditVitalRecords";
 import EditWorkAreaRecovery from "./pages/documents/BCP/Work Area Recovery/EditWorkAreaRecovery";
 import CreateExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/CreateExternalDependencies";
-import OrganizationalDocuments from "./pages/Policies/OrgDocuments";
 import OrgPolicies from "./pages/Policies/OrgPolicies";
 import AddDocument from "./pages/Policies/AddDocument";
 
