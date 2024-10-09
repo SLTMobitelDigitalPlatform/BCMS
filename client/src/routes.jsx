@@ -423,15 +423,15 @@ const router = createBrowserRouter([
             path: "critical-business-function/:bcpid",
             element: <CriticalBusinessFunction />,
           },
+          {
+            path: "recovery-and-resumption/:bcpid",
+            element: <RecoveryAndResumption />,
+          },
           { path: "resources-required/:bcpid", element: <ResourcesRequired /> },
           { path: "dependencies/:bcpid", element: <Dependencies /> },
           { path: "vital-records/:bcpid", element: <VitalRecords /> },
           { path: "work-area-recovery/:bcpid", element: <WorkAreaRecovery /> },
           { path: "manpower/:bcpid", element: <Manpower /> },
-          // {
-          //   path: "recovery-and-resumption/:bcpid",
-          //   element: <RecoveryAndResumption />,
-          // },
           { path: "embedded-documents/:bcpid", element: <EmbeddedDocuments /> },
         ],
       },
@@ -501,16 +501,11 @@ const router = createBrowserRouter([
 
       // * Recovery And Resumption
       {
-        path: "recovery-and-resumption/:bcpid/:cbfid",
-        element: <RecoveryAndResumption />,
-      },
-      {
-        path: "createRecoveryResumption/:bcpid/:cbfid",
+        path: "createRecoveryResumption/:bcpid",
         element: <CreateRecoveryResumption />,
       },
-
       {
-        path: "editRecoveryResumption/:bcpid/:cbfid/:id",
+        path: "editRecoveryResumption/:bcpid/:id",
         element: <EditRecoveryResumption />,
       },
 
@@ -529,7 +524,6 @@ const router = createBrowserRouter([
         path: "createExternalDependencies/:bcpid",
         element: <CreateExternalDependencies />,
       },
-
       {
         path: "editExternalDependencies/:bcpid/:id",
         element: <EditExternalDependencies />,
@@ -585,7 +579,15 @@ const router = createBrowserRouter([
             path: "business-peaks-and-deadlines/:biaid",
             element: <BiaPeaksAndDeadlines />,
           },
+          {
+            path: "business-peaks-and-deadlines/:biaid",
+            element: <BiaPeaksAndDeadlines />,
+          },
           { path: "resources/:biaid", element: <BiaResources /> },
+          {
+            path: "critical-business-function/:biaid",
+            element: <BiaCriticalBusinessFunction />,
+          },
           {
             path: "critical-business-function/:biaid",
             element: <BiaCriticalBusinessFunction />,
@@ -597,7 +599,15 @@ const router = createBrowserRouter([
             path: "resources-required/:biaid",
             element: <BiaResourcesRequired />,
           },
+          {
+            path: "resources-required/:biaid",
+            element: <BiaResourcesRequired />,
+          },
           { path: "dependencies/:biaid", element: <BiaDependencies /> },
+          {
+            path: "work-area-recovery/:biaid",
+            element: <BiaWorkAreaRecovery />,
+          },
           {
             path: "work-area-recovery/:biaid",
             element: <BiaWorkAreaRecovery />,
@@ -621,6 +631,14 @@ const router = createBrowserRouter([
         path: "editPeaksDeadlines/:biaid/:id",
         element: <EditPeaksAndDeadlines />,
       },
+      {
+        path: "createPeaksDeadlines/:biaid",
+        element: <CreatePeaksAndDeadlines />,
+      },
+      {
+        path: "editPeaksDeadlines/:biaid/:id",
+        element: <EditPeaksAndDeadlines />,
+      },
       //Resources
       { path: "createResources/:biaid", element: <CreateBiaResources /> },
       { path: "editResources/:biaid/:id", element: <EditBiaResources /> },
@@ -633,7 +651,19 @@ const router = createBrowserRouter([
         path: "editBIACriticalBusinessFunction/:biaid/:id",
         element: <EditBiaCBF />,
       },
+      {
+        path: "createBIACriticalBusinessFunction/:biaid",
+        element: <CreateBiaCBF />,
+      },
+      {
+        path: "editBIACriticalBusinessFunction/:biaid/:id",
+        element: <EditBiaCBF />,
+      },
       //Dependency
+      {
+        path: "createBIAExternalDependencies/:biaid",
+        element: <CreateBiaExternalDependencies />,
+      },
       {
         path: "createBIAExternalDependencies/:biaid",
         element: <CreateBiaExternalDependencies />,
