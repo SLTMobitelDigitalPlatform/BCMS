@@ -36,6 +36,7 @@ const routerCallTree = require("./routes/callTreeRoutes/callTreeRoutes");
 const routerOrgCallTree = require("./routes/callTreeRoutes/orgCallTreeRoute");
 const routerTeam = require("./routes/teamRoutes/teamRoutes");
 const routerSection = require("./routes/sectionRoutes/sectionRoutes");
+const routerPolicy = require("./routes/policyRoutes/policyRoute");
 
 // Risk Assessment Routes
 
@@ -130,6 +131,7 @@ app.use(
   routerBIAExternalDependencies,
   routerBIAUpstream,
   routerBIADownstream,
+  routerPolicy
 );
 
 // // Create uploads directory if it doesn't exist
