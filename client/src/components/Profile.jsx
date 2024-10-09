@@ -1,7 +1,7 @@
 import UserProfile from "./UserProfile";
 import EventCard from "./EventCard";
 import MeetingCard from "./MeetingCard";
-import MyMiniCalendar from "./MyMiniCalendar"; // Mini version of your calendar
+import MyMiniCalendar from "./MyMiniCalendar";
 
 const Profile = () => {
   return (

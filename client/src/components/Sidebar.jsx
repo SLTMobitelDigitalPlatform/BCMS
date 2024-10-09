@@ -9,6 +9,7 @@ import {
   FaFolderOpen,
   FaFolderTree,
   FaHouse,
+  FaIdCard,
   FaListCheck,
   FaPeopleArrows,
   FaPeopleRoof,
@@ -16,7 +17,6 @@ import {
   FaSitemap,
   FaUser,
   FaUserGroup,
-  FaUserPen,
   FaUsers,
   FaVideo,
 } from "react-icons/fa6";
@@ -76,7 +76,7 @@ const Sidebar = () => {
       submenu: true,
       icon: <FaPeopleRoof />,
       submenuItems: [
-        { title: "Employees", icon: <FaUserPen />, link: "/employee" },
+        { title: "Employees", icon: <FaIdCard />, link: "/employee" },
         { title: "Teams", icon: <FaUserGroup />, link: "/teams/teamList" },
         { title: "Sections", icon: <FaUsers />, link: "/sections" },
         { title: "Customers", icon: <FaPeopleArrows />, link: "/customers" },
