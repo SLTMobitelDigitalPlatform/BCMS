@@ -81,6 +81,33 @@ const getLastPolicy = async (req, res) => {
   }
 };
 
+const patchPolicyIntroduction = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { introduction } = req.body;
+
+    // Find the policy by ID and update only the introduction field
+    const updatedPolicy = await Policy.findByIdAndUpdate(
+      id,
+      { introduction: introduction }, // Note the typo 'intoduction', should match your schema
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedPolicy) {
+      return res.status(404).json({ message: "Policy Not Found!" });
+    }
+
+    res.status(200).json(updatedPolicy);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  // Other methods...
+  patchPolicyIntroduction,
+};
+
 module.exports = {
   getAllPolicies,
   getPolicyById,
@@ -88,4 +115,5 @@ module.exports = {
   editPolicy,
   deletePolicy,
   getLastPolicy,
+  patchPolicyIntroduction,
 };
