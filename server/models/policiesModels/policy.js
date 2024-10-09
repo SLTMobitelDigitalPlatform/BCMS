@@ -29,6 +29,6 @@ const policySchema = new Schema({
   intoduction: { type: String },
 });
 
-const Policy = new mongoose.model("Policy", policySchema);
+const Policy = mongoose.model("Policy", policySchema);
 
 module.exports = Policy;
