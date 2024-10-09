@@ -500,11 +500,11 @@ const router = createBrowserRouter([
 
       // * Recovery And Resumption
       {
-        path: "createRecoveryResumption/:bcpid/:cbfid",
+        path: "createRecoveryResumption/:bcpid",
         element: <CreateRecoveryResumption />,
       },
       {
-        path: "editRecoveryResumption/:bcpid/:cbfid/:id",
+        path: "editRecoveryResumption/:bcpid/:id",
         element: <EditRecoveryResumption />,
       },
 

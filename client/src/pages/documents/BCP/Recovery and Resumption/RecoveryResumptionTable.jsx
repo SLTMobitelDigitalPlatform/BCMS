@@ -76,7 +76,8 @@ const RecoveryResumptionTable = () => {
               <td className="py-2 px-4 w-28 doc-table-data">
                 <div className="flex justify-center gap-2">
                   <Link
-                    to={`/editRecoveryResumption/${bcpid}/${cbfid.value}/${recoveryResumption._id}`}
+                    to={`/editRecoveryResumption/${bcpid}/${recoveryResumption._id}`}
+                    state={{ cbfid }}
                     className="doc-edit-btn"
                   >
                     Edit

@@ -53,7 +53,7 @@ const RecoveryResumption = () => {
         />
         {selectedCBFunction ? (
           <Link
-            to={`/createRecoveryResumption/${bcpid}/${selectedCBFunction.value}`}
+            to={`/createRecoveryResumption/${bcpid}`}
             state={{ cbfid: selectedCBFunction }}
             className="btn-primary font-semibold"
           >

@@ -52,7 +52,7 @@ export const useRecoveryAndResumptions = (bcpid, cbfid, id) => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["recoveryResumptions", bcpid]);
+      queryClient.invalidateQueries(["recoveryResumptions", bcpid, cbfid]);
     },
   });
 
@@ -70,7 +70,7 @@ export const useRecoveryAndResumptions = (bcpid, cbfid, id) => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["recoveryResumptions", bcpid]);
+      queryClient.invalidateQueries(["recoveryResumptions", bcpid, cbfid]);
     },
   });
 
@@ -87,7 +87,7 @@ export const useRecoveryAndResumptions = (bcpid, cbfid, id) => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["recoveryResumptions", bcpid]);
+      queryClient.invalidateQueries(["recoveryResumptions", bcpid, cbfid]);
     },
   });
 
