@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const BiaDocumentControlSchema = new Schema(
+const biaDocumentControlSchema = new Schema(
   {
     biaid: { type: String, required: true },
     version: { type: String, required: true },
@@ -11,6 +11,6 @@ const BiaDocumentControlSchema = new Schema(
   { timestamps: true }
 );
 
-const BiaDocumentControl = mongoose.model("BiaDocumentControl", BiaDocumentControlSchema);
+const biaDocumentControl = mongoose.model("biaDocumentControl", biaDocumentControlSchema);
 
-module.exports = BiaDocumentControl;
+module.exports = biaDocumentControl;

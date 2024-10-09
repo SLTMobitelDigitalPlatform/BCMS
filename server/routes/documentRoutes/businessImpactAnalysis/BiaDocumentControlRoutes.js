@@ -7,22 +7,22 @@ const {
   getBiaDocumentControlByIds,
   updateBiaDocumentControl,
   deleteBiaDocumentControl,
-} = require("../../../controllers/documentController/businessImpactAnalysis/BiaDocumentControlController");
+} = require("../../../controllers/documentController/businessImpactAnalysis/biaDocumentControlController");
 
 const router = express.Router();
 
-router.post("/api/BiaDocumentControl/add", createBiaDocumentControl);
+router.post("/api/biaDocumentControl/add", createBiaDocumentControl);
 
-router.get("/api/BiaDocumentControl", getAllBiaDocumentControl);
+router.get("/api/biaDocumentControl", getAllBiaDocumentControl);
 
-router.get("/api/BiaDocumentControl/:biaid", getBiaDocumentControlByBIAID);
+router.get("/api/biaDocumentControl/:biaid", getBiaDocumentControlByBIAID);
 
-router.get("/api/BiaDocumentControl/:biaid/:id", getBiaDocumentControlByIds);
+router.get("/api/biaDocumentControl/:biaid/:id", getBiaDocumentControlByIds);
 
-router.get("/api/BiaDocumentControl/last", getLastBiaDocumentControl);
+router.get("/api/biaDocumentControl/last", getLastBiaDocumentControl);
 
-router.put("/api/BiaDocumentControl/edit/:id", updateBiaDocumentControl);
+router.put("/api/biaDocumentControl/edit/:id", updateBiaDocumentControl);
 
-router.delete("/api/BiaDocumentControl/delete/:id", deleteBiaDocumentControl);
+router.delete("/api/biaDocumentControl/delete/:id", deleteBiaDocumentControl);
 
 module.exports = router;
