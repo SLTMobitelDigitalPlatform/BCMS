@@ -9,7 +9,7 @@ router.get("/policies", policyController.getAllPolicies);
 
 router.get("/policy/:id", policyController.getPolicyById);
 
-router.get("/policy/last", policyController.getLastPolicy);
+router.get("/policies/last", policyController.getLastPolicy);
 
 router.put("/policy/edit/:id", policyController.editPolicy);
 

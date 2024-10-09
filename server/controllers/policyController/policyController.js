@@ -75,7 +75,7 @@ const deletePolicy = async (req, res) => {
 const getLastPolicy = async (req, res) => {
   try {
     const lastPolicy = await Policy.findOne().sort({ _id: -1 });
-    res.status(201).json(lastPolicy);
+    res.status(200).json(lastPolicy);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
