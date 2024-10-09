@@ -156,9 +156,10 @@ import EditRecoveryResumption from "./pages/documents/BCP/Recovery and Resumptio
 import EditExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/EditExternalDependencies";
 import EditUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditUpstream";
 import EditDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditDownstream";
-import OrganizationalDocuments from "./pages/Policies/OrgDocuments";
+
 import OrgPolicies from "./pages/Policies/OrgPolicies";
 import AddDocument from "./pages/Policies/AddDocument";
+import PoliciesPage from "./pages/Policies/OrgPolicies";
 
 const router = createBrowserRouter([
   {
@@ -278,7 +279,6 @@ const router = createBrowserRouter([
       //Policies
       { path: "policies", element: <OrgPolicies /> },
       { path: "policies/add-document", element: <AddDocument /> },
-   
 
       //!  { path: "add-event", element: <AddEvents /> },
 
@@ -581,16 +581,27 @@ const router = createBrowserRouter([
         children: [
           { path: "bia-form/:biaid", element: <BiaForm /> },
           { path: "operating-sites/:biaid", element: <BiaOperatingSites /> },
-          { path: "business-peaks-and-deadlines/:biaid", element: <BiaPeaksAndDeadlines />},
+          {
+            path: "business-peaks-and-deadlines/:biaid",
+            element: <BiaPeaksAndDeadlines />,
+          },
           { path: "resources/:biaid", element: <BiaResources /> },
-          { path: "critical-business-function/:biaid", element: <BiaCriticalBusinessFunction />},
-
+          {
+            path: "critical-business-function/:biaid",
+            element: <BiaCriticalBusinessFunction />,
+          },
 
           { path: "document-version/:biaid", element: <BiaDocumentControl /> },
           { path: "impact-analysis/:biaid", element: <BiaImpactAnalysis /> },
-          { path: "resources-required/:biaid", element: <BiaResourcesRequired /> },
+          {
+            path: "resources-required/:biaid",
+            element: <BiaResourcesRequired />,
+          },
           { path: "dependencies/:biaid", element: <BiaDependencies /> },
-          { path: "work-area-recovery/:biaid", element: <BiaWorkAreaRecovery />},
+          {
+            path: "work-area-recovery/:biaid",
+            element: <BiaWorkAreaRecovery />,
+          },
           { path: "manpower/:biaid", element: <BiaManpower /> },
         ],
       },
@@ -602,20 +613,33 @@ const router = createBrowserRouter([
       { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
       { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
       //Peaks and Deadliness
-      { path: "createPeaksDeadlines/:biaid", element: <CreatePeaksAndDeadlines /> },
-      { path: "editPeaksDeadlines/:biaid/:id", element: <EditPeaksAndDeadlines /> },
+      {
+        path: "createPeaksDeadlines/:biaid",
+        element: <CreatePeaksAndDeadlines />,
+      },
+      {
+        path: "editPeaksDeadlines/:biaid/:id",
+        element: <EditPeaksAndDeadlines />,
+      },
       //Resources
       { path: "createResources/:biaid", element: <CreateBiaResources /> },
       { path: "editResources/:biaid/:id", element: <EditBiaResources /> },
       //Critical Business Function
-      { path: "createBIACriticalBusinessFunction/:biaid", element: <CreateBiaCBF /> },
-      { path: "editBIACriticalBusinessFunction/:biaid/:id", element: <EditBiaCBF /> },
+      {
+        path: "createBIACriticalBusinessFunction/:biaid",
+        element: <CreateBiaCBF />,
+      },
+      {
+        path: "editBIACriticalBusinessFunction/:biaid/:id",
+        element: <EditBiaCBF />,
+      },
       //Dependency
-      { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaExternalDependencies/> },
+      {
+        path: "createBIAExternalDependencies/:biaid",
+        element: <CreateBiaExternalDependencies />,
+      },
       { path: "createBIAUpstream/:biaid", element: <CreateBiaUpstream /> },
       { path: "createBIADownstream/:biaid", element: <CreateBiaDownstream /> },
-
-
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 
