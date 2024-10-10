@@ -1,41 +1,35 @@
-import { useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { useCriticalBusinessFunction } from "../../../../hooks/documents/bia/useCriticalBusinessFunction";
 import { deleteAlert } from "../../../../utilities/alert";
 
 const CriticalBusinessFunction = () => {
-  const {
-    criticalBusinessFunctions,
-    loading,
-    fetchCriticalBusinessFunctionsByBIAID,
-    deleteCriticalBusinessFunction,
-  } = useCriticalBusinessFunction();
-
   const { biaid } = useParams();
 
-  useEffect(() => {
-    fetchCriticalBusinessFunctionsByBIAID(biaid);
-  }, [biaid]);
+  const {
+    allDocuments: criticalBusinessFunctions,
+    isLoading: loading,
+    deleteDocument,
+  } = useCriticalBusinessFunction(biaid);
 
-  const handleDelete = async (id, functionName) => {
+  const handleDelete = (id, functionName) => {
     deleteAlert(
       "Are you sure?",
       `You are about to delete Critical Business Function "${functionName}". This action cannot be undone.`,
       "Yes, delete it!",
       `Critical Business Function "${functionName}" deleted successfully!`,
       `Error deleting Critical Business Function "${functionName}"`,
-      () => deleteCriticalBusinessFunction(id, biaid)
+      () => deleteDocument(id)
     );
   };
 
   if (loading)
     return (
       <div className="flex items-center justify-center h-screen">
-        <FaSpinner className="animate-spin text-blue-500 text-3xl" />
+        <FaSpinner className="
+        animate-spin text-blue-500 text-3xl" />
       </div>
     );
-
   return (
     <div className="pt-5 w-full h-full flex flex-col">
       <div className="flex justify-between items-center mb-5">

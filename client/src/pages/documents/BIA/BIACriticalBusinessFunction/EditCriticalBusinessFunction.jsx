@@ -11,7 +11,7 @@ const EditCriticalBusinessFunction = () => {
     criticality: "",
     rto: "",
     rpo: "",
-  });
+  }); 
 
   const { biaid, id } = useParams();
   const [isUpdating, setIsUpdating] = useState(false);
@@ -19,15 +19,10 @@ const EditCriticalBusinessFunction = () => {
   const path = `/Business-Impact-Analysis/critical-business-function/${biaid}`;
 
   const {
-    criticalBusinessFunction,
-    loading,
-    fetchCriticalBusinessFunctionsByIds,
-    updateCriticalBusinessFunction,
-  } = useCriticalBusinessFunction();
-
-  useEffect(() => {
-    fetchCriticalBusinessFunctionsByIds(biaid, id);
-  }, []);
+    singleDocument: criticalBusinessFunction,
+    isLoading: loading,
+    updateDocument,
+  } = useCriticalBusinessFunction(biaid, id);
 
   const [formErrors, setFormErrors] = useState({});
   const validateForm = () => {
@@ -68,7 +63,7 @@ const EditCriticalBusinessFunction = () => {
         "Yes, Update it!",
         `"${criticalBusinessFunction.functionName}" has been updated successfully!`,
         `Failed to update "${criticalBusinessFunction.functionName}"!`,
-        () => updateCriticalBusinessFunction(id, criticalBusinessFunctionData)
+        () => updateDocument(id, criticalBusinessFunctionData)
       );
 
       if (result === "success") {

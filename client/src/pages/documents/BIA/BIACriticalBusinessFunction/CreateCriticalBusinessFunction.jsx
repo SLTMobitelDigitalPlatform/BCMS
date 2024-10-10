@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useCriticalBusinessFunction } from "../../../../hooks/documents/bia/useCriticalBusinessFunction";
@@ -18,7 +18,7 @@ const CreateCriticalBusinessFunction = () => {
   const navigate = useNavigate();
   const path = `/Business-Impact-Analysis/critical-business-function/${biaid}`;
 
-  const { addCriticalBusinessFunction } = useCriticalBusinessFunction();
+  const { createDocument } = useCriticalBusinessFunction(biaid);
 
   const [formErrors, setFormErrors] = useState({});
   const validateForm = () => {
@@ -38,9 +38,9 @@ const CreateCriticalBusinessFunction = () => {
 
     if (Object.keys(errors).length === 0) {
       setIsCreating(true);
-      try {
+      try {  
         const criticalBusinessFunctionData = { ...formData, biaid };
-        await addCriticalBusinessFunction(criticalBusinessFunctionData);
+        createDocument(criticalBusinessFunctionData);
         createAlert(
           "Critical Business Function Added",
           `Critical Business Function "${formData.functionName}" added successfully!`
