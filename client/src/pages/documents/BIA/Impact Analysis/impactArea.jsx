@@ -19,11 +19,11 @@ const ImpactAnalysisGrid = () => {
       ],
       severityLevels: ["Insignificant", "Minor", "Moderate", "Major", "Severe"],
       colors: {
-        Insignificant: "bg-green-200",
-        Minor: "bg-yellow-200",
-        Moderate: "bg-orange-300",
-        Major: "bg-red-400",
-        Severe: "bg-red-600",
+        Insignificant: "bg-green-500",
+        Minor: "bg-yellow-500",
+        Moderate: "bg-orange-500",
+        Major: "bg-red-500",
+        Severe: "bg-black",
       }
     },
     {
@@ -36,11 +36,11 @@ const ImpactAnalysisGrid = () => {
         "< Rs.1M", "Rs.1M - 10M", "Rs.10M - 100M", "Rs.100M - 500M", "> Rs.500M"
       ],
       colors: {
-        "< Rs.1M": "bg-green-200",
-        "Rs.1M - 10M": "bg-yellow-200",
-        "Rs.10M - 100M": "bg-orange-300",
-        "Rs.100M - 500M": "bg-red-400",
-        "> Rs.500M": "bg-red-600",
+        "< Rs.1M": "bg-green-500",
+        "Rs.1M - 10M": "bg-yellow-500",
+        "Rs.10M - 100M": "bg-orange-500",
+        "Rs.100M - 500M": "bg-red-500",
+        "> Rs.500M": "bg-black",
       }
     },
     {
@@ -51,8 +51,8 @@ const ImpactAnalysisGrid = () => {
       ],
       severityLevels: ["Not Breached", "Breached"],
       colors: {
-        "Not Breached": "bg-green-200",
-        "Breached": "bg-red-400"
+        "Not Breached": "bg-teal-400",
+        "Breached": "bg-orange-500"
       }
     }
   ];

@@ -3,10 +3,10 @@ import React from "react";
 const SeverityLevel = () => {
 
   return (
-    <div className="pt-5 w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col">
       
       {/* Impact Analysis Container */}
-      <div className="impact-analysis-container flex-1 bg-sky-100 flex flex-col rounded-2xl pt-5 pb-80 overflow-y-auto " 
+      <div className="impact-analysis-container flex-1 bg-indigo-100 flex flex-col rounded-2xl pt-1 pb-52 overflow-y-auto " 
            style={{ maxHeight: 'calc(100vh - 20px)' }}>
 
         <div className="impact-analysis-content mt-6 px-5">
