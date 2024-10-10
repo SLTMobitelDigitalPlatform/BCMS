@@ -110,7 +110,9 @@ import BiaDependencies from "./pages/documents/BIA/Dependencies/DependenciesLayo
 import CreateBiaExternalDependencies from "./pages/documents/BIA/Dependencies/External Dependencies/CreateExternalDependencies";
 import EditBiaExternalDependencies from "./pages/documents/BIA/Dependencies/External Dependencies/EditExternalDependencies";
 import CreateBiaUpstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/CreateUpstream";
+import EditBiaUpstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/EditUpstream";
 import CreateBiaDownstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/CreateDownstream";
+import EditBiaDownstream from "./pages/documents/BIA/Dependencies/Internal Dependencies/EditDownstream";
 
 import BiaDocumentControl from "./pages/documents/BIA/BIADocumentControl/BiaDocumentControl";
 import BiaImpactAnalysis from "./pages/documents/BIA/Impact Analysis/impactAnalysis";
@@ -609,9 +611,9 @@ const router = createBrowserRouter([
       { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaExternalDependencies/> },
       { path: "editBIAExternalDependencies/:biaid/:id", element: <EditBiaExternalDependencies/> },
       { path: "createBIAUpstream/:biaid", element: <CreateBiaUpstream /> },
+      { path: "editBIAUpstream/:biaid/:id", element: <EditBiaUpstream/> },
       { path: "createBIADownstream/:biaid", element: <CreateBiaDownstream /> },
-
-
+      { path: "editBIADownstream/:biaid/:id", element: <EditBiaDownstream/> },
 
       { path: "severityLevel", element: <BiaImpactAnalysis /> },
 

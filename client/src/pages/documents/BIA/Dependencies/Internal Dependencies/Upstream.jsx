@@ -69,7 +69,7 @@ const Upstream = () => {
               <td className="py-2 px-4 w-32 doc-table-data">
                 <div className="flex justify-center gap-2">
                   <Link
-                    to={`/editBIAExternalDependencies/${upstream._id}`}
+                    to={`/editBIAUpstream/${biaid}/${upstream._id}`}
                     state={{ activeTab: "internalDependencies" }}
                     className="doc-edit-btn"
                   >

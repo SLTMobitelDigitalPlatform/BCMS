@@ -117,11 +117,7 @@ const InternalDependencies = () => {
       {selectedCBFunction ? (
         <>
           <div className="h-full w-full overflow-auto">
-            {activeStream === "upstream" ? (
-              <Upstream cbfid={selectedCBFunction} />
-            ) : (
-              <Downstream cbfid={selectedCBFunction} />
-            )}
+            {activeStream === "upstream" ? <Upstream /> : <Downstream />}
           </div>
         </>
       ) : (
