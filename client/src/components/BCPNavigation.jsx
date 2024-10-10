@@ -1,128 +1,118 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 
 const BCPNavigation = () => {
-  const carouselRef = useRef(null);
-  const location = useLocation();
+  const tabs = [
+    "BCP Form",
+    "Document Control",
+    "Related Documents",
+    "Recovery Strategy",
+    "Legal Requirements",
+    "Pre-Incident Preparation",
+    "Critical Business Function",
+    "Recovery and Resumption",
+    "Resources Required",
+    "Dependencies",
+    "Vital Records",
+    "Work Area Recovery",
+    "Manpower",
+    "Embedded Documents",
+  ];
 
+  const tabContainerRef = useRef(null);
+  const location = useLocation();
   const { bcpid } = useParams();
 
-  const links = useMemo(
-    () => [
-      "BCP Form",
-      "Document Control",
-      "Related Documents",
-      "Recovery Strategy",
-      "Legal Requirements",
-      "Pre-Incident Preparation",
-      "Critical Business Function",
-      "Resources Required",
-      "Dependencies",
-      "Vital Records",
-      "Work Area Recovery",
-      "Manpower",
-      "Embedded Documents",
-    ],
-    []
-  );
-
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1024 },
-      items: 5,
-      slidesToSlide: 3,
-    },
-    desktop: {
-      breakpoint: { max: 1024, min: 768 },
-      items: 4,
-      slidesToSlide: 3,
-    },
-    tablet: {
-      breakpoint: { max: 768, min: 464 },
-      items: 3,
-      slidesToSlide: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 2,
-      slidesToSlide: 1,
-    },
+  // Scroll functions for left and right buttons
+  const scrollLeft = () => {
+    if (tabContainerRef.current) {
+      tabContainerRef.current.scrollBy({
+        left: -450,
+        behavior: "smooth",
+      });
+    }
   };
 
-  useEffect(() => {
-    const pathSegments = location.pathname.split("/");
-    const currentTab = pathSegments[pathSegments.length - 2];
+  const scrollRight = () => {
+    if (tabContainerRef.current) {
+      tabContainerRef.current.scrollBy({
+        left: 450,
+        behavior: "smooth",
+      });
+    }
+  };
 
-    const tabIndex = links.findIndex(
-      (link) => link.replace(/\s+/g, "-").toLowerCase() === currentTab
+  // Function to center the clicked tab
+  const centerTab = (index) => {
+    const container = tabContainerRef.current;
+    const clickedTab = container.children[index];
+
+    if (clickedTab && container) {
+      const containerRect = container.getBoundingClientRect();
+      const tabRect = clickedTab.getBoundingClientRect();
+
+      // Calculate the distance to center the clicked tab
+      const offsetLeft = tabRect.left - containerRect.left;
+      const scrollPosition =
+        offsetLeft - containerRect.width / 2 + tabRect.width / 2;
+
+      container.scrollBy({
+        left: scrollPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Scroll to the active tab on initial load
+  useEffect(() => {
+    const activeIndex = tabs.findIndex((tab) =>
+      location.pathname.includes(tab.replace(/\s+/g, "-").toLowerCase())
     );
 
-    if (tabIndex !== -1 && carouselRef.current) {
-      const numItems = links.length;
-      const centerOffset = Math.floor(responsive.desktop.items / 2);
-      const additionalOffset = -4;
-      const centeredIndex = Math.max(
-        Math.min(
-          tabIndex - centerOffset + additionalOffset,
-          numItems - responsive.desktop.items
-        ),
-        0
-      );
-
-      carouselRef.current.goToSlide(centeredIndex);
+    if (activeIndex !== -1) {
+      centerTab(activeIndex);
     }
-  }, [location.pathname, links, responsive.desktop.items]);
+  }, [location.pathname, tabs]);
 
   return (
-    <div className="relative flex items-center">
+    <div className="relative flex items-center w-full px-10">
       {/* Left Arrow */}
       <button
         className="absolute left-0 z-10 p-2 bg-indigo-600 hover:bg-indigo-800 rounded-full text-white focus:outline-none"
-        onClick={() => carouselRef.current.previous()}
+        onClick={scrollLeft}
       >
         <FaChevronLeft className="h-3.5 w-3.5" />
       </button>
 
-      {/* Carousel */}
-      <Carousel
-        responsive={responsive}
-        ref={carouselRef}
-        customLeftArrow={null}
-        customRightArrow={null}
-        showDots={false}
-        autoPlay={false}
-        arrows={false}
-        keyBoardControl={true}
-        containerClass="w-full mx-8"
-        itemClass="mx-2 max-w-fit "
+      {/* Tabs Container */}
+      <div
+        ref={tabContainerRef}
+        className="flex space-x-4 overflow-x-auto scroll-smooth tabslider-hide-scrollbar py-2 w-full"
       >
-        {links.map((link, idx) => (
+        {tabs.map((tab, index) => (
           <NavLink
-            key={idx}
-            to={`/Business-Continuity-Plan/${link
+            key={index}
+            to={`/Business-Continuity-Plan/${tab
               .replace(/\s+/g, "-")
               .toLowerCase()}/${bcpid}`}
+            onClick={() => centerTab(index)}
             className={({ isActive }) =>
-              `block px-2 py-1 rounded font-semibold ${
+              `whitespace-nowrap block px-2 py-1 rounded font-semibold text-sm ${
                 isActive ? "doc-nav-active" : "doc-nav-hover"
               }`
             }
-            onClick={() => {
-              localStorage.setItem("carouselIndex", idx);
-            }}
           >
-            {link}
+            {tab}
           </NavLink>
         ))}
-      </Carousel>
+      </div>
 
       {/* Right Arrow */}
       <button
         className="absolute right-0 z-10 p-2 bg-indigo-600 hover:bg-indigo-800 rounded-full text-white focus:outline-none"
-        onClick={() => carouselRef.current.next()}
+        onClick={scrollRight}
       >
         <FaChevronRight className="h-3.5 w-3.5" />
       </button>

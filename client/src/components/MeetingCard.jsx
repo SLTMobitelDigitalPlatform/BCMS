@@ -32,32 +32,34 @@ const MeetingCard = () => {
   };
 
   return (
-    <div className="bg-indigo-900 p-4 w-full h-full rounded-2xl overflow-y-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-4">
+    <div className="bg-indigo-900 p-4 w-full h-full rounded-2xl  overflow-hidden">
+      {/* <h1 className="text-2xl sm:text-3xl font-bold text-white text-center mb-4">
         Upcoming Meetings
-      </h1>
-      <div className="flex flex-col gap-4">
-        {meetings.length > 0 ? (
-          meetings.map((meeting, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
-              <h2 className="font-bold text-lg text-green-800">
-                {meeting.purpose}
-              </h2>
-              <div className="flex justify-between items-center text-md text-gray-600">
-                <p>{new Date(meeting.start).toLocaleDateString()}</p>
-                <p>
-                  {meeting.startTime} - {meeting.endTime}
-                </p>
-                <p>{meeting.location}</p>
+      </h1> */}
+      <div className="h-full rounded-2xl overflow-y-auto">
+        <div className="flex flex-col gap-4">
+          {meetings.length > 0 ? (
+            meetings.map((meeting, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow-sm">
+                <h2 className="font-bold text-lg text-green-800">
+                  {meeting.purpose}
+                </h2>
+                <div className="flex justify-between items-center text-md text-gray-600">
+                  <p>{new Date(meeting.start).toLocaleDateString()}</p>
+                  <p>
+                    {meeting.startTime} - {meeting.endTime}
+                  </p>
+                  <p>{meeting.location}</p>
+                </div>
+                <p className="text-sm text-gray-500"></p>
               </div>
-              <p className="text-sm text-gray-500"></p>
-            </div>
-          ))
-        ) : (
-          <p className="text-black text-center font-semibold">
-            No upcoming meetings.
-          </p>
-        )}
+            ))
+          ) : (
+            <p className="text-black text-center font-semibold">
+              No upcoming meetings.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

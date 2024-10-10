@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRecoveryAndResumptions } from "../../../../hooks/documents/bcp/useRecoveryAndResumption";
 import { createAlert } from "../../../../utilities/alert";
 
@@ -15,16 +15,18 @@ const CreateRecoveryResumption = () => {
     timeOfIncidentComments: "",
   });
 
-  const { bcpid, cbfid } = useParams();
+  const location = useLocation();
+  const cbfid = location.state?.cbfid;
+  const { bcpid } = useParams();
   const [isCreating, setIsCreating] = useState(false);
   const navigate = useNavigate();
-  const path = `/recovery-and-resumption/${bcpid}/${cbfid}`;
+  const path = `/Business-Continuity-Plan/recovery-and-resumption/${bcpid}`;
 
   const {
     allDocuments: recoveryResumptions,
     isLoading: loading,
     createDocument,
-  } = useRecoveryAndResumptions(bcpid, cbfid);
+  } = useRecoveryAndResumptions(bcpid, cbfid.value);
 
   useEffect(() => {
     const newNumber = recoveryResumptions.length + 1;
@@ -44,14 +46,14 @@ const CreateRecoveryResumption = () => {
       const relatedDocumentData = {
         ...formData,
         bcpid,
-        cbfid,
+        cbfid: cbfid.value,
       };
       createDocument(relatedDocumentData);
       createAlert(
         "Recovery and Resumption Added",
         `Recovery and Resumption "${formData.number}" added successfully!`
       );
-      navigate(path);
+      navigate(path, { state: { cbfid } });
     } catch (error) {
       console.log(error);
     } finally {
@@ -174,6 +176,7 @@ const CreateRecoveryResumption = () => {
             </button>
             <Link
               to={path}
+              state={{ cbfid }}
               className="p-2 w-32 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-center"
             >
               Cancel

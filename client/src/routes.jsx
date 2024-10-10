@@ -154,13 +154,18 @@ import CreateDownstream from "./pages/documents/BCP/Dependencies/Internal Depend
 import OrgCallTree from "./pages/Call Tree/OrgCallTree";
 import OrgCallTreeTable from "./pages/Call Tree/OrgCallTreeTable";
 import CallTreeHomePage from "./pages/Call Tree/CallTreeHomePage";
-import PoliciesPage from "./pages/Policies/OrgPolicies";
-import AddDocument from "./pages/Policies/AddDocument";
 import CreateRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/CreateRecoveryResumption";
 import EditRecoveryResumption from "./pages/documents/BCP/Recovery and Resumption/EditRecoveryResumption";
 import EditExternalDependencies from "./pages/documents/BCP/Dependencies/External Dependencies/EditExternalDependencies";
 import EditUpstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditUpstream";
 import EditDownstream from "./pages/documents/BCP/Dependencies/Internal Dependencies/EditDownstream";
+
+import PoliciesHomePage from "./pages/Policies/PoliciesHomePage";
+import TeamsDocuments from "./pages/Policies/TeamsDocuments/TeamsDocuments";
+import OtherDocuments from "./pages/Policies/OtherDocuments/OtherDocuments";
+import ViewPolicyPage from "./pages/Policies/OrganizationalPolicies/ViewPolicyPage";
+import AddDocument from "./pages/Policies/OrganizationalPolicies/AddDocument";
+import PoliciesPage from "./pages/Policies/OrganizationalPolicies/OrgPolicies";
 
 const router = createBrowserRouter([
   {
@@ -239,6 +244,7 @@ const router = createBrowserRouter([
 
       // Policies
       { path: "policies", element: <PoliciesPage /> },
+      { path: "viewPolicy/:id", element: <ViewPolicyPage /> },
       { path: "policies/add-document", element: <AddDocument /> },
 
       //Teams
@@ -276,6 +282,13 @@ const router = createBrowserRouter([
       // Calendar
       { path: "calendar", element: <Calendar /> },
       { path: "event/:id/update", element: <UpdateEvent /> },
+
+      //Policies
+      { path: "policiesHome", element: <PoliciesHomePage /> },
+      { path: "teamsDoc", element: <TeamsDocuments /> },
+      { path: "otherDoc", element: <OtherDocuments /> },
+
+      { path: "policies/add-document", element: <AddDocument /> },
 
       //!  { path: "add-event", element: <AddEvents /> },
 
@@ -420,15 +433,15 @@ const router = createBrowserRouter([
             path: "critical-business-function/:bcpid",
             element: <CriticalBusinessFunction />,
           },
+          {
+            path: "recovery-and-resumption/:bcpid",
+            element: <RecoveryAndResumption />,
+          },
           { path: "resources-required/:bcpid", element: <ResourcesRequired /> },
           { path: "dependencies/:bcpid", element: <Dependencies /> },
           { path: "vital-records/:bcpid", element: <VitalRecords /> },
           { path: "work-area-recovery/:bcpid", element: <WorkAreaRecovery /> },
           { path: "manpower/:bcpid", element: <Manpower /> },
-          // {
-          //   path: "recovery-and-resumption/:bcpid",
-          //   element: <RecoveryAndResumption />,
-          // },
           { path: "embedded-documents/:bcpid", element: <EmbeddedDocuments /> },
         ],
       },
@@ -498,16 +511,11 @@ const router = createBrowserRouter([
 
       // * Recovery And Resumption
       {
-        path: "recovery-and-resumption/:bcpid/:cbfid",
-        element: <RecoveryAndResumption />,
-      },
-      {
-        path: "createRecoveryResumption/:bcpid/:cbfid",
+        path: "createRecoveryResumption/:bcpid",
         element: <CreateRecoveryResumption />,
       },
-
       {
-        path: "editRecoveryResumption/:bcpid/:cbfid/:id",
+        path: "editRecoveryResumption/:bcpid/:id",
         element: <EditRecoveryResumption />,
       },
 
@@ -526,7 +534,6 @@ const router = createBrowserRouter([
         path: "createExternalDependencies/:bcpid",
         element: <CreateExternalDependencies />,
       },
-
       {
         path: "editExternalDependencies/:bcpid/:id",
         element: <EditExternalDependencies />,
@@ -578,16 +585,43 @@ const router = createBrowserRouter([
         children: [
           { path: "bia-form/:biaid", element: <BiaForm /> },
           { path: "operating-sites/:biaid", element: <BiaOperatingSites /> },
-          { path: "business-peaks-and-deadlines/:biaid", element: <BiaPeaksAndDeadlines />},
+          {
+            path: "business-peaks-and-deadlines/:biaid",
+            element: <BiaPeaksAndDeadlines />,
+          },
+          {
+            path: "business-peaks-and-deadlines/:biaid",
+            element: <BiaPeaksAndDeadlines />,
+          },
           { path: "resources/:biaid", element: <BiaResources /> },
-          { path: "critical-business-function/:biaid", element: <BiaCriticalBusinessFunction />},
-
+          {
+            path: "critical-business-function/:biaid",
+            element: <BiaCriticalBusinessFunction />,
+          },
+          {
+            path: "critical-business-function/:biaid",
+            element: <BiaCriticalBusinessFunction />,
+          },
 
           { path: "document-version/:biaid", element: <BiaDocumentControl /> },
           { path: "impact-analysis/:biaid", element: <BiaImpactAnalysis /> },
-          { path: "resources-required/:biaid", element: <BiaResourcesRequired /> },
+          {
+            path: "resources-required/:biaid",
+            element: <BiaResourcesRequired />,
+          },
+          {
+            path: "resources-required/:biaid",
+            element: <BiaResourcesRequired />,
+          },
           { path: "dependencies/:biaid", element: <BiaDependencies /> },
-          { path: "work-area-recovery/:biaid", element: <BiaWorkAreaRecovery />},
+          {
+            path: "work-area-recovery/:biaid",
+            element: <BiaWorkAreaRecovery />,
+          },
+          {
+            path: "work-area-recovery/:biaid",
+            element: <BiaWorkAreaRecovery />,
+          },
           { path: "manpower/:biaid", element: <BiaManpower /> },
         ],
       },
@@ -599,14 +633,42 @@ const router = createBrowserRouter([
       { path: "createOperatingSites/:biaid", element: <CreateBIAOSites /> },
       { path: "editOperatingSites/:biaid/:id", element: <EditBIAOSites /> },
       //Peaks and Deadliness
-      { path: "createPeaksDeadlines/:biaid", element: <CreatePeaksAndDeadlines /> },
-      { path: "editPeaksDeadlines/:biaid/:id", element: <EditPeaksAndDeadlines /> },
+      {
+        path: "createPeaksDeadlines/:biaid",
+        element: <CreatePeaksAndDeadlines />,
+      },
+      {
+        path: "editPeaksDeadlines/:biaid/:id",
+        element: <EditPeaksAndDeadlines />,
+      },
+      {
+        path: "createPeaksDeadlines/:biaid",
+        element: <CreatePeaksAndDeadlines />,
+      },
+      {
+        path: "editPeaksDeadlines/:biaid/:id",
+        element: <EditPeaksAndDeadlines />,
+      },
       //Resources
       { path: "createResources/:biaid", element: <CreateBiaResources /> },
       { path: "editResources/:biaid/:id", element: <EditBiaResources /> },
       //Critical Business Function
-      { path: "createBIACriticalBusinessFunction/:biaid", element: <CreateBiaCBF /> },
-      { path: "editBIACriticalBusinessFunction/:biaid/:id", element: <EditBiaCBF /> },
+      {
+        path: "createBIACriticalBusinessFunction/:biaid",
+        element: <CreateBiaCBF />,
+      },
+      {
+        path: "editBIACriticalBusinessFunction/:biaid/:id",
+        element: <EditBiaCBF />,
+      },
+      {
+        path: "createBIACriticalBusinessFunction/:biaid",
+        element: <CreateBiaCBF />,
+      },
+      {
+        path: "editBIACriticalBusinessFunction/:biaid/:id",
+        element: <EditBiaCBF />,
+      },
       //Dependency
       { path: "createBIAExternalDependencies/:biaid", element: <CreateBiaExternalDependencies/> },
       { path: "editBIAExternalDependencies/:biaid/:id", element: <EditBiaExternalDependencies/> },
