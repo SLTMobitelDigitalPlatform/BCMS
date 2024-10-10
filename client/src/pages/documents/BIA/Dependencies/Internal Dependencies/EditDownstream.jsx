@@ -1,36 +1,32 @@
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+
 import { updateAlert } from "../../../../../utilities/alert";
 import { useDownstream } from "../../../../../hooks/documents/bia/useDownstream";
 
 const EditDownstream = () => {
   const location = useLocation();
   const { cbfid } = location.state || {};
-  const cbfidValue = cbfid ? cbfid.value : "";
   const { biaid, id } = useParams();
   const [isUpdating, setIsUpdating] = useState(false);
   const navigate = useNavigate();
   const path = `/Business-Impact-Analysis/dependencies/${biaid}`;
 
   const [formData, setFormData] = useState({
-    criticalBusinessFunction: "" ,
+    criticalBusinessFunction: cbfid ? cbfid.value : "",
     section: "",
     primaryContact: "",
     secondaryContact: "",
+    // rto: "",
     justification: "",
   });
 
   const {
     singleDocument: downstream,
     isLoading: loading,
-    fetchDownstreamByIds,
-    updateDownstream,
+    updateDocument,
   } = useDownstream(biaid, cbfid.value, id);
-
-  useEffect(() => {
-    fetchDownstreamByIds(biaid, id);
-  }, [biaid]);
 
   useEffect(() => {
     if (downstream) {
@@ -39,6 +35,7 @@ const EditDownstream = () => {
         section: downstream.section || "",
         primaryContact: downstream.primaryContact || "",
         secondaryContact: downstream.secondaryContact || "",
+        // rto: downstream.rto || "",
         justification: downstream.justification || "",
       });
     }
@@ -60,7 +57,7 @@ const EditDownstream = () => {
         "Yes, Update it!",
         `Downstream has been updated successfully!`,
         `Failed to update Downstream!`,
-        () => updateDownstream(downstreamData)
+        () => updateDocument(downstreamData)
       );
 
       if (result === "success") {
@@ -127,6 +124,17 @@ const EditDownstream = () => {
               className="p-2 w-full rounded"
             />
           </div>
+          {/* <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">RTO</label>
+            <input
+              type="text"
+              name="rto"
+              value={formData.rto}
+              onChange={handleChange}
+              placeholder="Enter RTO"
+              className="p-2 w-full rounded"
+            />
+          </div> */}
           <div className="flex flex-col gap-2 w-full">
             <label className="font-semibold">Justification</label>
             <input

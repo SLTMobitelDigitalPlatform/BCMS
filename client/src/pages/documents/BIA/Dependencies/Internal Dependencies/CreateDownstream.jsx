@@ -14,6 +14,7 @@ const CreateDownstream = () => {
     section: "",
     primaryContact: "",
     secondaryContact: "",
+    // rto: "",
     justification: "",
   });
 
@@ -22,9 +23,9 @@ const CreateDownstream = () => {
   const navigate = useNavigate();
   const path = `/Business-Impact-Analysis/dependencies/${biaid}`;
 
-  const { createDownstream } = useDownstream();
+  const { createDocument } = useDownstream(biaid);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsCreating(true);
     try {
@@ -33,7 +34,7 @@ const CreateDownstream = () => {
         biaid,
         criticalBusinessFunction: cbfid.value,
       };
-      await createDownstream(downstreamData);
+      createDocument(downstreamData);
       createAlert(
         "Downstream Added",
         `Downstream for ${cbfid.label} added successfully!`
@@ -59,13 +60,13 @@ const CreateDownstream = () => {
       <div className="bg-indigo-200 h-full mt-5 rounded-2xl p-8 overflow-auto">
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Section/Business Unit</label>
+            <label className="font-semibold">Section</label>
             <input
               type="text"
               name="section"
               value={formData.section}
               onChange={handleChange}
-              placeholder="Enter Name of the Section/Business Unit"
+              placeholder="Select the Section"
               className="p-2 w-full rounded"
             />
           </div>
@@ -91,6 +92,17 @@ const CreateDownstream = () => {
               className="p-2 w-full rounded"
             />
           </div>
+          {/* <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">RTO</label>
+            <input
+              type="text"
+              name="rto"
+              value={formData.rto}
+              onChange={handleChange}
+              placeholder="Enter RTO"
+              className="p-2 w-full rounded"
+            />
+          </div> */}
           <div className="flex flex-col gap-2 w-full">
             <label className="font-semibold">Justification</label>
             <input

@@ -17,6 +17,7 @@ const EditUpstream = () => {
     section: "",
     primaryContact: "",
     secondaryContact: "",
+    // rto: "",
     justification: "",
   });
 
@@ -33,6 +34,7 @@ const EditUpstream = () => {
         section: upstream.section || "",
         primaryContact: upstream.primaryContact || "",
         secondaryContact: upstream.secondaryContact || "",
+        // rto: upstream.rto || "",
         justification: upstream.justification || "",
       });
     }
@@ -95,7 +97,7 @@ const EditUpstream = () => {
               name="section"
               value={formData.section}
               onChange={handleChange}
-              placeholder="Enter section"
+              placeholder="Select the Section"
               className="p-2 w-full rounded"
             />
           </div>
@@ -121,6 +123,17 @@ const EditUpstream = () => {
               className="p-2 w-full rounded"
             />
           </div>
+          {/* <div className="flex flex-col gap-2 w-full">
+            <label className="font-semibold">RTO</label>
+            <input
+              type="text"
+              name="rto"
+              value={formData.rto}
+              onChange={handleChange}
+              placeholder="Enter RTO"
+              className="p-2 w-full rounded"
+            />
+          </div> */}
           <div className="flex flex-col gap-2 w-full">
             <label className="font-semibold">Justification</label>
             <input

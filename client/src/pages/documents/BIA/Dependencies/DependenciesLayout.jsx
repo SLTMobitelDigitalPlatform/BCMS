@@ -48,14 +48,14 @@ const Dependencies = () => {
           </button>
         </div>
 
-        {/* Create Dependency Button */}
+        {/* Create Record Button */}
         {activeTab === "externalDependencies" ? (
           <Link
             to={`/createBIAExternalDependencies/${biaid}`}
             state={{ activeTab: "externalDependencies" }}
             className="btn-primary"
           >
-            Create External Dependency
+            Create External Record
           </Link>
         ) : (
           ""

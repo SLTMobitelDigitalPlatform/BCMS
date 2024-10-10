@@ -13,12 +13,8 @@ const InternalDependencies = () => {
   const [selectedCBFunction, setSelectedCBFunction] = useState(null);
   const { biaid } = useParams();
 
-  const { sortedCBFunctions, loading, fetchCriticalBusinessFunctionsByBIAID } =
-    useCriticalBusinessFunction();
-
-  useEffect(() => {
-    fetchCriticalBusinessFunctionsByBIAID(biaid);
-  }, []);
+  const { sortedCBFunctions, isLoading: loading } =
+    useCriticalBusinessFunction(biaid);
 
   useEffect(() => {
     if (location.state?.cbfid) {
