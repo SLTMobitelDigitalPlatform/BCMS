@@ -1,26 +1,32 @@
+import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
-import { useRecoveryAndResumptions } from "../../../../hooks/documents/bcp/useRecoveryAndResumption";
-import { deleteAlert } from "../../../../utilities/alert";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
+import { useCriticalBusinessFunction } from "../../../../hooks/documents/bcp/useCriticalBusinessFunction";
+import RecoveryResumptionTable from "./RecoveryResumptionTable";
 
 const RecoveryResumption = () => {
-  const { bcpid, cbfid } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { bcpid } = useParams();
+  const [selectedCBFunction, setSelectedCBFunction] = useState(null);
 
-  const {
-    allDocuments: recoveryResumptions,
-    isLoading: loading,
-    deleteDocument,
-  } = useRecoveryAndResumptions(bcpid, cbfid);
+  const { sortedCBFunctions, isLoading: loading } =
+    useCriticalBusinessFunction(bcpid);
 
-  const handleDelete = (id) => {
-    deleteAlert(
-      "Are you sure?",
-      `You are about to delete Recovery Resumption. This action cannot be undone.`,
-      "Yes, delete it!",
-      `Recovery Resumption deleted successfully!`,
-      "Error deleting Recovery Resumption",
-      () => deleteDocument(id)
-    );
+  useEffect(() => {
+    if (location.state?.cbfid) {
+      setSelectedCBFunction(location.state.cbfid);
+    }
+  }, [location.state]);
+
+  // Handler for selecting CBF from dropdown
+  const handleSelectChange = (selectedOption) => {
+    setSelectedCBFunction(selectedOption);
+
+    navigate(location.pathname, {
+      state: { cbfid: selectedOption },
+    });
   };
 
   if (loading)
@@ -31,90 +37,37 @@ const RecoveryResumption = () => {
     );
 
   return (
-    <div className="h-full flex felx-col overflow-hidden">
-      <div className="overflow-hidden h-screen rounded-2xl p-3">
-        <div className="flex justify-between items-center mb-5">
-          <h1 className="text-xl font-bold text-indigo-900">
-            <Link
-              to={`/Business-Continuity-Plan/critical-business-function/${bcpid}`}
-            >
-              Critical Business Function{">"}
-            </Link>
-            Recovery and Resumption
-          </h1>
+    <div className="pt-5 w-full h-full flex flex-col">
+      <h1 className="text-xl font-bold text-indigo-900 mb-5">
+        Recovery and Resumption
+      </h1>
+      <div className="flex justify-between items-center mb-5">
+        <Select
+          className="m-0.5 w-1/3 font-semibold"
+          value={selectedCBFunction}
+          onChange={handleSelectChange}
+          options={sortedCBFunctions}
+          placeholder="Select Critical Business Function"
+          isSearchable={true}
+          isClearable={true}
+        />
+        {selectedCBFunction ? (
           <Link
-            to={`/createRecoveryResumption/${bcpid}/${cbfid}`}
+            to={`/createRecoveryResumption/${bcpid}`}
+            state={{ cbfid: selectedCBFunction }}
             className="btn-primary font-semibold"
           >
             Add Details
           </Link>
-        </div>
-
-        {/* Table */}
-        <div className="overflow-auto">
-          <table className="table-fixed relative w-full py-10 border bg-white border-indigo-800">
-            <thead className="bg-indigo-200">
-              <tr>
-                <th className="w-20 doc-table-head">No</th>
-                <th className="w-20 doc-table-head">Description</th>
-                <th className="w-20 doc-table-head">Timing</th>
-                <th className="w-36 doc-table-head">Duration</th>
-                <th className="w-36 doc-table-head">Role</th>
-                <th className="w-36 doc-table-head">
-                  At Time Of Incident Actions
-                </th>
-                <th className="w-28 doc-table-head">
-                  At Time Of Incident Comments
-                </th>
-                <th className="w-28 doc-table-head">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recoveryResumptions.map((recoveryResumption) => (
-                <tr key={recoveryResumption._id} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 w-20 doc-table-data text-center">
-                    {recoveryResumption.number}
-                  </td>
-                  <td className="py-2 px-4 w-20 doc-table-data text-center">
-                    {recoveryResumption.description}
-                  </td>
-                  <td className="py-2 px-4 w-20 doc-table-data text-center">
-                    {recoveryResumption.timing}
-                  </td>
-                  <td className="py-2 px-4 w-20 doc-table-data text-center">
-                    {recoveryResumption.duration}
-                  </td>
-                  <td className="py-2 px-4 w-36 doc-table-data">
-                    {recoveryResumption.role}
-                  </td>
-                  <td className="py-2 px-4 w-36 doc-table-data">
-                    {recoveryResumption.timeOfIncidentActions}
-                  </td>
-                  <td className="py-2 px-4 w-36 doc-table-data">
-                    {recoveryResumption.timeOfIncidentComments}
-                  </td>
-                  <td className="py-2 px-4 w-28 doc-table-data">
-                    <div className="flex justify-center gap-2">
-                      <Link
-                        to={`/editRecoveryResumption/${bcpid}/${cbfid}/${recoveryResumption._id}`}
-                        className="doc-edit-btn"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        className="doc-delete-btn"
-                        onClick={() => handleDelete(recoveryResumption._id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
+      {selectedCBFunction ? (
+        <RecoveryResumptionTable />
+      ) : (
+        <p className="my-5 mx-2">Please select a critical business function.</p>
+      )}
     </div>
   );
 };

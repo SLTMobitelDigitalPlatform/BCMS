@@ -14,8 +14,8 @@ exports.createBiaDocumentControl = async (req, res) => {
 // Get all Document Control
 exports.getAllBiaDocumentControl = async (req, res) => {
   try {
-    const BiaDocumentControl = await BiaDocumentControl.find();
-    res.status(200).json(BiaDocumentControl);
+    const biaDocumentControl = await BiaDocumentControl.find();
+    res.status(200).json(biaDocumentControl);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -24,11 +24,11 @@ exports.getAllBiaDocumentControl = async (req, res) => {
 // Get last Document control
 exports.getLastBiaDocumentControl = async (req, res) => {
   try {
-    const getLastBiaDocumentControl = await BiaDocumentControl.findOne().sort({
+    const lastBiaDocumentControl = await BiaDocumentControl.findOne().sort({
       _id: -1,
     });
 
-    res.status(200).json(getLastBiaDocumentControl);
+    res.status(200).json(lastBiaDocumentControl);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -38,13 +38,13 @@ exports.getLastBiaDocumentControl = async (req, res) => {
 exports.getBiaDocumentControlByBIAID = async (req, res) => {
   const filter = { biaid: req.params.biaid };
   try {
-    const BiaDocumentControl = await BiaDocumentControl.find(filter);
-    if (!BiaDocumentControl) {
+    const biaDocumentControl = await BiaDocumentControl.find(filter);
+    if (!biaDocumentControl) {
       return res.status(404).json({
         message: "Document Control not found",
       });
     }
-    res.status(200).json(BiaDocumentControl);
+    res.status(200).json(biaDocumentControl);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -54,13 +54,13 @@ exports.getBiaDocumentControlByBIAID = async (req, res) => {
 exports.getBiaDocumentControlByIds = async (req, res) => {
   const { biaid, id } = req.params;
   try {
-    const BiaDocumentControl = await BiaDocumentControl.findOne({ _id: id, biaid });
-    if (!BiaDocumentControl) {
+    const biaDocumentControl = await BiaDocumentControl.findOne({ _id: id, biaid });
+    if (!biaDocumentControl) {
       return res.status(404).json({
         message: "Document control not found",
       });
     }
-    res.status(200).json(BiaDocumentControl);
+    res.status(200).json(biaDocumentControl);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

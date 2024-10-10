@@ -84,4 +84,14 @@
   .doc-nav-hover {
     @apply border-2 border-indigo-800  hover:bg-indigo-200;
   }
+
+  /* Custom class to hide scrollbar for TabSlider only */
+  .tabslider-hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  .tabslider-hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }

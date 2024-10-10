@@ -1,41 +1,57 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaBars, FaChevronDown, FaXmark } from "react-icons/fa6";
-
-import { NavLink } from "react-router-dom";
+import {
+  FaAnglesLeft,
+  FaCalendarDays,
+  FaChevronDown,
+  FaFileContract,
+  FaFilePen,
+  FaFolderOpen,
+  FaFolderTree,
+  FaHouse,
+  FaListCheck,
+  FaPeopleArrows,
+  FaPeopleRoof,
+  FaRightFromBracket,
+  FaSitemap,
+  FaUser,
+  FaUserGroup,
+  FaUserPen,
+  FaUsers,
+  FaVideo,
+} from "react-icons/fa6";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [activeDropdown, setActiveDropdown] = useState(null);
-
-  const toggleSidebar = () => setIsOpen(!isOpen);
-
-  const closeSidebar = () => setIsOpen(false);
-
-  const handleDropdownToggle = (dropdown) => {
-    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
-  };
-
-  const handleOutsideClick = (e) => {
-    if (!e.target.closest(".sidebar-dropdown")) {
-      setActiveDropdown(null);
-    }
-  };
-
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [userName, setUserName] = useState("");
   useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:5000/currentuser", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const fullImageUrl = `http://localhost:5000${response.data.profileImg}`;
+        setUserName(response.data.name);
+        setPreviewUrl(fullImageUrl);
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
     };
+
+    fetchUserDetails();
   }, []);
+
+  const location = useLocation();
+  const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const { logout } = useAuth();
   const handleLogout = async () => {
     try {
-      // localStorage.removeItem("token");
-      localStorage.removeItem("scrollPosition");
-      localStorage.removeItem("carouselIndex");
       logout();
       window.location.href = "/login";
     } catch (error) {
@@ -44,224 +60,248 @@ const Sidebar = () => {
     }
   };
 
+  const [expanded, setExpanded] = useState(true);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  const handleDropdownToggle = (dropdown) => {
+    if (!expanded) {
+      setExpanded(true);
+    }
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+  };
+
+  const Menus = [
+    {
+      title: "System Management",
+      submenu: true,
+      icon: <FaPeopleRoof />,
+      submenuItems: [
+        { title: "Employees", icon: <FaUserPen />, link: "/employee" },
+        { title: "Teams", icon: <FaUserGroup />, link: "/teams/teamList" },
+        { title: "Sections", icon: <FaUsers />, link: "/sections" },
+        { title: "Customers", icon: <FaPeopleArrows />, link: "/customers" },
+      ],
+    },
+    {
+      title: "System Documents",
+      icon: <FaFolderOpen />,
+      submenu: true,
+      submenuItems: [
+        {
+          title: "Risk Assessment",
+          icon: <FaFilePen />,
+          link: "/Risk-Assessment/versionControl",
+        },
+        {
+          title: "Context of the Organization",
+          icon: <FaFilePen />,
+          link: "/Context-of-the-Organization/version-control",
+        },
+        {
+          title: "Business Continuity Plan",
+          icon: <FaFilePen />,
+          link: "/business-continuity-plans",
+        },
+        {
+          title: "Business Impact Analysis",
+          icon: <FaFilePen />,
+          link: "/business-impact-analysis-plans",
+        },
+      ],
+    },
+
+    {
+      title: "Meetings",
+      spacing: true,
+      icon: <FaVideo />,
+      link: "/meeting",
+    },
+    { title: "Calendar", icon: <FaCalendarDays />, link: "/calendar" },
+    {
+      title: "Roles & Responsibilities",
+      icon: <FaListCheck />,
+      link: "/roles",
+    },
+    {
+      title: "Organizational Documents",
+      icon: <FaFolderTree />,
+
+      submenu: true,
+      submenuItems: [
+        {
+          title: "Policies & Guidelines",
+          icon: <FaFileContract />,
+          link: "/policiesHome",
+        },
+        {
+          title: "Call Tree",
+          icon: <FaSitemap />,
+          link: "/call-tree-home",
+        },
+        // {
+        //   title: "Audit Report",
+        //   icon: <FaFileInvoiceDollar />,
+        //   link: "/a",
+        // },
+        // {
+        //   title: "Drill Report",
+        //   icon: <FaFileShield />,
+        //   link: "/d",
+        // },
+      ],
+    },
+    { title: "Home", spacing: true, icon: <FaHouse />, link: "/" },
+    { title: "Profile", icon: <FaUser />, link: "/profile" },
+  ];
+
   return (
-    <>
-      {/* Hamburger Icon */}
-      <button
-        className="p-2 focus:outline-none z-50 fixed top-1 left-3"
-        onClick={toggleSidebar}
-      >
-        {isOpen ? (
-          <FaXmark className="text-white" size={24} />
-        ) : (
-          <FaBars className="text-indigo-900" size={24} />
-        )}
-      </button>
-
-      {/* Sidebar */}
-      <div
-        className={`fixed top-0 left-0 h-full bg-indigo-950 text-white p-5 transition-transform duration-300 ease-in-out z-40 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } w-64 flex flex-col justify-between`}
-      >
-        <div className="text-4xl text-center font-bold text-sky-400">
-          <NavLink to="/profile" onClick={closeSidebar}>
-            BCMS
-          </NavLink>
-        </div>
-
-        <ul className="text-base font-semibold flex flex-col gap-2 text-left">
-          {/* System Management */}
-          <li className="relative sidebar-dropdown">
-            <button
-              onClick={() => handleDropdownToggle("management")}
-              className="flex items-center justify-between w-full px-4 py-2 rounded-2xl sidebar-hover transition-all duration-300"
-            >
-              System Management <FaChevronDown className="ml-2" />
-            </button>
-            {activeDropdown === "management" && (
-              <ul className="absolute left-0 w-full bg-white text-black text-sm rounded-2xl p-1 z-10">
-                <li>
-                  <NavLink
-                    to="/employee"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={closeSidebar}
-                  >
-                    Employees
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="/teams/teamList"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={closeSidebar}
-                  >
-                    Teams
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="/customers"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={closeSidebar}
-                  >
-                    Customers
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-              </ul>
-            )}
-          </li>
-          <hr className="opacity-50" />
-          {/* Documents */}
-          <li className="relative sidebar-dropdown">
-            <button
-              onClick={() => handleDropdownToggle("documents")}
-              className="flex items-center justify-between w-full px-4 py-2 rounded-2xl sidebar-hover transition-all duration-300"
-            >
-              System Documents <FaChevronDown className="ml-2" />
-            </button>
-            {activeDropdown === "documents" && (
-              <ul className="absolute left-0 w-full bg-white text-black text-sm rounded-2xl p-1 z-10">
-                <li>
-                  <NavLink
-                    to="/Risk-Assessment/versionControl"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={closeSidebar}
-                  >
-                    Risk Assessment
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="Context-of-the-Organization/version-control"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={closeSidebar}
-                  >
-                    Context of the Organization
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="/business-continuity-plans"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={closeSidebar}
-                  >
-                    Business Continuity Plan
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-                <li>
-                  <NavLink
-                    to="/business-impact-analysis-plans"
-                    className={({ isActive }) =>
-                      `sidebar-link ${
-                        isActive ? "dropdown-active" : "dropdown-hover"
-                      }`
-                    }
-                    onClick={closeSidebar}
-                  >
-                    Business Impact Analysis
-                  </NavLink>
-                </li>
-                <hr className="my-1 border-black opacity-50" />
-              </ul>
-            )}
-          </li>
-          <hr className="opacity-50" />
-          <li>
-            <NavLink
-              to="/meeting"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
-              }
-              onClick={closeSidebar}
-            >
-              Meetings
-            </NavLink>
-          </li>
-          <hr className="opacity-50" />
-          <li>
-            <NavLink
-              to="/calendar"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
-              }
-              onClick={closeSidebar}
-            >
-              Calendar
-            </NavLink>
-          </li>
-          <hr className="opacity-50" />
-          <li>
-            <NavLink
-              to="/policies"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
-              }
-              onClick={closeSidebar}
-            >
-              Policies and Guidelines
-            </NavLink>
-          </li>
-          <hr className="opacity-50" />
-          <li>
-            <NavLink
-              to="/call-tree-home"
-              className={({ isActive }) =>
-                `sidebar-link ${isActive ? "sidebar-active" : "sidebar-hover"}`
-              }
-              onClick={closeSidebar}
-            >
-              Call Tree
-            </NavLink>
-          </li>
-          <hr className="opacity-50" />
-        </ul>
-
-        <button
-          className="py-1 bg-sky-400 hover:bg-sky-500 hover:text-white text-black font-semibold rounded-2xl"
-          onClick={handleLogout}
+    <div
+      className={`bg-indigo-950 p-4 pt-6 relative duration-300 ${
+        expanded ? "w-72" : "w-20"
+      }`}
+    >
+      <FaAnglesLeft
+        className={`bg-white text-indigo-950 text-3xl p-1 rounded-full absolute -right-3 top-7 border-2 border-indigo-950  cursor-pointer ${
+          !expanded && "rotate-180"
+        }`}
+        onClick={() => setExpanded(!expanded)}
+      />
+      <div className="flex justify-between items-center">
+        <Link to="/profile">
+          <img
+            src={
+              previewUrl ||
+              `https://eu.ui-avatars.com/api/?name=${userName}&size=250`
+            }
+            alt="Profile"
+            className="profile-pic"
+          />
+        </Link>
+        <h1
+          className={`text-4xl font-bold text-sky-400 duration-300 overflow-hidden transition-all ${
+            expanded ? "w-40" : "w-0"
+          }`}
         >
-          Logout
-        </button>
+          BCMS
+        </h1>
       </div>
 
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black opacity-50 z-30"
-          onClick={toggleSidebar}
-        />
-      )}
-    </>
+      <ul className="pt-4">
+        {Menus.map((menu, index) => {
+          const isSubmenuActive = menu.submenu
+            ? menu.submenuItems.some((submenuItem) =>
+                location.pathname.includes(submenuItem.link)
+              )
+            : false;
+
+          return (
+            <div key={index}>
+              {menu.submenu ? (
+                // Submenu item
+                <li
+                  className={`text-white text-sm flex justify-center items-center gap-x-4 cursor-pointer p-2 hover:bg-indigo-600 rounded-md transition-all duration-300 ${
+                    menu.spacing ? "mt-7" : "mt-1"
+                  } ${isSubmenuActive ? "bg-indigo-800" : ""}`}
+                  onClick={() => {
+                    handleDropdownToggle(index);
+                  }}
+                  onMouseEnter={() => setHoveredMenu(index)}
+                  onMouseLeave={() => setHoveredMenu(null)}
+                >
+                  <span className="text-2xl">{menu.icon || <FaUser />}</span>
+                  <span
+                    className={`font-medium whitespace-nowrap flex-1 duration-300 overflow-hidden transition-all ${
+                      !expanded && "hidden"
+                    }`}
+                  >
+                    {menu.title}
+                  </span>
+                  {expanded && (
+                    <FaChevronDown
+                      className={`duration-300 ${
+                        activeDropdown === index ? "rotate-180" : ""
+                      }`}
+                    />
+                  )}
+                </li>
+              ) : (
+                // Regular menu item with NavLink and isActive
+                <NavLink
+                  to={menu.link}
+                  key={index}
+                  className={({ isActive }) =>
+                    `text-white text-sm flex justify-center items-center gap-x-4 cursor-pointer p-2  rounded-md transition-all duration-300 ${
+                      menu.spacing ? "mt-7" : "mt-1"
+                    } ${isActive ? "bg-indigo-800" : "hover:bg-indigo-600"}`
+                  }
+                  onMouseEnter={() => setHoveredMenu(index)}
+                  onMouseLeave={() => setHoveredMenu(null)}
+                >
+                  <span className="text-2xl">{menu.icon}</span>
+                  <span
+                    className={`font-medium whitespace-nowrap flex-1 duration-300 overflow-hidden transition-all ${
+                      !expanded && "hidden"
+                    }`}
+                  >
+                    {menu.title}
+                  </span>
+                </NavLink>
+              )}
+
+              {/* Tooltip for collapsed sidebar */}
+              {!expanded && hoveredMenu === index && (
+                <div className="absolute bg-indigo-600 text-xs text-white p-2 rounded-md ml-14 -mt-10 z-20 transition-all duration-300">
+                  {menu.title}
+                </div>
+              )}
+
+              {/* Render submenu items */}
+              {menu.submenu && activeDropdown === index && expanded && (
+                <ul>
+                  {menu.submenuItems.map((submenuItem, submenuIndex) => (
+                    <NavLink
+                      to={submenuItem.link}
+                      key={submenuIndex}
+                      className={({ isActive }) =>
+                        `text-white text-sm flex items-center gap-x-4 cursor-pointer p-2 px-5  rounded-md transition-all duration-300 ${
+                          isActive ? "bg-indigo-800" : "hover:bg-indigo-600"
+                        }`
+                      }
+                    >
+                      <span className="text-2xl">{submenuItem.icon || ""}</span>
+                      <span className="transition-all duration-300">
+                        {submenuItem.title}
+                      </span>
+                    </NavLink>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        })}
+        {/* Logout option */}
+        <li
+          onClick={handleLogout}
+          className="text-white text-sm flex justify-center items-center gap-x-4 cursor-pointer p-2 hover:bg-indigo-600 rounded-md"
+          onMouseEnter={() => setHoveredMenu("logout")}
+          onMouseLeave={() => setHoveredMenu(null)}
+        >
+          <span className="text-2xl">{<FaRightFromBracket />}</span>
+          <span
+            className={`font-medium whitespace-nowrap flex-1 duration-300 overflow-hidden transition-all ${
+              !expanded && "hidden"
+            }`}
+          >
+            Logout
+          </span>
+          {!expanded && hoveredMenu === "logout" && (
+            <div className="absolute bg-indigo-600 text-xs text-white p-2 rounded-md ml-28 z-20 transition-all duration-300">
+              Logout
+            </div>
+          )}
+        </li>
+      </ul>
+    </div>
   );
 };
 
