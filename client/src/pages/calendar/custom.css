@@ -1,0 +1,27 @@
+/* customStyles.css */
+/* Style for the month name */
+.rbc-toolbar-label {
+    @apply text-2xl font-bold text-blue-500 font-sans;
+  }
+  
+  /* Style for the toolbar buttons (Today, Month, Week, Agenda) */
+  .rbc-btn-group button {
+    @apply bg-gray-200 text-gray-700 border border-gray-300 py-1 px-3 font-sans text-base rounded-md mx-1 transition-colors duration-300;
+  }
+  
+  /* Hover and active styles for the toolbar buttons */
+  .rbc-btn-group button:hover {
+    @apply bg-blue-600 text-white;
+  }
+  
+  .rbc-btn-group button:active,
+  .rbc-btn-group button.rbc-active {
+    @apply bg-blue-600 text-white;
+  }
+  
+  /* Additional styles for calendar events */
+  .rbc-event {
+    @apply bg-blue-500 text-white rounded-lg shadow-md;
+  }
+  
+  
