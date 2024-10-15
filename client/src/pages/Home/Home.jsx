@@ -11,6 +11,7 @@ import image1 from "../../assets/header/1.jpg";
 import image2 from "../../assets/header/2.jpg";
 import image3 from "../../assets/header/3.jpg";
 import logo from "../../assets/logo.png";
+import { FaRightFromBracket } from "react-icons/fa6";
 
 const coverImages = [image1, image2, image3];
 
@@ -86,7 +87,7 @@ const Home = () => {
                   onClick={logout}
                   className="bg-red-100 text-black font-semibold py-1 px-3 rounded-lg hover:bg-red-600 cursor-pointer"
                 >
-                  <FiLogOut className="mr-2" />
+                  <FaRightFromBracket />
                 </button>
               </>
             ) : (
